@@ -7,7 +7,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.Swerve.SwerveSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class SwerveJoystickCmd extends Command {
@@ -30,7 +30,7 @@ public class SwerveJoystickCmd extends Command {
         m_xLimiter = new SlewRateLimiter(DriveConstants.kMaxSpeedMetersPerSecond);
         m_yLimiter = new SlewRateLimiter(DriveConstants.kMaxSpeedMetersPerSecond);
         m_turningLimiter = new SlewRateLimiter(DriveConstants.kMaxAngularSpeed);
-        addRequirements(swerveSubsystem);
+       
     }
 
     @Override
