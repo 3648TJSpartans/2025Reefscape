@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+import com.kauailabs.navx.AHRSProtocol;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.AbsoluteEncoder;

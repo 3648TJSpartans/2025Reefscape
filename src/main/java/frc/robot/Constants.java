@@ -131,6 +131,7 @@ public final class Constants {
 
   public static final class MotorConstants {
     public static final int NewMotorId = 1;
+    public static final double speed = 0.5;
   }
 
  

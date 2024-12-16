@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.SwerveJoystickCmd;
+import frc.robot.subsystems.MotorMMove;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.commands.MotorMoveCmd;
 
 
 /**
@@ -20,7 +22,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
-
+  private final MotorMMove m_motorMMove = new MotorMMove();
   // Replace with CommandPS4Controller or CommandJoystick if needed
      private final CommandXboxController m_driverController = new CommandXboxController(
       OIConstants.kDriverControllerPort);
@@ -29,6 +31,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureSwerve();
+    configureMotor();
   }
 
   /**
@@ -54,6 +57,10 @@ public class RobotContainer {
     // m_driverController.x().onTrue(new InstantCommand(() ->
     // AlignCommands.alignToAmp(m_visionPoseEstimator).schedule()));
 
+  }
+  private void configureMotor(){
+    MotorMoveCmd motorMoveCmd = new MotorMoveCmd(m_motorMMove);
+    m_driverController.leftTrigger().onTrue(motorMoveCmd);
   }
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,

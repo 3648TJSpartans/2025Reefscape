@@ -15,40 +15,27 @@ import frc.robot.subsystems.MotorMMove;
 public class MotorMoveCmd extends Command {
     private final MotorMMove m_motorMMove;
 
-    public MoveMotorCmd(MotorMMove motorMMove){
-        m_motorMMove = motorMMove;
+    public MotorMoveCmd(MotorMMove motorMMove){
+        this.m_motorMMove = motorMMove;
         addRequirements(m_motorMMove);
     }
 
     
     @Override
     public void initialize() {
-        m_ledsSubsystem.setColor(LedConstants.intakeRunningRGB, LedConstants.topBarLedStart,
-                LedConstants.topBarLedStop);
+       // m_motorMMove.setMotorSpeed(MotorConstants.speed);
     }
 
     @Override
     public void execute() {
-        m_shooterSubsystem.setBeltSpeed(ShooterConstants.beltAmpSpeed);
-        m_intakeSubsystem
-                .setIntakeSpeed(IntakeConstants.IntakeSpeed);
+        m_motorMMove.setMotorSpeed(MotorConstants.speed);
 
-    }
-
-    public boolean isFinished() {
-        if (!m_IRSensor.get()) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     @Override
     public void end(boolean interrupted) {
-        m_ledsSubsystem.setIntakeColor(m_IRSensor);
-        m_intakeSubsystem.setIntakeSpeed(Constants.IntakeConstants.DefaultSpeed);
-        m_shooterSubsystem.setBeltSpeed(ShooterConstants.DefaultSpeed);
-        m_shooterSubsystem.setShooterVelocity(ShooterConstants.DefaultSpeed, ShooterConstants.DefaultSpeed);
+        m_motorMMove.setMotorSpeed(0);
+        
     }
 
 }
