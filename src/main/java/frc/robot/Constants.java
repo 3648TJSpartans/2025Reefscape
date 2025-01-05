@@ -134,16 +134,6 @@ public final class Constants {
     public static final double speed = 0.5;
   }
 
-  public static final class LimeLightConstants {
-    public static final String cameraName = "camera";
-    // distance limelight is from center of robot(m)
-    public static final double xTranslation = -.35; // .3016
-    public static final double yTranslation = 0;
-    public static final double zTranslation = 0; // -.7874
-    // Rotation of the limelight in Radians
-    public static final double rollRotation = 0; // side to side
-    public static final double pitchRotation = Math.toRadians(15); // up and down
-    public static final double yawRotation = Math.toRadians(180);// Tilt
+ 
 
-  }
 }
