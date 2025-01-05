@@ -1,15 +1,15 @@
 package frc.robot.subsystems;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MotorConstants;
 
-
 public class MotorMMove extends SubsystemBase {
-    private final CANSparkMax newMotor1;
+    private final SparkMax newMotor1;
 
     public MotorMMove() {
-        newMotor1 = new CANSparkMax(MotorConstants.NewMotorId, MotorType.kBrushless);
+        newMotor1 = new SparkMax(MotorConstants.NewMotorId, MotorType.kBrushless);
 
     }
 
@@ -17,4 +17,3 @@ public class MotorMMove extends SubsystemBase {
         newMotor1.set(speed);
     }
 }
-
