@@ -16,21 +16,17 @@ public class Logging {
 
     private static Logging singleInstance = null;
 
-    BooleanLogEntry myBooleanLog;
-    DoubleLogEntry myDoubleLog;
-    StringLogEntry myStringLog;
+    StringLogEntry values;
 
     private Logging() {
         DataLogManager.start();
         DriverStation.startDataLog(DataLogManager.getLog());
         DataLog log = DataLogManager.getLog();
-        myBooleanLog = new BooleanLogEntry(log, "/my/boolean");
-        myDoubleLog = new DoubleLogEntry(log, "/my/double");
-        myStringLog = new StringLogEntry(log, "/my/string");
+        values = new StringLogEntry(log, "/my/string");
     }
 
     public void log(String input, String value) {
-        myStringLog.append(input + ", " + value);
+        values.append(input + ", " + value);
     }
 
     public static synchronized Logging getInstance() {
