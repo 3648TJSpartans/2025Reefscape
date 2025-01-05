@@ -11,7 +11,7 @@ import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.MotorMMove;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.commands.MotorMoveCmd;
-
+import frc.robot.Logging;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -62,7 +62,6 @@ public class RobotContainer {
     MotorMoveCmd motorMoveCmd = new MotorMoveCmd(m_motorMMove);
     m_driverController.leftTrigger().onTrue(motorMoveCmd);
   }
-
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
    

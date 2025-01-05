@@ -9,6 +9,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Logging;
 
 public class SwerveJoystickCmd extends Command {
     private SwerveSubsystem m_swerveSubsystem;
@@ -19,6 +20,7 @@ public class SwerveJoystickCmd extends Command {
     private SlewRateLimiter m_xLimiter;
     private SlewRateLimiter m_yLimiter;
     private SlewRateLimiter m_turningLimiter;
+    private final Logging m_logging = Logging.getInstance();
 
     public SwerveJoystickCmd(SwerveSubsystem swerveSubsystem,
             Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction, Supplier<Double> turningSpdFunction) {
@@ -29,8 +31,7 @@ public class SwerveJoystickCmd extends Command {
 
         m_xLimiter = new SlewRateLimiter(DriveConstants.kMaxSpeedMetersPerSecond);
         m_yLimiter = new SlewRateLimiter(DriveConstants.kMaxSpeedMetersPerSecond);
-        m_turningLimiter = new SlewRateLimiter(DriveConstants.kMaxAngularSpeed);
-       
+        m_turningLimiter = new SlewRateLimiter(DriveConstants.kMaxAngularSpeed);       
     }
 
     @Override
@@ -44,6 +45,8 @@ public class SwerveJoystickCmd extends Command {
         double xSpeed = m_xSpeedFunction.get();
         double ySpeed = m_ySpeedFunction.get();
         double turningSpeed = m_rotFunction.get();
+
+        m_logging.log("xSpeed", Double.toString(xSpeed));
 
         // 2. Apply deadband
         xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
