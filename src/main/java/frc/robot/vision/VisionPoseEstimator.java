@@ -47,12 +47,12 @@ public class VisionPoseEstimator {
             e.printStackTrace();
         }
         photonCamera = new PhotonCamera(LimeLightConstants.cameraName);
-        m_photonPoseEstimator = new PhotonPoseEstimator(layout, m_poseStrategy, photonCamera, m_robotOnCamera);
+        m_photonPoseEstimator = new PhotonPoseEstimator(layout, m_poseStrategy, m_robotOnCamera);
 
     }
 
     public void updateVisionPose() {
-        m_photonPoseEstimator.update().ifPresent(estimatedRobotPose -> {
+        m_photonPoseEstimator.update(getLatestResult()).ifPresent(estimatedRobotPose -> {
             m_swervePoseEstimator.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(),
                     estimatedRobotPose.timestampSeconds);
         });

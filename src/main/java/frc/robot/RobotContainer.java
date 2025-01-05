@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -10,6 +11,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.MotorMMove;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.vision.VisionPoseEstimator;
 import frc.robot.commands.MotorMoveCmd;
 
 
@@ -23,6 +25,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
   private final MotorMMove m_motorMMove = new MotorMMove();
+  private final VisionPoseEstimator m_visionPoseEstimator = new VisionPoseEstimator(m_swerveSubsystem);
   // Replace with CommandPS4Controller or CommandJoystick if needed
      private final CommandXboxController m_driverController = new CommandXboxController(
       OIConstants.kDriverControllerPort);
@@ -72,4 +75,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+  public void runPeriodic(){
+    SmartDashboard.putNumber("PoseX", m_visionPoseEstimator.getVisionPose().getX());
+    SmartDashboard.putNumber("PoseY", m_visionPoseEstimator.getVisionPose().getY());
+  }
 }
