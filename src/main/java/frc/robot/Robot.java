@@ -7,6 +7,7 @@ package frc.robot;
 //import java.lang.System.Logger;
 
 import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.LogFileUtil;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -30,7 +31,7 @@ public void Logging() {
   final PowerDistribution m_PowerDistribution;
 
   if (isReal()) {
-      Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
+      Logger.addDataReceiver(new WPILOGWriter("/home/lvuser/logs")); // Save outputs to a log in the roboRIO's filesystem
       Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
       new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
   } else {
