@@ -76,7 +76,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public void runPeriodic(){
-    SmartDashboard.putNumber("PoseX", m_visionPoseEstimator.getVisionPose().getX());
-    SmartDashboard.putNumber("PoseY", m_visionPoseEstimator.getVisionPose().getY());
+    m_visionPoseEstimator.updateVisionPose();
+    SmartDashboard.putNumber("Camera_PoseX", m_visionPoseEstimator.getVisionPose().getX());
+    SmartDashboard.putNumber("Camera_PoseY", m_visionPoseEstimator.getVisionPose().getY());
+    SmartDashboard.putBoolean("Camera_Connected", m_visionPoseEstimator.isConnected());
   }
 }

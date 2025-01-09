@@ -47,8 +47,13 @@ public class VisionPoseEstimator {
             e.printStackTrace();
         }
         photonCamera = new PhotonCamera(LimeLightConstants.cameraName);
+        System.out.println("Vision Pose Estimator Initialized");
+        System.out.println("Camera Connected: " + photonCamera.isConnected());
         m_photonPoseEstimator = new PhotonPoseEstimator(layout, m_poseStrategy, m_robotOnCamera);
 
+    }
+    public boolean isConnected(){
+        return photonCamera.isConnected();
     }
 
     public void updateVisionPose() {
