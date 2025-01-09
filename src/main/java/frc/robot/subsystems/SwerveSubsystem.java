@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
-// TODO fix this once navx installs
-// import com.kauailabs.navx.frc.AHRS;
+
+import com.studica.frc.AHRS;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import com.revrobotics.RelativeEncoder;
@@ -46,8 +46,7 @@ public class SwerveSubsystem extends SubsystemBase {
     private SwerveModule[] modules;
     private boolean isFieldRelative = true;
     // The gyro sensor
-    // private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
-    private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
+    private final AHRS m_gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
     // Slew rate filter variables for controlling acceleration
     private double m_prevTime = WPIUtilJNI.now() * 1e-6;
 
@@ -55,7 +54,7 @@ public class SwerveSubsystem extends SubsystemBase {
     SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
             DriveConstants.kDriveKinematics,
             // Rotation2d.fromDegrees(m_gyro.getAngle()),
-            Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)),
+            Rotation2d.fromDegrees(m_gyro.getAngle()),
             new SwerveModulePosition[] {
                     m_frontLeft.getPosition(),
                     m_frontRight.getPosition(),
@@ -81,7 +80,7 @@ public class SwerveSubsystem extends SubsystemBase {
         // Update the odometry in the periodic block
         m_odometry.update(
                 // Rotation2d.fromDegrees(m_gyro.getAngle()),
-                Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)),
+                Rotation2d.fromDegrees(m_gyro.getAngle()),
                 new SwerveModulePosition[] {
                         m_frontLeft.getPosition(),
                         m_frontRight.getPosition(),
@@ -100,7 +99,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public void resetOdometry(Pose2d pose) {
         m_odometry.resetPosition(
                 // Rotation2d.fromDegrees(m_gyro.getAngle()),
-                Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ)),
+                Rotation2d.fromDegrees(m_gyro.getAngle()),
                 new SwerveModulePosition[] {
                         m_frontLeft.getPosition(),
                         m_frontRight.getPosition(),
@@ -206,7 +205,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public Rotation2d getYaw() {
         // return Rotation2d.fromDegrees(-m_gyro.getYaw());
-        return Rotation2d.fromDegrees(m_gyro.getAngle(IMUAxis.kZ));
+        return Rotation2d.fromDegrees(m_gyro.getAngle());
     }
 
 }

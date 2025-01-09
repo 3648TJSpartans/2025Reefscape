@@ -30,7 +30,7 @@ public class SwerveJoystickCmd extends Command {
         m_xLimiter = new SlewRateLimiter(DriveConstants.kMaxSpeedMetersPerSecond);
         m_yLimiter = new SlewRateLimiter(DriveConstants.kMaxSpeedMetersPerSecond);
         m_turningLimiter = new SlewRateLimiter(DriveConstants.kMaxAngularSpeed);
-       
+        addRequirements(swerveSubsystem);
     }
 
     @Override
