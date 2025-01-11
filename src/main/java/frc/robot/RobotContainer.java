@@ -21,7 +21,7 @@ import frc.robot.commands.MotorMoveCmd;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-public class RobotContainer {
+public class RobotContainer{
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
   private final MotorMMove m_motorMMove = new MotorMMove();
@@ -32,8 +32,50 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
-    configureSwerve();
+    witch (Constants.currentMode) {
+      case REAL:
+      vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOPhotonVision(camera0Name, drive::getRotation),
+                new VisionIOPhotonVision(camera1Name, drive::getRotation));
+        // Real robot, instantiate hardware IO implementations
+        drive =
+            new Drive(
+                new GyroIONavX(),
+                new ModuleIOSpark(0),
+                new ModuleIOSpark(1),
+                new ModuleIOSpark(2),
+                new ModuleIOSpark(3));
+        break;
+
+      case SIM:
+        // Sim robot, instantiate physics sim IO implementations
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOPhotonVisionSim(camera0Name, robotToCamera0, drive::getPose),
+                new VisionIOPhotonVisionSim(camera1Name, robotToCamera1, drive::getPose));
+        drive =
+            new Drive(
+                new GyroIO() {},
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim());
+        break;
+
+      default:
+        // Replayed robot, disable IO implementations
+        vision = new Vision(drive::addVisionMeasurement, new VisionIO() {}, new VisionIO() {});
+        drive =
+            new Drive(
+                new GyroIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {});
+        break;
     configureMotor();
   }
 
@@ -47,18 +89,6 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureSwerve() {
-    SwerveJoystickCmd swerveJoystickCmd = new SwerveJoystickCmd(m_swerveSubsystem,
-        () -> -MathUtil.applyDeadband(m_driverController.getLeftY(),
-            OIConstants.kDeadband),
-        () -> -MathUtil.applyDeadband(m_driverController.getLeftX(),
-            OIConstants.kDeadband),
-        () -> -MathUtil.applyDeadband(m_driverController.getRightX(),
-            OIConstants.kDeadband));
-    m_swerveSubsystem.setDefaultCommand(swerveJoystickCmd);
-    m_driverController.a().onTrue(new InstantCommand(() -> m_swerveSubsystem.setFieldRelative()));
-    m_driverController.b().onTrue(new InstantCommand(() -> m_swerveSubsystem.zeroHeading()));
-    // m_driverController.x().onTrue(new InstantCommand(() ->
-    // AlignCommands.alignToAmp(m_visionPoseEstimator).schedule()));
 
   }
   private void configureMotor(){
@@ -76,7 +106,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public void runPeriodic(){
-    m_visionPoseEstimator.updateVisionPose();
     SmartDashboard.putNumber("Camera_PoseX", m_visionPoseEstimator.getVisionPose().getX());
     SmartDashboard.putNumber("Camera_PoseY", m_visionPoseEstimator.getVisionPose().getY());
     SmartDashboard.putBoolean("Camera_Connected", m_visionPoseEstimator.isConnected());
