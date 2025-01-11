@@ -77,6 +77,7 @@ public class RobotContainer{
                 new ModuleIO() {});
         break;
     configureMotor();
+    configureButtons();
   }
 
   /**
@@ -88,8 +89,38 @@ public class RobotContainer{
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureSwerve() {
+  private void configureButtonBindings() {
+    // Default command, normal field-relative drive
+    drive.setDefaultCommand(
+        DriveCommands.joystickDrive(
+            drive,
+            () -> -MathUtil.applyDeadband(controller.getLeftY(), OIConstants.kDeadband), 
+            () -> -MathUtil.applyDeadband(controller.getLeftX(), OIConstants.kDeadband),
+            () -> -MathUtil.applyDeadband(controller.getRightX(),OIConstants.kDeadband)));
 
+    // Lock to 0° when A button is held
+    controller
+        .a()
+        .whileTrue(
+            DriveCommands.joystickDriveAtAngle(
+                drive,
+                () -> -MathUtil.applyDeadband(controller.getLeftY(), OIConstants.kDeadband),
+                () -> -MathUtil.applyDeadband(controller.getLeftX(), OIConstants.kDeadband),
+                () -> new Rotation2d()));
+
+    // Switch to X pattern when X button is pressed
+    controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+
+    // Reset gyro to 0° when B button is pressed
+    controller
+        .b()
+        .onTrue(
+            Commands.runOnce(
+                    () ->
+                        drive.setPose(
+                            new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
+                    drive)
+                .ignoringDisable(true));
   }
   private void configureMotor(){
     MotorMoveCmd motorMoveCmd = new MotorMoveCmd(m_motorMMove);
