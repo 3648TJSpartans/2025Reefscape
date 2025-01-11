@@ -21,9 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
-
-
-
+//import com.studica.frc.AHRS;
 
 public class SwerveSubsystem extends SubsystemBase {
     // define all modules
@@ -94,7 +92,7 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Gyro Pose Y:", getPose().getY());
 
     }
-    
+
     @AutoLogOutput(key = "Odometry/Robot")
     public Pose2d getPose() {
         return m_odometry.getPoseMeters();
