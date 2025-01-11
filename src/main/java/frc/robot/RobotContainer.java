@@ -64,7 +64,8 @@ public class RobotContainer {
             new ModuleIOSpark(3));
         vision = new Vision(
             drive::addVisionMeasurement,
-            new VisionIOPhotonVision(VisionConstants.camera0Name, VisionConstants.robotToCamera0),
+            // new VisionIOPhotonVision(VisionConstants.camera0Name,
+            // VisionConstants.robotToCamera0),
             new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1));
         break;
       case SIM:
