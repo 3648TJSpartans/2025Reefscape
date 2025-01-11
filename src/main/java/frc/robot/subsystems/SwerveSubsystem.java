@@ -47,10 +47,9 @@ public class SwerveSubsystem extends SubsystemBase {
     private SwerveModule[] modules;
     private boolean isFieldRelative = true;
     // The gyro sensor
-    <<<<<<<HEAD
-    private final AHRS m_gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);=======
+    private final AHRS m_gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
     // private final AHRS m_gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
-    private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();>>>>>>>9aedba1 (Update SwerveSubsystem.java)
+    // private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
     // Slew rate filter variables for controlling acceleration
     private double m_prevTime = WPIUtilJNI.now() * 1e-6;
 
