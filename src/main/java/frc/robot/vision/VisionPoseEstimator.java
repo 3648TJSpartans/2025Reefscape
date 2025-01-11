@@ -42,7 +42,7 @@ public class VisionPoseEstimator {
                 new Rotation3d(LimeLightConstants.rollRotation, LimeLightConstants.pitchRotation,
                         LimeLightConstants.yawRotation));
         try {
-            layout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
+            layout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2025Reefscape.m_resourceFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
