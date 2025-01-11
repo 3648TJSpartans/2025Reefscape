@@ -4,6 +4,9 @@ import com.studica.frc.AHRS;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import com.revrobotics.RelativeEncoder;
+
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import com.revrobotics.AbsoluteEncoder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -91,7 +94,8 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Gyro Pose Y:", getPose().getY());
 
     }
-
+    
+    @AutoLogOutput(key = "Odometry/Robot")
     public Pose2d getPose() {
         return m_odometry.getPoseMeters();
     }
