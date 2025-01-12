@@ -75,9 +75,15 @@ public final class Constants {
 
     // Robot to camera transforms
     // (Not used by Limelight, configure in web UI instead)
-    public static Transform3d robotToCamera0 = new Transform3d(0.2, 0.0, 0.2, new Rotation3d(0.0, -0.4, 0.0)); // TODO
+    public static Transform3d robotToCamera0 = new Transform3d(0.2, 0.0, 0.2, new Rotation3d(0.0, -0.4, 0.0)); // TODO,
+                                                                                                               // update
+                                                                                                               // Camera
+                                                                                                               // Cords
                                                                                                                // update
     public static Transform3d robotToCamera1 = new Transform3d(-0.2, 0.0, 0.2, new Rotation3d(0.0, -0.4, Math.PI));// TODO
+                                                                                                                   // update
+                                                                                                                   // Camera
+                                                                                                                   // Cords
                                                                                                                    // update
 
     // Basic filtering thresholds
@@ -138,11 +144,11 @@ public final class Constants {
     public static final double wheelRadiusMeters = 0.0381;
     static final int kDrivingMotorPinionTeeth = 14;
     public static final double driveMotorReduction = (45.0 * 22.0) / (kDrivingMotorPinionTeeth * 15.0); // MAXSwerve
-                                                                                                        // with 14
+                                                                                                        // with ____
                                                                                                         // pinion teeth
                                                                                                         // and 22 spur
                                                                                                         // teeth
-    public static final DCMotor driveGearbox = DCMotor.getNeoVortex(1); // TODO update
+    public static final DCMotor driveGearbox = DCMotor.getNeoVortex(1); // TODO update, only used for sim
 
     // Drive encoder configuration
     public static final double driveEncoderPositionFactor = 2 * Math.PI / driveMotorReduction; // Rotor Rotations ->
@@ -153,8 +159,8 @@ public final class Constants {
     // Drive PID configuration
     public static final double driveKp = 0.04;
     public static final double driveKd = 0.0;
-    public static final double driveKs = 0.0; // TODO update
-    public static final double driveKv = 0.1; // TODO update
+    public static final double driveKs = 0.0; // TODO update, what is Ks?
+    public static final double driveKv = 0.1; // TODO update, what is Kv?
     public static final double driveSimP = 0.05;
     public static final double driveSimD = 0.0;
     public static final double driveSimKs = 0.0;
@@ -163,8 +169,8 @@ public final class Constants {
     // Turn motor configuration
     public static final boolean turnInverted = true;
     public static final int turnMotorCurrentLimit = 20;
-    public static final double turnMotorReduction = 9424.0 / 203.0; // TODO update
-    public static final DCMotor turnGearbox = DCMotor.getNeo550(1);// TODO update
+    public static final double turnMotorReduction = 9424.0 / 203.0; // TODO update, seems to only be in SIM
+    public static final DCMotor turnGearbox = DCMotor.getNeo550(1);// TODO update, not used except for sim.
 
     // Turn encoder configuration
     public static final boolean turnEncoderInverted = true;
@@ -180,9 +186,9 @@ public final class Constants {
     public static final double turnPIDMaxInput = 2 * Math.PI; // Radians
 
     // PathPlanner configuration
-    public static final double robotMassKg = 74.088; // TODO update
-    public static final double robotMOI = 6.883; // TODO update
-    public static final double wheelCOF = 1.2; // TODO update
+    public static final double robotMassKg = 74.088; // TODO update mass
+    public static final double robotMOI = 6.883; // TODO update Moment of Intertia
+    public static final double wheelCOF = 1.2; // TODO update wheel Coefficient of friction
     public static final RobotConfig ppConfig = new RobotConfig(
         robotMassKg,
         robotMOI,
