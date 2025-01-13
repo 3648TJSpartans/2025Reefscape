@@ -5,6 +5,13 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -44,6 +51,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Vision vision;
   private final Drive drive;
+  private final LoggedDashboardChooser<Command> autoChooser;
   private final MotorMMove m_motorMMove = new MotorMMove();
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController = new CommandXboxController(
@@ -68,21 +76,23 @@ public class RobotContainer {
             // VisionConstants.robotToCamera0),
             new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1));
         break;
-      case SIM:
-        // Sim robot, instantiate physics sim IO implementations
+      // case SIM:
+      // // Sim robot, instantiate physics sim IO implementations
 
-        drive = new Drive(
-            new GyroIO() {
-            },
-            new ModuleIOSim(),
-            new ModuleIOSim(),
-            new ModuleIOSim(),
-            new ModuleIOSim());
-        vision = new Vision(
-            drive::addVisionMeasurement,
-            new VisionIOPhotonVisionSim(VisionConstants.camera0Name, VisionConstants.robotToCamera0, drive::getPose),
-            new VisionIOPhotonVisionSim(VisionConstants.camera1Name, VisionConstants.robotToCamera1, drive::getPose));
-        break;
+      // drive = new Drive(
+      // new GyroIO() {
+      // },
+      // new ModuleIOSim(),
+      // new ModuleIOSim(),
+      // new ModuleIOSim(),
+      // new ModuleIOSim());
+      // vision = new Vision(
+      // drive::addVisionMeasurement,
+      // new VisionIOPhotonVisionSim(VisionConstants.camera0Name,
+      // VisionConstants.robotToCamera0, drive::getPose),
+      // new VisionIOPhotonVisionSim(VisionConstants.camera1Name,
+      // VisionConstants.robotToCamera1, drive::getPose));
+      // break;
 
       default:
         // Replayed robot, disable IO implementations
@@ -102,6 +112,7 @@ public class RobotContainer {
         });
         break;
     }
+    autoChooser = new LoggedDashboardChooser<>("AutoChoices", AutoBuilder.buildAutoChooser());
     configureMotor();
     configureButtonBindings();
   }
@@ -125,9 +136,9 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDeadband),
-            () -> -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDeadband),
-            () -> -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDeadband)));
+            () -> -m_driverController.getLeftY(),
+            () -> -m_driverController.getLeftX(),
+            () -> m_driverController.getRightX()));
 
     // Lock to 0° when A button is held
     m_driverController
@@ -168,12 +179,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public void runPeriodic() {
-    // SmartDashboard.putNumber("Camera_PoseX",
-    // m_visionPoseEstimator.getVisionPose().getX());
-    // SmartDashboard.putNumber("Camera_PoseY",
-    // m_visionPoseEstimator.getVisionPose().getY());
-    // SmartDashboard.putBoolean("Camera_Connected",
-    // m_visionPoseEstimator.isConnected());
-  }
+  // public Command getAutonomousCommand(){
+  // return authChooser.get();
+  // }
 }
