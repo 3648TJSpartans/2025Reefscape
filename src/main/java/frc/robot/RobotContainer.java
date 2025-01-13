@@ -146,8 +146,8 @@ public class RobotContainer {
         .whileTrue(
             DriveCommands.joystickDriveAtAngle(
                 drive,
-                () -> -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDeadband),
-                () -> -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDeadband),
+                () -> -m_driverController.getLeftY(),
+                () -> -m_driverController.getLeftX(),
                 () -> new Rotation2d()));
 
     // Switch to X pattern when X button is pressed

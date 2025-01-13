@@ -110,8 +110,8 @@ public final class Constants {
   public static class DriveConstants {
     public static final double maxSpeedMetersPerSec = 4.8;
     public static final double odometryFrequency = 100.0; // Hz
-    public static final double trackWidth = Units.inchesToMeters(21);
-    public static final double wheelBase = Units.inchesToMeters(25.5);
+    public static final double trackWidth = .6; // In Meters
+    public static final double wheelBase = .6; // In Meters
     public static final double driveBaseRadius = Math.hypot(trackWidth / 2.0, wheelBase / 2.0);
     public static final Translation2d[] moduleTranslations = new Translation2d[] {
         new Translation2d(trackWidth / 2.0, wheelBase / 2.0),
@@ -121,23 +121,23 @@ public final class Constants {
     };
 
     // Zeroed rotation values for each module, see setup instructions
-    public static final Rotation2d frontLeftZeroRotation = new Rotation2d(-Math.PI / 2);
+    public static final Rotation2d frontLeftZeroRotation = new Rotation2d(0);// -Math.PI / 2);
     public static final Rotation2d frontRightZeroRotation = new Rotation2d(0.0);
-    public static final Rotation2d backLeftZeroRotation = new Rotation2d(Math.PI);
-    public static final Rotation2d backRightZeroRotation = new Rotation2d(Math.PI / 2);
+    public static final Rotation2d backLeftZeroRotation = new Rotation2d(0);// Math.PI);
+    public static final Rotation2d backRightZeroRotation = new Rotation2d(0);// (Math.PI / 2);
 
     // Device CAN IDs
-    public static final int pigeonCanId = 9;
+    public static final int pigeonCanId = 2;
 
-    public static final int frontLeftDriveCanId = 6;
-    public static final int backLeftDriveCanId = 8;
+    public static final int frontLeftDriveCanId = 2;
+    public static final int backLeftDriveCanId = 6;
     public static final int frontRightDriveCanId = 4;
-    public static final int backRightDriveCanId = 2;
+    public static final int backRightDriveCanId = 8;
 
-    public static final int frontLeftTurnCanId = 5;
-    public static final int backLeftTurnCanId = 7;
+    public static final int frontLeftTurnCanId = 1;
+    public static final int backLeftTurnCanId = 5;
     public static final int frontRightTurnCanId = 3;
-    public static final int backRightTurnCanId = 1;
+    public static final int backRightTurnCanId = 7;
 
     // Drive motor configuration
     public static final int driveMotorCurrentLimit = 50;
@@ -154,11 +154,16 @@ public final class Constants {
     public static final double driveEncoderPositionFactor = 2 * Math.PI / driveMotorReduction; // Rotor Rotations ->
                                                                                                // Wheel Radians
     public static final double driveEncoderVelocityFactor = (2 * Math.PI) / 60.0 / driveMotorReduction; // Rotor RPM ->
-                                                                                                        // Wheel Rad/Sec
-
+    public static final double kFreeSpeedRPM = 100;
+    public static final double kWheelCicumferenceMeters = 2 * Math.PI * wheelRadiusMeters;
+    public static final double kDrivingMotorFreeSpeedRps = kFreeSpeedRPM / 60; // Wheel Rad/Sec
+    public static final double kDriveFreeWheelSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCicumferenceMeters)
+        / driveMotorReduction;
     // Drive PID configuration
-    public static final double driveKp = 0.04;
+    public static final double driveKp = 0;// 0.04;
+    public static final double driveKi = 0.0;
     public static final double driveKd = 0.0;
+    public static final double driveKff = 1 / kDriveFreeWheelSpeedRps;
     public static final double driveKs = 0.0; // TODO update, what is Ks?
     public static final double driveKv = 0.1; // TODO update, what is Kv?
     public static final double driveSimP = 0.05;
@@ -179,7 +184,9 @@ public final class Constants {
 
     // Turn PID configuration
     public static final double turnKp = 1; // TODO is this right?, was 2
+    public static final double turnKi = 0.0;
     public static final double turnKd = 0.0;
+    public static final double turnKff = 0.0;
     public static final double turnSimP = 1;// TODO is this right? was 8
     public static final double turnSimD = 0.0;
     public static final double turnPIDMinInput = 0; // Radians
