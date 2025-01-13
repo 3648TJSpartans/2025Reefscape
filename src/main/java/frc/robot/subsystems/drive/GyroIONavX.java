@@ -13,7 +13,7 @@
 
 package frc.robot.subsystems.drive;
 
-import static frc.robot.Constants.DriveConstants.*;
+import static frc.robot.subsystems.drive.DriveConstants.*;
 
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
@@ -38,10 +38,12 @@ public class GyroIONavX implements GyroIO {
     inputs.yawPosition = Rotation2d.fromDegrees(-navX.getAngle());
     inputs.yawVelocityRadPerSec = Units.degreesToRadians(-navX.getRawGyroZ());
 
-    inputs.odometryYawTimestamps = yawTimestampQueue.stream().mapToDouble((Double value) -> value).toArray();
-    inputs.odometryYawPositions = yawPositionQueue.stream()
-        .map((Double value) -> Rotation2d.fromDegrees(-value))
-        .toArray(Rotation2d[]::new);
+    inputs.odometryYawTimestamps =
+        yawTimestampQueue.stream().mapToDouble((Double value) -> value).toArray();
+    inputs.odometryYawPositions =
+        yawPositionQueue.stream()
+            .map((Double value) -> Rotation2d.fromDegrees(-value))
+            .toArray(Rotation2d[]::new);
     yawTimestampQueue.clear();
     yawPositionQueue.clear();
   }
