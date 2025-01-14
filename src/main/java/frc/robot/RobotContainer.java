@@ -157,7 +157,7 @@ public class RobotContainer {
 
         // Lock to 0° when A button is held
         controller
-                .a()
+                .b()
                 .whileTrue(
                         DriveCommands.joystickDriveAtAngle(
                                 drive,
@@ -170,7 +170,7 @@ public class RobotContainer {
 
         // Reset gyro to 0° when B button is pressed
         controller
-                .b()
+                .a()
                 .onTrue(
                         Commands.runOnce(
                                 () -> drive.setPose(
