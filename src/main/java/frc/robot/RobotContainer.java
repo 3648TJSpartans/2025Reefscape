@@ -25,14 +25,13 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
-import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 
@@ -67,7 +66,7 @@ public class RobotContainer {
                 // Real robot, instantiate hardware IO implementations
 
                 drive = new Drive(
-                        new GyroIOPigeon2(),
+                        new GyroIONavX(),
                         new ModuleIOSpark(0),
                         new ModuleIOSpark(1),
                         new ModuleIOSpark(2),
@@ -75,7 +74,8 @@ public class RobotContainer {
                 vision = new Vision(
                         drive::addVisionMeasurement,
                         // new VisionIOPhotonVision(camera0Name, drive::getRotation),
-                        new VisionIOPhotonVision(VisionConstants.camera1Name, VisionConstants.robotToCamera1));
+                        new VisionIOPhotonVision(VisionConstants.camera1Name,
+                                VisionConstants.robotToCamera1));
                 break;
 
             case SIM:
@@ -91,7 +91,8 @@ public class RobotContainer {
                 vision = new Vision(
                         drive::addVisionMeasurement,
                         // new VisionIOPhotonVisionSim(camera0Name, robotToCamera0, drive::getPose),
-                        new VisionIOPhotonVisionSim(VisionConstants.camera1Name, VisionConstants.robotToCamera1,
+                        new VisionIOPhotonVisionSim(VisionConstants.camera1Name,
+                                VisionConstants.robotToCamera1,
                                 drive::getPose));
                 break;
 
