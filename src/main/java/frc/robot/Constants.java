@@ -64,4 +64,19 @@ public final class Constants {
     public static final int NewMotorId = 10; // Don't do 1-8! those are swerve
     public static final double speed = 0.5;
   }
+
+  public static final class LedConstants {
+    public static final int ledLength = 52;
+    public static final int ledPWMID = 9;
+  
+    public static final int topBarLedStart = 0;
+    public static final int topBarLedStop = 52;
+  
+    public static final int[] noNoteRGB = { 255, 0, 0 };
+    public static final int[] yesNoteRGB = { 0, 255, 0 };
+    public static final int[] intakeRunningRGB = { 219, 31, 191 };
+    public static final int[] sourceRunningRGB = { 31, 40, 219 };
+    public static final int[] revRGB = { 255, 255, 0 };
+  }
 }
+
