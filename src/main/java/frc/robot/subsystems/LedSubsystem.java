@@ -40,6 +40,4 @@ public class LedSubsystem extends SubsystemBase {
             setColor(LedConstants.noNoteRGB, LedConstants.topBarLedStart, LedConstants.topBarLedStop);
         }
     }
-} {
-    
-}
+} 
