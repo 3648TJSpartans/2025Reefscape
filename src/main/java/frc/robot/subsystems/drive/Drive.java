@@ -90,6 +90,14 @@ public class Drive extends SubsystemBase {
     SparkOdometryThread.getInstance().start();
 
     // Configure AutoBuilder for PathPlanner
+    // RobotConfig config;
+    // try {
+    // System.out.println("Configured from GUI Consts. ");
+    // config = RobotConfig.fromGUISettings();
+    // } catch (Exception e) {
+    // System.out.println("Configured from Drive Consts. ");
+    // config = ppConfig;
+    // }
     AutoBuilder.configure(
         this::getPose,
         this::setPose,
