@@ -89,6 +89,7 @@ public class VisionIOLimelight implements VisionIO {
 
               // 3D pose estimate
               parsePose(rawSample.value),
+<<<<<<< Updated upstream
 
               // Ambiguity, using only the first tag because ambiguity isn't applicable for multitag
               rawSample.value.length >= 18 ? rawSample.value[17] : 0.0,
@@ -99,6 +100,18 @@ public class VisionIOLimelight implements VisionIO {
               // Average tag distance
               rawSample.value[9],
 
+=======
+              // Ambiguity, using only the first tag because ambiguity isn't applicable for
+              // multitag
+              rawSample.value.length >= 18 ? rawSample.value[17] : 0.0,
+
+              // Tag count
+              (int) rawSample.value[7],
+
+              // Average tag distance
+              rawSample.value[9],
+
+>>>>>>> Stashed changes
               // Observation type
               PoseObservationType.MEGATAG_1));
     }
