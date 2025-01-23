@@ -33,7 +33,11 @@ import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
+<<<<<<< Updated upstream
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
+=======
+import frc.robot.subsystems.vision.VisionIOLimelight;
+>>>>>>> Stashed changes
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -69,6 +73,7 @@ public class RobotContainer {
                         case REAL:
                                 // Real robot, instantiate hardware IO implementations
 
+<<<<<<< Updated upstream
                                 m_drive = new Drive(
                                                 new GyroIONavX(),
                                                 new ModuleIOSpark(0),
@@ -81,6 +86,21 @@ public class RobotContainer {
                                                 new VisionIOPhotonVision(VisionConstants.camera1Name,
                                                                 VisionConstants.robotToCamera1));
                                 break;
+=======
+        drive =
+            new Drive(
+                new GyroIONavX(),
+                new ModuleIOSpark(0),
+                new ModuleIOSpark(1),
+                new ModuleIOSpark(2),
+                new ModuleIOSpark(3));
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOLimelight("limelight-three", drive::getRotation),
+                new VisionIOLimelight("limelight-twoplus", drive::getRotation));
+        break;
+>>>>>>> Stashed changes
 
                         case SIM:
                                 // Sim robot, instantiate physics sim IO implementations
