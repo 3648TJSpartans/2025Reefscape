@@ -39,6 +39,7 @@ import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
+import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -84,9 +85,9 @@ public class RobotContainer {
             new ModuleIOSpark(3));
         vision = new Vision(
             drive::addVisionMeasurement,
-            // new VisionIOPhotonVision(camera0Name, drive::getRotation),
-            new VisionIOPhotonVision(VisionConstants.camera1Name,
-                VisionConstants.robotToCamera1));
+            new VisionIOLimelight("limelight-three", drive::getRotation),
+            new VisionIOLimelight("limelight-twoplus",
+                drive::getRotation));
         break;
 
       case SIM:
