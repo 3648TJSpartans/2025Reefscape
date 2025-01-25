@@ -35,7 +35,7 @@ done
 # Tar the old directory
 tar -czf "$date-logs.tar" old-logs
 gzip "$date-logs.tar"
-rm "$date-old-logs.tar"
+rm "$date-old-logs.tar" # Test if this is deleted beforehand (if so this is uneeded)
 rm -r old-logs
 
 # Remove any old log archives
