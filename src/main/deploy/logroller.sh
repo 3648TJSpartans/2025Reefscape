@@ -39,3 +39,9 @@ rm "$date-old-logs.tar"
 rm -r old-logs
 
 # Remove any old log archives
+for file in /u/*.tar.gz; do
+  file_age=$(stat -c %Y "$file")
+  if [[ "$file_age" -le "$two_day_old" ]]; then
+    rm "$file"
+  fi
+done
