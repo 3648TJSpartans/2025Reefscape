@@ -8,7 +8,10 @@ package frc.robot.subsystems.coralSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 
 // coral subsystem class
 public class coral extends SubsystemBase {
@@ -18,6 +21,11 @@ public class coral extends SubsystemBase {
   private SparkMax AngleMotor = new SparkMax(coralConstants.coralCANID3, MotorType.kBrushless);
   // declaration of the IR sensor
   private DigitalInput irSensor = new DigitalInput(coralConstants.irSensorPin);
+  // declaration of the encoders
+  private Encoder LevelEncoder = new Encoder(coralConstants.levelChannelA, coralConstants.levelChannelB, false,
+      Encoder.EncodingType.k4X);
+  private Encoder angleEncoder = new Encoder(coralConstants.angleChannelA, coralConstants.angleChannelB, false,
+      Encoder.EncodingType.k4X);
 
   public coral() {
 
@@ -26,11 +34,6 @@ public class coral extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  }
-
-  // this function allows us to elevate the elevator up to a certain level
-  public void elevate(double level) {
-
   }
 
   // this function stop the level motor
@@ -48,7 +51,18 @@ public class coral extends SubsystemBase {
     AngleMotor.set(0);
   }
 
-  // this method allows us to taking in a coral
+  // this function allows the coral subsystem to elevate itself up to a certai
+  // height
+  public void elevateTo(double level) {
+    if (GetHeight() != level) {
+      LevelMotor.set(0.5);// this might be negative depending on the direction of the rotation mechanism
+    } else if (GetHeight() >= level) {
+      stopLevelM();
+    }
+  }
+
+  // this method allows us to taking in a coral and stop when the sensor detects
+  // it
   public void takeIN() {
     if (irSensor.get()) {
       takInOutMotor.set(0);
@@ -58,8 +72,26 @@ public class coral extends SubsystemBase {
     }
   }
 
-  // this method allows us to expulse a coral
-  public void takeOut() {
-
+  // this method allows us to reset the encoder
+  public void resetLevelEn() {
+    LevelEncoder.reset();
   }
+
+  // this method allows us to rest the angle encoder
+  public void resetAngleEn() {
+    angleEncoder.reset();
+  }
+
+  // this method allows us to know how height the coral subssytem have been
+  // elevated
+  public double GetHeight() {
+    return LevelEncoder.getDistance();
+  }
+
+  // this method allows us to know the angle of the intake system in the coral
+  // subsytem
+  public double GetAngle() {
+    return angleEncoder.getDistance();
+  }
+
 }

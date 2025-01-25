@@ -13,8 +13,19 @@ public class coralConstants {
     // this is the constant for the pin of the ir sensor on the intake system of the
     // coral subsytem
     public static final int irSensorPin = 1;
-    public final double coraLeveL1 = 1; // this is a momentary value that will be changed later
-    public final double coraLeveL2 = 2; // this is a momentary value that will be changed later
-    public final double coraLeveL3 = 3; // this is a momentary value that will be changed later
+
+    // these are the constants used for the encoder's pins
+    public static final int levelChannelA = 2;
+    public static final int levelChannelB = 3;
+    public static final int angleChannelA = 4;
+    public static final int angleChannelB = 5;
+
+    public static final double coraLeveL1 = 1; // this is a momentary value that will be changed later
+    public static final double coraLeveL2 = 2; // this is a momentary value that will be changed later
+    public static final double coraLeveL3 = 3; // this is a momentary value that will be changed later
+    // these are the constants for the pid
+    public static final double kP = 1;
+    public static final double kI = 0;
+    public static final double kD = 0;
 
 }
