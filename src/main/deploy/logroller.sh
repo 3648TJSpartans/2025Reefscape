@@ -35,13 +35,12 @@ done
 # Tar the old directory
 tar -czf "$date-logs.tar" old-logs
 gzip "$date-logs.tar"
-rm "$date-old-logs.tar"
+rm "$date-old-logs.tar" # Test if this is deleted beforehand (if so this is unneeded)
 rm -r old-logs
 
 # Remove any old log archives
 for file in /u/*.tar.gz; do
-  file_age=$(stat -c %Y "$file")
-  if [[ "$file_age" -le "$two_day_old" ]]; then
+  if [[ "$file" != "$date-logs.tar" ]]; then
     rm "$file"
   fi
 done
