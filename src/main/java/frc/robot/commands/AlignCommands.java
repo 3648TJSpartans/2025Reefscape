@@ -18,7 +18,7 @@ public class AlignCommands {
     try {
       List<Waypoint> waypoints =
           PathPlannerPath.waypointsFromPoses(
-              drive.getPose(), new Pose2d(6.5, .65, Rotation2d.fromDegrees(180)));
+              drive.getPose(), new Pose2d(6.35, .671, Rotation2d.fromDegrees(0)));
       PathConstraints pathConstraints =
           new PathConstraints(0.1, 3, 2 * Math.PI / 2, 4 * Math.PI); // TODO update
       // these
@@ -49,6 +49,6 @@ public class AlignCommands {
     System.out.println(
         "Auto Builder is Pathfinding Configured: " + AutoBuilder.isPathfindingConfigured());
     return AutoBuilder.pathfindToPose(
-        new Pose2d(6.332, 0.645, Rotation2d.fromDegrees(180)), pathConstraints, 0);
+        new Pose2d(6.35, 0.671, Rotation2d.fromDegrees(0)), pathConstraints, 0);
   }
 }

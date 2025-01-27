@@ -202,24 +202,7 @@ public class RobotContainer {
                 .ignoringDisable(true));
     // controller.x().onTrue(AlignCommands.goTo(drive));
     // controller.leftTrigger().whileTrue(m_AlignCommands.goTo(drive));
-    controller.leftTrigger().onTrue(AlignCommands.goTo(drive));
-    controller.rightTrigger().onTrue(AlignCommands.goToPoint(drive));
-    controller.y().onTrue(new PathPlannerAuto("test"));
 
-    // Reset gyro to 0° when A button is pressed
-    controller
-        .a()
-        .onTrue(
-            Commands.runOnce(
-                () -> drive.setPose(
-                    new Pose2d(drive.getPose()
-                        .getTranslation(),
-                        new Rotation2d())),
-                drive)
-                .ignoringDisable(true));
-
-    // controller.x().onTrue(AlignCommands.goTo(drive));
-    // controller.leftTrigger().whileTrue(m_AlignCommands.goTo(drive));
     Command goToCommand = AlignCommands.goTo(drive);
     controller.leftTrigger().onTrue(goToCommand);
     controller.leftTrigger().onFalse(new InstantCommand(() -> goToCommand.cancel()));
