@@ -2,35 +2,32 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LedConstants;
-
-import org.ejml.interfaces.decomposition.LUSparseDecomposition;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 
 public class LedSubsystem extends SubsystemBase {
 
-    private final AddressableLEDBuffer m_ledBuffer;
+    private final AddressableLEDBuffer ledBuffer;
 
-    private final AddressableLED m_led;
+    private final AddressableLED led;
 
     public LedSubsystem() {
-        m_ledBuffer = new AddressableLEDBuffer(LedConstants.ledLength);
-        m_led = new AddressableLED(LedConstants.ledPWMID);
-        m_led.setLength(m_ledBuffer.getLength());
-        m_led.setData(m_ledBuffer);
-        m_led.start();
+        ledBuffer = new AddressableLEDBuffer(LedConstants.ledLength);
+        led = new AddressableLED(LedConstants.ledPWMID);
+        led.setLength(ledBuffer.getLength());
+        led.setData(ledBuffer);
+        led.start();
 
     }
 
     public void setColor(int rgb[], int startValue, int endValue) {
 
         for (int i = startValue; i < endValue; i++) {
-            m_ledBuffer.setRGB(i, rgb[0], rgb[1], rgb[2]);
+            ledBuffer.setRGB(i, rgb[0], rgb[1], rgb[2]);
         }
-        m_led.setData(m_ledBuffer);
+        led.setData(ledBuffer);
     }
 
     public void setIntakeColor(DigitalInput irSensor) {
