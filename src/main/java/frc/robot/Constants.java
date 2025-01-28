@@ -61,7 +61,16 @@ public final class Constants {
   }
 
   public static final class MotorConstants {
-    public static final int NewMotorId = 10; // Don't do 1-8! those are swerve
+    public static final int NewMotorId = 11; // Don't do 1-8! those are swerve
     public static final double speed = 0.5;
+  }
+
+  public static final class AlgaeConstants {
+    public static final int liftMotorId = 9;
+    public static final int intakeServoId = 10;
+    public static final double kLiftP = 0;
+    public static final double kLiftI = 0;
+    public static final double kLiftD = 0;
+    public static final double kLiftFF = 0;
   }
 }
