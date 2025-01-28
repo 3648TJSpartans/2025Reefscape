@@ -10,7 +10,7 @@ date=$(date)
 # Setup directories and pwd
 cd /u/logs
 mkdir -p old-logs
-echo "Ready to go"
+echo "Setup complete."
 movedcounter=0
 # Loop through each file in the source directory
 echo "Beginning log rotation... "
