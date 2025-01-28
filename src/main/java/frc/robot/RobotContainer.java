@@ -20,16 +20,20 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.estimator.PoseEstimator;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.AlignCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
@@ -147,6 +151,10 @@ public class RobotContainer {
         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addOption(
+        "Micah's test",
+        AutoBuilder.buildAuto("src\\main\\deploy\\pathplanner\\autos\\test.auto"));
+    // Configure the button bindings
 
     // Configure the button bindings
     configureButtonBindings();
@@ -193,8 +201,28 @@ public class RobotContainer {
                         new Rotation2d())),
                 drive)
                 .ignoringDisable(true));
-  }
+    // controller.x().onTrue(AlignCommands.goTo(drive));
+    // controller.leftTrigger().whileTrue(m_AlignCommands.goTo(drive));
 
+    Command goToCommand = AlignCommands.goTo(drive);
+    controller.leftTrigger().onTrue(goToCommand);
+    controller.leftTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToCommand)));
+    Command goToPointCommand = AlignCommands.goToPoint(drive);
+    controller.rightTrigger().onTrue(goToPointCommand);
+    controller.rightTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToPointCommand)));
+    Command testAutoCommand = new PathPlannerAuto("test");
+    controller.y().onTrue(testAutoCommand);
+    controller.y().onFalse(new InstantCommand(() -> testAutoCommand.cancel()));
+    Command testMethod = AlignCommands.testMethod(drive);
+    controller.leftBumper().onTrue(testMethod);
+    controller.leftBumper().onFalse(new InstantCommand(()-> cancelCommand(testMethod)));
+  }
+  public void cancelCommand(Command cmd){
+    if(cmd.isScheduled()){
+      System.out.println("CMD canceled");
+      cmd.cancel();
+    }
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
