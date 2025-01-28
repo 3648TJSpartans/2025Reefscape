@@ -33,6 +33,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.GoToNearestCmd;
+import frc.robot.commands.GoToPointCmd;
 import frc.robot.commands.AlignCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -204,18 +206,12 @@ public class RobotContainer {
     // controller.x().onTrue(AlignCommands.goTo(drive));
     // controller.leftTrigger().whileTrue(m_AlignCommands.goTo(drive));
 
-    Command goToCommand = AlignCommands.goTo(drive);
-    controller.leftTrigger().onTrue(goToCommand);
-    controller.leftTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToCommand)));
-    Command goToPointCommand = AlignCommands.goToPoint(drive);
-    controller.rightTrigger().onTrue(goToPointCommand);
-    controller.rightTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToPointCommand)));
-    Command testAutoCommand = new PathPlannerAuto("test");
-    controller.y().onTrue(testAutoCommand);
-    controller.y().onFalse(new InstantCommand(() -> testAutoCommand.cancel()));
-    Command testMethod = AlignCommands.testMethod(drive);
-    controller.leftBumper().onTrue(testMethod);
-    controller.leftBumper().onFalse(new InstantCommand(()-> cancelCommand(testMethod)));
+    Command goToPointCommand = new GoToPointCmd(drive,  new Pose2d(2.423, 4.42, Rotation2d.fromDegrees(0)));
+    controller.leftTrigger().onTrue(goToPointCommand);
+    controller.leftTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToPointCommand)));
+    Command goToNearestCommand = new GoToNearestCmd(drive);
+    controller.rightTrigger().onTrue(goToNearestCommand);
+    controller.rightTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToNearestCommand)));
   }
   public void cancelCommand(Command cmd){
     if(cmd.isScheduled()){
