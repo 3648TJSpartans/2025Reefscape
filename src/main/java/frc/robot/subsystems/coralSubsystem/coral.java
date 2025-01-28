@@ -26,6 +26,9 @@ public class coral extends SubsystemBase {
       Encoder.EncodingType.k4X);
   private Encoder angleEncoder = new Encoder(coralConstants.angleChannelA, coralConstants.angleChannelB, false,
       Encoder.EncodingType.k4X);
+  private PIDController LevelPID = new PIDController(coralConstants.kP, coralConstants.kI, coralConstants.kD);
+  private PIDController AnglePID = new PIDController(coralConstants.angle_kP, coralConstants.angle_kI,
+      coralConstants.angle_kD);
 
   public coral() {
 
@@ -41,6 +44,7 @@ public class coral extends SubsystemBase {
     LevelMotor.set(0);
   }
 
+  // if somebody see this dont forget to adjust the setting of the level method
   // this function stop the motor that take in and out the coral
   public void stopTakingM() {
     takInOutMotor.set(0);
@@ -53,12 +57,12 @@ public class coral extends SubsystemBase {
 
   // this function allows the coral subsystem to elevate itself up to a certai
   // height
-  public void elevateTo(double level) {
-    if (GetHeight() != level) {
-      LevelMotor.set(0.5);// this might be negative depending on the direction of the rotation mechanism
-    } else if (GetHeight() >= level) {
-      stopLevelM();
-    }
+  public void elevateTo(double setHeight) {
+    LevelMotor.set(LevelPID.calculate(GetHeight(), setHeight));
+  }
+
+  public void RotateTo(double setpoint) {
+    AngleMotor.set(AnglePID.calculate(GetAngle(), setpoint));
   }
 
   // this method allows us to taking in a coral and stop when the sensor detects
