@@ -12,6 +12,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // coral subsystem class
 public class coral extends SubsystemBase {
@@ -99,4 +100,16 @@ public class coral extends SubsystemBase {
     return angleEncoder.getDistance();
   }
 
+  // this method allows us to get the log dattas from the encoders
+  public void logEncodersData() {
+    double levelPosition = levelEncoder.getDistance(); // Get position (in rotations)
+    double levelVelocity = levelEncoder.getRate(); // Get velocity (in RPM)
+    double anglePostion = angleEncoder.getDistance();// Get position (in rotations)
+    double angleVelcity = angleEncoder.getRate(); // Get velocity (in RPM)
+    // Log data to NetworkTables so Advantage Scope can read it
+    SmartDashboard.putNumber("levelEncoder Position", levelPosition);
+    SmartDashboard.putNumber("levelEncoder Velocity", levelVelocity);
+    SmartDashboard.putNumber("angleEncoder Position", anglePostion);
+    SmartDashboard.putNumber("angleEncoder Velocity", angleVelcity);
+  }
 }
