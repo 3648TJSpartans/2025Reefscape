@@ -8,7 +8,7 @@ one_day_old=$(date -r $(($(date +%s) - 86400)) +%s)
 date=$(date)
 
 # Setup directories and pwd
-cd /u/logs
+cd /u
 mkdir -p old-logs
 echo "Setup complete."
 movedcounter=0
@@ -52,7 +52,7 @@ echo "Cleanup complete."
 # Remove any old log archives
 echo "Removing old log archives..."
 delcounter=0
-for file in /u/logs/*.tar.gz; do
+for file in /u/*.tar.gz; do
   echo -n "Checking tarball $file..."
   if [ "$file" != "$date-logs.tar.gz" ]; then
     rm "$file"
