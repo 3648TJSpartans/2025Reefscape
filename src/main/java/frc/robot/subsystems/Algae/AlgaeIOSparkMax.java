@@ -1,35 +1,28 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.Algae;
 
-import static frc.robot.util.SparkUtil.*;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import frc.robot.Constants.AlgaeConstants;
-//import edu.wpi.first.*;
+import com.revrobotics.spark.SparkBase.ControlType;
 
-public class AlgaeSubsystem extends SubsystemBase {
+public class AlgaeIOSparkMax implements AlgaeIO {
 
     private final SparkMax liftMotor;
     private final SparkMax intakeMotor;
     private final AbsoluteEncoder liftEncoder;
     private final SparkClosedLoopController liftController;
-    // private final
 
-    public AlgaeSubsystem() {
+    public AlgaeIOSparkMax() {
+        // define motors and controllers
         liftMotor = new SparkMax(AlgaeConstants.liftMotorId, MotorType.kBrushless);
         intakeMotor = new SparkMax(AlgaeConstants.intakeMotorId, MotorType.kBrushless);
         liftEncoder = liftMotor.getAbsoluteEncoder();
         liftController = liftMotor.getClosedLoopController();
+
+        // configure pid
         var liftConfig = new SparkMaxConfig();
         liftConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -37,11 +30,13 @@ public class AlgaeSubsystem extends SubsystemBase {
                 .outputRange(AlgaeConstants.kLiftMinRange, AlgaeConstants.kLiftMaxRange);
     }
 
+    // shouldn't be needed
     public void setLiftSpeed(double speed) {
-        // if (speed > 0) {
-        // liftController.setReference(1, ControlType.kPosition);
-        // }
         liftMotor.set(speed);
+    }
+
+    public void setLiftPosition(double position) {
+        liftController.setReference(position, ControlType.kPosition);
     }
 
     public void setIntakeSpeed(double speed) {

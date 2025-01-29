@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.MotorConstants;
-import frc.robot.subsystems.AlgaeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import java.util.function.BooleanSupplier;
@@ -15,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.MotorConstants;
 import frc.robot.subsystems.MotorMMove;
+import frc.robot.subsystems.Algae.AlgaeSubsystem;
+
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
