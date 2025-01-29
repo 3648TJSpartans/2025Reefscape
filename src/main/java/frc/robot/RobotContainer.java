@@ -205,11 +205,18 @@ public class RobotContainer {
                                 .ignoringDisable(true));
         // controller.x().onTrue(AlignCommands.goTo(drive));
         // controller.leftTrigger().whileTrue(m_AlignCommands.goTo(drive));
-        Pose2d bluePose = new Pose2d(2.3, 4.42, Rotation2d.fromDegrees(0));
-        Pose2d redPose = new Pose2d(2.3, 4.42, Rotation2d.fromDegrees(0));
-        Command swerveAutoAlignPose = new SwerveAutoAlignPose(redPose, bluePose, drive);
-        controller.leftTrigger().onTrue(swerveAutoAlignPose);
-        controller.leftTrigger().onFalse(new InstantCommand(() -> cancelCommand(swerveAutoAlignPose)));
+        Pose2d rightReef = new Pose2d(3.12, 3.76, Rotation2d.fromDegrees(0));
+        Pose2d leftReef = new Pose2d(3.12, 4.23, Rotation2d.fromDegrees(0));
+        Pose2d coralStation = new Pose2d(1.5, 1.6, Rotation2d.fromDegrees(180 - 117.7));
+        Command alignLeftReef = new SwerveAutoAlignPose(leftReef, leftReef, drive);
+        controller.leftBumper().onTrue(alignLeftReef);
+        controller.leftBumper().onFalse(new InstantCommand(() -> cancelCommand(alignLeftReef)));
+        Command alignRightReef = new SwerveAutoAlignPose(rightReef, rightReef, drive);
+        controller.rightBumper().onTrue(alignRightReef);
+        controller.rightBumper().onFalse(new InstantCommand(() -> cancelCommand(alignRightReef)));
+        Command alignCoralStation = new SwerveAutoAlignPose(coralStation, coralStation, drive);
+        controller.y().onTrue(alignCoralStation);
+        controller.y().onFalse(new InstantCommand(() -> cancelCommand(alignCoralStation)));
         Command goToNearestCommand = new SwerveAutoAlignPoseNearest(drive);
         controller.rightTrigger().onTrue(goToNearestCommand);
         controller.rightTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToNearestCommand)));
@@ -217,7 +224,6 @@ public class RobotContainer {
 
     public void cancelCommand(Command cmd) {
         if (cmd.isScheduled()) {
-            System.out.println("CMD canceled");
             cmd.cancel();
         }
     }
