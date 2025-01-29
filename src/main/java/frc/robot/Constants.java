@@ -67,10 +67,12 @@ public final class Constants {
 
   public static final class AlgaeConstants {
     public static final int liftMotorId = 9;
-    public static final int intakeServoId = 10;
-    public static final double kLiftP = 0;
+    public static final int intakeMotorId = 10;
+    public static final double kLiftP = 0.01;
     public static final double kLiftI = 0;
     public static final double kLiftD = 0;
     public static final double kLiftFF = 0;
+    public static final double kLiftMinRange = -1.0;
+    public static final double kLiftMaxRange = 1.0;
   }
 }
