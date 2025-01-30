@@ -13,6 +13,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -172,5 +173,11 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {
+  }
+
+  public static boolean isRedAlliance() {
+    return DriverStation.getAlliance()
+        .filter(value -> value == DriverStation.Alliance.Red)
+        .isPresent();
   }
 }
