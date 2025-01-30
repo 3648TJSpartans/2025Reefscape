@@ -166,7 +166,6 @@ public class RobotContainer {
         configureButtonBindings();
         // configureAutons();
     }
-
     /**
      * Use this method to define your button->command mappings. Buttons can be
      * created by
@@ -220,7 +219,6 @@ public class RobotContainer {
         controller.y().whileTrue(alignCoralStation);
         Command goToNearestCommand = new SwerveAutoAlignPoseNearest(drive);
         controller.rightTrigger().whileTrue(goToNearestCommand);
-
     }
 
     public void cancelCommand(Command cmd) {
