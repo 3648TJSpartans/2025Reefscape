@@ -1,4 +1,4 @@
-package frc.robot.subsystems.coralSubsystems.ElevatorSubsystem;
+package frc.robot.subsystems.coralSubsystems.Elevator;
 
 public interface ElevatorIO {
     // allows us to move to a certain point
