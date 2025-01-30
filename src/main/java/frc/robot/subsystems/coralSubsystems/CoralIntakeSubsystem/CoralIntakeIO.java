@@ -1,4 +1,4 @@
-package frc.robot.subsystems.coralSubsystems.coralIntakeSubstem;
+package frc.robot.subsystems.coralSubsystems.CoralIntakeSubsystem;
 
 public interface CoralIntakeIO {
     public default double getAngle() {

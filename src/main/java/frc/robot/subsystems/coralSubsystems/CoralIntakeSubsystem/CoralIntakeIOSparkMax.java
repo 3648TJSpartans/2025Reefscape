@@ -1,4 +1,4 @@
-package frc.robot.subsystems.coralSubsystems.coralIntakeSubstem;
+package frc.robot.subsystems.coralSubsystems.CoralIntakeSubsystem;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.subsystems.coralSubsystems.coralConstants;
 
-public class CoralIntakeIOSparMax implements CoralIntakeIO {
+public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     // declaration of motors, IR sensor and encoder
     private SparkMax wristMotor;
     private DigitalInput irSensor;
@@ -16,7 +16,7 @@ public class CoralIntakeIOSparMax implements CoralIntakeIO {
     private PIDController pid;
 
     // this is the constructor of the class
-    public CoralIntakeIOSparMax() {
+    public CoralIntakeIOSparkMax() {
         wristMotor = new SparkMax(coralConstants.coralCANID3, MotorType.kBrushless);
         intakeMotor = new SparkMax(coralConstants.coralCANID2, MotorType.kBrushless);
         irSensor = new DigitalInput(coralConstants.irSensorPin);
