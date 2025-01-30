@@ -6,6 +6,7 @@ yesterday=$(echo "$today 00:00:00" | awk '{ split($0, a, "[- :]"); print mktime(
 
 cd $logDir
 mkdir -p oldLogs
+
 for file in $logDir/*; do
   fileAge=$(date -r $file +%s)
   if [ -f $file ]; then
@@ -14,6 +15,11 @@ for file in $logDir/*; do
    fi
   fi
 done
+
+if [ -z "$(ls -A oldLogs)" ]; then
+  rmdir oldLogs
+  exit 0
+fi
 
 tar -czf $archiveDir/$today-logs.tgz oldLogs
 rm -rf oldLogs
