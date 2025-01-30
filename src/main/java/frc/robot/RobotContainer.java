@@ -205,9 +205,9 @@ public class RobotContainer {
                                 .ignoringDisable(true));
         // controller.x().onTrue(AlignCommands.goTo(drive));
         // controller.leftTrigger().whileTrue(m_AlignCommands.goTo(drive));
-        Pose2d rightReef = new Pose2d(3.12, 3.76, Rotation2d.fromDegrees(0));
-        Pose2d leftReef = new Pose2d(3.12, 4.23, Rotation2d.fromDegrees(0));
-        Pose2d coralStation = new Pose2d(1.5, 1.6, Rotation2d.fromDegrees(180 - 117.7));
+        Pose2d rightReef = new Pose2d(3, 3.76, Rotation2d.fromDegrees(0));
+        Pose2d leftReef = new Pose2d(3, 4.23, Rotation2d.fromDegrees(0));
+        Pose2d coralStation = new Pose2d(1.5, 1.6, Rotation2d.fromDegrees(0));
         Command alignLeftReef = new SwerveAutoAlignPose(leftReef, leftReef, drive);
         controller.leftBumper().onTrue(alignLeftReef);
         controller.leftBumper().onFalse(new InstantCommand(() -> cancelCommand(alignLeftReef)));

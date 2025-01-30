@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import com.pathplanner.lib.config.PIDConstants;
-
+import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -90,7 +90,6 @@ public class SwerveAutoAlignPose extends Command {
     double xVel = xFF + xFeedback;
     double yVel = yFF + yFeedback;
     double rotVel = rotFF + rotFeedback;
-
     if (Math.abs(currentPose.getX() - targetPose.getX()) < 0.025) {
       xVel = 0;
     }
@@ -100,7 +99,10 @@ public class SwerveAutoAlignPose extends Command {
     if (Math.abs(currentPose.getRotation().minus(targetPose.getRotation()).getDegrees()) < 15) {
       rotVel = 0;
     }
-
+    Logger.recordOutput("Autons/Trajectory", currentPose, targetPose);
+    Logger.recordOutput("Autons/xVelocity", xVel);
+    Logger.recordOutput("Autons/yVelocity", yVel);
+    Logger.recordOutput("Autons/RotationalVelocity", rotVel);
     drive.runVelocity(new ChassisSpeeds(xVel, yVel, rotVel));
   }
 

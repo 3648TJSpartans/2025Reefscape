@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.path.PathConstraints;
 
@@ -106,7 +108,7 @@ public class SwerveAutoAlignPoseNearest extends Command {
     if (Math.abs(currentPose.getRotation().minus(targetPose.getRotation()).getDegrees()) < 15) {
       rotVel = 0;
     }
-
+    Logger.recordOutput("Autons/Trajectory", currentPose, targetPose);
     drive.runVelocity(new ChassisSpeeds(xVel, yVel, rotVel));
   }
 
