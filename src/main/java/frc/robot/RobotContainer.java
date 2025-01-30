@@ -23,6 +23,8 @@ import edu.wpi.first.math.estimator.PoseEstimator;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -33,8 +35,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.SwerveAutoAlignPose;
-import frc.robot.commands.SwerveAutoAlignPoseNearest;
+import frc.robot.commands.SwerveAutoAlignStraight;
+import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
+import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPose;
+import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPoseNearest;
 import frc.robot.commands.AlignCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -160,6 +164,7 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
+        // configureAutons();
     }
 
     /**
@@ -205,21 +210,17 @@ public class RobotContainer {
                                 .ignoringDisable(true));
         // controller.x().onTrue(AlignCommands.goTo(drive));
         // controller.leftTrigger().whileTrue(m_AlignCommands.goTo(drive));
-        Pose2d rightReef = new Pose2d(3, 3.76, Rotation2d.fromDegrees(0));
-        Pose2d leftReef = new Pose2d(3, 4.23, Rotation2d.fromDegrees(0));
-        Pose2d coralStation = new Pose2d(1.5, 1.6, Rotation2d.fromDegrees(0));
-        Command alignLeftReef = new SwerveAutoAlignPose(leftReef, leftReef, drive);
-        controller.leftBumper().onTrue(alignLeftReef);
-        controller.leftBumper().onFalse(new InstantCommand(() -> cancelCommand(alignLeftReef)));
-        Command alignRightReef = new SwerveAutoAlignPose(rightReef, rightReef, drive);
-        controller.rightBumper().onTrue(alignRightReef);
-        controller.rightBumper().onFalse(new InstantCommand(() -> cancelCommand(alignRightReef)));
-        Command alignCoralStation = new SwerveAutoAlignPose(coralStation, coralStation, drive);
-        controller.y().onTrue(alignCoralStation);
-        controller.y().onFalse(new InstantCommand(() -> cancelCommand(alignCoralStation)));
+
+        Command alignLeftReef = new SwerveAutoAlignPose(PoseConstants.leftReef, PoseConstants.leftReef, drive);
+        controller.leftBumper().whileTrue(alignLeftReef);
+        Command alignRightReef = new SwerveAutoAlignPose(PoseConstants.rightReef, PoseConstants.rightReef, drive);
+        controller.rightBumper().whileTrue(alignRightReef);
+        Command alignCoralStation = new SwerveAutoAlignPose(PoseConstants.coralStation, PoseConstants.coralStation,
+                drive);
+        controller.y().whileTrue(alignCoralStation);
         Command goToNearestCommand = new SwerveAutoAlignPoseNearest(drive);
-        controller.rightTrigger().onTrue(goToNearestCommand);
-        controller.rightTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToNearestCommand)));
+        controller.rightTrigger().whileTrue(goToNearestCommand);
+
     }
 
     public void cancelCommand(Command cmd) {
@@ -238,12 +239,54 @@ public class RobotContainer {
     }
 
     public void configureAutons() {
-        RobotConfig config;
-        try {
-            config = RobotConfig.fromGUISettings();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        controller.leftTrigger().whileTrue(Commands.runOnce(() -> {
+            Pose2d currentPose = drive.getPose();
 
+            // The rotation component in these poses represents the direction of travel
+            Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d());
+            Pose2d endPos = new Pose2d(currentPose.getTranslation().plus(new Translation2d(1.0, 0.0)),
+                    new Rotation2d());
+
+            List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPos, endPos);
+            PathPlannerPath path = new PathPlannerPath(
+                    waypoints,
+                    new PathConstraints(
+                            4.0, 4.0,
+                            Units.degreesToRadians(360), Units.degreesToRadians(540)),
+                    null, // Ideal starting state can be null for on-the-fly paths
+                    new GoalEndState(1, currentPose.getRotation()));
+
+            // Prevent this path from being flipped on the red alliance, since the given
+            // positions are already correct
+            path.preventFlipping = true;
+
+            AutoBuilder.followPath(path).schedule();
+        }));
+
+    }
+
+    public Command goToPoint(Pose2d targetPose) {
+        return Commands.runOnce(() -> {
+            Pose2d currentPose = drive.getPose();
+
+            // The rotation component in these poses represents the direction of travel
+            Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d());
+            Pose2d endPos = targetPose;
+
+            List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPos, endPos);
+            PathPlannerPath path = new PathPlannerPath(
+                    waypoints,
+                    new PathConstraints(
+                            4.0, 4.0,
+                            Units.degreesToRadians(360), Units.degreesToRadians(540)),
+                    null, // Ideal starting state can be null for on-the-fly paths
+                    new GoalEndState(1, currentPose.getRotation()));
+
+            // Prevent this path from being flipped on the red alliance, since the given
+            // positions are already correct
+            path.preventFlipping = true;
+
+            AutoBuilder.followPath(path).schedule();
+        });
     }
 }

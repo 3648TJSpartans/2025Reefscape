@@ -1,16 +1,14 @@
 package frc.robot.commands;
 
-import org.littletonrobotics.junction.Logger;
-
 import com.pathplanner.lib.config.PIDConstants;
-import com.pathplanner.lib.path.PathConstraints;
-
+import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.proto.Geometry2D;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -19,7 +17,9 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
 
-public class SwerveAutoAlignPoseNearest extends Command {
+public class SwerveAutoAlignStraight extends Command {
+  private final Pose2d redPose;
+  private final Pose2d bluePose;
 
   private final ProfiledPIDController xController;
   private final ProfiledPIDController yController;
@@ -28,24 +28,22 @@ public class SwerveAutoAlignPoseNearest extends Command {
   private Pose2d targetPose;
   private final Timer timer = new Timer();
   private final Drive drive;
-  private final Pose2d[] points = new Pose2d[] {
-      new Pose2d(2.423, 3, Rotation2d.fromDegrees(0)),
-      new Pose2d(2.423, 5, Rotation2d.fromDegrees(0))
-  };
 
-  public SwerveAutoAlignPoseNearest(Drive drive) {
+  public SwerveAutoAlignStraight(Pose2d redPose, Pose2d bluePose, Drive drive) {
     this.drive = drive;
+    this.redPose = redPose;
+    this.bluePose = bluePose;
 
     this.xController = new ProfiledPIDController(
         DriveConstants.driveKp,
         0,
         DriveConstants.driveKd,
-        new TrapezoidProfile.Constraints(2.0, 2.0));
+        new TrapezoidProfile.Constraints(3.0, 2.0));
     this.yController = new ProfiledPIDController(
         DriveConstants.driveKp,
         0,
         DriveConstants.driveKd,
-        new TrapezoidProfile.Constraints(2.0, 2.0));
+        new TrapezoidProfile.Constraints(3.0, 2.0));
     new TrapezoidProfile.Constraints(2.0, 2.0);
     this.rotationController = new ProfiledPIDController(
         DriveConstants.driveKp,
@@ -62,14 +60,10 @@ public class SwerveAutoAlignPoseNearest extends Command {
 
   @Override
   public void initialize() {
-    targetPose = points[0];
-    double minDistance = Double.MAX_VALUE;
-    for (Pose2d point : points) {
-      double distance = drive.getPose().getTranslation().getDistance(point.getTranslation());
-      if (distance < minDistance) {
-        minDistance = distance;
-        targetPose = point;
-      }
+    if (Robot.isRedAlliance()) {
+      targetPose = redPose;
+    } else {
+      targetPose = bluePose;
     }
 
     Pose2d currentPose = drive.getPose();
@@ -98,18 +92,24 @@ public class SwerveAutoAlignPoseNearest extends Command {
     double xVel = xFF + xFeedback;
     double yVel = yFF + yFeedback;
     double rotVel = rotFF + rotFeedback;
-
-    if (Math.abs(currentPose.getX() - targetPose.getX()) < 0.025) {
+    double xDif = Math.abs(currentPose.getX() - targetPose.getX());
+    double yDif = Math.abs(currentPose.getY() - targetPose.getY());
+    if (xDif < 0.025) {
       xVel = 0;
     }
-    if (Math.abs(currentPose.getY() - targetPose.getY()) < 0.025) {
+    if (yDif < 0.025) {
       yVel = 0;
     }
     if (Math.abs(currentPose.getRotation().minus(targetPose.getRotation()).getDegrees()) < 15) {
       rotVel = 0;
     }
+    double normalXDif = Math.max(xDif / Math.sqrt(xDif * xDif + yDif * yDif), .5);
+    double normalYDif = Math.max(yDif / Math.sqrt(xDif * xDif + yDif * yDif), .5);
     Logger.recordOutput("Autons/Trajectory", currentPose, targetPose);
-    drive.runVelocity(new ChassisSpeeds(xVel, yVel, rotVel));
+    Logger.recordOutput("Autons/xVelocity", xVel);
+    Logger.recordOutput("Autons/yVelocity", yVel);
+    Logger.recordOutput("Autons/RotationalVelocity", rotVel);
+    drive.runVelocity(new ChassisSpeeds(xVel * normalXDif, yVel * normalYDif, rotVel));
   }
 
   @Override
