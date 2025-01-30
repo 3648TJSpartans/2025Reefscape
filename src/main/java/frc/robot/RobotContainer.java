@@ -46,6 +46,7 @@ import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.subsystems.climber.*;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.path.GoalEndState;
@@ -67,6 +68,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Vision vision;
+  private final ClimberSubsystem climberSubsystem;
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
 
@@ -77,6 +79,9 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
+    climberSubsystem = new ClimberSubsystem(new ClimberIOSparkMax());
+
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
@@ -158,6 +163,7 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+    configureClimber();
   }
 
   /**
@@ -215,14 +221,16 @@ public class RobotContainer {
     controller.y().onFalse(new InstantCommand(() -> testAutoCommand.cancel()));
     Command testMethod = AlignCommands.testMethod(drive);
     controller.leftBumper().onTrue(testMethod);
-    controller.leftBumper().onFalse(new InstantCommand(()-> cancelCommand(testMethod)));
+    controller.leftBumper().onFalse(new InstantCommand(() -> cancelCommand(testMethod)));
   }
-  public void cancelCommand(Command cmd){
-    if(cmd.isScheduled()){
+
+  public void cancelCommand(Command cmd) {
+    if (cmd.isScheduled()) {
       System.out.println("CMD canceled");
       cmd.cancel();
     }
   }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -276,6 +284,10 @@ public class RobotContainer {
       DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
       return Commands.none();
     }
+  }
+
+  public void configureClimber() {
+    controller.a().onTrue(new InstantCommand(() -> climberSubsystem.setPosition(0))); // pos will be some other constant
   }
 
   public void configureAutons() {
