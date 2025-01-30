@@ -14,6 +14,10 @@ public class AlgaeSubsystem extends SubsystemBase {
         io.setLiftSpeed(speed);
     }
 
+    public void setLiftPosition(double pos) {
+        io.setLiftPosition(pos);
+    }
+
     public void setIntakeSpeed(double speed) {
         io.setIntakeSpeed(speed);
     }

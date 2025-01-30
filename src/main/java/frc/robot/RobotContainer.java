@@ -204,9 +204,8 @@ public class RobotContainer {
   }
 
   public void configureAlgae() {
-    algaeCmd = new AlgaeCmd(algaeSubsystem,
-        () -> controller.getLeftTriggerAxis(),
-        () -> controller.getRightTriggerAxis());
+    // algaeCmd = new AlgaeCmd(algaeSubsystem);
+    controller.rightTrigger().onTrue(new InstantCommand(() -> algaeSubsystem.setLiftPosition(0)));// change the zero
     controller.rightBumper().onTrue(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(0.5)));
     controller.rightBumper().onFalse(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(0)));
     controller.leftBumper().onTrue(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(-0.5)));

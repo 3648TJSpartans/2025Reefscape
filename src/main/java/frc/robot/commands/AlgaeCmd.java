@@ -21,24 +21,24 @@ import java.util.function.Supplier;
 
 public class AlgaeCmd extends Command {
     private final AlgaeSubsystem algaeSubsystem;
-    private final DoubleSupplier LTSupplier;
-    private final DoubleSupplier RTSupplier;
+    // private final DoubleSupplier LTSupplier;
+    // private final DoubleSupplier RTSupplier;
 
-    public AlgaeCmd(AlgaeSubsystem algaeSubsystem, DoubleSupplier LTSupplier, DoubleSupplier RTSupplier) {
+    public AlgaeCmd(AlgaeSubsystem algaeSubsystem) {
         this.algaeSubsystem = algaeSubsystem;
-        this.LTSupplier = LTSupplier;
-        this.RTSupplier = RTSupplier;
+        // this.LTSupplier = LTSupplier;
+        // this.RTSupplier = RTSupplier;
         addRequirements(algaeSubsystem);
 
     }
 
     @Override
     public void execute() {
-        if (LTSupplier.getAsDouble() > 0) {
-            algaeSubsystem.setLiftSpeed(LTSupplier.getAsDouble());
-        } else {
-            algaeSubsystem.setLiftSpeed(-RTSupplier.getAsDouble());
-        }
+        // if (LTSupplier.getAsDouble() > 0) {
+        // algaeSubsystem.setLiftSpeed(LTSupplier.getAsDouble());
+        // } else {
+        // algaeSubsystem.setLiftSpeed(-RTSupplier.getAsDouble());
+        // }
     }
 
     @Override
