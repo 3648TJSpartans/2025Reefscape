@@ -36,11 +36,11 @@ public class CoralIntake extends SubsystemBase {
     io.RotateTo(setAngle);
   }
 
-  public void takeIN() {
-    io.takeIN();
+  public void setSpeed(double speed) {
+    io.setSpeed(speed);
   }
 
-  public void takeOUT() {
-    io.takeOUT();
+  public boolean getIR() {
+    return io.getIR();
   }
 }

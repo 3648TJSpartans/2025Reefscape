@@ -8,7 +8,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
-import frc.robot.subsystems.coralSubsystems.coralConstants;
+import frc.robot.subsystems.coralSubsystems.CoralConstants;
 
 public class ElevatorIOSparkMax implements ElevatorIO {
     // declaration of the motors and encoders
@@ -18,10 +18,10 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     // constructor
     public ElevatorIOSparkMax() {
-        motor = new SparkMax(coralConstants.coralCANID1, MotorType.kBrushless);
-        encoder = new Encoder(coralConstants.levelChannelA, coralConstants.levelChannelB, false,
+        motor = new SparkMax(CoralConstants.coralCANID1, MotorType.kBrushless);
+        encoder = new Encoder(CoralConstants.levelChannelA, CoralConstants.levelChannelB, false,
                 Encoder.EncodingType.k4X);
-        pid = new PIDController(coralConstants.kP, coralConstants.kI, coralConstants.kD);
+        pid = new PIDController(CoralConstants.kP, CoralConstants.kI, CoralConstants.kD);
 
     }
 

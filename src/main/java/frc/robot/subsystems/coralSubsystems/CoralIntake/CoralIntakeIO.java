@@ -17,11 +17,12 @@ public interface CoralIntakeIO {
     public default void stopIntakeMotor() {
     }
 
-    // allows us to take in a coral
-    public default void takeIN() {
+    // sets speed
+    public default void setSpeed(double speed) {
     }
 
-    // allows us to take out a coral
-    public default void takeOUT() {
+    // Gets IR Sensor state
+    public default boolean getIR() {
+        return false;
     }
 }

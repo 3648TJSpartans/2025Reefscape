@@ -5,7 +5,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
-import frc.robot.subsystems.coralSubsystems.coralConstants;
+import frc.robot.subsystems.coralSubsystems.CoralConstants;
 
 public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     // declaration of motors, IR sensor and encoder
@@ -17,13 +17,13 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
 
     // this is the constructor of the class
     public CoralIntakeIOSparkMax() {
-        wristMotor = new SparkMax(coralConstants.coralCANID3, MotorType.kBrushless);
-        intakeMotor = new SparkMax(coralConstants.coralCANID2, MotorType.kBrushless);
-        irSensor = new DigitalInput(coralConstants.irSensorPin);
-        encoder = new Encoder(coralConstants.angleChannelA, coralConstants.angleChannelB, false,
+        wristMotor = new SparkMax(CoralConstants.coralCANID3, MotorType.kBrushless);
+        intakeMotor = new SparkMax(CoralConstants.coralCANID2, MotorType.kBrushless);
+        irSensor = new DigitalInput(CoralConstants.irSensorPin);
+        encoder = new Encoder(CoralConstants.angleChannelA, CoralConstants.angleChannelB, false,
                 Encoder.EncodingType.k4X);
-        pid = new PIDController(coralConstants.angle_kP, coralConstants.angle_kI,
-                coralConstants.angle_kD);
+        pid = new PIDController(CoralConstants.angle_kP, CoralConstants.angle_kI,
+                CoralConstants.angle_kD);
     }
 
     @Override
@@ -37,23 +37,8 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     }
 
     @Override
-    public void takeIN() {
-        if (irSensor.get()) {
-            intakeMotor.set(0);
-        } else if (!irSensor.get()) {
-            intakeMotor.set(1);
-        } // im not sure if this is 1 or -1 depending of the sense of rotation of the
-          // mechanism
-    }
-
-    @Override
-    public void takeOUT() {
-        if (irSensor.get()) {
-            intakeMotor.set(-1);
-        } else if (!irSensor.get()) {
-            intakeMotor.set(0);
-        } // im not sure if this is 1 or -1 depending of the sense of rotation of the
-          // mechanism
+    public void setSpeed(double speed) {
+        intakeMotor.set(speed);
     }
 
     @Override
@@ -64,5 +49,10 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     @Override
     public double getAngle() {
         return encoder.getDistance();
+    }
+
+    @Override
+    public boolean getIR() {
+        return irSensor.get();
     }
 }
