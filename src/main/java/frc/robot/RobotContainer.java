@@ -45,11 +45,15 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
-import frc.robot.subsystems.coralSubsystems.CoralIntake.CoralIntake;
-import frc.robot.subsystems.coralSubsystems.CoralIntake.CoralIntakeIO;
-import frc.robot.subsystems.coralSubsystems.CoralIntake.CoralIntakeIOSparkMax;
+import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
+import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIO;
+import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIOSparkMax;
+import frc.robot.subsystems.coralSubsystems.elevator.Elevator;
+import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIOSparkMax;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
+import frc.robot.commands.coralCommands.ElevatorCmd;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import java.util.List;
 
@@ -67,6 +71,7 @@ public class RobotContainer {
     private final Drive drive;
     private final Vision vision;
     private final CoralIntake coralIntake;
+    private final Elevator elevator;
     // Controller
     private final CommandXboxController controller = new CommandXboxController(0);
     private final CommandXboxController copilot = new CommandXboxController(1);
@@ -93,6 +98,7 @@ public class RobotContainer {
                         new VisionIOPhotonVision(VisionConstants.camera1Name,
                                 VisionConstants.robotToCamera1));
                 coralIntake = new CoralIntake(new CoralIntakeIOSparkMax());
+                elevator = new Elevator(new ElevatorIOSparkMax());
                 break;
 
             case SIM:
@@ -115,6 +121,9 @@ public class RobotContainer {
                 // To later be replaced with CoralIntakeIOSim
                 coralIntake = new CoralIntake(new CoralIntakeIO() {
                 });
+                elevator = new Elevator(new ElevatorIO() {
+
+                });
                 break;
 
             default:
@@ -134,6 +143,9 @@ public class RobotContainer {
                 }, new VisionIO() {
                 });
                 coralIntake = new CoralIntake(new CoralIntakeIO() {
+                });
+                elevator = new Elevator(new ElevatorIO() {
+
                 });
                 break;
         }
@@ -209,8 +221,17 @@ public class RobotContainer {
     public void configureCoralBindings() {
         Command coralIn = new CoralInCmd(coralIntake);
         Command coralOut = new CoralOutCmd(coralIntake);
+        Command l1 = new ElevatorCmd(elevator, 0.1);
+        Command l2 = new ElevatorCmd(elevator, 0.2);
+        Command l3 = new ElevatorCmd(elevator, 0.3);
+        Command l4 = new ElevatorCmd(elevator, 0.4);
         copilot.a().whileTrue(coralIn);
         copilot.b().whileTrue(coralOut);
+        // Subject to Change
+        copilot.povUp().whileTrue(l1);
+        copilot.povRight().whileTrue(l2);
+        copilot.povDown().whileTrue(l3);
+        copilot.povLeft().whileTrue(l4);
     }
 
     /**
