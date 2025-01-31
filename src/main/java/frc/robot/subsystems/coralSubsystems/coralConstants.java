@@ -21,9 +21,10 @@ public class CoralConstants {
     public static final int angleChannelA = 4;
     public static final int angleChannelB = 5;
 
-    public static final double coraLeveL1 = 1; // this is a momentary value that will be changed later
-    public static final double coraLeveL2 = 2; // this is a momentary value that will be changed later
-    public static final double coraLeveL3 = 3; // this is a momentary value that will be changed later
+    public static final double coralLeveL1 = .1; // this is a momentary value that will be changed later
+    public static final double coralLeveL2 = .2; // this is a momentary value that will be changed later
+    public static final double coralLeveL3 = .3; // this is a momentary value that will be changed later
+    public static final double coralLeveL4 = .4;
     // these are the constants for the elevator pid
     public static final double kP = 1;
     public static final double kI = 0;
@@ -32,7 +33,5 @@ public class CoralConstants {
     public static final double angle_kP = 1;
     public static final double angle_kI = 0;
     public static final double angle_kD = 0;
-
-    
 
 }

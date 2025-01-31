@@ -49,6 +49,7 @@ import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIO;
 import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIOSparkMax;
 import frc.robot.subsystems.coralSubsystems.elevator.Elevator;
+import frc.robot.subsystems.coralSubsystems.CoralConstants;
 import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIOSparkMax;
 import frc.robot.commands.coralCommands.CoralInCmd;
@@ -221,10 +222,10 @@ public class RobotContainer {
     public void configureCoralBindings() {
         Command coralIn = new CoralInCmd(coralIntake);
         Command coralOut = new CoralOutCmd(coralIntake);
-        Command l1 = new ElevatorCmd(elevator, 0.1);
-        Command l2 = new ElevatorCmd(elevator, 0.2);
-        Command l3 = new ElevatorCmd(elevator, 0.3);
-        Command l4 = new ElevatorCmd(elevator, 0.4);
+        Command l1 = new ElevatorCmd(elevator, CoralConstants.coralLeveL1);
+        Command l2 = new ElevatorCmd(elevator, CoralConstants.coralLeveL2);
+        Command l3 = new ElevatorCmd(elevator, CoralConstants.coralLeveL3);
+        Command l4 = new ElevatorCmd(elevator, CoralConstants.coralLeveL4);
         copilot.a().whileTrue(coralIn);
         copilot.b().whileTrue(coralOut);
         // Subject to Change
