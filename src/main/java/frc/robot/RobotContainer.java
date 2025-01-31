@@ -45,7 +45,11 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
-
+import frc.robot.subsystems.coralSubsystems.CoralIntake.CoralIntake;
+import frc.robot.subsystems.coralSubsystems.CoralIntake.CoralIntakeIO;
+import frc.robot.subsystems.coralSubsystems.CoralIntake.CoralIntakeIOSparkMax;
+import frc.robot.commands.coralCommands.CoralInCmd;
+import frc.robot.commands.coralCommands.CoralOutCmd;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import java.util.List;
 
@@ -62,9 +66,10 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Vision vision;
+  private final CoralIntake coralIntake;
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
-
+  private final CommandXboxController copilot = new CommandXboxController(1);
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
 
@@ -87,6 +92,7 @@ public class RobotContainer {
             // new VisionIOPhotonVision(camera0Name, drive::getRotation),
             new VisionIOPhotonVision(VisionConstants.camera1Name,
                 VisionConstants.robotToCamera1));
+        coralIntake = new CoralIntake(new CoralIntakeIOSparkMax());
         break;
 
       case SIM:
@@ -123,6 +129,8 @@ public class RobotContainer {
             });
         vision = new Vision(drive::addVisionMeasurement, new VisionIO() {
         }, new VisionIO() {
+        });
+        coralIntake = new CoralIntake(new CoralIntakeIO() {
         });
         break;
     }
@@ -192,6 +200,14 @@ public class RobotContainer {
                         new Rotation2d())),
                 drive)
                 .ignoringDisable(true));
+    configureCoralBindings();
+  }
+
+  public void configureCoralBindings() {
+    Command coralIn = new CoralInCmd(coralIntake);
+    Command coralOut = new CoralOutCmd(coralIntake);
+    copilot.a().whileTrue(coralIn);
+    copilot.b().whileTrue(coralOut);
   }
 
   /**
@@ -201,61 +217,5 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
-  }
-
-  public Command createOnTheFlyPath() {
-    System.out.println("Y Pressed");
-    RobotConfig config;
-    try {
-      System.out.println("Show me settings!");
-      config = RobotConfig.fromGUISettings();
-      System.out.println("There they are!");
-      // Create a path
-      // var robPose2d = new VisionPoseEstimator().getVisionPose(); fix vision pose
-      // position
-
-      List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-          // //Below is to test with April Tag 18
-          drive.getPose(),
-          new Pose2d(2.590, 4.025, Rotation2d.fromDegrees(0)));
-      PathConstraints constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI);
-      PathPlannerPath path = new PathPlannerPath(
-          waypoints,
-          constraints,
-          null,
-          new GoalEndState(0.0, Rotation2d.fromDegrees(0)));
-      path.preventFlipping = true;
-
-      // Run Path
-      System.out.println("Is this working?");
-
-      // return new FollowPathCommand(
-      // path,
-      // drive::getPose,
-      // drive::getSpeeds,
-      // drive::driveRobotRelative,
-      // new PPHolonomicDriveController(
-      // new PIDConstants(5, 0, 0),
-      // new PIDConstants(5, 0, 0)),
-      // config,
-      // () -> {
-      // return false;
-      // },
-      // drive);
-      return AutoBuilder.followPath(path);
-    } catch (Exception e) {
-      DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
-      return Commands.none();
-    }
-  }
-
-  public void configureAutons() {
-    RobotConfig config;
-    try {
-      config = RobotConfig.fromGUISettings();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
   }
 }
