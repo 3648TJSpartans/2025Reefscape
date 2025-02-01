@@ -31,7 +31,7 @@ public class ClimberCmd extends Command {
 
     @Override
     public void execute() {
-        climberSubsystem.setSpeed(rightStickSupplier.getAsDouble() * 0.1);
+        climberSubsystem.setSpeed(rightStickSupplier.getAsDouble() * 0.25);
     }
 
     @Override

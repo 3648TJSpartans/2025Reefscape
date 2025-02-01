@@ -19,6 +19,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.estimator.PoseEstimator;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -37,8 +38,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
 
-import frc.robot.subsystems.Algae.AlgaeIOSparkMax;
-import frc.robot.subsystems.Algae.AlgaeSubsystem;
+import frc.robot.subsystems.algae.AlgaeIOSparkMax;
+import frc.robot.subsystems.algae.AlgaeSubsystem;
 
 import frc.robot.commands.SwerveAutoAlignStraight;
 import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
@@ -63,13 +64,13 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
-import frc.robot.subsystems.coralSubsystems.CoralIntake.CoralIntake;
-import frc.robot.subsystems.coralSubsystems.CoralIntake.CoralIntakeIO;
-import frc.robot.subsystems.coralSubsystems.CoralIntake.CoralIntakeIOSparkMax;
-import frc.robot.subsystems.coralSubsystems.Elevator.Elevator;
+import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
+import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIO;
+import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIOSparkMax;
+import frc.robot.subsystems.coralSubsystems.elevator.Elevator;
 import frc.robot.subsystems.coralSubsystems.coralConstants;
-import frc.robot.subsystems.coralSubsystems.Elevator.ElevatorIO;
-import frc.robot.subsystems.coralSubsystems.Elevator.ElevatorIOSparkMax;
+import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIOSparkMax;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
 import frc.robot.commands.coralCommands.ElevatorCmd;
@@ -209,7 +210,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     configureClimber();
-    configureAlgae();
+    // configureAlgae();
     // configureAutons();
   }
 
@@ -320,7 +321,7 @@ public class RobotContainer {
    */
 
   public void configureAlgae() {
-    algaeCmd = new AlgaeCmd(algaeSubsystem, () -> copilotController.getLeftX());
+    algaeCmd = new AlgaeCmd(algaeSubsystem, () -> MathUtil.applyDeadband(copilotController.getLeftX(), 0.2));
     copilotController.rightTrigger().onTrue(new InstantCommand(() -> algaeSubsystem.setLiftPosition(0)));// change
                                                                                                          // // the
                                                                                                          // zero

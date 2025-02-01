@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Algae;
+package frc.robot.subsystems.algae;
 
 public class AlgaeConstants {
     public static final int liftMotorId = 14;

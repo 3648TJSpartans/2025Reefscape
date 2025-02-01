@@ -38,15 +38,16 @@ public class ClimberIOSparkMax implements ClimberIO {
         leadMotor.configure(leadConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         SparkMaxConfig followConfig = new SparkMaxConfig();
-        followConfig
-                .idleMode(IdleMode.kBrake)
-                .inverted(true);
         followConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .pidf(ClimberConstants.kFollowP, ClimberConstants.kFollowI, ClimberConstants.kFollowD,
                         ClimberConstants.kFollowFF)
                 .outputRange(ClimberConstants.kLeadP, ClimberConstants.kLeadP);
-        followConfig.follow(leadMotor);
+        followConfig
+                .idleMode(IdleMode.kBrake)
+                .inverted(true);
+
+        // followConfig.follow(leadMotor);
         followMotor.configure(
                 followConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -71,5 +72,6 @@ public class ClimberIOSparkMax implements ClimberIO {
 
     public void setSpeed(double speed) {
         leadMotor.set(speed);
+        followMotor.set(speed);
     }
 }

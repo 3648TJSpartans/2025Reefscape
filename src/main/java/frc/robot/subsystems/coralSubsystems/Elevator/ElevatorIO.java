@@ -1,4 +1,4 @@
-package frc.robot.subsystems.coralSubsystems.Elevator;
+package frc.robot.subsystems.coralSubsystems.elevator;
 
 public interface ElevatorIO {
     // allows us to move to a certain point
@@ -18,6 +18,7 @@ public interface ElevatorIO {
     public default void resetEncoder() {
     }
 
-    public default void setSpeed(double speed) {}
+    public default void setSpeed(double speed) {
+    }
 
 }
