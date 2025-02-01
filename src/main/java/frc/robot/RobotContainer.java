@@ -210,7 +210,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     configureClimber();
-    // configureAlgae();
+    configureAlgae();
     // configureAutons();
   }
 
