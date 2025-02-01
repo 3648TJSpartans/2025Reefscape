@@ -34,12 +34,18 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
+
+import frc.robot.subsystems.Algae.AlgaeIOSparkMax;
+import frc.robot.subsystems.Algae.AlgaeSubsystem;
+
 import frc.robot.commands.SwerveAutoAlignStraight;
 import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
 import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPose;
 import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPoseNearest;
 import frc.robot.commands.AlignCommands;
+
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
@@ -70,35 +76,39 @@ import java.util.List;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    // Subsystems
-    private final Drive drive;
-    private final Vision vision;
-    // Controller
-    private final CommandXboxController controller = new CommandXboxController(0);
+
+  // Subsystems
+  private final Drive drive;
+  private final Vision vision;
+  private AlgaeSubsystem algaeSubsystem;
+  private AlgaeCmd algaeCmd;
+  // Controller
+  private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController copilotController = new CommandXboxController(1);
 
     // Dashboard inputs
     private final LoggedDashboardChooser<Command> autoChooser;
 
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
-    public RobotContainer() {
-        switch (Constants.currentMode) {
-            case REAL:
-                // Real robot, instantiate hardware IO implementations
-
-                drive = new Drive(
-                        new GyroIONavX(),
-                        new ModuleIOSpark(0),
-                        new ModuleIOSpark(1),
-                        new ModuleIOSpark(2),
-                        new ModuleIOSpark(3));
-                vision = new Vision(
-                        drive::addVisionMeasurement,
-                        new VisionIOLimelight("limelight-three", drive::getRotation),
-                        new VisionIOLimelight("limelight-twoplus",
-                                drive::getRotation));
-                break;
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
+  public RobotContainer() {
+    switch (Constants.currentMode) {
+      case REAL:
+        // Real robot, instantiate hardware IO implementations
+        algaeSubsystem = new AlgaeSubsystem(new AlgaeIOSparkMax());
+        drive = new Drive(
+            new GyroIONavX(),
+            new ModuleIOSpark(0),
+            new ModuleIOSpark(1),
+            new ModuleIOSpark(2),
+            new ModuleIOSpark(3));
+        vision = new Vision(
+            drive::addVisionMeasurement,
+            new VisionIOLimelight("limelight-three", drive::getRotation),
+            new VisionIOLimelight("limelight-twoplus",
+                drive::getRotation));
+        break;
 
             case SIM:
                 // Sim robot, instantiate physics sim IO implementations
@@ -164,6 +174,7 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
+        confgureAlgae();
         // configureAutons();
     }
     /**
@@ -195,6 +206,8 @@ public class RobotContainer {
 
         // Switch to X pattern when X button is pressed
         controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+
+
 
         // Reset gyro to 0° when B button is pressed
         controller
@@ -232,14 +245,31 @@ public class RobotContainer {
      *
      * @return the command to run in autonomous
      */
-    public Command getAutonomousCommand() {
-        return autoChooser.get();
-    }
+   
+  
+  public void configureAlgae() {
+    // algaeCmd = new AlgaeCmd(algaeSubsystem);
+    controller.rightTrigger().onTrue(new InstantCommand(() -> algaeSubsystem.setLiftPosition(0)));// change the zero
+    controller.rightBumper().onTrue(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(0.5)));
+    controller.rightBumper().onFalse(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(0)));
+    controller.leftBumper().onTrue(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(-0.5)));
+    controller.leftBumper().onFalse(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(0)));
+    algaeSubsystem.setDefaultCommand(algaeCmd);
+
+  }
+
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+    return autoChooser.get();
+  }
 
     public void configureAutons() {
         controller.leftTrigger().whileTrue(Commands.runOnce(() -> {
             Pose2d currentPose = drive.getPose();
-
             // The rotation component in these poses represents the direction of travel
             Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d());
             Pose2d endPos = new Pose2d(currentPose.getTranslation().plus(new Translation2d(1.0, 0.0)),
