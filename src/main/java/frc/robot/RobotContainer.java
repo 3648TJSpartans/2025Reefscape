@@ -58,6 +58,7 @@ import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.subsystems.climber.*;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.path.GoalEndState;
@@ -80,6 +81,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Vision vision;
+  private final ClimberSubsystem climberSubsystem;
   private AlgaeSubsystem algaeSubsystem;
   private AlgaeCmd algaeCmd;
   // Controller
@@ -93,6 +95,9 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
+    climberSubsystem = new ClimberSubsystem(new ClimberIOSparkMax());
+
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
@@ -174,6 +179,7 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+    configureClimber();
     configureAlgae();
     // configureAutons();
   }
@@ -222,6 +228,18 @@ public class RobotContainer {
     // controller.x().onTrue(AlignCommands.goTo(drive));
     // controller.leftTrigger().whileTrue(m_AlignCommands.goTo(drive));
 
+    Command goToCommand = AlignCommands.goTo(drive);
+    controller.leftTrigger().onTrue(goToCommand);
+    controller.leftTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToCommand)));
+    Command goToPointCommand = AlignCommands.goToPoint(drive);
+    controller.rightTrigger().onTrue(goToPointCommand);
+    controller.rightTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToPointCommand)));
+    Command testAutoCommand = new PathPlannerAuto("test");
+    controller.y().onTrue(testAutoCommand);
+    controller.y().onFalse(new InstantCommand(() -> testAutoCommand.cancel()));
+    Command testMethod = AlignCommands.testMethod(drive);
+    controller.leftBumper().onTrue(testMethod);
+    controller.leftBumper().onFalse(new InstantCommand(() -> cancelCommand(testMethod)));
     Command alignLeftReef = new SwerveAutoAlignPose(PoseConstants.leftReef, PoseConstants.leftReef, drive);
     controller.leftBumper().whileTrue(alignLeftReef);
     Command alignRightReef = new SwerveAutoAlignPose(PoseConstants.rightReef, PoseConstants.rightReef, drive);
@@ -235,9 +253,14 @@ public class RobotContainer {
 
   public void cancelCommand(Command cmd) {
     if (cmd.isScheduled()) {
+
+      System.out.println("CMD canceled");
+
       cmd.cancel();
     }
   }
+
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -255,6 +278,7 @@ public class RobotContainer {
     algaeSubsystem.setDefaultCommand(algaeCmd);
 
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -291,6 +315,12 @@ public class RobotContainer {
 
   }
 
+
+  public void configureClimber() {
+    controller.a().onTrue(new InstantCommand(() -> climberSubsystem.setPosition(0))); // pos will be some other constant
+  }
+
+
   public Command goToPoint(Pose2d targetPose) {
     return Commands.runOnce(() -> {
       Pose2d currentPose = drive.getPose();
@@ -311,6 +341,7 @@ public class RobotContainer {
       // Prevent this path from being flipped on the red alliance, since the given
       // positions are already correct
       path.preventFlipping = true;
+
 
       AutoBuilder.followPath(path).schedule();
     });
