@@ -1,4 +1,4 @@
-package frc.robot.subsystems.coralSubsystems.CoralIntake;
+package frc.robot.subsystems.coralSubsystems.coralIntake;
 
 public interface CoralIntakeIO {
     public default double getAngle() {
@@ -27,6 +27,6 @@ public interface CoralIntakeIO {
     }
 
     public default void setWristSpeed(double speed) {
-        
+
     }
 }
