@@ -2,8 +2,8 @@ package frc.robot.subsystems.climber;
 
 public class ClimberConstants {
 
-    public static final int leftMotorID = 11;
-    public static final int rightMotorID = 12;
+    public static final int leftMotorID = 12;
+    public static final int rightMotorID = 13;
 
     public static final double kLeadP = 0;
     public static final double kLeadI = 0;
