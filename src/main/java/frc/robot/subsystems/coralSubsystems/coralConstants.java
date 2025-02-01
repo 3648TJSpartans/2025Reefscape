@@ -37,4 +37,5 @@ public class coralConstants {
     // this is the angle for the wrist and is subject to change for each level
     public static final double anglevalue = 45;
 
+    public static final double elevatorEncoderPositionFactor = 1;
 }

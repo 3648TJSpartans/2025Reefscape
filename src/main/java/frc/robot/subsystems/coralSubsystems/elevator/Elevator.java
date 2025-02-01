@@ -4,11 +4,16 @@
 
 package frc.robot.subsystems.coralSubsystems.elevator;
 
+import org.littletonrobotics.junction.AutoLog;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.drive.ModuleIOInputsAutoLogged;
+import frc.robot.subsystems.drive.ModuleIO.ModuleIOInputs;
 
 public class Elevator extends SubsystemBase {
   // declaration of a instance
   private final ElevatorIO io;
+  private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
 
   /** Creates a new elevator. */
   public Elevator(ElevatorIO io) {
@@ -18,6 +23,7 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    io.updateValues();
   }
 
   public void elevateTo(double setHeight) {

@@ -1,8 +1,13 @@
 package frc.robot.subsystems.coralSubsystems.elevator;
 
+import org.littletonrobotics.junction.AutoLog;
+
 public interface ElevatorIO {
     // allows us to move to a certain point
     public default void elevateTo(double setHeight) {
+    }
+
+    public default void updateValues() {
     }
 
     // allows us to stop the motor
