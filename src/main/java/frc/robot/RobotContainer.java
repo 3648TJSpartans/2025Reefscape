@@ -63,6 +63,17 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
+import frc.robot.subsystems.coralSubsystems.CoralIntake.CoralIntake;
+import frc.robot.subsystems.coralSubsystems.CoralIntake.CoralIntakeIO;
+import frc.robot.subsystems.coralSubsystems.CoralIntake.CoralIntakeIOSparkMax;
+import frc.robot.subsystems.coralSubsystems.Elevator.Elevator;
+import frc.robot.subsystems.coralSubsystems.coralConstants;
+import frc.robot.subsystems.coralSubsystems.Elevator.ElevatorIO;
+import frc.robot.subsystems.coralSubsystems.Elevator.ElevatorIOSparkMax;
+import frc.robot.commands.coralCommands.CoralInCmd;
+import frc.robot.commands.coralCommands.CoralOutCmd;
+import frc.robot.commands.coralCommands.ElevatorCmd;
+import frc.robot.commands.coralCommands.WristCmd;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import java.util.List;
@@ -81,6 +92,8 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Vision vision;
+  private final CoralIntake coralIntake;
+  private final Elevator elevator;
   private final ClimberSubsystem climberSubsystem;
   private AlgaeSubsystem algaeSubsystem;
   private AlgaeCmd algaeCmd;
@@ -110,6 +123,11 @@ public class RobotContainer {
             new ModuleIOSpark(3));
         vision = new Vision(
             drive::addVisionMeasurement,
+          
+            // new VisionIOPhotonVision(camera0Name, drive::getRotation),
+       
+        coralIntake = new CoralIntake(new CoralIntakeIOSparkMax());
+        elevator = new Elevator(new ElevatorIOSparkMax());
             new VisionIOLimelight("limelight-three", drive::getRotation),
             new VisionIOLimelight("limelight-twoplus",
                 drive::getRotation));
@@ -132,6 +150,12 @@ public class RobotContainer {
             new VisionIOPhotonVisionSim(VisionConstants.camera1Name,
                 VisionConstants.robotToCamera1,
                 drive::getPose));
+        // To later be replaced with CoralIntakeIOSim
+        coralIntake = new CoralIntake(new CoralIntakeIO() {
+        });
+        elevator = new Elevator(new ElevatorIO() {
+
+        });
         break;
 
       default:
@@ -149,6 +173,11 @@ public class RobotContainer {
             });
         vision = new Vision(drive::addVisionMeasurement, new VisionIO() {
         }, new VisionIO() {
+        });
+        coralIntake = new CoralIntake(new CoralIntakeIO() {
+        });
+        elevator = new Elevator(new ElevatorIO() {
+
         });
         break;
     }
@@ -225,6 +254,25 @@ public class RobotContainer {
                         new Rotation2d())),
                 drive)
                 .ignoringDisable(true));
+    configureCoralBindings();
+  }
+
+  public void configureCoralBindings() {
+    Command coralIn = new CoralInCmd(coralIntake);
+    Command coralOut = new CoralOutCmd(coralIntake);
+    Command l1 = new ElevatorCmd(elevator, coralConstants.coralLeveL1);
+    Command l2 = new ElevatorCmd(elevator, coralConstants.coralLeveL2);
+    Command l3 = new ElevatorCmd(elevator, coralConstants.coralLeveL3);
+    Command l4 = new ElevatorCmd(elevator, coralConstants.coralLeveL4);
+    Command wrist = new WristCmd (coralIntake, coralConstants.anglevalue);
+    controller.y().whileTrue(wrist);
+    copilot.a().whileTrue(coralIn);
+    copilot.b().whileTrue(coralOut);
+    // Subject to Change
+    copilot.povUp().whileTrue(l1);
+    copilot.povRight().whileTrue(l2);
+    copilot.povDown().whileTrue(l3);
+    copilot.povLeft().whileTrue(l4);
     // controller.x().onTrue(AlignCommands.goTo(drive));
     // controller.leftTrigger().whileTrue(m_AlignCommands.goTo(drive));
 
@@ -249,6 +297,7 @@ public class RobotContainer {
     controller.y().whileTrue(alignCoralStation);
     Command goToNearestCommand = new SwerveAutoAlignPoseNearest(drive);
     controller.rightTrigger().whileTrue(goToNearestCommand);
+
   }
 
   public void cancelCommand(Command cmd) {
@@ -288,6 +337,8 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autoChooser.get();
   }
+
+
 
   public void configureAutons() {
     controller.leftTrigger().whileTrue(Commands.runOnce(() -> {
@@ -346,4 +397,5 @@ public class RobotContainer {
       AutoBuilder.followPath(path).schedule();
     });
   }
+
 }
