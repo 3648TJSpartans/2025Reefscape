@@ -308,7 +308,7 @@ public class RobotContainer {
    */
 
   public void configureAlgae() {
-    algaeCmd = new AlgaeCmd(algaeSubsystem, () -> copilotController.getLeftX());
+    algaeCmd = new AlgaeCmd(algaeSubsystem, () -> MathUtil.applyDeadband(copilotController.getLeftX(), 0.2));
     copilotController.rightTrigger().onTrue(new InstantCommand(() -> algaeSubsystem.setLiftPosition(0)));// change
                                                                                                          // // the
                                                                                                          // zero

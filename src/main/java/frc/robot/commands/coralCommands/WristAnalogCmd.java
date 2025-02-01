@@ -1,7 +1,6 @@
 package frc.robot.commands.coralCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-
 import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
 
 import java.util.function.DoubleSupplier;
