@@ -34,4 +34,7 @@ public class coralConstants {
     public static final double angle_kI = 0;
     public static final double angle_kD = 0;
 
+    // this is the angle for the wrist and is subject to change for each level
+    public static final double anglevalue = 45;
+
 }

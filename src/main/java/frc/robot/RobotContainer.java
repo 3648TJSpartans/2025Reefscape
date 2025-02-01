@@ -55,6 +55,8 @@ import frc.robot.subsystems.coralSubsystems.Elevator.ElevatorIOSparkMax;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
 import frc.robot.commands.coralCommands.ElevatorCmd;
+import frc.robot.commands.coralCommands.WristCmd;
+
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import java.util.List;
 
@@ -226,6 +228,8 @@ public class RobotContainer {
     Command l2 = new ElevatorCmd(elevator, coralConstants.coralLeveL2);
     Command l3 = new ElevatorCmd(elevator, coralConstants.coralLeveL3);
     Command l4 = new ElevatorCmd(elevator, coralConstants.coralLeveL4);
+    Command wrist = new WristCmd (coralIntake, coralConstants.anglevalue);
+    controller.y().whileTrue(wrist);
     copilot.a().whileTrue(coralIn);
     copilot.b().whileTrue(coralOut);
     // Subject to Change
