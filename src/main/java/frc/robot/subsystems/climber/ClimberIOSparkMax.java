@@ -1,8 +1,5 @@
 package frc.robot.subsystems.climber;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.revrobotics.sim.SparkMaxSim;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -12,10 +9,6 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.math.controller.PIDController;
 import com.revrobotics.spark.SparkClosedLoopController;
 
 public class ClimberIOSparkMax implements ClimberIO {
@@ -24,19 +17,30 @@ public class ClimberIOSparkMax implements ClimberIO {
     private final SparkMax followMotor;
 
     private final AbsoluteEncoder leadEncoder;
-    private final AbsoluteEncoder followEncoder;
     private final SparkClosedLoopController leadController;
-    private final SparkClosedLoopController followController;
 
     public ClimberIOSparkMax() {
         leadMotor = new SparkMax(ClimberConstants.leadMotorID, MotorType.kBrushless);
         followMotor = new SparkMax(ClimberConstants.followMotorID, MotorType.kBrushless);
         leadEncoder = leadMotor.getAbsoluteEncoder();
-        followEncoder = followMotor.getAbsoluteEncoder();
 
-        var followConfig = new SparkMaxConfig();
-        followConfig.idleMode(IdleMode.kBrake);
-        followConfig.inverted(true);
+        leadController = leadMotor.getClosedLoopController();
+
+        SparkMaxConfig leadConfig = new SparkMaxConfig();
+        leadConfig
+                .idleMode(IdleMode.kBrake)
+                .inverted(false);
+        leadConfig.closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .pidf(ClimberConstants.kLeadP, ClimberConstants.kLeadI, ClimberConstants.kLeadD,
+                        ClimberConstants.kLeadFF)
+                .outputRange(ClimberConstants.kLeadP, ClimberConstants.kLeadP);
+        leadMotor.configure(leadConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        SparkMaxConfig followConfig = new SparkMaxConfig();
+        followConfig
+                .idleMode(IdleMode.kBrake)
+                .inverted(true);
         followConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .pidf(ClimberConstants.kFollowP, ClimberConstants.kFollowI, ClimberConstants.kFollowD,
@@ -45,18 +49,7 @@ public class ClimberIOSparkMax implements ClimberIO {
         followConfig.follow(leadMotor);
         followMotor.configure(
                 followConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        leadController = leadMotor.getClosedLoopController();
-        followController = followMotor.getClosedLoopController();
 
-        var leadConfig = new SparkMaxConfig();
-        leadConfig.idleMode(IdleMode.kBrake);
-        leadConfig.inverted(true);
-        leadConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pidf(ClimberConstants.kLeadP, ClimberConstants.kLeadI, ClimberConstants.kLeadD,
-                        ClimberConstants.kLeadFF)
-                .outputRange(ClimberConstants.kLeadP, ClimberConstants.kLeadP);
-        leadMotor.configure(leadConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     public void setPosition(double pos) {
