@@ -44,4 +44,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     public void resetEncoder() {
         encoder.reset();
     }
+
+    public void setSpeed(double speed) {
+        motor.set(speed);
+    }
 }

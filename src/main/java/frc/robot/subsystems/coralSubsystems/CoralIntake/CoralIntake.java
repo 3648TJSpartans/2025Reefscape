@@ -43,4 +43,8 @@ public class CoralIntake extends SubsystemBase {
   public boolean getIR() {
     return io.getIR();
   }
+
+  public void setWristSpeed(double speed) {
+    io.setWristSpeed(speed);
+}
 }

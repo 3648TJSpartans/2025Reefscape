@@ -68,4 +68,8 @@ public class ClimberIOSparkMax implements ClimberIO {
     public double getPosition() {
         return leadEncoder.getPosition();
     }
+
+    public void setSpeed(double speed) {
+        leadMotor.set(speed);
+    }
 }

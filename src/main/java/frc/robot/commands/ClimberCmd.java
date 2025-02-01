@@ -13,30 +13,29 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.MotorConstants;
-import frc.robot.subsystems.Algae.AlgaeSubsystem;
+import frc.robot.subsystems.climber.ClimberSubsystem;
 
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
-public class AlgaeCmd extends Command {
-    private final AlgaeSubsystem algaeSubsystem;
-    private final DoubleSupplier leftStickSupplier;
+public class ClimberCmd extends Command {
+    private final ClimberSubsystem climberSubsystem;
+    private final DoubleSupplier rightStickSupplier;
 
-    public AlgaeCmd(AlgaeSubsystem algaeSubsystem, DoubleSupplier leftStickSupplier) {
-        this.algaeSubsystem = algaeSubsystem;
-        this.leftStickSupplier = leftStickSupplier;
-        // this.RTSupplier = RTSupplier;
-        addRequirements(algaeSubsystem);
+    public ClimberCmd(ClimberSubsystem climberSubsystem, DoubleSupplier rightStickSupplier) {
+        this.climberSubsystem = climberSubsystem;
+        this.rightStickSupplier = rightStickSupplier;
+        addRequirements(climberSubsystem);
 
     }
 
     @Override
     public void execute() {
-        algaeSubsystem.setLiftSpeed(0.5 * leftStickSupplier.getAsDouble());
+        climberSubsystem.setSpeed(rightStickSupplier.getAsDouble() * 0.1);
     }
 
     @Override
     public void end(boolean interrupted) {
-        algaeSubsystem.setLiftSpeed(0);
+        climberSubsystem.setSpeed(0);
     }
 }

@@ -22,4 +22,8 @@ public class ClimberSubsystem extends SubsystemBase {
         return io.getPosition();
     }
 
+    public void setSpeed(double speed) {
+        io.setSpeed(speed);
+    }
+
 }

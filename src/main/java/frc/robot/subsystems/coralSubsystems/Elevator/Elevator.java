@@ -39,4 +39,8 @@ public class Elevator extends SubsystemBase {
     io.resetEncoder();
   }
 
+  public void setSpeed(double speed) {
+    io.setSpeed(speed);
+  }
+
 }

@@ -18,4 +18,6 @@ public interface ElevatorIO {
     public default void resetEncoder() {
     }
 
+    public default void setSpeed(double speed) {}
+
 }

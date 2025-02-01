@@ -15,4 +15,7 @@ public interface ClimberIO {
         return 0;
     }
 
+    public default void setSpeed(double speed) {
+    }
+
 }

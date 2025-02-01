@@ -25,4 +25,8 @@ public interface CoralIntakeIO {
     public default boolean getIR() {
         return false;
     }
+
+    public default void setWristSpeed(double speed) {
+        
+    }
 }

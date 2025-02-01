@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.coralCommands;
 
 import frc.robot.Constants.MotorConstants;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -13,30 +13,29 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.MotorConstants;
-import frc.robot.subsystems.Algae.AlgaeSubsystem;
+import frc.robot.subsystems.coralSubsystems.Elevator.Elevator;
 
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
-public class AlgaeCmd extends Command {
-    private final AlgaeSubsystem algaeSubsystem;
-    private final DoubleSupplier leftStickSupplier;
+public class ElevatorAnalogCmd extends Command {
+    private final Elevator elevator;
+    private final DoubleSupplier rightStickSupplier;
 
-    public AlgaeCmd(AlgaeSubsystem algaeSubsystem, DoubleSupplier leftStickSupplier) {
-        this.algaeSubsystem = algaeSubsystem;
-        this.leftStickSupplier = leftStickSupplier;
-        // this.RTSupplier = RTSupplier;
-        addRequirements(algaeSubsystem);
+    public ElevatorAnalogCmd(Elevator elevator, DoubleSupplier rightStickSupplier) {
+        this.elevator = elevator;
+        this.rightStickSupplier = rightStickSupplier;
+        addRequirements(elevator);
 
     }
 
     @Override
     public void execute() {
-        algaeSubsystem.setLiftSpeed(0.5 * leftStickSupplier.getAsDouble());
+        elevator.setSpeed(rightStickSupplier.getAsDouble() * 0.1);
     }
 
     @Override
     public void end(boolean interrupted) {
-        algaeSubsystem.setLiftSpeed(0);
+        elevator.setSpeed(0);
     }
 }

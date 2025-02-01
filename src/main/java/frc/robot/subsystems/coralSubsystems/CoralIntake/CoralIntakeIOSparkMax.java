@@ -55,4 +55,8 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     public boolean getIR() {
         return irSensor.get();
     }
+
+    public void setWristSpeed(double speed) {
+        wristMotor.set(speed);
+    }
 }
