@@ -61,7 +61,6 @@ public final class Constants {
   }
 
   public static final class MotorConstants {
-    public static final int NewMotorId = 11; // Don't do 1-8! those are swerve
     public static final double speed = 0.5;
   }
 }
