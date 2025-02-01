@@ -1,8 +1,5 @@
 package frc.robot.subsystems.climber;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.revrobotics.sim.SparkMaxSim;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -12,10 +9,6 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.math.controller.PIDController;
 import com.revrobotics.spark.SparkClosedLoopController;
 
 public class ClimberIOSparkMax implements ClimberIO {

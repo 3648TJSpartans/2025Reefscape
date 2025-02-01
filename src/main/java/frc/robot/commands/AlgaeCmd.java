@@ -1,22 +1,9 @@
 package frc.robot.commands;
 
-import frc.robot.Constants.MotorConstants;
 import frc.robot.subsystems.algae.AlgaeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
-import java.util.function.BooleanSupplier;
-
-import org.ejml.interfaces.decomposition.LUSparseDecomposition;
-
-import edu.wpi.first.networktables.BooleanSubscriber;
-import edu.wpi.first.util.function.BooleanConsumer;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.MotorConstants;
-
 import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
 
 public class AlgaeCmd extends Command {
     private final AlgaeSubsystem algaeSubsystem;
