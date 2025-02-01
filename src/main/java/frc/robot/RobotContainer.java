@@ -20,16 +20,32 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.estimator.PoseEstimator;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
+
+import frc.robot.subsystems.Algae.AlgaeIOSparkMax;
+import frc.robot.subsystems.Algae.AlgaeSubsystem;
+
+import frc.robot.commands.SwerveAutoAlignStraight;
+import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
+import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPose;
+import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPoseNearest;
+import frc.robot.commands.AlignCommands;
+
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
@@ -39,8 +55,10 @@ import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
+import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.subsystems.climber.*;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.path.GoalEndState;
@@ -70,14 +88,19 @@ import java.util.List;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
   // Subsystems
   private final Drive drive;
   private final Vision vision;
   private final CoralIntake coralIntake;
   private final Elevator elevator;
+  private final ClimberSubsystem climberSubsystem;
+  private AlgaeSubsystem algaeSubsystem;
+  private AlgaeCmd algaeCmd;
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
-  private final CommandXboxController copilot = new CommandXboxController(1);
+  private final CommandXboxController copilotController = new CommandXboxController(1);
+
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
 
@@ -85,10 +108,13 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
+    climberSubsystem = new ClimberSubsystem(new ClimberIOSparkMax());
+
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
-
+        algaeSubsystem = new AlgaeSubsystem(new AlgaeIOSparkMax());
         drive = new Drive(
             new GyroIONavX(),
             new ModuleIOSpark(0),
@@ -97,11 +123,14 @@ public class RobotContainer {
             new ModuleIOSpark(3));
         vision = new Vision(
             drive::addVisionMeasurement,
+          
             // new VisionIOPhotonVision(camera0Name, drive::getRotation),
-            new VisionIOPhotonVision(VisionConstants.camera1Name,
-                VisionConstants.robotToCamera1));
+       
         coralIntake = new CoralIntake(new CoralIntakeIOSparkMax());
         elevator = new Elevator(new ElevatorIOSparkMax());
+            new VisionIOLimelight("limelight-three", drive::getRotation),
+            new VisionIOLimelight("limelight-twoplus",
+                drive::getRotation));
         break;
 
       case SIM:
@@ -172,9 +201,16 @@ public class RobotContainer {
         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addOption(
+        "Micah's test",
+        AutoBuilder.buildAuto("src\\main\\deploy\\pathplanner\\autos\\test.auto"));
+    // Configure the button bindings
 
     // Configure the button bindings
     configureButtonBindings();
+    configureClimber();
+    configureAlgae();
+    // configureAutons();
   }
 
   /**
@@ -237,7 +273,61 @@ public class RobotContainer {
     copilot.povRight().whileTrue(l2);
     copilot.povDown().whileTrue(l3);
     copilot.povLeft().whileTrue(l4);
+    // controller.x().onTrue(AlignCommands.goTo(drive));
+    // controller.leftTrigger().whileTrue(m_AlignCommands.goTo(drive));
+
+    Command goToCommand = AlignCommands.goTo(drive);
+    controller.leftTrigger().onTrue(goToCommand);
+    controller.leftTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToCommand)));
+    Command goToPointCommand = AlignCommands.goToPoint(drive);
+    controller.rightTrigger().onTrue(goToPointCommand);
+    controller.rightTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToPointCommand)));
+    Command testAutoCommand = new PathPlannerAuto("test");
+    controller.y().onTrue(testAutoCommand);
+    controller.y().onFalse(new InstantCommand(() -> testAutoCommand.cancel()));
+    Command testMethod = AlignCommands.testMethod(drive);
+    controller.leftBumper().onTrue(testMethod);
+    controller.leftBumper().onFalse(new InstantCommand(() -> cancelCommand(testMethod)));
+    Command alignLeftReef = new SwerveAutoAlignPose(PoseConstants.leftReef, PoseConstants.leftReef, drive);
+    controller.leftBumper().whileTrue(alignLeftReef);
+    Command alignRightReef = new SwerveAutoAlignPose(PoseConstants.rightReef, PoseConstants.rightReef, drive);
+    controller.rightBumper().whileTrue(alignRightReef);
+    Command alignCoralStation = new SwerveAutoAlignPose(PoseConstants.coralStation, PoseConstants.coralStation,
+        drive);
+    controller.y().whileTrue(alignCoralStation);
+    Command goToNearestCommand = new SwerveAutoAlignPoseNearest(drive);
+    controller.rightTrigger().whileTrue(goToNearestCommand);
+
   }
+
+  public void cancelCommand(Command cmd) {
+    if (cmd.isScheduled()) {
+
+      System.out.println("CMD canceled");
+
+      cmd.cancel();
+    }
+  }
+
+
+
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+
+  public void configureAlgae() {
+    // algaeCmd = new AlgaeCmd(algaeSubsystem);
+    controller.rightTrigger().onTrue(new InstantCommand(() -> algaeSubsystem.setLiftPosition(0)));// change the zero
+    controller.rightBumper().onTrue(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(0.5)));
+    controller.rightBumper().onFalse(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(0)));
+    controller.leftBumper().onTrue(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(-0.5)));
+    controller.leftBumper().onFalse(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(0)));
+    algaeSubsystem.setDefaultCommand(algaeCmd);
+
+  }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -247,4 +337,65 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autoChooser.get();
   }
+
+
+
+  public void configureAutons() {
+    controller.leftTrigger().whileTrue(Commands.runOnce(() -> {
+      Pose2d currentPose = drive.getPose();
+      // The rotation component in these poses represents the direction of travel
+      Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d());
+      Pose2d endPos = new Pose2d(currentPose.getTranslation().plus(new Translation2d(1.0, 0.0)),
+          new Rotation2d());
+
+      List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPos, endPos);
+      PathPlannerPath path = new PathPlannerPath(
+          waypoints,
+          new PathConstraints(
+              4.0, 4.0,
+              Units.degreesToRadians(360), Units.degreesToRadians(540)),
+          null, // Ideal starting state can be null for on-the-fly paths
+          new GoalEndState(1, currentPose.getRotation()));
+
+      // Prevent this path from being flipped on the red alliance, since the given
+      // positions are already correct
+      path.preventFlipping = true;
+
+      AutoBuilder.followPath(path).schedule();
+    }));
+
+  }
+
+
+  public void configureClimber() {
+    controller.a().onTrue(new InstantCommand(() -> climberSubsystem.setPosition(0))); // pos will be some other constant
+  }
+
+
+  public Command goToPoint(Pose2d targetPose) {
+    return Commands.runOnce(() -> {
+      Pose2d currentPose = drive.getPose();
+
+      // The rotation component in these poses represents the direction of travel
+      Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d());
+      Pose2d endPos = targetPose;
+
+      List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPos, endPos);
+      PathPlannerPath path = new PathPlannerPath(
+          waypoints,
+          new PathConstraints(
+              4.0, 4.0,
+              Units.degreesToRadians(360), Units.degreesToRadians(540)),
+          null, // Ideal starting state can be null for on-the-fly paths
+          new GoalEndState(1, currentPose.getRotation()));
+
+      // Prevent this path from being flipped on the red alliance, since the given
+      // positions are already correct
+      path.preventFlipping = true;
+
+
+      AutoBuilder.followPath(path).schedule();
+    });
+  }
+
 }
