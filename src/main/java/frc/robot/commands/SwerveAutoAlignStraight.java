@@ -5,15 +5,11 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.proto.Geometry2D;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
 
@@ -26,7 +22,6 @@ public class SwerveAutoAlignStraight extends Command {
   private final ProfiledPIDController rotationController;
 
   private Pose2d targetPose;
-  private final Timer timer = new Timer();
   private final Drive drive;
 
   public SwerveAutoAlignStraight(Pose2d redPose, Pose2d bluePose, Drive drive) {
