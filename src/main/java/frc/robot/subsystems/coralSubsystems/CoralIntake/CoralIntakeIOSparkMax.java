@@ -17,8 +17,8 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
 
     // this is the constructor of the class
     public CoralIntakeIOSparkMax() {
-        wristMotor = new SparkMax(coralConstants.coralCANID3, MotorType.kBrushless);
-        intakeMotor = new SparkMax(coralConstants.coralCANID2, MotorType.kBrushless);
+        wristMotor = new SparkMax(coralConstants.coralWrist, MotorType.kBrushless);
+        intakeMotor = new SparkMax(coralConstants.coralIntake, MotorType.kBrushless);
         irSensor = new DigitalInput(coralConstants.irSensorPin);
         encoder = new Encoder(coralConstants.angleChannelA, coralConstants.angleChannelB, false,
                 Encoder.EncodingType.k4X);

@@ -18,11 +18,10 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     // constructor
     public ElevatorIOSparkMax() {
-        motor = new SparkMax(coralConstants.coralCANID1, MotorType.kBrushless);
+        motor = new SparkMax(coralConstants.coralElevator, MotorType.kBrushless);
         encoder = new Encoder(coralConstants.levelChannelA, coralConstants.levelChannelB, false,
                 Encoder.EncodingType.k4X);
         pid = new PIDController(coralConstants.kP, coralConstants.kI, coralConstants.kD);
-
     }
 
     @Override

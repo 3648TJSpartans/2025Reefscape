@@ -19,23 +19,23 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 public class WristAnalogCmd extends Command {
-    private final CoralIntake intake;
+    private final CoralIntake coralIntake;
     private final DoubleSupplier rightStickSupplier;
 
-    public WristAnalogCmd(CoralIntake intake, DoubleSupplier rightStickSupplier) {
-        this.intake = intake;
+    public WristAnalogCmd(CoralIntake coralIntake, DoubleSupplier rightStickSupplier) {
+        this.coralIntake = coralIntake;
         this.rightStickSupplier = rightStickSupplier;
-        addRequirements(intake);
+        addRequirements(coralIntake);
 
     }
 
     @Override
     public void execute() {
-        intake.setWristSpeed(rightStickSupplier.getAsDouble() * 0.1);
+        coralIntake.setWristSpeed(rightStickSupplier.getAsDouble() * 0.1);
     }
 
     @Override
     public void end(boolean interrupted) {
-        intake.setWristSpeed(0);
+        coralIntake.setWristSpeed(0);
     }
 }

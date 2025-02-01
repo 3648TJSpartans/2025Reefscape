@@ -8,9 +8,9 @@ package frc.robot.subsystems.coralSubsystems;
 public class coralConstants {
     public static final double intakeSpeed = .5;
     // these are the ids for the CANs that will be use in the coral subsystem
-    public static final int coralCANID1 = 9;
-    public static final int coralCANID2 = 10;
-    public static final int coralCANID3 = 11;
+    public static final int coralElevator = 9;
+    public static final int coralWrist = 10;
+    public static final int coralIntake = 11;
     // this is the constant for the pin of the ir sensor on the intake system of the
     // coral subsytem
     public static final int irSensorPin = 1;

@@ -97,7 +97,7 @@ public class RobotContainer {
   private final Vision vision;
   private final CoralIntake coralIntake;
   private final Elevator elevator;
-  private final ClimberSubsystem climberSubsystem;
+  private ClimberSubsystem climberSubsystem;
   private AlgaeSubsystem algaeSubsystem;
   private AlgaeCmd algaeCmd;
   private ClimberCmd climberCmd;
@@ -114,11 +114,10 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-    climberSubsystem = new ClimberSubsystem(new ClimberIOSparkMax());
-
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
+        climberSubsystem = new ClimberSubsystem(new ClimberIOSparkMax());
         algaeSubsystem = new AlgaeSubsystem(new AlgaeIOSparkMax());
         drive = new Drive(
             new GyroIONavX(),
@@ -271,8 +270,8 @@ public class RobotContainer {
     elevator.setDefaultCommand(elevatorAnalog);
     coralIntake.setDefaultCommand(wristAnalog);
     copilotController.y().whileTrue(wrist);
-    copilotController.a().whileTrue(coralIn);
-    copilotController.b().whileTrue(coralOut);
+    testController.a().whileTrue(coralIn); // change back to copilot after testing
+    testController.b().whileTrue(coralOut); // change back to copilot after testing
     // Subject to Change
     copilotController.povUp().whileTrue(l1);
     copilotController.povRight().whileTrue(l2);
