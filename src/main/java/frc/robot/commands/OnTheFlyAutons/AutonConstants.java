@@ -19,7 +19,7 @@ public class AutonConstants {
     public static final double maxLinearError = maxError / 1.412;
     public static final double maxRotationalError = 10; // degrees
 
-    public class PoseConstants {
+    public static class PoseConstants {
         public final static Pose2d rightReef = new Pose2d(3, 3.76, Rotation2d.fromDegrees(0));
         public final static Pose2d leftReef = new Pose2d(3, 4.23, Rotation2d.fromDegrees(0));
         public final static Pose2d coralStation = new Pose2d(1.5, 1.6, Rotation2d.fromDegrees(0));
