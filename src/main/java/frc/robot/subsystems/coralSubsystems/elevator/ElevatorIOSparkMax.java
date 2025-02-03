@@ -34,13 +34,30 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         motor = new SparkMax(CoralConstants.coralElevator, MotorType.kBrushless);
         encoder = motor.getAbsoluteEncoder();
         motorController = motor.getClosedLoopController();
-        SparkMaxConfig motorConfig = new SparkMaxConfig();
-        motorConfig.idleMode(IdleMode.kBrake);
+        var motorConfig = new SparkMaxConfig();
+        motorConfig.inverted(false)
+                .idleMode(IdleMode.kBrake)
+                .voltageCompensation(12.0);
         motorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .pidf(CoralConstants.kP, CoralConstants.kD, CoralConstants.kI, CoralConstants.kF)
-                .outputRange(AlgaeConstants.kLiftMinRange, AlgaeConstants.kLiftMaxRange);
-
+                .outputRange(CoralConstants.kLiftMinRange, CoralConstants.kLiftMaxRange);
+        motorConfig.signals
+                .absoluteEncoderPositionAlwaysOn(true)
+                .absoluteEncoderPositionPeriodMs((int) (1000.0 / CoralConstants.odometryFrequency))
+                .absoluteEncoderVelocityAlwaysOn(true)
+                .absoluteEncoderVelocityPeriodMs(20)
+                .appliedOutputPeriodMs(20)
+                .busVoltagePeriodMs(20)
+                .outputCurrentPeriodMs(20);
+        motorConfig.absoluteEncoder
+                .inverted(CoralConstants.elevatorEncoderInverted)
+                .positionConversionFactor(CoralConstants.elevatorEncoderPositionFactor)
+                .velocityConversionFactor(CoralConstants.elevatorEncoderPositionFactor)
+                .averageDepth(2);
+        motor.configure(
+                motorConfig, ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
     }
 
     @Override

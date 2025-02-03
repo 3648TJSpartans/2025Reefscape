@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.coralSubsystems;
 
+import edu.wpi.first.math.kinematics.Odometry;
+
 /** constants for the coral subsystem */
 public class CoralConstants {
     public static final double intakeSpeed = .5;
@@ -30,7 +32,11 @@ public class CoralConstants {
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kF = 0;
-
+    public static final double odometryFrequency = 100;
+    public static final double kLiftMinRange = 0;
+    public static final double kLiftMaxRange = 1;
+    public static final boolean elevatorEncoderInverted = false;
+    public static final double elevatorEncoderPositionFactor = 1;
     // these are the constants for the angle pid
     public static final double angle_kP = 1;
     public static final double angle_kI = 0;
@@ -39,5 +45,4 @@ public class CoralConstants {
     // this is the angle for the wrist and is subject to change for each level
     public static final double anglevalue = 45;
 
-    public static final double elevatorEncoderPositionFactor = 1;
 }
