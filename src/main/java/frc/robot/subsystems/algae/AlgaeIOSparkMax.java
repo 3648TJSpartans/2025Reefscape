@@ -7,7 +7,12 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+
+import frc.robot.subsystems.coralSubsystems.CoralConstants;
+
 import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 
 public class AlgaeIOSparkMax implements AlgaeIO {
 
@@ -27,9 +32,28 @@ public class AlgaeIOSparkMax implements AlgaeIO {
         var liftConfig = new SparkMaxConfig();
         liftConfig.idleMode(IdleMode.kBrake);
         liftConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
                 .pidf(AlgaeConstants.kLiftP, AlgaeConstants.kLiftI, AlgaeConstants.kLiftD, AlgaeConstants.kLiftFF)
                 .outputRange(AlgaeConstants.kLiftMinRange, AlgaeConstants.kLiftMaxRange);
+        liftConfig.inverted(false)
+                .idleMode(IdleMode.kBrake)
+                .voltageCompensation(12.0);
+        liftConfig.signals
+                .absoluteEncoderPositionAlwaysOn(true)
+                .absoluteEncoderPositionPeriodMs((int) (1000.0 / AlgaeConstants.liftOdometryFrequency))
+                .absoluteEncoderVelocityAlwaysOn(true)
+                .absoluteEncoderVelocityPeriodMs(20)
+                .appliedOutputPeriodMs(20)
+                .busVoltagePeriodMs(20)
+                .outputCurrentPeriodMs(20);
+        liftConfig.absoluteEncoder
+                .inverted(AlgaeConstants.liftEncoderInverted)
+                .positionConversionFactor(AlgaeConstants.liftEncoderPositionFactor)
+                .velocityConversionFactor(AlgaeConstants.liftEncoderVelocityFactor)
+                .averageDepth(2);
+        liftMotor.configure(
+                liftConfig, ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
     }
 
     // shouldn't be needed

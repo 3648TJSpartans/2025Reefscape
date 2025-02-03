@@ -32,7 +32,6 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     // constructor
     public ElevatorIOSparkMax() {
         motor = new SparkMax(CoralConstants.coralElevator, MotorType.kBrushless);
-        encoder = motor.getAbsoluteEncoder();
         motorController = motor.getClosedLoopController();
         var motorConfig = new SparkMaxConfig();
         motorConfig.inverted(false)
@@ -40,7 +39,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                 .voltageCompensation(12.0);
         motorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                .pidf(CoralConstants.kP, CoralConstants.kD, CoralConstants.kI, CoralConstants.kF)
+                .pidf(CoralConstants.kP, CoralConstants.kI, CoralConstants.kD, CoralConstants.kF)
                 .outputRange(CoralConstants.kLiftMinRange, CoralConstants.kLiftMaxRange);
         motorConfig.signals
                 .absoluteEncoderPositionAlwaysOn(true)
@@ -58,6 +57,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         motor.configure(
                 motorConfig, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
+        encoder = motor.getAbsoluteEncoder();
     }
 
     @Override
