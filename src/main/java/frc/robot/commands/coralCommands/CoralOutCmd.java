@@ -14,7 +14,6 @@ public class CoralOutCmd extends Command {
 
     @Override
     public void initialize() {
-
     }
 
     @Override

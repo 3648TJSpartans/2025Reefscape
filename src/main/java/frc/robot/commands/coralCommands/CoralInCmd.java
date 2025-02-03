@@ -14,7 +14,6 @@ public class CoralInCmd extends Command {
 
     @Override
     public void initialize() {
-
     }
 
     @Override
