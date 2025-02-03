@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import com.revrobotics.AbsoluteEncoder;
 
 import frc.robot.subsystems.algae.AlgaeConstants;
-import frc.robot.subsystems.coralSubsystems.CoralConstants;
+import frc.robot.subsystems.coralSubsystems.coralConstants;
 import org.littletonrobotics.junction.Logger;
 
 public class ElevatorIOSparkMax implements ElevatorIO {
@@ -31,7 +31,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     // constructor
     public ElevatorIOSparkMax() {
-        motor = new SparkMax(CoralConstants.coralElevator, MotorType.kBrushless);
+        motor = new SparkMax(coralConstants.coralElevator, MotorType.kBrushless);
         encoder = motor.getAbsoluteEncoder();
         motorController = motor.getClosedLoopController();
         var motorConfig = new SparkMaxConfig();
@@ -40,20 +40,20 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                 .voltageCompensation(12.0);
         motorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pidf(CoralConstants.kP, CoralConstants.kD, CoralConstants.kI, CoralConstants.kF)
-                .outputRange(CoralConstants.kLiftMinRange, CoralConstants.kLiftMaxRange);
+                .pidf(coralConstants.kP, coralConstants.kD, coralConstants.kI, coralConstants.kF)
+                .outputRange(coralConstants.kLiftMinRange, coralConstants.kLiftMaxRange);
         motorConfig.signals
                 .absoluteEncoderPositionAlwaysOn(true)
-                .absoluteEncoderPositionPeriodMs((int) (1000.0 / CoralConstants.odometryFrequency))
+                .absoluteEncoderPositionPeriodMs((int) (1000.0 / coralConstants.odometryFrequency))
                 .absoluteEncoderVelocityAlwaysOn(true)
                 .absoluteEncoderVelocityPeriodMs(20)
                 .appliedOutputPeriodMs(20)
                 .busVoltagePeriodMs(20)
                 .outputCurrentPeriodMs(20);
         motorConfig.absoluteEncoder
-                .inverted(CoralConstants.elevatorEncoderInverted)
-                .positionConversionFactor(CoralConstants.elevatorEncoderPositionFactor)
-                .velocityConversionFactor(CoralConstants.elevatorEncoderPositionFactor)
+                .inverted(coralConstants.elevatorEncoderInverted)
+                .positionConversionFactor(coralConstants.elevatorEncoderPositionFactor)
+                .velocityConversionFactor(coralConstants.elevatorEncoderPositionFactor)
                 .averageDepth(2);
         motor.configure(
                 motorConfig, ResetMode.kResetSafeParameters,
