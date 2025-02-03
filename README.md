@@ -10,3 +10,15 @@ In order to build and run the robot code, you'll need the following:
 
 ## Vendor JSONs:
 - [REVLib](https://software-metadata.revrobotics.com/REVLib-2025.json)
+- [AdvantageKit](https://github.com/Mechanical-Advantage/AdvantageKit/releases/latest/download/AdvantageKit.json)
+- [PathPlanner](https://3015rangerrobotics.github.io/pathplannerlib/PathplannerLib.json)
+- [Phoenix](https://maven.ctr-electronics.com/release/)
+- [Studica](https://dev.studica.com/releases/2025/Studica-2025.0.0.json)
+- [UCRL](https://raw.githubusercontent.com/Mechanical-Advantage/URCL/maven/URCL.json)
+
+## References
+### Local IPs
+*`##.##`* should be replaced with the robot's team number (e.g. `10.36.48`). \
+**RoboRIO:** `10.##.##.2` \
+**Limelight:** `http://limelight.local:5801` \
+**Radio:** `10.##.##.1`
