@@ -5,15 +5,21 @@
 package frc.robot.subsystems.coralSubsystems.elevator;
 
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 
 import com.revrobotics.AbsoluteEncoder;
-import frc.robot.subsystems.coralSubsystems.coralConstants;
+
+import frc.robot.subsystems.algae.AlgaeConstants;
+import frc.robot.subsystems.coralSubsystems.CoralConstants;
 import org.littletonrobotics.junction.Logger;
 
 public class ElevatorIOSparkMax implements ElevatorIO {
@@ -21,21 +27,20 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     private final SparkMax motor;
     private final AbsoluteEncoder encoder;
     private PIDController pid;
+    private final SparkClosedLoopController motorController;
 
     // constructor
     public ElevatorIOSparkMax() {
-        motor = new SparkMax(coralConstants.coralElevator, MotorType.kBrushless);
+        motor = new SparkMax(CoralConstants.coralElevator, MotorType.kBrushless);
         encoder = motor.getAbsoluteEncoder();
-        pid = new PIDController(coralConstants.kP, coralConstants.kI, coralConstants.kD);
+        motorController = motor.getClosedLoopController();
         SparkMaxConfig motorConfig = new SparkMaxConfig();
-        motorConfig.encoder
-                .positionConversionFactor(coralConstants.elevatorEncoderPositionFactor)
-                .velocityConversionFactor(coralConstants.elevatorEncoderPositionFactor)
-                .uvwMeasurementPeriod(10)
-                .uvwAverageDepth(2);
-        motor.configure(
-                motorConfig, ResetMode.kResetSafeParameters,
-                PersistMode.kPersistParameters);
+        motorConfig.idleMode(IdleMode.kBrake);
+        motorConfig.closedLoop
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .pidf(CoralConstants.kP, CoralConstants.kD, CoralConstants.kI, CoralConstants.kF)
+                .outputRange(AlgaeConstants.kLiftMinRange, AlgaeConstants.kLiftMaxRange);
+
     }
 
     @Override
@@ -49,8 +54,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     }
 
     @Override
-    public void elevateTo(double setHeight) {
-        motor.set(pid.calculate(getHeight(), setHeight));
+    public void elevateTo(double position) {
+        motorController.setReference(position, ControlType.kPosition);
     }
 
     @Override
