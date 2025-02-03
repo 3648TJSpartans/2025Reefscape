@@ -5,7 +5,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
-import frc.robot.subsystems.coralSubsystems.coralConstants;
+import frc.robot.subsystems.coralSubsystems.CoralConstants;
 
 public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     // declaration of motors, IR sensor and encoder
@@ -17,13 +17,13 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
 
     // this is the constructor of the class
     public CoralIntakeIOSparkMax() {
-        wristMotor = new SparkMax(coralConstants.coralWrist, MotorType.kBrushless);
-        intakeMotor = new SparkMax(coralConstants.coralIntake, MotorType.kBrushless);
-        irSensor = new DigitalInput(coralConstants.irSensorPin);
-        encoder = new Encoder(coralConstants.angleChannelA, coralConstants.angleChannelB, false,
+        wristMotor = new SparkMax(CoralConstants.coralWrist, MotorType.kBrushless);
+        intakeMotor = new SparkMax(CoralConstants.coralIntake, MotorType.kBrushless);
+        irSensor = new DigitalInput(CoralConstants.irSensorPin);
+        encoder = new Encoder(CoralConstants.angleChannelA, CoralConstants.angleChannelB, false,
                 Encoder.EncodingType.k4X);
-        pid = new PIDController(coralConstants.angle_kP, coralConstants.angle_kI,
-                coralConstants.angle_kD);
+        pid = new PIDController(CoralConstants.angle_kP, CoralConstants.angle_kI,
+                CoralConstants.angle_kD);
     }
 
     @Override
