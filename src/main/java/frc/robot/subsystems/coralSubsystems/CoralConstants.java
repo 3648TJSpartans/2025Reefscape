@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems.coralSubsystems;
 
-import edu.wpi.first.math.kinematics.Odometry;
-
 /** constants for the coral subsystem */
 public class CoralConstants {
     public static final double intakeSpeed = .5;
