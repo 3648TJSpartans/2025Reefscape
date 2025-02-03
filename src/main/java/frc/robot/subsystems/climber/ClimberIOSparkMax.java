@@ -27,26 +27,53 @@ public class ClimberIOSparkMax implements ClimberIO {
         leadController = leadMotor.getClosedLoopController();
 
         SparkMaxConfig leadConfig = new SparkMaxConfig();
-        leadConfig
-                .idleMode(IdleMode.kBrake)
-                .inverted(false);
         leadConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
                 .pidf(ClimberConstants.kLeadP, ClimberConstants.kLeadI, ClimberConstants.kLeadD,
                         ClimberConstants.kLeadFF)
-                .outputRange(ClimberConstants.kLeadP, ClimberConstants.kLeadP);
-        leadMotor.configure(leadConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+                .outputRange(ClimberConstants.kLeadMinOutput, ClimberConstants.kLeadMaxOutput);
+        leadConfig.inverted(false)
+                .idleMode(IdleMode.kBrake)
+                .voltageCompensation(12.0);
+        leadConfig.signals
+                .absoluteEncoderPositionAlwaysOn(true)
+                .absoluteEncoderPositionPeriodMs((int) (1000.0 / ClimberConstants.leadOdometryFrequency))
+                .absoluteEncoderVelocityAlwaysOn(true)
+                .absoluteEncoderVelocityPeriodMs(20)
+                .appliedOutputPeriodMs(20)
+                .busVoltagePeriodMs(20)
+                .outputCurrentPeriodMs(20);
+        leadConfig.absoluteEncoder
+                .inverted(ClimberConstants.leadEncoderInverted)
+                .positionConversionFactor(ClimberConstants.leadEncoderPositionFactor)
+                .velocityConversionFactor(ClimberConstants.leadEncoderPositionFactor)
+                .averageDepth(2);
+        leadMotor.configure(
+                leadConfig, ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
 
         SparkMaxConfig followConfig = new SparkMaxConfig();
         followConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
                 .pidf(ClimberConstants.kFollowP, ClimberConstants.kFollowI, ClimberConstants.kFollowD,
                         ClimberConstants.kFollowFF)
-                .outputRange(ClimberConstants.kLeadP, ClimberConstants.kLeadP);
-        followConfig
+                .outputRange(ClimberConstants.kFollowMinOutput, ClimberConstants.kFollowMaxOutput);
+        followConfig.inverted(false)
                 .idleMode(IdleMode.kBrake)
-                .inverted(true);
-
+                .voltageCompensation(12.0);
+        followConfig.signals
+                .absoluteEncoderPositionAlwaysOn(true)
+                .absoluteEncoderPositionPeriodMs((int) (1000.0 / ClimberConstants.followOdometryFrequency))
+                .absoluteEncoderVelocityAlwaysOn(true)
+                .absoluteEncoderVelocityPeriodMs(20)
+                .appliedOutputPeriodMs(20)
+                .busVoltagePeriodMs(20)
+                .outputCurrentPeriodMs(20);
+        followConfig.absoluteEncoder
+                .inverted(ClimberConstants.followEncoderInverted)
+                .positionConversionFactor(ClimberConstants.followEncoderPositionFactor)
+                .velocityConversionFactor(ClimberConstants.followEncoderPositionFactor)
+                .averageDepth(2);
         // followConfig.follow(leadMotor);
         followMotor.configure(
                 followConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

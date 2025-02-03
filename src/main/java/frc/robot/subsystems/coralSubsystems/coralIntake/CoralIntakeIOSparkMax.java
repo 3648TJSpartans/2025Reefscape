@@ -1,29 +1,56 @@
 package frc.robot.subsystems.coralSubsystems.coralIntake;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
-import frc.robot.subsystems.coralSubsystems.coralConstants;
+import frc.robot.subsystems.coralSubsystems.CoralConstants;
 
 public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     // declaration of motors, IR sensor and encoder
     private SparkMax wristMotor;
     private DigitalInput irSensor;
     private SparkMax intakeMotor;
-    private Encoder encoder;
+    private AbsoluteEncoder absoluteEncoder;
     private PIDController pid;
 
     // this is the constructor of the class
     public CoralIntakeIOSparkMax() {
-        wristMotor = new SparkMax(coralConstants.coralWrist, MotorType.kBrushless);
-        intakeMotor = new SparkMax(coralConstants.coralIntake, MotorType.kBrushless);
-        irSensor = new DigitalInput(coralConstants.irSensorPin);
-        encoder = new Encoder(coralConstants.angleChannelA, coralConstants.angleChannelB, false,
-                Encoder.EncodingType.k4X);
-        pid = new PIDController(coralConstants.angle_kP, coralConstants.angle_kI,
-                coralConstants.angle_kD);
+        wristMotor = new SparkMax(CoralConstants.coralWrist, MotorType.kBrushless);
+        intakeMotor = new SparkMax(CoralConstants.coralIntake, MotorType.kBrushless);
+        irSensor = new DigitalInput(CoralConstants.irSensorPin);
+        absoluteEncoder = wristMotor.getAbsoluteEncoder();
+        var wristConfig = new SparkMaxConfig();
+        wristConfig.inverted(false)
+                .idleMode(IdleMode.kBrake)
+                .voltageCompensation(12.0);
+        wristConfig.closedLoop
+                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+                .pidf(CoralConstants.kWristP, CoralConstants.kWristI, CoralConstants.kWristD, CoralConstants.kWristFF)
+                .outputRange(CoralConstants.kWristMinRange, CoralConstants.kWristMaxRange);
+        wristConfig.signals
+                .absoluteEncoderPositionAlwaysOn(true)
+                .absoluteEncoderPositionPeriodMs((int) (1000.0 / CoralConstants.odometryFrequency))
+                .absoluteEncoderVelocityAlwaysOn(true)
+                .absoluteEncoderVelocityPeriodMs(20)
+                .appliedOutputPeriodMs(20)
+                .busVoltagePeriodMs(20)
+                .outputCurrentPeriodMs(20);
+        wristConfig.absoluteEncoder
+                .inverted(CoralConstants.wristEncoderInverted)
+                .positionConversionFactor(CoralConstants.wristEncoderPositionFactor)
+                .velocityConversionFactor(CoralConstants.wristEncoderPositionFactor)
+                .averageDepth(2);
+        wristMotor.configure(
+                wristConfig, ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
     }
 
     @Override
@@ -48,7 +75,7 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
 
     @Override
     public double getAngle() {
-        return encoder.getDistance();
+        return absoluteEncoder.getPosition();
     }
 
     @Override

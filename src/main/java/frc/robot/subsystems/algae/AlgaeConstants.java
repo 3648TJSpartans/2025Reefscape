@@ -10,4 +10,9 @@ public class AlgaeConstants {
     public static final double kLiftFF = 0;
     public static final double kLiftMinRange = -1.0;
     public static final double kLiftMaxRange = 1.0;
+
+    public static final boolean liftEncoderInverted = false;
+    public static final double liftEncoderPositionFactor = 1.0;
+    public static final double liftEncoderVelocityFactor = 1.0;
+    public static final double liftOdometryFrequency = 100.0;
 }

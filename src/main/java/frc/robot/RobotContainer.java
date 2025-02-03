@@ -57,7 +57,7 @@ import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIO;
 import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIOSparkMax;
 import frc.robot.subsystems.coralSubsystems.elevator.Elevator;
-import frc.robot.subsystems.coralSubsystems.coralConstants;
+import frc.robot.subsystems.coralSubsystems.CoralConstants;
 import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIOSparkMax;
 import frc.robot.commands.coralCommands.CoralInCmd;
@@ -250,17 +250,20 @@ public class RobotContainer {
   public void configureCoralBindings() {
     Command coralIn = new CoralInCmd(coralIntake);
     Command coralOut = new CoralOutCmd(coralIntake);
-    Command l1 = new ElevatorCmd(elevator, coralConstants.coralLeveL1);
-    Command l2 = new ElevatorCmd(elevator, coralConstants.coralLeveL2);
-    Command l3 = new ElevatorCmd(elevator, coralConstants.coralLeveL3);
-    Command l4 = new ElevatorCmd(elevator, coralConstants.coralLeveL4);
-    Command wrist = new WristCmd(coralIntake, coralConstants.anglevalue);
+    Command l1 = new ElevatorCmd(elevator, CoralConstants.coralLeveL1);
+    Command l2 = new ElevatorCmd(elevator, CoralConstants.coralLeveL2);
+    Command l3 = new ElevatorCmd(elevator, CoralConstants.coralLeveL3);
+    Command l4 = new ElevatorCmd(elevator, CoralConstants.coralLeveL4);
+    Command wrist = new WristCmd(coralIntake, CoralConstants.anglevalue);
     Command elevatorAnalog = new ElevatorAnalogCmd(elevator, () -> testController.getLeftX());
     Command wristAnalog = new WristAnalogCmd(coralIntake, () -> testController.getRightX());
     elevator.setDefaultCommand(elevatorAnalog);
     coralIntake.setDefaultCommand(wristAnalog);
     copilotController.y().whileTrue(wrist);
-    testController.a().whileTrue(coralIn); // change back to copilot after testing
+    // testController.a().whileTrue(coralIn); // change back to copilot after
+    testController.a().onTrue(new InstantCommand(() -> coralIntake.setSpeed(.1)));
+    testController.a().onFalse(new InstantCommand(() -> coralIntake.setSpeed(0)));
+    // testing
     testController.b().whileTrue(coralOut); // change back to copilot after testing
     // Subject to Change
     copilotController.povUp().whileTrue(l1);
