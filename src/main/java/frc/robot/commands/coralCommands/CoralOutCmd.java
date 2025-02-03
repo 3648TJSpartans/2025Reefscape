@@ -14,12 +14,12 @@ public class CoralOutCmd extends Command {
 
     @Override
     public void initialize() {
-        m_coralIntake.setSpeed(-CoralConstants.intakeSpeed);
+
     }
 
     @Override
     public void execute() {
-
+        m_coralIntake.setSpeed(-CoralConstants.intakeSpeed);
     }
 
     @Override

@@ -10,7 +10,7 @@ import edu.wpi.first.math.kinematics.Odometry;
 public class CoralConstants {
     public static final double intakeSpeed = .5;
     // these are the ids for the CANs that will be use in the coral subsystem
-    public static final int coralElevator = 9;
+    public static final int coralElevator = 9; // 9; TODO CHANGE BACK TO 9
     public static final int coralWrist = 10;
     public static final int coralIntake = 11;
     // this is the constant for the pin of the ir sensor on the intake system of the

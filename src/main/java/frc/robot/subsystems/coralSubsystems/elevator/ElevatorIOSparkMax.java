@@ -14,11 +14,11 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Encoder;
 
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
 
-import frc.robot.subsystems.algae.AlgaeConstants;
 import frc.robot.subsystems.coralSubsystems.CoralConstants;
 import org.littletonrobotics.junction.Logger;
 
@@ -39,7 +39,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                 .idleMode(IdleMode.kBrake)
                 .voltageCompensation(12.0);
         motorConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
                 .pidf(CoralConstants.kP, CoralConstants.kD, CoralConstants.kI, CoralConstants.kF)
                 .outputRange(CoralConstants.kLiftMinRange, CoralConstants.kLiftMaxRange);
         motorConfig.signals

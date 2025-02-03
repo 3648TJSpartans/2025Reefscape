@@ -260,7 +260,10 @@ public class RobotContainer {
     elevator.setDefaultCommand(elevatorAnalog);
     coralIntake.setDefaultCommand(wristAnalog);
     copilotController.y().whileTrue(wrist);
-    testController.a().whileTrue(coralIn); // change back to copilot after testing
+    // testController.a().whileTrue(coralIn); // change back to copilot after
+    testController.a().onTrue(new InstantCommand(() -> coralIntake.setSpeed(.1)));
+    testController.a().onFalse(new InstantCommand(() -> coralIntake.setSpeed(0)));
+    // testing
     testController.b().whileTrue(coralOut); // change back to copilot after testing
     // Subject to Change
     copilotController.povUp().whileTrue(l1);
