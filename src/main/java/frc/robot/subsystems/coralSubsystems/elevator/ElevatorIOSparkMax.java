@@ -39,8 +39,9 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                 .voltageCompensation(12.0);
         motorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                .pidf(CoralConstants.kP, CoralConstants.kI, CoralConstants.kD, CoralConstants.kF)
-                .outputRange(CoralConstants.kLiftMinRange, CoralConstants.kLiftMaxRange);
+                .pidf(CoralConstants.kElevatorP, CoralConstants.kElevatorI, CoralConstants.kElevatorD,
+                        CoralConstants.kElevatorFF)
+                .outputRange(CoralConstants.kElevatorMinRange, CoralConstants.kElevatorMaxRange);
         motorConfig.signals
                 .absoluteEncoderPositionAlwaysOn(true)
                 .absoluteEncoderPositionPeriodMs((int) (1000.0 / CoralConstants.odometryFrequency))

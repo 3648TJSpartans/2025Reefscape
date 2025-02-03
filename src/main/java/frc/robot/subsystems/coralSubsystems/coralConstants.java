@@ -28,15 +28,25 @@ public class CoralConstants {
     public static final double coralLeveL3 = .3; // this is a momentary value that will be changed later
     public static final double coralLeveL4 = .4;
     // these are the constants for the elevator pid
-    public static final double kP = 1;
-    public static final double kI = 0;
-    public static final double kD = 0;
-    public static final double kF = 0;
+    public static final double kElevatorP = 1;
+    public static final double kElevatorI = 0;
+    public static final double kElevatorD = 0;
+    public static final double kElevatorFF = 0;
     public static final double odometryFrequency = 100;
-    public static final double kLiftMinRange = 0;
-    public static final double kLiftMaxRange = 1;
+    public static final double kElevatorMinRange = 0;
+    public static final double kElevatorMaxRange = 1;
     public static final boolean elevatorEncoderInverted = false;
     public static final double elevatorEncoderPositionFactor = 1;
+
+    public static final double kWristP = 1;
+    public static final double kWristI = 0;
+    public static final double kWristD = 0;
+    public static final double kWristFF = 0;
+    public static final double wristOdometryFrequency = 100;
+    public static final double kWristMinRange = 0;
+    public static final double kWristMaxRange = 1;
+    public static final boolean wristEncoderInverted = false;
+    public static final double wristEncoderPositionFactor = 1;
     // these are the constants for the angle pid
     public static final double angle_kP = 1;
     public static final double angle_kI = 0;
