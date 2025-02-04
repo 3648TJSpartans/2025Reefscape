@@ -10,6 +10,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import frc.robot.subsystems.coralSubsystems.CoralConstants;
+import frc.robot.util.TunableNumber;
 
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -34,14 +35,19 @@ public class AlgaeIOSparkMax implements AlgaeIO {
         liftConfig.idleMode(IdleMode.kBrake);
         liftConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                .pidf(AlgaeConstants.kLiftP, AlgaeConstants.kLiftI, AlgaeConstants.kLiftD, AlgaeConstants.kLiftFF)
-                .outputRange(AlgaeConstants.kLiftMinRange, AlgaeConstants.kLiftMaxRange);
+                .pidf(new TunableNumber("Algae/kLiftP", AlgaeConstants.kLiftP).get(),
+                        new TunableNumber("Algae/kLiftI", AlgaeConstants.kLiftI).get(),
+                        new TunableNumber("Algae/kLiftD", AlgaeConstants.kLiftD).get(),
+                        new TunableNumber("Algae/kLiftFF", AlgaeConstants.kLiftFF).get())
+                .outputRange(new TunableNumber("Algae/kLiftMinRange", AlgaeConstants.kLiftMinRange).get(),
+                        new TunableNumber("Algae/kLiftMaxRange", AlgaeConstants.kLiftMaxRange).get());
         liftConfig.inverted(false)
                 .idleMode(IdleMode.kBrake)
                 .voltageCompensation(12.0);
         liftConfig.signals
                 .absoluteEncoderPositionAlwaysOn(true)
-                .absoluteEncoderPositionPeriodMs((int) (1000.0 / AlgaeConstants.liftOdometryFrequency))
+                .absoluteEncoderPositionPeriodMs((int) (1000.0
+                        / new TunableNumber("Algae/liftOdometryFrequency", AlgaeConstants.liftOdometryFrequency).get()))
                 .absoluteEncoderVelocityAlwaysOn(true)
                 .absoluteEncoderVelocityPeriodMs(20)
                 .appliedOutputPeriodMs(20)
@@ -49,8 +55,12 @@ public class AlgaeIOSparkMax implements AlgaeIO {
                 .outputCurrentPeriodMs(20);
         liftConfig.absoluteEncoder
                 .inverted(AlgaeConstants.liftEncoderInverted)
-                .positionConversionFactor(AlgaeConstants.liftEncoderPositionFactor)
-                .velocityConversionFactor(AlgaeConstants.liftEncoderVelocityFactor)
+                .positionConversionFactor(
+                        new TunableNumber("Algae/liftEncoderPositionFactor", AlgaeConstants.liftEncoderPositionFactor)
+                                .get())
+                .velocityConversionFactor(
+                        new TunableNumber("Algae/liftEncoderVelocityFactor", AlgaeConstants.liftEncoderVelocityFactor)
+                                .get())
                 .averageDepth(2);
         liftMotor.configure(
                 liftConfig, ResetMode.kResetSafeParameters,

@@ -193,6 +193,66 @@ public class RobotContainer {
     configureElevator();
   }
 
+  public void configureCoralBindings() {
+    Command coralIn = new CoralInCmd(coralIntake);
+    Command coralOut = new CoralOutCmd(coralIntake);
+    Command elevatorAnalog = new ElevatorAnalogCmd(elevator, () -> testController.getLeftX());
+    Command wristAnalog = new WristAnalogCmd(coralIntake, () -> testController.getRightX());
+    elevator.setDefaultCommand(elevatorAnalog);
+    coralIntake.setDefaultCommand(wristAnalog);
+    copilotController.y().whileTrue(wrist);
+    // testController.a().whileTrue(coralIn); // change back to copilot after
+    testController.a().onTrue(new InstantCommand(() -> coralIntake.setSpeed(.1)));
+    testController.a().onFalse(new InstantCommand(() -> coralIntake.setSpeed(0)));
+    // testing
+    testController.b().whileTrue(coralOut); // change back to copilot after testing
+    // Subject to Change
+    copilotController.povUp().whileTrue(l1);
+    copilotController.povRight().whileTrue(l2);
+    copilotController.povDown().whileTrue(l3);
+    copilotController.povLeft().whileTrue(l4);
+    // controller.x().onTrue(AlignCommands.goTo(drive));
+    // controller.leftTrigger().whileTrue(m_AlignCommands.goTo(drive));
+
+    Command goToCommand = AlignCommands.goTo(drive);
+    // controller.leftTrigger().onTrue(goToCommand);
+    controller.leftTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToCommand)));
+    Command goToPointCommand = AlignCommands.goToPoint(drive);
+    controller.leftTrigger().onTrue(goToPointCommand);
+    controller.leftTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToPointCommand)));
+    Command testAutoCommand = new PathPlannerAuto("test");
+    controller.y().onFalse(new InstantCommand(() -> testAutoCommand.cancel()));
+    // Command testMethod = AlignCommands.testMethod(drive);
+    // controller.leftBumper().onTrue(testMethod);
+    // controller.leftBumper().onFalse(new InstantCommand(() ->
+    // cancelCommand(testMethod)));
+    Command alignLeftReef = new SwerveAutoAlignPose(PoseConstants.leftReef, PoseConstants.leftReef, drive);
+    controller.leftBumper().whileTrue(alignLeftReef);
+    Command alignRightReef = new SwerveAutoAlignPose(PoseConstants.rightReef, PoseConstants.rightReef, drive);
+    controller.rightBumper().whileTrue(alignRightReef);
+    Command alignCoralStation = new SwerveAutoAlignPose(PoseConstants.coralStation, PoseConstants.coralStation,
+        drive);
+    controller.y().whileTrue(alignCoralStation);
+    Command goToNearestCommand = new SwerveAutoAlignPoseNearest(drive);
+    controller.rightTrigger().whileTrue(goToNearestCommand);
+
+  }
+
+  public void cancelCommand(Command cmd) {
+    if (cmd.isScheduled()) {
+
+      System.out.println("CMD canceled");
+
+      cmd.cancel();
+    }
+  }
+
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+
   public void configureAlgae() {
     // Command algaeCmd = new AlgaeCmd(m_algae, () ->
     // MathUtil.applyDeadband(m_copilotController.getLeftX(), 0.2));
@@ -301,10 +361,11 @@ public class RobotContainer {
   }
 
   public void configureElevator() {
-    Command l1 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL1);
-    Command l2 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL2);
-    Command l3 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL3);
-    Command l4 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL4);
+    Command l1 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L1", CoralConstants.coralLeveL1).get());
+    Command l2 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L2", CoralConstants.coralLeveL2).get());
+    Command l3 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L3", CoralConstants.coralLeveL3).get());
+    Command l4 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L4", CoralConstants.coralLeveL4).get());
+    Command wrist = new WristCmd(coralIntake, new TunableNumber("Wrist/angle", CoralConstants.anglevalue).get());
     Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
     m_copilotController.povUp().whileTrue(l1);
     m_copilotController.povRight().whileTrue(l2);

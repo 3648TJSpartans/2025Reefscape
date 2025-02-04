@@ -20,6 +20,8 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
 import frc.robot.subsystems.coralSubsystems.CoralConstants;
+import frc.robot.util.TunableNumber;
+
 import org.littletonrobotics.junction.Logger;
 
 public class ElevatorIOSparkMax implements ElevatorIO {
@@ -39,8 +41,10 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                 .voltageCompensation(12.0);
         motorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                .pidf(CoralConstants.kElevatorP, CoralConstants.kElevatorI, CoralConstants.kElevatorD,
-                        CoralConstants.kElevatorFF)
+                .pidf(new TunableNumber("ELevator/kElevatorP", CoralConstants.kElevatorP).get(),
+                        new TunableNumber("ELevator/kElevatorI", CoralConstants.kElevatorI).get(),
+                        new TunableNumber("ELevator/kElevatorD", CoralConstants.kElevatorD).get(),
+                        new TunableNumber("ELevator/kElevatorFF", CoralConstants.kElevatorFF).get())
                 .outputRange(CoralConstants.kElevatorMinRange, CoralConstants.kElevatorMaxRange);
         motorConfig.signals
                 .absoluteEncoderPositionAlwaysOn(true)
