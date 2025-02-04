@@ -253,7 +253,7 @@ public class RobotContainer {
     Command coralIn = new CoralInCmd(coralIntake);
     Command coralOut = new CoralOutCmd(coralIntake);
     Command l1 = new ElevatorCmd(elevator, new TunableNumber("Elevator/L1", CoralConstants.coralLeveL1).get());
-    Command l2 = new ElevatorCmd(elevator, CoralConstants.coralLeveL2);
+    Command l2 = new ElevatorCmd(elevator, new TunableNumber("Elevator/L2", CoralConstants.coralLeveL2).get());
     Command l3 = new ElevatorCmd(elevator, CoralConstants.coralLeveL3);
     Command l4 = new ElevatorCmd(elevator, CoralConstants.coralLeveL4);
     Command wrist = new WristCmd(coralIntake, CoralConstants.anglevalue);
@@ -332,7 +332,6 @@ public class RobotContainer {
         .setLiftPosition(new TunableNumber("Algae/liftWithoutBall", AlgaeConstants.liftUpWithoutBall).get())));
     testController.x().onTrue(new InstantCommand(
         () -> algaeSubsystem.setLiftPosition(new TunableNumber("Algae/Shoot", AlgaeConstants.shoot).get())));
-    Command l1 = new ElevatorCmd(elevator, new TunableNumber("Elevator/L1", CoralConstants.coralLeveL1).get());
 
     // algaeSubsystem.setDefaultCommand(algaeCmd);
   }
