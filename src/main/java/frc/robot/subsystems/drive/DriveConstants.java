@@ -42,15 +42,26 @@ public class DriveConstants {
         // Device CAN IDs
         public static final int pigeonCanId = 9;
 
-        public static final int frontLeftDriveCanId = 4;
-        public static final int backLeftDriveCanId = 2;
-        public static final int frontRightDriveCanId = 6;
-        public static final int backRightDriveCanId = 8;
+        // public static final int frontLeftDriveCanId = 4;
+        // public static final int backLeftDriveCanId = 2;
+        // public static final int frontRightDriveCanId = 6;
+        // public static final int backRightDriveCanId = 8;
 
-        public static final int frontLeftTurnCanId = 3;
-        public static final int backLeftTurnCanId = 1;
-        public static final int frontRightTurnCanId = 5;
-        public static final int backRightTurnCanId = 7;
+        // public static final int frontLeftTurnCanId = 3;
+        // public static final int backLeftTurnCanId = 1;
+        // public static final int frontRightTurnCanId = 5;
+        // public static final int backRightTurnCanId = 7;
+
+        // Constants for 3649 Protobot Chassis
+        public static final int frontLeftDriveCanId = 8;
+        public static final int backLeftDriveCanId = 6;
+        public static final int frontRightDriveCanId = 2;
+        public static final int backRightDriveCanId = 4;
+
+        public static final int frontLeftTurnCanId = 7;
+        public static final int backLeftTurnCanId = 5;
+        public static final int frontRightTurnCanId = 1;
+        public static final int backRightTurnCanId = 3;
 
         // Drive motor configuration
         public static final int driveMotorCurrentLimit = 50;
