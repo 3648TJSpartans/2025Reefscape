@@ -46,6 +46,8 @@ import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.util.TunableNumber;
+import frc.robot.subsystems.algae.AlgaeConstants;
 import frc.robot.subsystems.algae.AlgaeIOSparkMax;
 import frc.robot.subsystems.algae.AlgaeSubsystem;
 import frc.robot.subsystems.climber.*;
@@ -192,15 +194,22 @@ public class RobotContainer {
   }
 
   public void configureAlgae() {
-    Command algaeCmd = new AlgaeCmd(m_algae, () -> MathUtil.applyDeadband(m_copilotController.getLeftX(), 0.2));
-    m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> m_algae.setLiftPosition(0)));// change
-    // // the
-    // zero
+    //Command algaeCmd = new AlgaeCmd(m_algae, () -> MathUtil.applyDeadband(m_copilotController.getLeftX(), 0.2));
+    
+    m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> m_algae.setLiftPosition(0)));
     m_copilotController.rightBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(0.5)));
     m_copilotController.rightBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
     m_copilotController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(-0.5)));
     m_copilotController.leftBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
-    m_algae.setDefaultCommand(algaeCmd);
+    //m_algae.setDefaultCommand(algaeCmd);
+    m_controllerTwo.a().onTrue(new InstantCommand(() -> m_algae
+        .setLiftPosition(new TunableNumber("Algae/Intake", AlgaeConstants.liftIntakePosition).get())));
+    m_controllerTwo.b().onTrue(new InstantCommand(() -> m_algae
+        .setLiftPosition(new TunableNumber("Algae/lifeWithBall", AlgaeConstants.liftUpWithBall).get())));
+    m_controllerTwo.y().onTrue(new InstantCommand(() -> m_algae
+        .setLiftPosition(new TunableNumber("Algae/liftWithoutBall", AlgaeConstants.liftUpWithoutBall).get())));
+    m_controllerTwo.x().onTrue(new InstantCommand(
+        () -> m_algae.setLiftPosition(new TunableNumber("Algae/Shoot", AlgaeConstants.shoot).get())));
   }
 
   public void configureAutoChooser() {
@@ -234,16 +243,14 @@ public class RobotContainer {
     Command coralIn = new CoralInCmd(m_coral);
     Command coralOut = new CoralOutCmd(m_coral);
     Command wrist = new WristCmd(m_coral, CoralConstants.anglevalue);
-    Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
-
+    Command wristAnalog = new WristAnalogCmd(m_coral, () -> testController.getRightX());
+    
     m_coral.setDefaultCommand(wristAnalog);
     m_copilotController.y().whileTrue(wrist);
     // m_controllerTwo.a().whileTrue(coralIn); // change back to copilot after
     m_controllerTwo.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.1)));
-    m_controllerTwo.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
-    // testing
-    m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after testing
-    // Subject to Change
+    m_controllerTwo.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));// testing
+    m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after testing// Subject to Change
   }
 
   public void configureDrive() {
