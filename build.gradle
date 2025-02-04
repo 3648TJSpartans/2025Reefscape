@@ -46,13 +46,6 @@ deploy {
                     directory = '/home/lvuser/deploy'
                     deleteOldFiles = false // Change to true to delete files on roboRIO that no
                                            // longer exist in deploy directory of this project
-                    postdeploy << {
-                        exec {
-                            commandLine 'chmod +x /home/lvuser/deploy/logroller.sh'
-                            commandLine 'sh /home/lvuser/deploy/logroller.sh'
-                        }
-                    }
-
                 }
             }
         }
