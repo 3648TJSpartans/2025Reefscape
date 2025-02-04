@@ -194,14 +194,15 @@ public class RobotContainer {
   }
 
   public void configureAlgae() {
-    //Command algaeCmd = new AlgaeCmd(m_algae, () -> MathUtil.applyDeadband(m_copilotController.getLeftX(), 0.2));
-    
+    // Command algaeCmd = new AlgaeCmd(m_algae, () ->
+    // MathUtil.applyDeadband(m_copilotController.getLeftX(), 0.2));
+
     m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> m_algae.setLiftPosition(0)));
     m_copilotController.rightBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(0.5)));
     m_copilotController.rightBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
     m_copilotController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(-0.5)));
     m_copilotController.leftBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
-    //m_algae.setDefaultCommand(algaeCmd);
+    // m_algae.setDefaultCommand(algaeCmd);
     m_controllerTwo.a().onTrue(new InstantCommand(() -> m_algae
         .setLiftPosition(new TunableNumber("Algae/Intake", AlgaeConstants.liftIntakePosition).get())));
     m_controllerTwo.b().onTrue(new InstantCommand(() -> m_algae
@@ -243,8 +244,8 @@ public class RobotContainer {
     Command coralIn = new CoralInCmd(m_coral);
     Command coralOut = new CoralOutCmd(m_coral);
     Command wrist = new WristCmd(m_coral, CoralConstants.anglevalue);
-    Command wristAnalog = new WristAnalogCmd(m_coral, () -> testController.getRightX());
-    
+    Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
+
     m_coral.setDefaultCommand(wristAnalog);
     m_copilotController.y().whileTrue(wrist);
     // m_controllerTwo.a().whileTrue(coralIn); // change back to copilot after
