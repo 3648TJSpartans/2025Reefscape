@@ -83,18 +83,16 @@ import java.util.List;
 public class RobotContainer {
 
   // Subsystems
-  private final Drive drive;
-  private final Vision vision;
-  private final CoralIntake coralIntake;
-  private final Elevator elevator;
-  private ClimberSubsystem climberSubsystem;
-  private AlgaeSubsystem algaeSubsystem;
-  private AlgaeCmd algaeCmd;
-  private ClimberCmd climberCmd;
+  private final Drive m_drive;
+  private final Vision m_vision;
+  private final CoralIntake m_coral;
+  private final Elevator m_elevator;
+  private ClimberSubsystem m_climber;
+  private AlgaeSubsystem m_algae;
   // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
-  private final CommandXboxController copilotController = new CommandXboxController(1);
-  private final CommandXboxController testController = new CommandXboxController(2);
+  private final CommandXboxController m_driveController = new CommandXboxController(0);
+  private final CommandXboxController m_copilotController = new CommandXboxController(1);
+  private final CommandXboxController m_controllerTwo = new CommandXboxController(2);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -103,54 +101,53 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
-        climberSubsystem = new ClimberSubsystem(new ClimberIOSparkMax());
-        algaeSubsystem = new AlgaeSubsystem(new AlgaeIOSparkMax());
-        drive = new Drive(
+        m_climber = new ClimberSubsystem(new ClimberIOSparkMax());
+        m_algae = new AlgaeSubsystem(new AlgaeIOSparkMax());
+        m_drive = new Drive(
             new GyroIONavX(),
             new ModuleIOSpark(0),
             new ModuleIOSpark(1),
             new ModuleIOSpark(2),
             new ModuleIOSpark(3));
-        vision = new Vision(
-            drive::addVisionMeasurement,
-            new VisionIOLimelight("limelight-three", drive::getRotation),
-            new VisionIOLimelight("limelight-twoplus", drive::getRotation));
-        coralIntake = new CoralIntake(new CoralIntakeIOSparkMax());
-        elevator = new Elevator(new ElevatorIOSparkMax());
+        m_vision = new Vision(
+            m_drive::addVisionMeasurement,
+            new VisionIOLimelight("limelight-three", m_drive::getRotation),
+            new VisionIOLimelight("limelight-twoplus", m_drive::getRotation));
+        m_coral = new CoralIntake(new CoralIntakeIOSparkMax());
+        m_elevator = new Elevator(new ElevatorIOSparkMax());
         break;
 
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
 
-        drive = new Drive(
+        m_drive = new Drive(
             new GyroIO() {
             },
             new ModuleIOSim(),
             new ModuleIOSim(),
             new ModuleIOSim(),
             new ModuleIOSim());
-        vision = new Vision(
-            drive::addVisionMeasurement,
+        m_vision = new Vision(
+            m_drive::addVisionMeasurement,
             // new VisionIOPhotonVisionSim(camera0Name, robotToCamera0,
-            // drive::getPose),
+            // m_drive::getPose),
             new VisionIOPhotonVisionSim(VisionConstants.camera1Name,
                 VisionConstants.robotToCamera1,
-                drive::getPose));
+                m_drive::getPose));
         // To later be replaced with CoralIntakeIOSim
-        coralIntake = new CoralIntake(new CoralIntakeIO() {
+        m_coral = new CoralIntake(new CoralIntakeIO() {
         });
-        elevator = new Elevator(new ElevatorIO() {
+        m_elevator = new Elevator(new ElevatorIO() {
 
         });
         break;
 
       default:
         // Replayed robot, disable IO implementations
-        drive = new Drive(
+        m_drive = new Drive(
             new GyroIO() {
             },
             new ModuleIO() {
@@ -161,46 +158,21 @@ public class RobotContainer {
             },
             new ModuleIO() {
             });
-        vision = new Vision(drive::addVisionMeasurement, new VisionIO() {
+        m_vision = new Vision(m_drive::addVisionMeasurement, new VisionIO() {
         }, new VisionIO() {
         });
-        coralIntake = new CoralIntake(new CoralIntakeIO() {
+        m_coral = new CoralIntake(new CoralIntakeIO() {
         });
-        elevator = new Elevator(new ElevatorIO() {
+        m_elevator = new Elevator(new ElevatorIO() {
 
         });
         break;
     }
-
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
-
-    // Set up SysId routines
-    autoChooser.addOption(
-        "Drive Wheel Radius Characterization",
-        DriveCommands.wheelRadiusCharacterization(drive));
-    autoChooser.addOption(
-        "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Forward)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Reverse)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Micah's test",
-        AutoBuilder.buildAuto("src\\main\\deploy\\pathplanner\\autos\\test.auto"));
-    // Configure the button bindings
-
+    configureAutoChooser();
     // Configure the button bindings
     configureButtonBindings();
-    configureClimber();
-    configureAlgae();
-    // configureAutons();
   }
 
   /**
@@ -212,184 +184,128 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Default command, normal field-relative drive
-    drive.setDefaultCommand(
-        DriveCommands.joystickDrive(
-            drive,
-            () -> controller.getLeftY(),
-            () -> controller.getLeftX(),
-            () -> controller.getRightX()));
-
-    // Lock to 0° when A button is held
-    controller
-        .b()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> controller.getLeftY(),
-                () -> controller.getLeftX(),
-                () -> new Rotation2d()));
-
-    // Switch to X pattern when X button is pressed
-    controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
-
-    // Reset gyro to 0° when B button is pressed
-    controller
-        .a()
-        .onTrue(
-            Commands.runOnce(
-                () -> drive.setPose(
-                    new Pose2d(drive.getPose()
-                        .getTranslation(),
-                        new Rotation2d())),
-                drive)
-                .ignoringDisable(true));
-    configureCoralBindings();
+    configureAlgae();
+    configureClimber();
+    configureCoralIntake();
+    configureDrive();
+    configureElevator();
   }
-
-  public void configureCoralBindings() {
-    Command coralIn = new CoralInCmd(coralIntake);
-    Command coralOut = new CoralOutCmd(coralIntake);
-    Command l1 = new ElevatorCmd(elevator, CoralConstants.coralLeveL1);
-    Command l2 = new ElevatorCmd(elevator, CoralConstants.coralLeveL2);
-    Command l3 = new ElevatorCmd(elevator, CoralConstants.coralLeveL3);
-    Command l4 = new ElevatorCmd(elevator, CoralConstants.coralLeveL4);
-    Command wrist = new WristCmd(coralIntake, CoralConstants.anglevalue);
-    Command elevatorAnalog = new ElevatorAnalogCmd(elevator, () -> testController.getLeftX());
-    Command wristAnalog = new WristAnalogCmd(coralIntake, () -> testController.getRightX());
-    elevator.setDefaultCommand(elevatorAnalog);
-    coralIntake.setDefaultCommand(wristAnalog);
-    copilotController.y().whileTrue(wrist);
-    // testController.a().whileTrue(coralIn); // change back to copilot after
-    testController.a().onTrue(new InstantCommand(() -> coralIntake.setSpeed(.1)));
-    testController.a().onFalse(new InstantCommand(() -> coralIntake.setSpeed(0)));
-    // testing
-    testController.b().whileTrue(coralOut); // change back to copilot after testing
-    // Subject to Change
-    copilotController.povUp().whileTrue(l1);
-    copilotController.povRight().whileTrue(l2);
-    copilotController.povDown().whileTrue(l3);
-    copilotController.povLeft().whileTrue(l4);
-    // controller.x().onTrue(AlignCommands.goTo(drive));
-    // controller.leftTrigger().whileTrue(m_AlignCommands.goTo(drive));
-
-    Command goToCommand = AlignCommands.goTo(drive);
-    // controller.leftTrigger().onTrue(goToCommand);
-    controller.leftTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToCommand)));
-    Command goToPointCommand = AlignCommands.goToPoint(drive);
-    controller.leftTrigger().onTrue(goToPointCommand);
-    controller.leftTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToPointCommand)));
-    Command testAutoCommand = new PathPlannerAuto("test");
-    controller.y().onFalse(new InstantCommand(() -> testAutoCommand.cancel()));
-    // Command testMethod = AlignCommands.testMethod(drive);
-    // controller.leftBumper().onTrue(testMethod);
-    // controller.leftBumper().onFalse(new InstantCommand(() ->
-    // cancelCommand(testMethod)));
-    Command alignLeftReef = new SwerveAutoAlignPose(PoseConstants.leftReef, PoseConstants.leftReef, drive);
-    controller.leftBumper().whileTrue(alignLeftReef);
-    Command alignRightReef = new SwerveAutoAlignPose(PoseConstants.rightReef, PoseConstants.rightReef, drive);
-    controller.rightBumper().whileTrue(alignRightReef);
-    Command alignCoralStation = new SwerveAutoAlignPose(PoseConstants.coralStation, PoseConstants.coralStation,
-        drive);
-    controller.y().whileTrue(alignCoralStation);
-    Command goToNearestCommand = new SwerveAutoAlignPoseNearest(drive);
-    controller.rightTrigger().whileTrue(goToNearestCommand);
-
-  }
-
-  public void cancelCommand(Command cmd) {
-    if (cmd.isScheduled()) {
-
-      System.out.println("CMD canceled");
-
-      cmd.cancel();
-    }
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
 
   public void configureAlgae() {
-    algaeCmd = new AlgaeCmd(algaeSubsystem, () -> MathUtil.applyDeadband(copilotController.getLeftX(), 0.2));
-    copilotController.rightTrigger().onTrue(new InstantCommand(() -> algaeSubsystem.setLiftPosition(0)));// change
-                                                                                                         // // the
-                                                                                                         // zero
-    copilotController.rightBumper().onTrue(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(0.5)));
-    copilotController.rightBumper().onFalse(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(0)));
-    copilotController.leftBumper().onTrue(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(-0.5)));
-    copilotController.leftBumper().onFalse(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(0)));
-    algaeSubsystem.setDefaultCommand(algaeCmd);
+    Command algaeCmd = new AlgaeCmd(m_algae, () -> MathUtil.applyDeadband(m_copilotController.getLeftX(), 0.2));
+    m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> m_algae.setLiftPosition(0)));// change
+    // // the
+    // zero
+    m_copilotController.rightBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(0.5)));
+    m_copilotController.rightBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
+    m_copilotController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(-0.5)));
+    m_copilotController.leftBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
+    m_algae.setDefaultCommand(algaeCmd);
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    return autoChooser.get();
-  }
-
-  public void configureAutons() {
-    controller.leftTrigger().whileTrue(Commands.runOnce(() -> {
-      Pose2d currentPose = drive.getPose();
-      // The rotation component in these poses represents the direction of travel
-      Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d());
-      Pose2d endPos = new Pose2d(currentPose.getTranslation().plus(new Translation2d(1.0, 0.0)),
-          new Rotation2d());
-
-      List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPos, endPos);
-      PathPlannerPath path = new PathPlannerPath(
-          waypoints,
-          new PathConstraints(
-              4.0, 4.0,
-              Units.degreesToRadians(360), Units.degreesToRadians(540)),
-          null, // Ideal starting state can be null for on-the-fly paths
-          new GoalEndState(1, currentPose.getRotation()));
-
-      // Prevent this path from being flipped on the red alliance, since the given
-      // positions are already correct
-      path.preventFlipping = true;
-
-      AutoBuilder.followPath(path).schedule();
-    }));
-
+  public void configureAutoChooser() {
+    // Set up SysId routines
+    autoChooser.addOption(
+        "Drive Wheel Radius Characterization",
+        DriveCommands.wheelRadiusCharacterization(m_drive));
+    autoChooser.addOption(
+        "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(m_drive));
+    autoChooser.addOption(
+        "Drive SysId (Quasistatic Forward)",
+        m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    autoChooser.addOption(
+        "Drive SysId (Quasistatic Reverse)",
+        m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addOption(
+        "Drive SysId (Dynamic Forward)", m_drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    autoChooser.addOption(
+        "Drive SysId (Dynamic Reverse)", m_drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addOption(
+        "Micah's test",
+        AutoBuilder.buildAuto("src\\main\\deploy\\pathplanner\\autos\\test.auto"));
   }
 
   public void configureClimber() {
-    climberCmd = new ClimberCmd(climberSubsystem, () -> copilotController.getRightX());
-
-    // other
-    // constant
-    climberSubsystem.setDefaultCommand(climberCmd);
+    Command climberCmd = new ClimberCmd(m_climber, () -> m_copilotController.getRightX());
+    m_climber.setDefaultCommand(climberCmd);
   }
 
-  public Command goToPoint(Pose2d targetPose) {
-    return Commands.runOnce(() -> {
-      Pose2d currentPose = drive.getPose();
+  public void configureCoralIntake() {
+    Command coralIn = new CoralInCmd(m_coral);
+    Command coralOut = new CoralOutCmd(m_coral);
+    Command wrist = new WristCmd(m_coral, CoralConstants.anglevalue);
+    Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
 
-      // The rotation component in these poses represents the direction of travel
-      Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d());
-      Pose2d endPos = targetPose;
-
-      List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPos, endPos);
-      PathPlannerPath path = new PathPlannerPath(
-          waypoints,
-          new PathConstraints(
-              4.0, 4.0,
-              Units.degreesToRadians(360), Units.degreesToRadians(540)),
-          null, // Ideal starting state can be null for on-the-fly paths
-          new GoalEndState(1, currentPose.getRotation()));
-
-      // Prevent this path from being flipped on the red alliance, since the given
-      // positions are already correct
-      path.preventFlipping = true;
-
-      AutoBuilder.followPath(path).schedule();
-    });
+    m_coral.setDefaultCommand(wristAnalog);
+    m_copilotController.y().whileTrue(wrist);
+    // m_controllerTwo.a().whileTrue(coralIn); // change back to copilot after
+    m_controllerTwo.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.1)));
+    m_controllerTwo.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
+    // testing
+    m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after testing
+    // Subject to Change
   }
 
+  public void configureDrive() {
+    // Default command, normal field-relative drive
+    m_drive.setDefaultCommand(
+        DriveCommands.joystickDrive(
+            m_drive,
+            () -> m_driveController.getLeftY(),
+            () -> m_driveController.getLeftX(),
+            () -> m_driveController.getRightX()));
+
+    // Lock to 0° when A button is held
+    m_driveController
+        .b()
+        .whileTrue(
+            DriveCommands.joystickDriveAtAngle(
+                m_drive,
+                () -> m_driveController.getLeftY(),
+                () -> m_driveController.getLeftX(),
+                () -> new Rotation2d()));
+
+    // Switch to X pattern when X button is pressed
+    m_driveController.x().onTrue(Commands.runOnce(m_drive::stopWithX, m_drive));
+
+    // Reset gyro to 0° when B button is pressed
+    m_driveController
+        .a()
+        .onTrue(
+            Commands.runOnce(
+                () -> m_drive.setPose(
+                    new Pose2d(m_drive.getPose()
+                        .getTranslation(),
+                        new Rotation2d())),
+                m_drive)
+                .ignoringDisable(true));
+    Command goToPointCommand = AlignCommands.goToPoint(m_drive);
+    m_driveController.leftTrigger().whileTrue(goToPointCommand);
+    Command alignLeftReef = new SwerveAutoAlignPose(PoseConstants.leftReef, PoseConstants.leftReef, m_drive);
+    m_driveController.leftBumper().whileTrue(alignLeftReef);
+    Command alignRightReef = new SwerveAutoAlignPose(PoseConstants.rightReef, PoseConstants.rightReef, m_drive);
+    m_driveController.rightBumper().whileTrue(alignRightReef);
+    Command alignCoralStation = new SwerveAutoAlignPose(PoseConstants.coralStation, PoseConstants.coralStation,
+        m_drive);
+    m_driveController.y().whileTrue(alignCoralStation);
+    Command goToNearestCommand = new SwerveAutoAlignPoseNearest(m_drive);
+    m_driveController.rightTrigger().whileTrue(goToNearestCommand);
+  }
+
+  public void configureElevator() {
+    Command l1 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL1);
+    Command l2 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL2);
+    Command l3 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL3);
+    Command l4 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL4);
+    Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
+    m_copilotController.povUp().whileTrue(l1);
+    m_copilotController.povRight().whileTrue(l2);
+    m_copilotController.povDown().whileTrue(l3);
+    m_copilotController.povLeft().whileTrue(l4);
+    m_elevator.setDefaultCommand(elevatorAnalog);
+  }
+
+  public Command getAutonomousCommand() {
+    return autoChooser.get();
+  }
 }
