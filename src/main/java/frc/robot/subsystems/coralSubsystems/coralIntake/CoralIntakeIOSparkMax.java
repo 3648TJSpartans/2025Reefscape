@@ -5,6 +5,8 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -12,6 +14,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.subsystems.coralSubsystems.CoralConstants;
+import com.revrobotics.spark.SparkClosedLoopController;
 
 public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     // declaration of motors, IR sensor and encoder
@@ -19,6 +22,7 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     private DigitalInput irSensor;
     private SparkMax intakeMotor;
     private AbsoluteEncoder absoluteEncoder;
+    private SparkClosedLoopController wristController;
     private PIDController pid;
 
     // this is the constructor of the class
@@ -70,7 +74,7 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
 
     @Override
     public void RotateTo(double setpoint) {
-        wristMotor.set(pid.calculate(getAngle(), setpoint));
+        wristController.setReference(setpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0);
     }
 
     @Override

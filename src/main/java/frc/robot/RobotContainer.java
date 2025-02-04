@@ -46,6 +46,7 @@ import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.subsystems.algae.AlgaeConstants;
 import frc.robot.subsystems.algae.AlgaeIOSparkMax;
 import frc.robot.subsystems.algae.AlgaeSubsystem;
 import frc.robot.subsystems.climber.*;
@@ -313,7 +314,8 @@ public class RobotContainer {
    */
 
   public void configureAlgae() {
-    algaeCmd = new AlgaeCmd(algaeSubsystem, () -> MathUtil.applyDeadband(copilotController.getLeftX(), 0.2));
+    // algaeCmd = new AlgaeCmd(algaeSubsystem, () ->
+    // MathUtil.applyDeadband(copilotController.getLeftX(), 0.2));
     copilotController.rightTrigger().onTrue(new InstantCommand(() -> algaeSubsystem.setLiftPosition(0)));// change
                                                                                                          // // the
                                                                                                          // zero
@@ -321,7 +323,14 @@ public class RobotContainer {
     copilotController.rightBumper().onFalse(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(0)));
     copilotController.leftBumper().onTrue(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(-0.5)));
     copilotController.leftBumper().onFalse(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(0)));
-    algaeSubsystem.setDefaultCommand(algaeCmd);
+    testController.a()
+        .onTrue(new InstantCommand(() -> algaeSubsystem.setLiftPosition(AlgaeConstants.liftIntakePosition)));
+    testController.b().onTrue(new InstantCommand(() -> algaeSubsystem.setLiftPosition(AlgaeConstants.liftUpWithBall)));
+    testController.y()
+        .onTrue(new InstantCommand(() -> algaeSubsystem.setLiftPosition(AlgaeConstants.liftUpWithoutBall)));
+    testController.x().onTrue(new InstantCommand(() -> algaeSubsystem.setLiftPosition(AlgaeConstants.shoot)));
+
+    // algaeSubsystem.setDefaultCommand(algaeCmd);
   }
 
   /**

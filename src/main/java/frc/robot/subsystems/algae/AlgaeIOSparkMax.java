@@ -1,6 +1,7 @@
 package frc.robot.subsystems.algae;
 
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -62,7 +63,7 @@ public class AlgaeIOSparkMax implements AlgaeIO {
     }
 
     public void setLiftPosition(double position) {
-        liftController.setReference(position, ControlType.kPosition);
+        liftController.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
     }
 
     public void setIntakeSpeed(double speed) {
