@@ -46,6 +46,7 @@ import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.util.TunableNumber;
 import frc.robot.subsystems.algae.AlgaeConstants;
 import frc.robot.subsystems.algae.AlgaeIOSparkMax;
 import frc.robot.subsystems.algae.AlgaeSubsystem;
@@ -251,7 +252,7 @@ public class RobotContainer {
   public void configureCoralBindings() {
     Command coralIn = new CoralInCmd(coralIntake);
     Command coralOut = new CoralOutCmd(coralIntake);
-    Command l1 = new ElevatorCmd(elevator, CoralConstants.coralLeveL1);
+    Command l1 = new ElevatorCmd(elevator, new TunableNumber("Elevator/L1", CoralConstants.coralLeveL1).get());
     Command l2 = new ElevatorCmd(elevator, CoralConstants.coralLeveL2);
     Command l3 = new ElevatorCmd(elevator, CoralConstants.coralLeveL3);
     Command l4 = new ElevatorCmd(elevator, CoralConstants.coralLeveL4);
@@ -323,12 +324,15 @@ public class RobotContainer {
     copilotController.rightBumper().onFalse(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(0)));
     copilotController.leftBumper().onTrue(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(-0.5)));
     copilotController.leftBumper().onFalse(new InstantCommand(() -> algaeSubsystem.setIntakeSpeed(0)));
-    testController.a()
-        .onTrue(new InstantCommand(() -> algaeSubsystem.setLiftPosition(AlgaeConstants.liftIntakePosition)));
-    testController.b().onTrue(new InstantCommand(() -> algaeSubsystem.setLiftPosition(AlgaeConstants.liftUpWithBall)));
-    testController.y()
-        .onTrue(new InstantCommand(() -> algaeSubsystem.setLiftPosition(AlgaeConstants.liftUpWithoutBall)));
-    testController.x().onTrue(new InstantCommand(() -> algaeSubsystem.setLiftPosition(AlgaeConstants.shoot)));
+    testController.a().onTrue(new InstantCommand(() -> algaeSubsystem
+        .setLiftPosition(new TunableNumber("Algae/Intake", AlgaeConstants.liftIntakePosition).get())));
+    testController.b().onTrue(new InstantCommand(() -> algaeSubsystem
+        .setLiftPosition(new TunableNumber("Algae/lifeWithBall", AlgaeConstants.liftUpWithBall).get())));
+    testController.y().onTrue(new InstantCommand(() -> algaeSubsystem
+        .setLiftPosition(new TunableNumber("Algae/liftWithoutBall", AlgaeConstants.liftUpWithoutBall).get())));
+    testController.x().onTrue(new InstantCommand(
+        () -> algaeSubsystem.setLiftPosition(new TunableNumber("Algae/Shoot", AlgaeConstants.shoot).get())));
+    Command l1 = new ElevatorCmd(elevator, new TunableNumber("Elevator/L1", CoralConstants.coralLeveL1).get());
 
     // algaeSubsystem.setDefaultCommand(algaeCmd);
   }
