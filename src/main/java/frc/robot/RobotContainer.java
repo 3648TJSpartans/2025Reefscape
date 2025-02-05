@@ -201,7 +201,7 @@ public class RobotContainer {
     m_elevator.setDefaultCommand(elevatorAnalog);
     m_coral.setDefaultCommand(wristAnalog);
     // testController.a().whileTrue(coralIn); // change back to copilot after
-    m_driveController.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.1)));
+    m_driveController.a().onTrue((new InstantCommand(() -> m_coral.setSpeed(.1))));
     m_driveController.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
     // testing
     m_driveController.b().whileTrue(coralOut); // change back to copilot after testing
@@ -299,7 +299,7 @@ public class RobotContainer {
   public void configureCoralIntake() {
     Command coralIn = new CoralInCmd(m_coral);
     Command coralOut = new CoralOutCmd(m_coral);
-    Command wrist = new WristCmd(m_coral, CoralConstants.anglevalue);
+    Command wrist = new WristCmd(m_coral, new TunableNumber("WristAngle", CoralConstants.anglevalue).get());
     Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
 
     m_coral.setDefaultCommand(wristAnalog);
@@ -361,7 +361,7 @@ public class RobotContainer {
     Command l2 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L2", CoralConstants.coralLeveL2).get());
     Command l3 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L3", CoralConstants.coralLeveL3).get());
     Command l4 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L4", CoralConstants.coralLeveL4).get());
-    Command wrist = new WristCmd(m_coral, new TunableNumber("Wrist/angle", CoralConstants.anglevalue).get());
+
     Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
     m_copilotController.povUp().whileTrue(l1);
     m_copilotController.povRight().whileTrue(l2);
@@ -369,7 +369,7 @@ public class RobotContainer {
     m_copilotController.povLeft().whileTrue(l4);
 
     m_elevator.setDefaultCommand(elevatorAnalog);
-    m_copilotController.y().whileTrue(wrist);
+
   }
 
   public Command getAutonomousCommand() {
