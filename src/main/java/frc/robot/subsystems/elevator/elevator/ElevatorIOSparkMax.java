@@ -11,6 +11,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.AbsoluteEncoder;
@@ -83,7 +84,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     @Override
     public void elevateTo(double position) {
         if (limitReset) {
-            motorController.setReference(position, ControlType.kPosition);
+            motorController.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
         }
     }
 
