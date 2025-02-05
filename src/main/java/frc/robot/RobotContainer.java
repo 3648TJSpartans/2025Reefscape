@@ -64,7 +64,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
-
+import frc.robot.commands.coralCommands.CoralElevatorIntegratedCmd;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
 import frc.robot.commands.coralCommands.ElevatorCmd;
@@ -194,6 +194,7 @@ public class RobotContainer {
     configureCoralIntake();
     configureDrive();
     configureElevator();
+    configureSetpoints();
   }
 
   public void configureCoralBindings() {
@@ -366,6 +367,18 @@ public class RobotContainer {
     Command l4 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L4", ElevatorConstants.coralLeveL4).get());
 
     Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
+    // m_controllerTwo.povUp().whileTrue(l1);
+    // m_controllerTwo.povRight().whileTrue(l2);
+    // m_controllerTwo.povDown().whileTrue(l3);
+    // m_controllerTwo.povLeft().whileTrue(l4);
+    m_elevator.setDefaultCommand(elevatorAnalog);
+  }
+
+  public void configureSetpoints() {
+    Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator, CoralConstants.L1Height, CoralConstants.L1Angle);
+    Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator, CoralConstants.L2Height, CoralConstants.L2Angle);
+    Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator, CoralConstants.L3Height, CoralConstants.L3Angle);
+    Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator, CoralConstants.L4Height, CoralConstants.L4Angle);
     m_controllerTwo.povUp().whileTrue(l1);
     m_controllerTwo.povRight().whileTrue(l2);
     m_controllerTwo.povDown().whileTrue(l3);
