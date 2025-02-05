@@ -366,11 +366,10 @@ public class RobotContainer {
     Command l4 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L4", ElevatorConstants.coralLeveL4).get());
 
     Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
-    m_copilotController.povUp().whileTrue(l1);
-    m_copilotController.povRight().whileTrue(l2);
-    m_copilotController.povDown().whileTrue(l3);
-    m_copilotController.povLeft().whileTrue(l4);
-
+    m_controllerTwo.povUp().whileTrue(l1);
+    m_controllerTwo.povRight().whileTrue(l2);
+    m_controllerTwo.povDown().whileTrue(l3);
+    m_controllerTwo.povLeft().whileTrue(l4);
     m_elevator.setDefaultCommand(elevatorAnalog);
 
   }
