@@ -1,5 +1,7 @@
 package frc.robot.subsystems.coralSubsystems.coralIntake;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
@@ -80,6 +82,11 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     @Override
     public void RotateTo(double setpoint) {
         wristController.setReference(setpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+    }
+
+    @Override
+    public void updateValues() {
+        Logger.recordOutput("Odometry/Sensor/coralIRsensorValue", getIR());
     }
 
     @Override

@@ -45,7 +45,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                         new TunableNumber("ELevator/kElevatorI", CoralConstants.kElevatorI).get(),
                         new TunableNumber("ELevator/kElevatorD", CoralConstants.kElevatorD).get(),
                         new TunableNumber("ELevator/kElevatorFF", CoralConstants.kElevatorFF).get())
-                .outputRange(CoralConstants.kElevatorMinRange, CoralConstants.kElevatorMaxRange);
+                .outputRange(new TunableNumber("Elevator/kElevatorMinRange", CoralConstants.kElevatorMinRange).get(),
+                        new TunableNumber("Elevator/kElevatorMaxRange", CoralConstants.kElevatorMaxRange).get());
         motorConfig.signals
                 .absoluteEncoderPositionAlwaysOn(true)
                 .absoluteEncoderPositionPeriodMs((int) (1000.0 / CoralConstants.odometryFrequency))
@@ -56,7 +57,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                 .outputCurrentPeriodMs(20);
         motorConfig.absoluteEncoder
                 .inverted(CoralConstants.elevatorEncoderInverted)
-                .positionConversionFactor(CoralConstants.elevatorEncoderPositionFactor)
+                .positionConversionFactor(new TunableNumber("Elevator/elevatorEncoderPositionFactor",
+                        CoralConstants.elevatorEncoderPositionFactor).get())
                 .velocityConversionFactor(CoralConstants.elevatorEncoderPositionFactor)
                 .averageDepth(2);
         motor.configure(
