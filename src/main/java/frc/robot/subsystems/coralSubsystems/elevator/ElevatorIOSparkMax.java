@@ -11,6 +11,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
@@ -43,7 +44,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                 .idleMode(IdleMode.kBrake)
                 .voltageCompensation(12.0);
         motorConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .pidf(CoralConstants.kElevatorP, CoralConstants.kElevatorI, CoralConstants.kElevatorD,
                         CoralConstants.kElevatorFF)
                 .outputRange(CoralConstants.kElevatorMinRange, CoralConstants.kElevatorMaxRange);
@@ -78,7 +79,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     @Override
     public void elevateTo(double position) {
         if (limitReset) {
-            motorController.setReference(position, ControlType.kPosition);
+            motorController.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
         }
     }
 

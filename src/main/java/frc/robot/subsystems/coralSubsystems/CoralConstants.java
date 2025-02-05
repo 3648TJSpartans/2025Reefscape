@@ -15,7 +15,7 @@ public class CoralConstants {
     public static final int coralIntake = 11;
     // this is the constant for the pin of the ir sensor on the intake system of the
     // coral subsytem
-    public static final int irSensorPin = 1;
+    public static final int irSensorPin = 0;
 
     // these are the constants used for the encoder's pins
     public static final int levelChannelA = 2;
@@ -23,18 +23,18 @@ public class CoralConstants {
     public static final int angleChannelA = 4;
     public static final int angleChannelB = 5;
 
-    public static final double coralLeveL1 = .1; // this is a momentary value that will be changed later
-    public static final double coralLeveL2 = .2; // this is a momentary value that will be changed later
-    public static final double coralLeveL3 = .3; // this is a momentary value that will be changed later
-    public static final double coralLeveL4 = .4;
+    public static final double coralLeveL1 = 5; // this is a momentary value that will be changed later
+    public static final double coralLeveL2 = 10; // this is a momentary value that will be changed later
+    public static final double coralLeveL3 = 15; // this is a momentary value that will be changed later
+    public static final double coralLeveL4 = 20;
     // these are the constants for the elevator pid
-    public static final double kElevatorP = 1;
+    public static final double kElevatorP = .05;
     public static final double kElevatorI = 0;
     public static final double kElevatorD = 0;
     public static final double kElevatorFF = 0;
     public static final double odometryFrequency = 100;
-    public static final double kElevatorMinRange = 0;
-    public static final double kElevatorMaxRange = 1;
+    public static final double kElevatorMinRange = -.5;
+    public static final double kElevatorMaxRange = .5;
     public static final boolean elevatorEncoderInverted = false;
     public static final double elevatorEncoderPositionFactor = 1;
 
