@@ -13,7 +13,7 @@ public class CoralConstants {
     public static final int coralIntake = 11;
     // this is the constant for the pin of the ir sensor on the intake system of the
     // coral subsytem
-    public static final int irSensorPin = 1;
+    public static final int irSensorPin = 0;
 
     // these are the constants used for the encoder's pins
     public static final int levelChannelA = 2;
