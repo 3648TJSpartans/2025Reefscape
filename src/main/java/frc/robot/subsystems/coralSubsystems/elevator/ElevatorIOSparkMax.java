@@ -14,9 +14,9 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
 import frc.robot.subsystems.coralSubsystems.CoralConstants;
@@ -25,14 +25,19 @@ import org.littletonrobotics.junction.Logger;
 public class ElevatorIOSparkMax implements ElevatorIO {
     // declaration of the motors and encoders
     private final SparkMax motor;
-    private final AbsoluteEncoder encoder;
+    private final RelativeEncoder encoder;
     private PIDController pid;
     private final SparkClosedLoopController motorController;
+    private boolean limitReset;
+    private final DigitalInput limitSwitch = new DigitalInput(CoralConstants.bottomLimitSwitchPin);
 
     // constructor
     public ElevatorIOSparkMax() {
         motor = new SparkMax(CoralConstants.coralElevator, MotorType.kBrushless);
         motorController = motor.getClosedLoopController();
+        limitReset = false;
+        Logger.recordOutput("Elevator/EncoderReset", false);
+        encoder = motor.getEncoder();
         var motorConfig = new SparkMaxConfig();
         motorConfig.inverted(false)
                 .idleMode(IdleMode.kBrake)
@@ -58,7 +63,6 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         motor.configure(
                 motorConfig, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
-        encoder = motor.getAbsoluteEncoder();
     }
 
     @Override
@@ -73,7 +77,9 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     @Override
     public void elevateTo(double position) {
-        motorController.setReference(position, ControlType.kPosition);
+        if (limitReset) {
+            motorController.setReference(position, ControlType.kPosition);
+        }
     }
 
     @Override
@@ -87,7 +93,19 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     @Override
     public void updateValues() {
-        Logger.recordOutput("Odometry/Elevator/EncoderValue", encoder.getPosition());
+        Logger.recordOutput("Elevator/EncoderValue", encoder.getPosition());
     }
 
+    @Override
+    public void updateLimitSwitch() {
+        if (limitSwitch.get()) {
+            setZero();
+            Logger.recordOutput("Elevator/EncoderReset", limitReset);
+        }
+    }
+
+    private void setZero() {
+        encoder.setPosition(0);
+        limitReset = true;
+    }
 }

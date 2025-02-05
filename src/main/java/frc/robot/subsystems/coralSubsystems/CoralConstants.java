@@ -52,5 +52,6 @@ public class CoralConstants {
 
     // this is the angle for the wrist and is subject to change for each level
     public static final double anglevalue = 45;
+    public static final int bottomLimitSwitchPin = 3;
 
 }

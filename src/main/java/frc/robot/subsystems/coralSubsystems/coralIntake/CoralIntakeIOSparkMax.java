@@ -36,7 +36,7 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
                 .idleMode(IdleMode.kBrake)
                 .voltageCompensation(12.0);
         wristConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .pidf(CoralConstants.kWristP, CoralConstants.kWristI, CoralConstants.kWristD, CoralConstants.kWristFF)
                 .outputRange(CoralConstants.kWristMinRange, CoralConstants.kWristMaxRange);
         wristConfig.signals
@@ -90,4 +90,5 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     public void setWristSpeed(double speed) {
         wristMotor.set(speed);
     }
+
 }
