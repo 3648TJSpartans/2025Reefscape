@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.coralSubsystems;
 
+import frc.robot.util.TunableNumber;
+
 /** constants for the coral subsystem */
 public class CoralConstants {
     public static final double intakeSpeed = .5;
@@ -52,6 +54,6 @@ public class CoralConstants {
 
     // this is the angle for the wrist and is subject to change for each level
     public static final double anglevalue = 45;
-    public static final int bottomLimitSwitchPin = 3;
+    public static final int bottomLimitSwitchPin = (int) new TunableNumber("LimitSwitchPort", 2).get();
 
 }
