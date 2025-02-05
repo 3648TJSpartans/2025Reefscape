@@ -23,10 +23,15 @@ public class CoralConstants {
     public static final int angleChannelA = 4;
     public static final int angleChannelB = 5;
 
-    public static final double coralLeveL1 = 5; // this is a momentary value that will be changed later
-    public static final double coralLeveL2 = 10; // this is a momentary value that will be changed later
-    public static final double coralLeveL3 = 15; // this is a momentary value that will be changed later
-    public static final double coralLeveL4 = 20;
+    public static final double L1Height = 5; // this is a momentary value that will be changed later
+    public static final double L2Height = 10; // this is a momentary value that will be changed later
+    public static final double L3Height = 15; // this is a momentary value that will be changed later
+    public static final double L4Height = 20;
+
+    public static final double L1Angle = Math.PI / 5; // angle rad
+    public static final double L2Angle = 2 * Math.PI / 5; // angle rad
+    public static final double L3Angle = 3 * Math.PI / 5; // angle rad
+    public static final double L4Angle = 4 * Math.PI / 5; // angle rad
     // these are the constants for the elevator pid
     public static final double kElevatorP = .05;
     public static final double kElevatorI = 0;
@@ -38,7 +43,7 @@ public class CoralConstants {
     public static final boolean elevatorEncoderInverted = false;
     public static final double elevatorEncoderPositionFactor = 1;
 
-    public static final double kWristP = 1;
+    public static final double kWristP = .1;
     public static final double kWristI = 0;
     public static final double kWristD = 0;
     public static final double kWristFF = 0;
@@ -46,7 +51,7 @@ public class CoralConstants {
     public static final double kWristMinRange = 0;
     public static final double kWristMaxRange = 1;
     public static final boolean wristEncoderInverted = false;
-    public static final double wristEncoderPositionFactor = 1;
+    public static final double wristEncoderPositionFactor = 2 * Math.PI;
     // these are the constants for the angle pid
     public static final double angle_kP = 1;
     public static final double angle_kI = 0;

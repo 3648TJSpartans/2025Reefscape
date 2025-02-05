@@ -62,6 +62,7 @@ import frc.robot.subsystems.coralSubsystems.elevator.Elevator;
 import frc.robot.subsystems.coralSubsystems.CoralConstants;
 import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIOSparkMax;
+import frc.robot.commands.coralCommands.CoralElevatorIntegratedCmd;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
 import frc.robot.commands.coralCommands.ElevatorCmd;
@@ -191,6 +192,7 @@ public class RobotContainer {
     configureCoralIntake();
     configureDrive();
     configureElevator();
+    configureSetpoints();
   }
 
   public void configureAlgae() {
@@ -301,16 +303,27 @@ public class RobotContainer {
   }
 
   public void configureElevator() {
-    Command l1 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL1);
-    Command l2 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL2);
-    Command l3 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL3);
-    Command l4 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL4);
+    // Command l1 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL1);
+    // Command l2 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL2);
+    // Command l3 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL3);
+    // Command l4 = new ElevatorCmd(m_elevator, CoralConstants.coralLeveL4);
     Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
+    // m_controllerTwo.povUp().whileTrue(l1);
+    // m_controllerTwo.povRight().whileTrue(l2);
+    // m_controllerTwo.povDown().whileTrue(l3);
+    // m_controllerTwo.povLeft().whileTrue(l4);
+    m_elevator.setDefaultCommand(elevatorAnalog);
+  }
+
+  public void configureSetpoints() {
+    Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator, CoralConstants.L1Height, CoralConstants.L1Angle);
+    Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator, CoralConstants.L2Height, CoralConstants.L2Angle);
+    Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator, CoralConstants.L3Height, CoralConstants.L3Angle);
+    Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator, CoralConstants.L4Height, CoralConstants.L4Angle);
     m_controllerTwo.povUp().whileTrue(l1);
     m_controllerTwo.povRight().whileTrue(l2);
     m_controllerTwo.povDown().whileTrue(l3);
     m_controllerTwo.povLeft().whileTrue(l4);
-    m_elevator.setDefaultCommand(elevatorAnalog);
   }
 
   public Command getAutonomousCommand() {
