@@ -247,12 +247,16 @@ public class RobotContainer {
   public void configureCoralIntake() {
     Command coralIn = new CoralInCmd(m_coral);
     Command coralOut = new CoralOutCmd(m_coral);
-    Command wrist = new WristCmd(m_coral, CoralConstants.anglevalue);
     Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
-
+    Command l1 = new ElevatorCmd(m_elevator, CoralConstants.L1Angle);
+    Command l2 = new ElevatorCmd(m_elevator, CoralConstants.L2Angle);
+    Command l3 = new ElevatorCmd(m_elevator, CoralConstants.L3Angle);
+    Command l4 = new ElevatorCmd(m_elevator, CoralConstants.L4Angle);
     m_coral.setDefaultCommand(wristAnalog);
-    m_copilotController.y().whileTrue(wrist);
-    // m_controllerTwo.a().whileTrue(coralIn); // change back to copilot after
+    m_controllerTwo.povUp().whileTrue(l1);
+    m_controllerTwo.povRight().whileTrue(l2);
+    m_controllerTwo.povDown().whileTrue(l3);
+    m_controllerTwo.povLeft().whileTrue(l4);
     m_controllerTwo.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.1)));
     m_controllerTwo.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));// testing
     m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after testing// Subject to Change
