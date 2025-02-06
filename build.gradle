@@ -34,25 +34,22 @@ deploy {
             debug = project.frc.getDebugOrDefault(false)
 
             artifacts {
-                // First part is artifact name, 2nd is artifact type
-                // getTargetTypeClass is a shortcut to get the class type using a string
-
                 frcJava(getArtifactTypeClass('FRCJavaArtifact')) {
                 }
 
-                // Static files artifact
                 frcStaticFileDeploy(getArtifactTypeClass('FileTreeArtifact')) {
                     files = project.fileTree('src/main/deploy')
                     directory = '/home/lvuser/deploy'
                     deleteOldFiles = false // Change to true to delete files on roboRIO that no
-                                           // longer exist in deploy directory of this project
+                    // longer exist in deploy directory of this project
                     postdeploy << {
-                        exec {
-                            commandLine 'chmod +x /home/lvuser/deploy/logroller.sh'
-                            commandLine 'sh /home/lvuser/deploy/logroller.sh'
+                        project.exec {
+                            commandLine 'chmod', '+x', '/home/lvuser/deploy/logroller.sh'
+                        }
+                        project.exec {
+                            commandLine 'sh', '/home/lvuser/deploy/logroller.sh'
                         }
                     }
-
                 }
             }
         }
