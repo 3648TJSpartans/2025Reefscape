@@ -1,9 +1,9 @@
 package frc.robot.commands.coralCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
-import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeConstants;
-import frc.robot.subsystems.coralSubsystems.elevator.ElevatorConstants;
+import frc.robot.subsystems.coralIntake.CoralIntake;
+import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
+import frc.robot.subsystems.elevator.elevator.ElevatorConstants;
 
 public class CoralInCmd extends Command {
     private final CoralIntake m_coralIntake;

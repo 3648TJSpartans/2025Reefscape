@@ -4,8 +4,8 @@
 
 package frc.robot.commands.coralCommands;
 
-import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.coralIntake.CoralIntake;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class WristCmd extends Command {
