@@ -45,4 +45,7 @@ public class Elevator extends SubsystemBase {
     io.setSpeed(speed);
   }
 
+  public boolean atBottom() {
+    return io.atBottom();
+  }
 }
