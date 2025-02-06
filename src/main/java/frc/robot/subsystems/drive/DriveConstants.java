@@ -41,7 +41,7 @@ public class DriveConstants {
 
         // Device CAN IDs
         public static final int pigeonCanId = 9;
-
+        // 3648 chassis
         // public static final int frontLeftDriveCanId = 4;
         // public static final int backLeftDriveCanId = 2;
         // public static final int frontRightDriveCanId = 6;

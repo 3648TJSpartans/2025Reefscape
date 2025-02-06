@@ -24,6 +24,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -34,7 +35,6 @@ import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
 import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPose;
 import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPoseNearest;
 import frc.robot.commands.AlignCommands;
-
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
@@ -68,6 +68,7 @@ import frc.robot.commands.coralCommands.CoralElevatorIntegratedCmd;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
 import frc.robot.commands.coralCommands.ElevatorCmd;
+import frc.robot.commands.coralCommands.HomeElevatorCmd;
 import frc.robot.commands.coralCommands.ElevatorAnalogCmd;
 import frc.robot.commands.ClimberCmd;
 import frc.robot.commands.coralCommands.WristCmd;
@@ -367,24 +368,28 @@ public class RobotContainer {
     Command l4 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L4", ElevatorConstants.coralLeveL4).get());
 
     Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
-    // m_controllerTwo.povUp().whileTrue(l1);
-    // m_controllerTwo.povRight().whileTrue(l2);
-    // m_controllerTwo.povDown().whileTrue(l3);
-    // m_controllerTwo.povLeft().whileTrue(l4);
-    m_elevator.setDefaultCommand(elevatorAnalog);
-  }
-
-  public void configureSetpoints() {
-    Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator, CoralConstants.L1Height, CoralConstants.L1Angle);
-    Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator, CoralConstants.L2Height, CoralConstants.L2Angle);
-    Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator, CoralConstants.L3Height, CoralConstants.L3Angle);
-    Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator, CoralConstants.L4Height, CoralConstants.L4Angle);
     m_controllerTwo.povUp().whileTrue(l1);
     m_controllerTwo.povRight().whileTrue(l2);
     m_controllerTwo.povDown().whileTrue(l3);
     m_controllerTwo.povLeft().whileTrue(l4);
     m_elevator.setDefaultCommand(elevatorAnalog);
+  }
 
+  public void configureSetpoints() {
+    Command homeElevator = new HomeElevatorCmd(m_elevator);
+    // Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // CoralConstants.L1Height, CoralConstants.L1Angle);
+    // Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // CoralConstants.L2Height, CoralConstants.L2Angle);
+    // Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // CoralConstants.L3Height, CoralConstants.L3Angle);
+    // Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // CoralConstants.L4Height, CoralConstants.L4Angle);
+    // m_controllerTwo.povUp().whileTrue(l1);
+    // m_controllerTwo.povRight().whileTrue(l2);
+    // m_controllerTwo.povDown().whileTrue(l3);
+    // m_controllerTwo.povLeft().whileTrue(l4);
+    m_controllerTwo.leftTrigger().whileTrue(homeElevator);
   }
 
   public Command getAutonomousCommand() {

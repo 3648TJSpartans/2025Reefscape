@@ -28,4 +28,8 @@ public interface ElevatorIO {
 
     public default void updateLimitSwitch() {
     }
+
+    public default boolean atBottom() {
+        return true;
+    }
 }

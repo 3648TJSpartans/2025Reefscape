@@ -115,4 +115,10 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         limitReset = true;
         Logger.recordOutput("Elevator/EncoderReset", limitReset);
     }
+
+    @Override
+    public boolean atBottom() {
+        return !limitSwitch.get();
+    }
+
 }
