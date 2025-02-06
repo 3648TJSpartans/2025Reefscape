@@ -1,4 +1,4 @@
-package frc.robot.subsystems.coralSubsystems.coralIntake;
+package frc.robot.subsystems.coralIntake;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -12,10 +12,7 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import frc.robot.subsystems.coralSubsystems.CoralConstants;
 import frc.robot.util.TunableNumber;
 
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -27,13 +24,12 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     private SparkMax intakeMotor;
     private AbsoluteEncoder absoluteEncoder;
     private SparkClosedLoopController wristController;
-    private PIDController pid;
 
     // this is the constructor of the class
     public CoralIntakeIOSparkMax() {
-        wristMotor = new SparkMax(CoralConstants.coralWrist, MotorType.kBrushless);
-        intakeMotor = new SparkMax(CoralConstants.coralIntake, MotorType.kBrushless);
-        irSensor = new DigitalInput(CoralConstants.irSensorPin);
+        wristMotor = new SparkMax(CoralIntakeConstants.coralWrist, MotorType.kBrushless);
+        intakeMotor = new SparkMax(CoralIntakeConstants.coralIntake, MotorType.kBrushless);
+        irSensor = new DigitalInput(CoralIntakeConstants.irSensorPin);
         absoluteEncoder = wristMotor.getAbsoluteEncoder();
         var wristConfig = new SparkMaxConfig();
         wristConfig.inverted(false)
@@ -41,23 +37,23 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
                 .voltageCompensation(12.0);
         wristConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                .pidf(new TunableNumber("CoralINtake/kWristP", CoralConstants.kWristP).get(),
-                        new TunableNumber("CoralINtake/kWristI", CoralConstants.kWristI).get(),
-                        new TunableNumber("CoralINtake/kWristD", CoralConstants.kWristD).get(),
-                        new TunableNumber("CoralINtake/kWristFF", CoralConstants.kWristFF).get())
-                .outputRange(CoralConstants.kWristMinRange, CoralConstants.kWristMaxRange);
+                .pidf(new TunableNumber("CoralINtake/kWristP", CoralIntakeConstants.kWristP).get(),
+                        new TunableNumber("CoralINtake/kWristI", CoralIntakeConstants.kWristI).get(),
+                        new TunableNumber("CoralINtake/kWristD", CoralIntakeConstants.kWristD).get(),
+                        new TunableNumber("CoralINtake/kWristFF", CoralIntakeConstants.kWristFF).get())
+                .outputRange(CoralIntakeConstants.kWristMinRange, CoralIntakeConstants.kWristMaxRange);
         wristConfig.signals
                 .absoluteEncoderPositionAlwaysOn(true)
-                .absoluteEncoderPositionPeriodMs((int) (1000.0 / CoralConstants.odometryFrequency))
+                .absoluteEncoderPositionPeriodMs((int) (1000.0 / CoralIntakeConstants.wristOdometryFrequency))
                 .absoluteEncoderVelocityAlwaysOn(true)
                 .absoluteEncoderVelocityPeriodMs(20)
                 .appliedOutputPeriodMs(20)
                 .busVoltagePeriodMs(20)
                 .outputCurrentPeriodMs(20);
         wristConfig.absoluteEncoder
-                .inverted(CoralConstants.wristEncoderInverted)
-                .positionConversionFactor(CoralConstants.wristEncoderPositionFactor)
-                .velocityConversionFactor(CoralConstants.wristEncoderPositionFactor)
+                .inverted(CoralIntakeConstants.wristEncoderInverted)
+                .positionConversionFactor(CoralIntakeConstants.wristEncoderPositionFactor)
+                .velocityConversionFactor(CoralIntakeConstants.wristEncoderPositionFactor)
                 .averageDepth(2);
         wristMotor.configure(
                 wristConfig, ResetMode.kResetSafeParameters,

@@ -1,7 +1,7 @@
 package frc.robot.commands.coralCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.coralSubsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.elevator.Elevator;
 
 import java.util.function.DoubleSupplier;
 

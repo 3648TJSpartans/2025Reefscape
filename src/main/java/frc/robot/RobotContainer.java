@@ -41,6 +41,10 @@ import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.elevator.elevator.Elevator;
+import frc.robot.subsystems.elevator.elevator.ElevatorConstants;
+import frc.robot.subsystems.elevator.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.elevator.ElevatorIOSparkMax;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
@@ -51,17 +55,16 @@ import frc.robot.subsystems.algae.AlgaeConstants;
 import frc.robot.subsystems.algae.AlgaeIOSparkMax;
 import frc.robot.subsystems.algae.AlgaeSubsystem;
 import frc.robot.subsystems.climber.*;
+import frc.robot.subsystems.coralIntake.CoralIntake;
+import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
+import frc.robot.subsystems.coralIntake.CoralIntakeIO;
+import frc.robot.subsystems.coralIntake.CoralIntakeIOSparkMax;
+
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
-import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
-import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIO;
-import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIOSparkMax;
-import frc.robot.subsystems.coralSubsystems.elevator.Elevator;
-import frc.robot.subsystems.coralSubsystems.CoralConstants;
-import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIO;
-import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIOSparkMax;
+
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
 import frc.robot.commands.coralCommands.ElevatorCmd;
@@ -299,7 +302,7 @@ public class RobotContainer {
   public void configureCoralIntake() {
     Command coralIn = new CoralInCmd(m_coral);
     Command coralOut = new CoralOutCmd(m_coral);
-    Command wrist = new WristCmd(m_coral, new TunableNumber("WristAngle", CoralConstants.anglevalue).get());
+    Command wrist = new WristCmd(m_coral, new TunableNumber("WristAngle", CoralIntakeConstants.anglevalue).get());
     Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
 
     m_coral.setDefaultCommand(wristAnalog);
@@ -357,10 +360,10 @@ public class RobotContainer {
   }
 
   public void configureElevator() {
-    Command l1 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L1", CoralConstants.coralLeveL1).get());
-    Command l2 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L2", CoralConstants.coralLeveL2).get());
-    Command l3 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L3", CoralConstants.coralLeveL3).get());
-    Command l4 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L4", CoralConstants.coralLeveL4).get());
+    Command l1 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L1", ElevatorConstants.coralLeveL1).get());
+    Command l2 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L2", ElevatorConstants.coralLeveL2).get());
+    Command l3 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L3", ElevatorConstants.coralLeveL3).get());
+    Command l4 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L4", ElevatorConstants.coralLeveL4).get());
 
     Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
     m_copilotController.povUp().whileTrue(l1);
