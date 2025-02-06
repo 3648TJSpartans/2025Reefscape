@@ -27,7 +27,7 @@ public class WristCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    coralIntake.RotateTo(angle);
+    coralIntake.rotateTo(angle);
   }
 
   // Called once the command ends or is interrupted.

@@ -311,10 +311,10 @@ public class RobotContainer {
     Command l3 = new ElevatorCmd(m_elevator, CoralIntakeConstants.L3Angle);
     Command l4 = new ElevatorCmd(m_elevator, CoralIntakeConstants.L4Angle);
     m_coral.setDefaultCommand(wristAnalog);
-    m_controllerTwo.povUp().whileTrue(l1);
-    m_controllerTwo.povRight().whileTrue(l2);
-    m_controllerTwo.povDown().whileTrue(l3);
-    m_controllerTwo.povLeft().whileTrue(l4);
+    // m_controllerTwo.povUp().whileTrue(l1);
+    // m_controllerTwo.povRight().whileTrue(l2);
+    // m_controllerTwo.povDown().whileTrue(l3);
+    // m_controllerTwo.povLeft().whileTrue(l4);
     m_controllerTwo.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.1)));
     m_controllerTwo.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));// testing
     m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after testing// Subject to Change
@@ -373,17 +373,17 @@ public class RobotContainer {
     Command l4 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L4", ElevatorConstants.coralLeveL4).get());
 
     Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
-    m_controllerTwo.povUp().whileTrue(l1);
-    m_controllerTwo.povRight().whileTrue(l2);
-    m_controllerTwo.povDown().whileTrue(l3);
-    m_controllerTwo.povLeft().whileTrue(l4);
+    // m_controllerTwo.povUp().whileTrue(l1);
+    // m_controllerTwo.povRight().whileTrue(l2);
+    // m_controllerTwo.povDown().whileTrue(l3);
+    // m_controllerTwo.povLeft().whileTrue(l4);
     m_elevator.setDefaultCommand(elevatorAnalog);
   }
 
   public void configureSetpoints() {
     Command homeElevator = new HomeElevatorCmd(m_elevator);
     Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        ElevatorConstants.coralLeveL1, CoralIntakeConstants.L1Angle);
+        ElevatorConstants.ElevatorHeighL1, CoralConstants.L1Angle);
     Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         CoralConstants.L2Height, CoralConstants.L2Angle);
     Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,

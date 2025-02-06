@@ -48,4 +48,8 @@ public class Elevator extends SubsystemBase {
   public boolean atBottom() {
     return io.atBottom();
   }
+
+  public void zeroElevator() {
+    io.zeroElevator();
+  }
 }
