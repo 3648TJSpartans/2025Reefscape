@@ -116,4 +116,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         return !limitSwitch.get();
     }
 
+    @Override
+    public void zeroElevator() {
+        setZero();
+    }
 }

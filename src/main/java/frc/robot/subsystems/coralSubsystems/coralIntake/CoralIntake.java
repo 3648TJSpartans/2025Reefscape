@@ -5,6 +5,7 @@
 package frc.robot.subsystems.coralSubsystems.coralIntake;
 
 import org.littletonrobotics.junction.AutoLog;
+import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -20,6 +21,9 @@ public class CoralIntake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    Logger.recordOutput("Intake/EncoderAngle", getAngle());
+    Logger.recordOutput("Intake/IR", getIR());
+
   }
 
   public void stopWristMotor() {
@@ -34,8 +38,9 @@ public class CoralIntake extends SubsystemBase {
     return io.getAngle();
   }
 
-  public void RotateTo(double setAngle) {
-    io.RotateTo(setAngle);
+  public void rotateTo(double setAngle) {
+    Logger.recordOutput("Intake/setAngle", setAngle);
+    io.rotateTo(setAngle);
   }
 
   public void setSpeed(double speed) {

@@ -6,7 +6,7 @@ public interface CoralIntakeIO {
     }
 
     // allows us to rotate the arm of the coral subsystem to a given angle
-    public default void RotateTo(double setangle) {
+    public default void rotateTo(double setangle) {
     }
 
     // allows us to stop the wrist motor

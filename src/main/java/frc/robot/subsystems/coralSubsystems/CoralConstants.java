@@ -28,10 +28,10 @@ public class CoralConstants {
     public static final double L3Height = 15; // this is a momentary value that will be changed later
     public static final double L4Height = 20;
 
-    public static final double L1Angle = Math.PI / 5; // angle rad
-    public static final double L2Angle = 2 * Math.PI / 5; // angle rad
-    public static final double L3Angle = 3 * Math.PI / 5; // angle rad
-    public static final double L4Angle = 4 * Math.PI / 5; // angle rad
+    public static final double L1Angle = .4; // angle 0-1
+    public static final double L2Angle = .5; // angle 0-1
+    public static final double L3Angle = .6; // angle 0-1
+    public static final double L4Angle = .7; // angle 0-1
     // these are the constants for the elevator pid
     public static final double kElevatorP = .05;
     public static final double kElevatorI = 0;
@@ -43,15 +43,17 @@ public class CoralConstants {
     public static final boolean elevatorEncoderInverted = false;
     public static final double elevatorEncoderPositionFactor = 1;
 
-    public static final double kWristP = .1;
+    public static final double kWristP = 1.5;
     public static final double kWristI = 0;
     public static final double kWristD = 0;
     public static final double kWristFF = 0;
     public static final double wristOdometryFrequency = 100;
-    public static final double kWristMinRange = 0;
+    public static final double kWristMinRange = -1;
     public static final double kWristMaxRange = 1;
     public static final boolean wristEncoderInverted = false;
-    public static final double wristEncoderPositionFactor = 2 * Math.PI;
+    public static final double wristEncoderPositionFactor = 1;
+
+    // Hey: I dont know what these do anymore...
     // these are the constants for the angle pid
     public static final double angle_kP = 1;
     public static final double angle_kI = 0;

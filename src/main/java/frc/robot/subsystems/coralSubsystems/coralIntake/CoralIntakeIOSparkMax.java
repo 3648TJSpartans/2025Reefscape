@@ -29,6 +29,7 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     public CoralIntakeIOSparkMax() {
         wristMotor = new SparkMax(CoralConstants.coralWrist, MotorType.kBrushless);
         intakeMotor = new SparkMax(CoralConstants.coralIntake, MotorType.kBrushless);
+        wristController = wristMotor.getClosedLoopController();
         irSensor = new DigitalInput(CoralConstants.irSensorPin);
         absoluteEncoder = wristMotor.getAbsoluteEncoder();
         var wristConfig = new SparkMaxConfig();
@@ -36,7 +37,7 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
                 .idleMode(IdleMode.kBrake)
                 .voltageCompensation(12.0);
         wristConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
                 .pidf(CoralConstants.kWristP, CoralConstants.kWristI, CoralConstants.kWristD, CoralConstants.kWristFF)
                 .outputRange(CoralConstants.kWristMinRange, CoralConstants.kWristMaxRange);
         wristConfig.signals
@@ -73,7 +74,7 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     }
 
     @Override
-    public void RotateTo(double setpoint) {
+    public void rotateTo(double setpoint) {
         wristController.setReference(setpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0);
     }
 
@@ -90,5 +91,4 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     public void setWristSpeed(double speed) {
         wristMotor.set(speed);
     }
-
 }

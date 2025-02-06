@@ -32,4 +32,7 @@ public interface ElevatorIO {
     public default boolean atBottom() {
         return true;
     }
+
+    public default void zeroElevator() {
+    }
 }

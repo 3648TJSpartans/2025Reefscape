@@ -248,15 +248,15 @@ public class RobotContainer {
     Command coralIn = new CoralInCmd(m_coral);
     Command coralOut = new CoralOutCmd(m_coral);
     Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
-    Command l1 = new ElevatorCmd(m_elevator, CoralConstants.L1Angle);
-    Command l2 = new ElevatorCmd(m_elevator, CoralConstants.L2Angle);
-    Command l3 = new ElevatorCmd(m_elevator, CoralConstants.L3Angle);
-    Command l4 = new ElevatorCmd(m_elevator, CoralConstants.L4Angle);
+    Command l1 = new WristCmd(m_coral, CoralConstants.L1Angle);
+    Command l2 = new WristCmd(m_coral, CoralConstants.L2Angle);
+    Command l3 = new WristCmd(m_coral, CoralConstants.L3Angle);
+    Command l4 = new WristCmd(m_coral, CoralConstants.L4Angle);
     m_coral.setDefaultCommand(wristAnalog);
-    m_controllerTwo.povUp().whileTrue(l1);
-    m_controllerTwo.povRight().whileTrue(l2);
-    m_controllerTwo.povDown().whileTrue(l3);
-    m_controllerTwo.povLeft().whileTrue(l4);
+    // m_controllerTwo.povUp().whileTrue(l1);
+    // m_controllerTwo.povRight().whileTrue(l2);
+    // m_controllerTwo.povDown().whileTrue(l3);
+    // m_controllerTwo.povLeft().whileTrue(l4);
     m_controllerTwo.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.1)));
     m_controllerTwo.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));// testing
     m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after testing// Subject to Change
@@ -314,27 +314,31 @@ public class RobotContainer {
     Command l3 = new ElevatorCmd(m_elevator, CoralConstants.L3Height);
     Command l4 = new ElevatorCmd(m_elevator, CoralConstants.L4Height);
     Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
-    m_controllerTwo.povUp().whileTrue(l1);
-    m_controllerTwo.povRight().whileTrue(l2);
-    m_controllerTwo.povDown().whileTrue(l3);
-    m_controllerTwo.povLeft().whileTrue(l4);
+    // m_controllerTwo.povUp().whileTrue(l1);
+    // m_controllerTwo.povRight().whileTrue(l2);
+    // m_controllerTwo.povDown().whileTrue(l3);
+    // m_controllerTwo.povLeft().whileTrue(l4);
     m_elevator.setDefaultCommand(elevatorAnalog);
   }
 
   public void configureSetpoints() {
     Command homeElevator = new HomeElevatorCmd(m_elevator);
-    // Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-    // CoralConstants.L1Height, CoralConstants.L1Angle);
-    // Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-    // CoralConstants.L2Height, CoralConstants.L2Angle);
-    // Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-    // CoralConstants.L3Height, CoralConstants.L3Angle);
-    // Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-    // CoralConstants.L4Height, CoralConstants.L4Angle);
-    // m_controllerTwo.povUp().whileTrue(l1);
-    // m_controllerTwo.povRight().whileTrue(l2);
-    // m_controllerTwo.povDown().whileTrue(l3);
-    // m_controllerTwo.povLeft().whileTrue(l4);
+    Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        CoralConstants.L1Height, CoralConstants.L1Angle);
+    Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        CoralConstants.L2Height, CoralConstants.L2Angle);
+    Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        CoralConstants.L3Height, CoralConstants.L3Angle);
+    Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        CoralConstants.L4Height, CoralConstants.L4Angle);
+    m_controllerTwo.povUp().whileTrue(l1);
+    m_controllerTwo.povRight().whileTrue(l2);
+    m_controllerTwo.povDown().whileTrue(l3);
+    m_controllerTwo.povLeft().whileTrue(l4);
+
+    // The Below command is ONLY for testing and should be removed in the final
+    // build. This allows you to zero the elevator without a limit switch
+    m_controllerTwo.leftBumper().onTrue(new InstantCommand(() -> m_elevator.zeroElevator()));
     m_controllerTwo.leftTrigger().whileTrue(homeElevator);
   }
 

@@ -26,7 +26,7 @@ public class CoralElevatorIntegratedCmd extends Command {
     @Override
     public void execute() {
         m_elevator.elevateTo(height);
-        m_coralIntake.RotateTo(angle);
+        m_coralIntake.rotateTo(angle);
     }
 
     @Override
