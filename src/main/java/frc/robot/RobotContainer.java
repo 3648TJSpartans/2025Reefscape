@@ -197,6 +197,62 @@ public class RobotContainer {
     configureSetpoints();
   }
 
+  public void configureCoralBindings() {
+    Command coralIn = new CoralInCmd(m_coral);
+    Command coralOut = new CoralOutCmd(m_coral);
+    Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_driveController.getLeftX());
+    Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_driveController.getRightX());
+    m_elevator.setDefaultCommand(elevatorAnalog);
+    m_coral.setDefaultCommand(wristAnalog);
+    // testController.a().whileTrue(coralIn); // change back to copilot after
+    m_driveController.a().onTrue((new InstantCommand(() -> m_coral.setSpeed(.1))));
+    m_driveController.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
+    // testing
+    m_driveController.b().whileTrue(coralOut); // change back to copilot after testing
+    // Subject to Change
+
+    // controller.x().onTrue(AlignCommands.goTo(drive));
+    // controller.leftTrigger().whileTrue(m_AlignCommands.goTo(drive));
+
+    Command goToCommand = AlignCommands.goTo(m_drive);
+    // controller.leftTrigger().onTrue(goToCommand);
+    m_driveController.leftTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToCommand)));
+    Command goToPointCommand = AlignCommands.goToPoint(m_drive);
+    m_driveController.leftTrigger().onTrue(goToPointCommand);
+    m_driveController.leftTrigger().onFalse(new InstantCommand(() -> cancelCommand(goToPointCommand)));
+    Command testAutoCommand = new PathPlannerAuto("test");
+    m_driveController.y().onFalse(new InstantCommand(() -> testAutoCommand.cancel()));
+    // Command testMethod = AlignCommands.testMethod(drive);
+    // controller.leftBumper().onTrue(testMethod);
+    // controller.leftBumper().onFalse(new InstantCommand(() ->
+    // cancelCommand(testMethod)));
+    Command alignLeftReef = new SwerveAutoAlignPose(PoseConstants.leftReef, PoseConstants.leftReef, m_drive);
+    m_driveController.leftBumper().whileTrue(alignLeftReef);
+    Command alignRightReef = new SwerveAutoAlignPose(PoseConstants.rightReef, PoseConstants.rightReef, m_drive);
+    m_driveController.rightBumper().whileTrue(alignRightReef);
+    Command alignCoralStation = new SwerveAutoAlignPose(PoseConstants.coralStation, PoseConstants.coralStation,
+        m_drive);
+    m_driveController.y().whileTrue(alignCoralStation);
+    Command goToNearestCommand = new SwerveAutoAlignPoseNearest(m_drive);
+    m_driveController.rightTrigger().whileTrue(goToNearestCommand);
+
+  }
+
+  public void cancelCommand(Command cmd) {
+    if (cmd.isScheduled()) {
+
+      System.out.println("CMD canceled");
+
+      cmd.cancel();
+    }
+  }
+
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+
   public void configureAlgae() {
     // Command algaeCmd = new AlgaeCmd(m_algae, () ->
     // MathUtil.applyDeadband(m_copilotController.getLeftX(), 0.2));
@@ -269,7 +325,7 @@ public class RobotContainer {
             m_drive,
             () -> m_driveController.getLeftY(),
             () -> m_driveController.getLeftX(),
-            () -> m_driveController.getRightX()));
+            () -> -m_driveController.getRightX()));
 
     // Lock to 0° when A button is held
     m_driveController
@@ -319,6 +375,7 @@ public class RobotContainer {
     // m_controllerTwo.povDown().whileTrue(l3);
     // m_controllerTwo.povLeft().whileTrue(l4);
     m_elevator.setDefaultCommand(elevatorAnalog);
+
   }
 
   public void configureSetpoints() {

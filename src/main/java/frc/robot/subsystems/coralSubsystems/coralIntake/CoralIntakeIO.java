@@ -21,6 +21,11 @@ public interface CoralIntakeIO {
     public default void setSpeed(double speed) {
     }
 
+    // update ir sensor state
+    public default void updateValues() {
+
+    }
+
     // Gets IR Sensor state
     public default boolean getIR() {
         return false;

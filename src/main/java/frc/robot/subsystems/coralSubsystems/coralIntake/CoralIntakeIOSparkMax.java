@@ -1,5 +1,7 @@
 package frc.robot.subsystems.coralSubsystems.coralIntake;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
@@ -14,6 +16,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.subsystems.coralSubsystems.CoralConstants;
+import frc.robot.util.TunableNumber;
+
 import com.revrobotics.spark.SparkClosedLoopController;
 
 public class CoralIntakeIOSparkMax implements CoralIntakeIO {
@@ -38,7 +42,10 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
                 .voltageCompensation(12.0);
         wristConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                .pidf(CoralConstants.kWristP, CoralConstants.kWristI, CoralConstants.kWristD, CoralConstants.kWristFF)
+                .pidf(new TunableNumber("CoralINtake/kWristP", CoralConstants.kWristP).get(),
+                        new TunableNumber("CoralINtake/kWristI", CoralConstants.kWristI).get(),
+                        new TunableNumber("CoralINtake/kWristD", CoralConstants.kWristD).get(),
+                        new TunableNumber("CoralINtake/kWristFF", CoralConstants.kWristFF).get())
                 .outputRange(CoralConstants.kWristMinRange, CoralConstants.kWristMaxRange);
         wristConfig.signals
                 .absoluteEncoderPositionAlwaysOn(true)
@@ -76,6 +83,11 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     @Override
     public void rotateTo(double setpoint) {
         wristController.setReference(setpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+    }
+
+    @Override
+    public void updateValues() {
+        Logger.recordOutput("Odometry/Sensor/coralIRsensorValue", getIR());
     }
 
     @Override

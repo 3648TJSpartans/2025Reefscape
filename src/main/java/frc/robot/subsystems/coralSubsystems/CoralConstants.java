@@ -42,6 +42,7 @@ public class CoralConstants {
     public static final double kElevatorMaxRange = .5;
     public static final boolean elevatorEncoderInverted = false;
     public static final double elevatorEncoderPositionFactor = 1;
+    public static final double elevatorEncoderVelocityFactor = 1;
 
     public static final double kWristP = 1.5;
     public static final double kWristI = 0;

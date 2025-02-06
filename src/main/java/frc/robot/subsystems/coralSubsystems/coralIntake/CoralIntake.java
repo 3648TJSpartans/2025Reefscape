@@ -23,7 +23,6 @@ public class CoralIntake extends SubsystemBase {
     // This method will be called once per scheduler run
     Logger.recordOutput("Intake/EncoderAngle", getAngle());
     Logger.recordOutput("Intake/IR", getIR());
-
   }
 
   public void stopWristMotor() {
