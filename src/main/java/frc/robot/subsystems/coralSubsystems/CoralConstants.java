@@ -54,12 +54,6 @@ public class CoralConstants {
     public static final boolean wristEncoderInverted = false;
     public static final double wristEncoderPositionFactor = 1;
 
-    // Hey: I dont know what these do anymore...
-    // these are the constants for the angle pid
-    public static final double angle_kP = 1;
-    public static final double angle_kI = 0;
-    public static final double angle_kD = 0;
-
     // this is the angle for the wrist and is subject to change for each level
     public static final double anglevalue = 45;
     public static final int bottomLimitSwitchPin = (int) new TunableNumber("LimitSwitchPort", 2).get();
