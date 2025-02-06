@@ -29,7 +29,7 @@ public class CoralInCmd extends Command {
 
     @Override
     public boolean isFinished() {
-        return m_coralIntake.getIR();
+        return !m_coralIntake.getIR();
     }
 
 }

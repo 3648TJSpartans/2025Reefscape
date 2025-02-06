@@ -56,6 +56,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                         ElevatorConstants.elevatorEncoderPositionFactor).get())
                 .velocityConversionFactor(ElevatorConstants.elevatorEncoderPositionFactor)
                 .averageDepth(2);
+
         motor.configure(
                 motorConfig, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
