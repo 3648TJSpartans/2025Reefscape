@@ -33,7 +33,7 @@ public class CoralConstants {
     public static final double L3Angle = .6; // angle 0-1
     public static final double L4Angle = .7; // angle 0-1
     // these are the constants for the elevator pid
-    public static final double kElevatorP = .05;
+    public static final double kElevatorP = .01;
     public static final double kElevatorI = 0;
     public static final double kElevatorD = 0;
     public static final double kElevatorFF = 0;
@@ -44,7 +44,7 @@ public class CoralConstants {
     public static final double elevatorEncoderPositionFactor = 1;
     public static final double elevatorEncoderVelocityFactor = 1;
 
-    public static final double kWristP = 1.5;
+    public static final double kWristP = .5;
     public static final double kWristI = 0;
     public static final double kWristD = 0;
     public static final double kWristFF = 0;
