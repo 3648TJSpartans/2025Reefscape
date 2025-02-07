@@ -84,6 +84,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     @Override
     public void elevateTo(double position) {
         if (limitReset) {
+            Logger.recordOutput("Elevator/Setpoint", position);
             motorController.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
         }
     }
