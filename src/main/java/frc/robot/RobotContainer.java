@@ -63,7 +63,15 @@ import frc.robot.subsystems.coralIntake.CoralIntakeIOSparkMax;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathConstraints;<<<<<<<HEAD=======
+import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
+import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIO;
+import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIOSparkMax;
+import frc.robot.subsystems.coralSubsystems.elevator.Elevator;
+import frc.robot.subsystems.coralSubsystems.CoralConstants;
+import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIOSparkMax;
+import frc.robot.commands.coralCommands.CoralCmd;>>>>>>>fe9ce41(Commit)
 import frc.robot.commands.coralCommands.CoralElevatorIntegratedCmd;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
@@ -315,9 +323,11 @@ public class RobotContainer {
     // m_controllerTwo.povRight().whileTrue(l2);
     // m_controllerTwo.povDown().whileTrue(l3);
     // m_controllerTwo.povLeft().whileTrue(l4);
+    m_coral.setDefaultCommand(wristAnalog);
     m_controllerTwo.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.1)));
     m_controllerTwo.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));// testing
     m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after testing// Subject to Change
+    m_controllerTwo.y().whileTrue(slamCoral);
   }
 
   public void configureDrive() {
@@ -382,18 +392,18 @@ public class RobotContainer {
 
   public void configureSetpoints() {
     Command homeElevator = new HomeElevatorCmd(m_elevator);
-    Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        ElevatorConstants.ElevatorHeighL1, CoralConstants.L1Angle);
-    Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        CoralConstants.L2Height, CoralConstants.L2Angle);
-    Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        CoralConstants.L3Height, CoralConstants.L3Angle);
-    Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        CoralConstants.L4Height, CoralConstants.L4Angle);
-    m_controllerTwo.povUp().whileTrue(l1);
-    m_controllerTwo.povRight().whileTrue(l2);
-    m_controllerTwo.povDown().whileTrue(l3);
-    m_controllerTwo.povLeft().whileTrue(l4);
+    // Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // ElevatorConstants.ElevatorHeighL1, CoralConstants.L1Angle);
+    // Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // CoralConstants.L2Height, CoralConstants.L2Angle);
+    // Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // CoralConstants.L3Height, CoralConstants.L3Angle);
+    // Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // CoralConstants.L4Height, CoralConstants.L4Angle);
+    // m_controllerTwo.povUp().whileTrue(l1);
+    // m_controllerTwo.povRight().whileTrue(l2);
+    // m_controllerTwo.povDown().whileTrue(l3);
+    // m_controllerTwo.povLeft().whileTrue(l4);
     m_controllerTwo.leftTrigger().whileTrue(homeElevator);
   }
 
