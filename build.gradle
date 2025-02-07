@@ -40,16 +40,12 @@ deploy {
                 frcStaticFileDeploy(getArtifactTypeClass('FileTreeArtifact')) {
                     files = project.fileTree('src/main/deploy')
                     directory = '/home/lvuser/deploy'
+                    postdeploy << {
+                        execute 'chmod', '+x', '/home/lvuser/deploy/logroller.sh'
+                        execute 'bash', '/home/lvuser/deploy/logroller.sh'
+                    }
                     deleteOldFiles = false // Change to true to delete files on roboRIO that no
                     // longer exist in deploy directory of this project
-                    postdeploy << {
-                        project.exec {
-                            commandLine 'chmod', '+x', '/home/lvuser/deploy/logroller.sh'
-                        }
-                        project.exec {
-                            commandLine 'sh', '/home/lvuser/deploy/logroller.sh'
-                        }
-                    }
                 }
             }
         }
