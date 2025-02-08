@@ -13,14 +13,14 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkLowLevel.MotorType;import om.revrobotics.AbsoluteEncoder;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.AbsoluteEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
-import com.ctre.phoenix6.hardware.CANcoderimport com.revrobotics.RelativeEncoder;
-
+import java.lang.System.Logger;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.revrobotics.RelativeEncoder;
 import frc.robot.util.TunableNumber;
-
-import r g.littletonrobotics.junction.Logger;
 
 public class ElevatorIOSparkMax implements ElevatorIO {
     // declaration of the motors and encoders
@@ -29,7 +29,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     private PIDController pid;
     private final SparkClosedLoopController motorController;
     private boolean limitReset;
-    private final DigitalInput limitSwitch = new DigitalInput(CoralConstants.bottomLimitSwitchPin);
+    private final DigitalInput limitSwitch = new DigitalInput(ElevatorConstants.bottomLimitSwitchPin);
 
     // constructor
     public ElevatorIOSparkMax() {

@@ -24,4 +24,5 @@ public class ElevatorConstants {
     public static final boolean elevatorEncoderInverted = false;
     public static final double elevatorEncoderPositionFactor = 1;
     public static final double elevatorEncoderVelocityFactor = 1;
+    public static final int bottomLimitSwitchPin = 2;
 }
