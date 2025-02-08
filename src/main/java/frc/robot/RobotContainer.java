@@ -315,20 +315,23 @@ public class RobotContainer {
     Command coralOut = new CoralOutCmd(m_coral);
     Command wrist = new WristCmd(m_coral, new TunableNumber("WristAngle", CoralIntakeConstants.anglevalue).get());
     Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
-    Command l1 = new ElevatorCmd(m_elevator, CoralIntakeConstants.L1Angle);
-    Command l2 = new ElevatorCmd(m_elevator, CoralIntakeConstants.L2Angle);
-    Command l3 = new ElevatorCmd(m_elevator, CoralIntakeConstants.L3Angle);
-    Command l4 = new ElevatorCmd(m_elevator, CoralIntakeConstants.L4Angle);
+    Command l1 = new WristCmd(m_coral, CoralIntakeConstants.L1Angle);
+    Command l2 = new WristCmd(m_coral, CoralIntakeConstants.L2Angle);
+    Command l3 = new WristCmd(m_coral, CoralIntakeConstants.L3Angle);
+    Command l4 = new WristCmd(m_coral, CoralIntakeConstants.L4Angle);
     Command slamCoral = new CoralCmd(m_coral, .2, -.2);
-    m_coral.setDefaultCommand(wristAnalog);
-    // m_controllerTwo.povUp().whileTrue(l1);
-    // m_controllerTwo.povRight().whileTrue(l2);
-    // m_controllerTwo.povDown().whileTrue(l3);
-    // m_controllerTwo.povLeft().whileTrue(l4);
+    // m_coral.setDefaultCommand(wristAnalog);
+    // m_controllerTwo.povUp().onTrue(l1);
+    // m_controllerTwo.povRight().onTrue(l2);
+    // m_controllerTwo.povDown().onTrue(l3);
+    // m_controllerTwo.povLeft().onTrue(l4);
     m_coral.setDefaultCommand(wristAnalog);
     m_controllerTwo.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.1)));
     m_controllerTwo.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));// testing
-    m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after testing// Subject to Change
+    m_controllerTwo.b().onTrue(new InstantCommand(() -> m_coral.setSpeed(-.1)));
+    m_controllerTwo.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
+    // m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after
+    // testing// Subject to Change
     m_controllerTwo.y().whileTrue(slamCoral);
   }
 
@@ -405,11 +408,11 @@ public class RobotContainer {
         ElevatorConstants.coralLeveL4, CoralIntakeConstants.L4Angle);
     Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
-    // m_controllerTwo.povUp().whileTrue(l1);
-    // m_controllerTwo.povRight().whileTrue(l2);
-    // m_controllerTwo.povDown().whileTrue(l3);
-    // m_controllerTwo.povLeft().whileTrue(l4);
-    // m_controllerTwo.leftBumper().whileTrue(intake);
+    m_controllerTwo.povUp().whileTrue(l1);
+    m_controllerTwo.povRight().whileTrue(l2);
+    m_controllerTwo.povDown().whileTrue(l3);
+    m_controllerTwo.povLeft().whileTrue(l4);
+    m_controllerTwo.leftBumper().whileTrue(intake);
 
     // The Below command is ONLY for testing and should be removed in the final
     // build. This allows you to zero the elevator without a limit switch
