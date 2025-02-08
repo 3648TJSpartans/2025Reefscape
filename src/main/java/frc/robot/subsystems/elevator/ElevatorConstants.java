@@ -13,6 +13,7 @@ public class ElevatorConstants {
     public static final double coralLeveL2 = .2; // this is a momentary value that will be changed later
     public static final double coralLeveL3 = .3; // this is a momentary value that will be changed later
     public static final double coralLeveL4 = .4;
+    public static final double intakePose = .155;// this is the postion for the intake
     // these are the constants for the elevator pid
     public static final double kElevatorP = 1;
     public static final double kElevatorI = 0;

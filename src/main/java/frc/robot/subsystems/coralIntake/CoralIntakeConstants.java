@@ -30,5 +30,6 @@ public class CoralIntakeConstants {
     public static final double L2Angle = .5;
     public static final double L3Angle = .6;
     public static final double L4Angle = .7;
+    public static final double IntakeAngle = .0896;
 
 }

@@ -64,6 +64,8 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
+
+import frc.robot.commands.coralCommands.CoralCmd;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIO;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIOSparkMax;
@@ -208,15 +210,15 @@ public class RobotContainer {
   public void configureCoralBindings() {
     Command coralIn = new CoralInCmd(m_coral);
     Command coralOut = new CoralOutCmd(m_coral);
-    Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_driveController.getLeftX());
-    Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_driveController.getRightX());
+    Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
+    Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
     m_elevator.setDefaultCommand(elevatorAnalog);
     m_coral.setDefaultCommand(wristAnalog);
     // testController.a().whileTrue(coralIn); // change back to copilot after
-    m_driveController.a().onTrue((new InstantCommand(() -> m_coral.setSpeed(.1))));
-    m_driveController.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
+    m_controllerTwo.a().onTrue((new InstantCommand(() -> m_coral.setSpeed(.1))));
+    m_controllerTwo.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
     // testing
-    m_driveController.b().whileTrue(coralOut); // change back to copilot after testing
+    m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after testing
     // Subject to Change
 
     // controller.x().onTrue(AlignCommands.goTo(drive));
@@ -271,13 +273,13 @@ public class RobotContainer {
     m_copilotController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(-0.5)));
     m_copilotController.leftBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
     // m_algae.setDefaultCommand(algaeCmd);
-    m_controllerTwo.a().onTrue(new InstantCommand(() -> m_algae
+    m_copilotController.a().onTrue(new InstantCommand(() -> m_algae
         .setLiftPosition(new TunableNumber("Algae/Intake", AlgaeConstants.liftIntakePosition).get())));
-    m_controllerTwo.b().onTrue(new InstantCommand(() -> m_algae
+    m_copilotController.b().onTrue(new InstantCommand(() -> m_algae
         .setLiftPosition(new TunableNumber("Algae/lifeWithBall", AlgaeConstants.liftUpWithBall).get())));
-    m_controllerTwo.y().onTrue(new InstantCommand(() -> m_algae
+    m_copilotController.y().onTrue(new InstantCommand(() -> m_algae
         .setLiftPosition(new TunableNumber("Algae/liftWithoutBall", AlgaeConstants.liftUpWithoutBall).get())));
-    m_controllerTwo.x().onTrue(new InstantCommand(
+    m_copilotController.x().onTrue(new InstantCommand(
         () -> m_algae.setLiftPosition(new TunableNumber("Algae/Shoot", AlgaeConstants.shoot).get())));
   }
 
@@ -317,6 +319,7 @@ public class RobotContainer {
     Command l2 = new ElevatorCmd(m_elevator, CoralIntakeConstants.L2Angle);
     Command l3 = new ElevatorCmd(m_elevator, CoralIntakeConstants.L3Angle);
     Command l4 = new ElevatorCmd(m_elevator, CoralIntakeConstants.L4Angle);
+    Command slamCoral = new CoralCmd(m_coral, .2, -.2);
     m_coral.setDefaultCommand(wristAnalog);
     // m_controllerTwo.povUp().whileTrue(l1);
     // m_controllerTwo.povRight().whileTrue(l2);
@@ -326,7 +329,7 @@ public class RobotContainer {
     m_controllerTwo.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.1)));
     m_controllerTwo.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));// testing
     m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after testing// Subject to Change
-    // m_controllerTwo.y().whileTrue(slamCoral);
+    m_controllerTwo.y().whileTrue(slamCoral);
   }
 
   public void configureDrive() {
@@ -399,14 +402,18 @@ public class RobotContainer {
         ElevatorConstants.coralLeveL3, CoralIntakeConstants.L3Angle);
     Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.coralLeveL4, CoralIntakeConstants.L4Angle);
-    m_controllerTwo.povUp().whileTrue(l1);
-    m_controllerTwo.povRight().whileTrue(l2);
-    m_controllerTwo.povDown().whileTrue(l3);
-    m_controllerTwo.povLeft().whileTrue(l4);
+    Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
+    // m_controllerTwo.povUp().whileTrue(l1);
+    // m_controllerTwo.povRight().whileTrue(l2);
+    // m_controllerTwo.povDown().whileTrue(l3);
+    // m_controllerTwo.povLeft().whileTrue(l4);
+    // m_controllerTwo.leftBumper().whileTrue(intake);
 
     // The Below command is ONLY for testing and should be removed in the final
     // build. This allows you to zero the elevator without a limit switch
-    m_controllerTwo.leftBumper().onTrue(new InstantCommand(() -> m_elevator.zeroElevator()));
+    // m_controllerTwo.leftBumper().onTrue(new InstantCommand(() ->
+    // m_elevator.zeroElevator()));
     m_controllerTwo.leftTrigger().whileTrue(homeElevator);
   }
 
