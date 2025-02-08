@@ -25,4 +25,10 @@ public class ElevatorAnalogCmd extends Command {
     public void end(boolean interrupted) {
         elevator.setSpeed(0);
     }
+
+    @Override
+    public boolean isFinished() {
+        // TODO Auto-generated method stub
+        return elevator.getLimitSwitch();
+    }
 }

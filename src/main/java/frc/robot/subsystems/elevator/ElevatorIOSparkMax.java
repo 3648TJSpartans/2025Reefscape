@@ -41,6 +41,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         Logger.recordOutput("Elevator/EncoderReset", false);
         encoder = motor.getEncoder();
         var motorConfig = new SparkMaxConfig();
+        motorConfig.idleMode(IdleMode.kBrake);// idle mode here!
         motorConfig.inverted(false)
                 .idleMode(IdleMode.kBrake)
                 .voltageCompensation(12.0);
@@ -109,6 +110,11 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         if (!limitSwitch.get()) {
             setZero();
         }
+    }
+
+    @Override
+    public boolean getLimitSwitch() {
+        return limitSwitch.get();
     }
 
     private void setZero() {
