@@ -10,6 +10,10 @@ public interface ElevatorIO {
     public default void updateValues() {
     }
 
+    public default boolean getLimitSwitch() {
+        return false;
+    }
+
     // allows us to stop the motor
     public default void stop() {
     }

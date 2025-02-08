@@ -249,7 +249,7 @@ public class RobotContainer {
   public void cancelCommand(Command cmd) {
     if (cmd.isScheduled()) {
 
-      System.out.println("CMD canceled");
+      System.out.println(cmd + " canceled");
 
       cmd.cancel();
     }
@@ -393,6 +393,7 @@ public class RobotContainer {
     Command homeElevator = new HomeElevatorCmd(m_elevator);
     Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.coralLeveL1, CoralIntakeConstants.L1Angle);
+
     Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.coralLeveL2, CoralIntakeConstants.L2Angle);
     Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,

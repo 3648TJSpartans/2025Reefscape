@@ -22,6 +22,10 @@ public class Elevator extends SubsystemBase {
     io.updateLimitSwitch();
   }
 
+  public boolean getLimitSwitch() {
+    return io.getLimitSwitch();
+  }
+
   public void elevateTo(double setHeight) {
     io.elevateTo(setHeight);
   }
