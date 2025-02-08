@@ -70,8 +70,9 @@ import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIOSparkMax;
 import frc.robot.subsystems.coralSubsystems.elevator.Elevator;
 import frc.robot.subsystems.coralSubsystems.CoralConstants;
 import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIO;
-import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIOSparkMax;
-import frc.robot.commands.coralCommands.CoralCmd;>>>>>>>fe9ce41(Commit)
+import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIOSparkMax;<<<<<<<HEAD
+import frc.robot.commands.coralCommands.CoralCmd;>>>>>>>fe9ce41(Commit)=======
+import frc.robot.commands.coralCommands.CoralCmd;>>>>>>>2 a771f95de15fae6fad5cbfac7037cbd8019bf1e
 import frc.robot.commands.coralCommands.CoralElevatorIntegratedCmd;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
@@ -404,6 +405,27 @@ public class RobotContainer {
     // m_controllerTwo.povRight().whileTrue(l2);
     // m_controllerTwo.povDown().whileTrue(l3);
     // m_controllerTwo.povLeft().whileTrue(l4);
+    m_controllerTwo.leftTrigger().whileTrue(homeElevator);
+  }
+
+  public void configureSetpoints() {
+    Command homeElevator = new HomeElevatorCmd(m_elevator);
+    Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        CoralConstants.L1Height, CoralConstants.L1Angle);
+    Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        CoralConstants.L2Height, CoralConstants.L2Angle);
+    Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        CoralConstants.L3Height, CoralConstants.L3Angle);
+    Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        CoralConstants.L4Height, CoralConstants.L4Angle);
+    m_controllerTwo.povUp().whileTrue(l1);
+    m_controllerTwo.povRight().whileTrue(l2);
+    m_controllerTwo.povDown().whileTrue(l3);
+    m_controllerTwo.povLeft().whileTrue(l4);
+
+    // The Below command is ONLY for testing and should be removed in the final
+    // build. This allows you to zero the elevator without a limit switch
+    m_controllerTwo.leftBumper().onTrue(new InstantCommand(() -> m_elevator.zeroElevator()));
     m_controllerTwo.leftTrigger().whileTrue(homeElevator);
   }
 

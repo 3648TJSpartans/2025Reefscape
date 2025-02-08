@@ -13,16 +13,14 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.spark.SparkLowLevel.MotorType;import om.revrobotics.AbsoluteEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.RelativeEncoder;
+import com.ctre.phoenix6.hardware.CANcoderimport com.revrobotics.RelativeEncoder;
 
 import frc.robot.util.TunableNumber;
 
-import org.littletonrobotics.junction.Logger;
+import r g.littletonrobotics.junction.Logger;
 
 public class ElevatorIOSparkMax implements ElevatorIO {
     // declaration of the motors and encoders
