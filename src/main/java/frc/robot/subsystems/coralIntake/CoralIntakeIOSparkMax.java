@@ -76,7 +76,7 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     }
 
     @Override
-    public void RotateTo(double setpoint) {
+    public void rotateTo(double setpoint) {
         wristController.setReference(setpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0);
     }
 

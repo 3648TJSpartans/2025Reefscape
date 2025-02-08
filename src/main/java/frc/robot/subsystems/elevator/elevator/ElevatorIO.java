@@ -26,4 +26,13 @@ public interface ElevatorIO {
     public default void setSpeed(double speed) {
     }
 
+    public default void updateLimitSwitch() {
+    }
+
+    public default boolean atBottom() {
+        return true;
+    }
+
+    public default void zeroElevator() {
+    }
 }

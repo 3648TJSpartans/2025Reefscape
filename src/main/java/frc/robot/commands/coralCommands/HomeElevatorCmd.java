@@ -5,18 +5,17 @@
 package frc.robot.commands.coralCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.coralIntake.CoralIntake;
+import frc.robot.subsystems.coralSubsystems.elevator.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class WristCmd extends Command {
-  private final CoralIntake coralIntake;
-  private final double angle;
+public class HomeElevatorCmd extends Command {
+  // declare the motors and the substem
+  private final Elevator elevatorSubsystem;
 
-  /** Creates a new WristCmd. */
-  public WristCmd(CoralIntake coralIntake, double angle) {
-    this.coralIntake = coralIntake;
-    this.angle = angle;
-    addRequirements(coralIntake);
+  /** Creates a new Elevator. */
+  public HomeElevatorCmd(Elevator elevatorSubsystem) {
+    this.elevatorSubsystem = elevatorSubsystem;
+    addRequirements(elevatorSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -27,19 +26,18 @@ public class WristCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    coralIntake.rotateTo(angle);
+    elevatorSubsystem.setSpeed(-.05);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    coralIntake.stopIntakeMotor();
-    coralIntake.stopWristMotor();
+    elevatorSubsystem.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return elevatorSubsystem.atBottom();
   }
 }
