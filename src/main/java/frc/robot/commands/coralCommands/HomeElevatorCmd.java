@@ -5,8 +5,7 @@
 package frc.robot.commands.coralCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.elevator.*;
-import frc.robot.subsystems.elevator.elevator.*;
+import frc.robot.subsystems.elevator.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class HomeElevatorCmd extends Command {

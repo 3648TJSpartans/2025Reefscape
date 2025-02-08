@@ -41,10 +41,10 @@ import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
-import frc.robot.subsystems.elevator.elevator.Elevator;
-import frc.robot.subsystems.elevator.elevator.ElevatorConstants;
-import frc.robot.subsystems.elevator.elevator.ElevatorIO;
-import frc.robot.subsystems.elevator.elevator.ElevatorIOSparkMax;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorConstants;
+import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorIOSparkMax;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
@@ -64,13 +64,13 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
-import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
-import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIO;
-import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIOSparkMax;
-import frc.robot.subsystems.coralSubsystems.elevator.Elevator;
-import frc.robot.subsystems.coralSubsystems.CoralConstants;
-import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIO;
-import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIOSparkMax;
+// import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
+// import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIO;
+// import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIOSparkMax;
+// import frc.robot.subsystems.coralSubsystems.elevator.Elevator;
+// import frc.robot.subsystems.coralSubsystems.CoralConstants;
+// import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIO;
+// import frc.robot.subsystems.coralSubsystems.elevator.ElevatorIOSparkMax;
 import frc.robot.commands.coralCommands.CoralElevatorIntegratedCmd;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
@@ -326,7 +326,7 @@ public class RobotContainer {
     m_controllerTwo.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.1)));
     m_controllerTwo.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));// testing
     m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after testing// Subject to Change
-    m_controllerTwo.y().whileTrue(slamCoral);
+    // m_controllerTwo.y().whileTrue(slamCoral);
   }
 
   public void configureDrive() {
