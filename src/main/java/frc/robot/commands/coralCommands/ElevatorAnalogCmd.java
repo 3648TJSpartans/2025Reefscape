@@ -22,13 +22,13 @@ public class ElevatorAnalogCmd extends Command {
     }
 
     @Override
-    public void end(boolean interrupted) {
+    public void end(boolean interupted) {
         elevator.setSpeed(0);
     }
 
     @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
-        return elevator.getLimitSwitch();
+        return !elevator.getLimitSwitch();
     }
 }
