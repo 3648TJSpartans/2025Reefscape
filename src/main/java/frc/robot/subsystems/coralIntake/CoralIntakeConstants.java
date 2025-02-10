@@ -6,7 +6,7 @@ package frc.robot.subsystems.coralIntake;
 
 /** constants for the coralintake subsystem */
 public class CoralIntakeConstants {
-    public static final double intakeSpeed = .5;
+    public static final double intakeSpeed = .2;
     // these are the ids for the CANs that will be use in the coral subsystem
     public static final int coralElevator = 9;
     public static final int coralWrist = 10;
@@ -30,5 +30,6 @@ public class CoralIntakeConstants {
     public static final double L2Angle = .5;
     public static final double L3Angle = .6;
     public static final double L4Angle = .7;
+    public static final double IntakeAngle = .0896;
 
 }

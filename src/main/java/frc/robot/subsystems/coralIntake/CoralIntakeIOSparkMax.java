@@ -30,6 +30,7 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
         wristMotor = new SparkMax(CoralIntakeConstants.coralWrist, MotorType.kBrushless);
         intakeMotor = new SparkMax(CoralIntakeConstants.coralIntake, MotorType.kBrushless);
         irSensor = new DigitalInput(CoralIntakeConstants.irSensorPin);
+        wristController = wristMotor.getClosedLoopController();
         absoluteEncoder = wristMotor.getAbsoluteEncoder();
         var wristConfig = new SparkMaxConfig();
         wristConfig.inverted(false)

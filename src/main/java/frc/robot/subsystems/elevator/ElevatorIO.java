@@ -1,4 +1,4 @@
-package frc.robot.subsystems.elevator.elevator;
+package frc.robot.subsystems.elevator;
 
 import org.littletonrobotics.junction.AutoLog;
 
@@ -8,6 +8,10 @@ public interface ElevatorIO {
     }
 
     public default void updateValues() {
+    }
+
+    public default boolean getLimitSwitch() {
+        return false;
     }
 
     // allows us to stop the motor

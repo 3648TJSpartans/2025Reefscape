@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.elevator.elevator;
+package frc.robot.subsystems.elevator;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
@@ -13,14 +13,16 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkLowLevel.MotorType;import om.revrobotics.AbsoluteEncoder;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.AbsoluteEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
-import com.ctre.phoenix6.hardware.CANcoderimport com.revrobotics.RelativeEncoder;
 
+import org.littletonrobotics.junction.Logger;
+
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.revrobotics.RelativeEncoder;
 import frc.robot.util.TunableNumber;
-
-import r g.littletonrobotics.junction.Logger;
 
 public class ElevatorIOSparkMax implements ElevatorIO {
     // declaration of the motors and encoders
@@ -29,7 +31,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     private PIDController pid;
     private final SparkClosedLoopController motorController;
     private boolean limitReset;
-    private final DigitalInput limitSwitch = new DigitalInput(CoralConstants.bottomLimitSwitchPin);
+    private final DigitalInput limitSwitch = new DigitalInput(ElevatorConstants.bottomLimitSwitchPin);
 
     // constructor
     public ElevatorIOSparkMax() {
@@ -39,6 +41,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         Logger.recordOutput("Elevator/EncoderReset", false);
         encoder = motor.getEncoder();
         var motorConfig = new SparkMaxConfig();
+        motorConfig.idleMode(IdleMode.kBrake);// idle mode here!
         motorConfig.inverted(false)
                 .idleMode(IdleMode.kBrake)
                 .voltageCompensation(12.0);
@@ -107,6 +110,11 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         if (!limitSwitch.get()) {
             setZero();
         }
+    }
+
+    @Override
+    public boolean getLimitSwitch() {
+        return limitSwitch.get();
     }
 
     private void setZero() {
