@@ -35,6 +35,7 @@ import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
 import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPose;
 import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPoseNearest;
 import frc.robot.commands.AlignCommands;
+import frc.robot.commands.ClimberCmd;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
@@ -79,7 +80,7 @@ import frc.robot.commands.coralCommands.CoralOutCmd;
 import frc.robot.commands.coralCommands.ElevatorCmd;
 import frc.robot.commands.coralCommands.HomeElevatorCmd;
 import frc.robot.commands.coralCommands.ElevatorAnalogCmd;
-import frc.robot.commands.ClimberCmd;
+import frc.robot.commands.ClimberCmdAnalog;
 import frc.robot.commands.coralCommands.WristCmd;
 import frc.robot.commands.coralCommands.WristAnalogCmd;
 
@@ -267,7 +268,6 @@ public class RobotContainer {
     // Command algaeCmd = new AlgaeCmd(m_algae, () ->
     // MathUtil.applyDeadband(m_copilotController.getLeftX(), 0.2));
 
-    m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> m_algae.setLiftPosition(0)));
     m_copilotController.rightBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(0.5)));
     m_copilotController.rightBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
     m_copilotController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(-0.5)));
@@ -306,8 +306,10 @@ public class RobotContainer {
   }
 
   public void configureClimber() {
-    Command climberCmd = new ClimberCmd(m_climber, () -> m_copilotController.getRightX());
-    m_climber.setDefaultCommand(climberCmd);
+    Command climberAnalogCmd = new ClimberCmdAnalog(m_climber, () -> m_copilotController.getRightX());
+    m_climber.setDefaultCommand(climberAnalogCmd);
+    Command climberSetPose = new ClimberCmd(m_climber, ClimberConstants.climbPosition);
+    m_copilotController.rightTrigger().whileTrue(climberSetPose);
   }
 
   public void configureCoralIntake() {

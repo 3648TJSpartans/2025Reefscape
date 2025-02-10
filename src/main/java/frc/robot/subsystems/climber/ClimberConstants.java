@@ -31,4 +31,6 @@ public class ClimberConstants {
     public static final boolean followEncoderInverted = false;
     public static final double followEncoderPositionFactor = 1;
 
+    public static final double climbPosition = 0.138;
+
 }
