@@ -20,4 +20,6 @@ public class AlgaeConstants {
     public static final double liftUpWithBall = 0.619;
     public static final double liftUpWithoutBall = 0.58;
     public static final double shoot = 0.71;
+
+    public static final int irSensorPin = 1; // change
 }

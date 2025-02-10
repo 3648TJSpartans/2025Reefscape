@@ -14,4 +14,8 @@ public interface AlgaeIO {
     public default double getLiftPosition() {
         return 0;
     }
+
+    public default boolean getIR() {
+        return false;
+    }
 }

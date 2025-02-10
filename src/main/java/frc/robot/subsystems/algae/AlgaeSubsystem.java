@@ -25,4 +25,8 @@ public class AlgaeSubsystem extends SubsystemBase {
     public double getLiftPosition() {
         return io.getLiftPosition();
     }
+
+    public boolean getIR() {
+        return io.getIR();
+    }
 }

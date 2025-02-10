@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
 import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPose;
@@ -66,6 +65,7 @@ import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 
 import frc.robot.commands.coralCommands.CoralCmd;
+import frc.robot.commands.algaeCommands.*;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIO;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIOSparkMax;
@@ -264,23 +264,16 @@ public class RobotContainer {
    */
 
   public void configureAlgae() {
-    // Command algaeCmd = new AlgaeCmd(m_algae, () ->
-    // MathUtil.applyDeadband(m_copilotController.getLeftX(), 0.2));
+    Command algaeDefaultCmd = new AlgaeDefaultCmd(m_algae);
+    Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
+    Command algaeShootCmd = new AlgaeShootCmd(m_algae);
 
-    m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> m_algae.setLiftPosition(0)));
-    m_copilotController.rightBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(0.5)));
-    m_copilotController.rightBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
-    m_copilotController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(-0.5)));
-    m_copilotController.leftBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
-    // m_algae.setDefaultCommand(algaeCmd);
-    m_copilotController.a().onTrue(new InstantCommand(() -> m_algae
-        .setLiftPosition(new TunableNumber("Algae/Intake", AlgaeConstants.liftIntakePosition).get())));
-    m_copilotController.b().onTrue(new InstantCommand(() -> m_algae
-        .setLiftPosition(new TunableNumber("Algae/lifeWithBall", AlgaeConstants.liftUpWithBall).get())));
-    m_copilotController.y().onTrue(new InstantCommand(() -> m_algae
-        .setLiftPosition(new TunableNumber("Algae/liftWithoutBall", AlgaeConstants.liftUpWithoutBall).get())));
-    m_copilotController.x().onTrue(new InstantCommand(
-        () -> m_algae.setLiftPosition(new TunableNumber("Algae/Shoot", AlgaeConstants.shoot).get())));
+    if (m_algae.getIR()) {
+      m_copilotController.a().whileTrue(algaeIntakeCmd);
+    } else {
+      m_copilotController.b().whileTrue(algaeShootCmd);
+    }
+    m_algae.setDefaultCommand(algaeDefaultCmd);
   }
 
   public void configureAutoChooser() {

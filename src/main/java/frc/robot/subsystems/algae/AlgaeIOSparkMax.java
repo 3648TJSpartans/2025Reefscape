@@ -7,6 +7,9 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import frc.robot.subsystems.elevator.ElevatorConstants;
@@ -22,6 +25,7 @@ public class AlgaeIOSparkMax implements AlgaeIO {
         private final SparkMax intakeMotor;
         private final AbsoluteEncoder liftEncoder;
         private final SparkClosedLoopController liftController;
+        private final DigitalInput irSensor = new DigitalInput(AlgaeConstants.irSensorPin);
 
         public AlgaeIOSparkMax() {
                 // define motors and controllers
@@ -87,5 +91,9 @@ public class AlgaeIOSparkMax implements AlgaeIO {
 
         public double getLiftPosition() {
                 return liftEncoder.getPosition();
+        }
+
+        public boolean getIR() {
+                return irSensor.get();
         }
 }
