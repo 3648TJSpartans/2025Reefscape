@@ -315,10 +315,6 @@ public class RobotContainer {
     Command coralOut = new CoralOutCmd(m_coral);
     Command wrist = new WristCmd(m_coral, new TunableNumber("WristAngle", CoralIntakeConstants.anglevalue).get());
     Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
-    Command l1 = new WristCmd(m_coral, CoralIntakeConstants.L1Angle);
-    Command l2 = new WristCmd(m_coral, CoralIntakeConstants.L2Angle);
-    Command l3 = new WristCmd(m_coral, CoralIntakeConstants.L3Angle);
-    Command l4 = new WristCmd(m_coral, CoralIntakeConstants.L4Angle);
     Command slamCoral = new CoralCmd(m_coral, .2, -.2);
     // m_coral.setDefaultCommand(wristAnalog);
     // m_controllerTwo.povUp().onTrue(l1);
@@ -382,10 +378,6 @@ public class RobotContainer {
   }
 
   public void configureElevator() {
-    Command l1 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L1", ElevatorConstants.coralLeveL1).get());
-    Command l2 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L2", ElevatorConstants.coralLeveL2).get());
-    Command l3 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L3", ElevatorConstants.coralLeveL3).get());
-    Command l4 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L4", ElevatorConstants.coralLeveL4).get());
 
     Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
     // m_controllerTwo.povUp().whileTrue(l1);
@@ -398,14 +390,14 @@ public class RobotContainer {
   public void configureSetpoints() {
     Command homeElevator = new HomeElevatorCmd(m_elevator);
     Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        ElevatorConstants.coralLeveL1, CoralIntakeConstants.L1Angle);
+        new TunableNumber("Elevator/L1", ElevatorConstants.coralLeveL1).get(), CoralIntakeConstants.L1Angle);
 
     Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        ElevatorConstants.coralLeveL2, CoralIntakeConstants.L2Angle);
+        new TunableNumber("Elevator/L2", ElevatorConstants.coralLeveL1).get(), CoralIntakeConstants.L2Angle);
     Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        ElevatorConstants.coralLeveL3, CoralIntakeConstants.L3Angle);
+        new TunableNumber("Elevator/L3", ElevatorConstants.coralLeveL1).get(), CoralIntakeConstants.L3Angle);
     Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        ElevatorConstants.coralLeveL4, CoralIntakeConstants.L4Angle);
+        new TunableNumber("Elevator/L4", ElevatorConstants.coralLeveL1).get(), CoralIntakeConstants.L4Angle);
     Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
     m_controllerTwo.povUp().whileTrue(l1);
