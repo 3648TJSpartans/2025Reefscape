@@ -380,24 +380,24 @@ public class RobotContainer {
   public void configureElevator() {
 
     Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
-    // m_controllerTwo.povUp().whileTrue(l1);
-    // m_controllerTwo.povRight().whileTrue(l2);
-    // m_controllerTwo.povDown().whileTrue(l3);
-    // m_controllerTwo.povLeft().whileTrue(l4);
     m_elevator.setDefaultCommand(elevatorAnalog);
   }
 
   public void configureSetpoints() {
     Command homeElevator = new HomeElevatorCmd(m_elevator);
     Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new TunableNumber("Elevator/L1", ElevatorConstants.coralLeveL1).get(), CoralIntakeConstants.L1Angle);
+        new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
+        new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
 
     Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new TunableNumber("Elevator/L2", ElevatorConstants.coralLeveL1).get(), CoralIntakeConstants.L2Angle);
+        new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
+        new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
     Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new TunableNumber("Elevator/L3", ElevatorConstants.coralLeveL1).get(), CoralIntakeConstants.L3Angle);
+        new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
+        new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
     Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new TunableNumber("Elevator/L4", ElevatorConstants.coralLeveL1).get(), CoralIntakeConstants.L4Angle);
+        new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
+        new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
     Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
     m_controllerTwo.povUp().whileTrue(l1);
