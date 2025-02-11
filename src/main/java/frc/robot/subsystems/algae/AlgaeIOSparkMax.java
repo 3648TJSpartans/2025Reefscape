@@ -23,14 +23,16 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 public class AlgaeIOSparkMax implements AlgaeIO {
 
         private final SparkMax liftMotor;
-        private final SparkMax intakeMotor;
+        private final SparkMax intakeMotorLeft;
+        private final SparkMax intakeMotorRight;
         private final AbsoluteEncoder liftEncoder;
         private final SparkClosedLoopController liftController;
 
         public AlgaeIOSparkMax() {
                 // define motors and controllers
                 liftMotor = new SparkMax(AlgaeConstants.liftMotorId, MotorType.kBrushless);
-                intakeMotor = new SparkMax(AlgaeConstants.intakeMotorId, MotorType.kBrushless);
+                intakeMotorLeft = new SparkMax(AlgaeConstants.intakeMotorLeftId, MotorType.kBrushless);
+                intakeMotorRight = new SparkMax(AlgaeConstants.intakeMotorRightId, MotorType.kBrushless);
                 liftEncoder = liftMotor.getAbsoluteEncoder();
                 liftController = liftMotor.getClosedLoopController();
 
@@ -86,12 +88,10 @@ public class AlgaeIOSparkMax implements AlgaeIO {
         }
 
         public void setIntakeSpeed(double speed) {
-<<<<<<< Updated upstream
-                intakeMotor.set(speed);
-=======
+
                 intakeMotorLeft.set(speed);
                 intakeMotorRight.set(speed);
->>>>>>> Stashed changes
+
         }
 
         public double getLiftPosition() {
