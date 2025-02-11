@@ -86,7 +86,12 @@ public class AlgaeIOSparkMax implements AlgaeIO {
         }
 
         public void setIntakeSpeed(double speed) {
+<<<<<<< Updated upstream
                 intakeMotor.set(speed);
+=======
+                intakeMotorLeft.set(speed);
+                intakeMotorRight.set(speed);
+>>>>>>> Stashed changes
         }
 
         public double getLiftPosition() {
