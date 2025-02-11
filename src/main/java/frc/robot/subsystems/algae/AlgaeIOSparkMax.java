@@ -1,5 +1,9 @@
 package frc.robot.subsystems.algae;
 
+import java.util.logging.LogManager;
+
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -87,5 +91,10 @@ public class AlgaeIOSparkMax implements AlgaeIO {
 
         public double getLiftPosition() {
                 return liftEncoder.getPosition();
+        }
+
+        @Override
+        public void updateValues() {
+                Logger.recordOutput("Algae/EncoderPosition", liftEncoder.getPosition());
         }
 }

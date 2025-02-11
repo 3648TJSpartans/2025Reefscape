@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.AlgaeAnalogCmd;
 import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
@@ -272,15 +273,17 @@ public class RobotContainer {
     m_copilotController.rightBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
     m_copilotController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(-0.5)));
     m_copilotController.leftBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
+    Command intake = new AlgaeCmd(m_algae, new TunableNumber("Algae/Intake", AlgaeConstants.liftIntakePosition).get());
+    Command liftUp = new AlgaeCmd(m_algae,
+        new TunableNumber("Algae/lifeWithBall", AlgaeConstants.liftUpWithBall).get());
+    Command liftWO = new AlgaeCmd(m_algae,
+        new TunableNumber("Algae/liftWithoutBall", AlgaeConstants.liftUpWithoutBall).get());
+    Command shootHeight = new AlgaeCmd(m_algae, new TunableNumber("Algae/Shoot", AlgaeConstants.shoot).get());
     // m_algae.setDefaultCommand(algaeCmd);
-    m_copilotController.a().onTrue(new InstantCommand(() -> m_algae
-        .setLiftPosition(new TunableNumber("Algae/Intake", AlgaeConstants.liftIntakePosition).get())));
-    m_copilotController.b().onTrue(new InstantCommand(() -> m_algae
-        .setLiftPosition(new TunableNumber("Algae/lifeWithBall", AlgaeConstants.liftUpWithBall).get())));
-    m_copilotController.y().onTrue(new InstantCommand(() -> m_algae
-        .setLiftPosition(new TunableNumber("Algae/liftWithoutBall", AlgaeConstants.liftUpWithoutBall).get())));
-    m_copilotController.x().onTrue(new InstantCommand(
-        () -> m_algae.setLiftPosition(new TunableNumber("Algae/Shoot", AlgaeConstants.shoot).get())));
+    m_copilotController.a().whileTrue(intake);
+    m_copilotController.b().whileTrue(liftUp);
+    m_copilotController.y().whileTrue(liftWO);
+    m_copilotController.x().whileTrue(shootHeight);
   }
 
   public void configureAutoChooser() {

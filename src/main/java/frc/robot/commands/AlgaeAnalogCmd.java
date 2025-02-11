@@ -4,13 +4,13 @@ import frc.robot.subsystems.algae.AlgaeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import java.util.function.DoubleSupplier;
 
-public class AlgaeCmd extends Command {
+public class AlgaeAnalogCmd extends Command {
     private final AlgaeSubsystem algaeSubsystem;
-    private final double angle;
+    private final DoubleSupplier leftStickSupplier;
 
-    public AlgaeCmd(AlgaeSubsystem algaeSubsystem, double angle) {
+    public AlgaeAnalogCmd(AlgaeSubsystem algaeSubsystem, DoubleSupplier leftStickSupplier) {
         this.algaeSubsystem = algaeSubsystem;
-        this.angle = angle;
+        this.leftStickSupplier = leftStickSupplier;
         // this.RTSupplier = RTSupplier;
         addRequirements(algaeSubsystem);
 
@@ -18,7 +18,7 @@ public class AlgaeCmd extends Command {
 
     @Override
     public void execute() {
-        algaeSubsystem.setLiftPosition(angle);
+        algaeSubsystem.setLiftSpeed(0.5 * leftStickSupplier.getAsDouble());
     }
 
     @Override
