@@ -15,7 +15,7 @@ public class AlgaeDownCmd extends Command {
     @Override
     public void execute() {
         algaeSubsystem.setLiftPosition(AlgaeConstants.liftIntakePosition);// lift down
-        algaeSubsystem.setIntakeSpeed(0.5);
+        algaeSubsystem.setIntakeSpeed(-0.2);
     }
 
     @Override
