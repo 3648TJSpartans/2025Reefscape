@@ -14,4 +14,7 @@ public interface AlgaeIO {
     public default double getLiftPosition() {
         return 0;
     }
+
+    public default void updateValues() {
+    }
 }

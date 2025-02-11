@@ -1,5 +1,9 @@
 package frc.robot.subsystems.algae;
 
+import java.util.logging.LogManager;
+
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -19,14 +23,16 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 public class AlgaeIOSparkMax implements AlgaeIO {
 
         private final SparkMax liftMotor;
-        private final SparkMax intakeMotor;
+        private final SparkMax intakeMotorLeft;
+        private final SparkMax intakeMotorRight;
         private final AbsoluteEncoder liftEncoder;
         private final SparkClosedLoopController liftController;
 
         public AlgaeIOSparkMax() {
                 // define motors and controllers
                 liftMotor = new SparkMax(AlgaeConstants.liftMotorId, MotorType.kBrushless);
-                intakeMotor = new SparkMax(AlgaeConstants.intakeMotorId, MotorType.kBrushless);
+                intakeMotorLeft = new SparkMax(AlgaeConstants.intakeMotorLeftId, MotorType.kBrushless);
+                intakeMotorRight = new SparkMax(AlgaeConstants.intakeMotorRightId, MotorType.kBrushless);
                 liftEncoder = liftMotor.getAbsoluteEncoder();
                 liftController = liftMotor.getClosedLoopController();
 
@@ -82,10 +88,18 @@ public class AlgaeIOSparkMax implements AlgaeIO {
         }
 
         public void setIntakeSpeed(double speed) {
-                intakeMotor.set(speed);
+
+                intakeMotorLeft.set(speed);
+                intakeMotorRight.set(speed);
+
         }
 
         public double getLiftPosition() {
                 return liftEncoder.getPosition();
+        }
+
+        @Override
+        public void updateValues() {
+                Logger.recordOutput("Algae/EncoderPosition", liftEncoder.getPosition());
         }
 }

@@ -1,5 +1,7 @@
 package frc.robot.subsystems.algae;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AlgaeSubsystem extends SubsystemBase {
@@ -8,6 +10,7 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     public AlgaeSubsystem(AlgaeIO io) {
         this.io = io;
+        Logger.recordOutput("Algae/Setpoint", 0);
     }
 
     public void setLiftSpeed(double speed) {
@@ -15,6 +18,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     }
 
     public void setLiftPosition(double pos) {
+        Logger.recordOutput("Algae/Setpoint", pos);
         io.setLiftPosition(pos);
     }
 
@@ -24,5 +28,10 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     public double getLiftPosition() {
         return io.getLiftPosition();
+    }
+
+    @Override
+    public void periodic() {
+        io.updateValues();
     }
 }

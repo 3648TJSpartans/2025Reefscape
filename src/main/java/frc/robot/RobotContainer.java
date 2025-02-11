@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.AlgaeAnalogCmd;
 import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
@@ -272,15 +273,17 @@ public class RobotContainer {
     m_copilotController.rightBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
     m_copilotController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(-0.5)));
     m_copilotController.leftBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
+    Command intake = new AlgaeCmd(m_algae, new TunableNumber("Algae/Intake", AlgaeConstants.liftIntakePosition).get());
+    Command liftUp = new AlgaeCmd(m_algae,
+        new TunableNumber("Algae/lifeWithBall", AlgaeConstants.liftUpWithBall).get());
+    Command liftWO = new AlgaeCmd(m_algae,
+        new TunableNumber("Algae/liftWithoutBall", AlgaeConstants.liftUpWithoutBall).get());
+    Command shootHeight = new AlgaeCmd(m_algae, new TunableNumber("Algae/Shoot", AlgaeConstants.shoot).get());
     // m_algae.setDefaultCommand(algaeCmd);
-    m_copilotController.a().onTrue(new InstantCommand(() -> m_algae
-        .setLiftPosition(new TunableNumber("Algae/Intake", AlgaeConstants.liftIntakePosition).get())));
-    m_copilotController.b().onTrue(new InstantCommand(() -> m_algae
-        .setLiftPosition(new TunableNumber("Algae/lifeWithBall", AlgaeConstants.liftUpWithBall).get())));
-    m_copilotController.y().onTrue(new InstantCommand(() -> m_algae
-        .setLiftPosition(new TunableNumber("Algae/liftWithoutBall", AlgaeConstants.liftUpWithoutBall).get())));
-    m_copilotController.x().onTrue(new InstantCommand(
-        () -> m_algae.setLiftPosition(new TunableNumber("Algae/Shoot", AlgaeConstants.shoot).get())));
+    m_copilotController.a().whileTrue(intake);
+    m_copilotController.b().whileTrue(liftUp);
+    m_copilotController.y().whileTrue(liftWO);
+    m_copilotController.x().whileTrue(shootHeight);
   }
 
   public void configureAutoChooser() {
@@ -315,10 +318,6 @@ public class RobotContainer {
     Command coralOut = new CoralOutCmd(m_coral);
     Command wrist = new WristCmd(m_coral, new TunableNumber("WristAngle", CoralIntakeConstants.anglevalue).get());
     Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
-    Command l1 = new WristCmd(m_coral, CoralIntakeConstants.L1Angle);
-    Command l2 = new WristCmd(m_coral, CoralIntakeConstants.L2Angle);
-    Command l3 = new WristCmd(m_coral, CoralIntakeConstants.L3Angle);
-    Command l4 = new WristCmd(m_coral, CoralIntakeConstants.L4Angle);
     Command slamCoral = new CoralCmd(m_coral, .2, -.2);
     // m_coral.setDefaultCommand(wristAnalog);
     // m_controllerTwo.povUp().onTrue(l1);
@@ -382,30 +381,26 @@ public class RobotContainer {
   }
 
   public void configureElevator() {
-    Command l1 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L1", ElevatorConstants.coralLeveL1).get());
-    Command l2 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L2", ElevatorConstants.coralLeveL2).get());
-    Command l3 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L3", ElevatorConstants.coralLeveL3).get());
-    Command l4 = new ElevatorCmd(m_elevator, new TunableNumber("Elevator/L4", ElevatorConstants.coralLeveL4).get());
 
     Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
-    // m_controllerTwo.povUp().whileTrue(l1);
-    // m_controllerTwo.povRight().whileTrue(l2);
-    // m_controllerTwo.povDown().whileTrue(l3);
-    // m_controllerTwo.povLeft().whileTrue(l4);
     m_elevator.setDefaultCommand(elevatorAnalog);
   }
 
   public void configureSetpoints() {
     Command homeElevator = new HomeElevatorCmd(m_elevator);
     Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        ElevatorConstants.coralLeveL1, CoralIntakeConstants.L1Angle);
+        new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
+        new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
 
     Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        ElevatorConstants.coralLeveL2, CoralIntakeConstants.L2Angle);
+        new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
+        new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
     Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        ElevatorConstants.coralLeveL3, CoralIntakeConstants.L3Angle);
+        new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
+        new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
     Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        ElevatorConstants.coralLeveL4, CoralIntakeConstants.L4Angle);
+        new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
+        new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
     Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
     m_controllerTwo.povUp().whileTrue(l1);
