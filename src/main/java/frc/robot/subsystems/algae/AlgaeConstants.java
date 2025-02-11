@@ -2,7 +2,8 @@ package frc.robot.subsystems.algae;
 
 public class AlgaeConstants {
     public static final int liftMotorId = 14;
-    public static final int intakeMotorId = 15;
+    public static final int intakeMotorLeftId = 15;
+    public static final int intakeMotorRightId = 16;
 
     public static final double kLiftP = 2; // PID is not yet tuned
     public static final double kLiftI = 0;
