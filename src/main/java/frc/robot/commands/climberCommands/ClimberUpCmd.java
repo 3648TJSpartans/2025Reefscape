@@ -26,7 +26,7 @@ public class ClimberUpCmd extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        climberSubsystem.setPosition(ClimberConstants.upPosition);
+        climberSubsystem.setPosition(ClimberConstants.upPosition1, ClimberConstants.upPosition2);
     }
 
     // Called once the command ends or is interrupted.

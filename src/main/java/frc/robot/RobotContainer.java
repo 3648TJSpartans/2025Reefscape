@@ -307,9 +307,8 @@ public class RobotContainer {
   }
 
   public void configureClimber() {
-    // Command climberCmd = new ClimberCmd(m_climber, () ->
-    // m_copilotController.getRightX());
-    // m_climber.setDefaultCommand(climberCmd);
+    Command climberCmd = new ClimberCmd(m_climber, () -> m_copilotController.getRightX());
+    m_climber.setDefaultCommand(climberCmd);
     Command climberUpCmd = new ClimberUpCmd(m_climber);
     Command climberDownCmd = new ClimberDownCmd(m_climber);
     m_driveController.povUp().whileTrue(climberUpCmd);

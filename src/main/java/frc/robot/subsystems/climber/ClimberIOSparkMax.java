@@ -99,9 +99,9 @@ public class ClimberIOSparkMax implements ClimberIO {
 
         }
 
-        public void setPosition(double pos) {
-                leadController.setReference(pos, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-                followController.setReference(pos, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+        public void setPosition(double position1, double position2) {
+                leadController.setReference(position1, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+                followController.setReference(position2, ControlType.kPosition, ClosedLoopSlot.kSlot0);
         }
 
         public void resetPosition() {
