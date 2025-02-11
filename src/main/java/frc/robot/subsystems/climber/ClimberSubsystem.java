@@ -26,4 +26,8 @@ public class ClimberSubsystem extends SubsystemBase {
         io.setSpeed(speed);
     }
 
+    public void stop() {
+        io.stop();
+    }
+
 }
