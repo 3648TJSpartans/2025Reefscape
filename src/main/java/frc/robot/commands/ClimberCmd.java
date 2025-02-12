@@ -1,22 +1,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.climber.ClimberConstants;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 
 public class ClimberCmd extends Command {
     private final ClimberSubsystem climberSubsystem;
-    private final double position;
 
-    public ClimberCmd(ClimberSubsystem climberSubsystem, double position) {
+    public ClimberCmd(ClimberSubsystem climberSubsystem) {
         this.climberSubsystem = climberSubsystem;
-        this.position = position;
         addRequirements(climberSubsystem);
-
     }
 
     @Override
     public void execute() {
-        climberSubsystem.setPosition(position);
+        climberSubsystem.setPosition(ClimberConstants.climbLeftPosition, ClimberConstants.climbRightPosition);
     }
 
     @Override

@@ -308,7 +308,7 @@ public class RobotContainer {
   public void configureClimber() {
     Command climberAnalogCmd = new ClimberCmdAnalog(m_climber, () -> m_copilotController.getRightX());
     m_climber.setDefaultCommand(climberAnalogCmd);
-    Command climberSetPose = new ClimberCmd(m_climber, ClimberConstants.climbPosition);
+    Command climberSetPose = new ClimberCmd(m_climber);
     m_copilotController.rightTrigger().whileTrue(climberSetPose);
   }
 

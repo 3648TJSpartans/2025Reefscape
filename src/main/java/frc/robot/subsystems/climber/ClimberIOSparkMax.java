@@ -17,108 +17,109 @@ import com.revrobotics.spark.SparkClosedLoopController;
 
 public class ClimberIOSparkMax implements ClimberIO {
 
-        private final SparkMax leadMotor;
-        private final SparkMax followMotor;
+        private final SparkMax leftMotor;
+        private final SparkMax rightMotor;
 
-        private final AbsoluteEncoder leadEncoder;
-        private final SparkClosedLoopController leadController;
-        private final SparkClosedLoopController followController;
+        private final AbsoluteEncoder leftEncoder;
+        private final SparkClosedLoopController leftController;
+        private final SparkClosedLoopController rightController;
 
         public ClimberIOSparkMax() {
-                leadMotor = new SparkMax(ClimberConstants.leadMotorID, MotorType.kBrushless);
-                followMotor = new SparkMax(ClimberConstants.followMotorID, MotorType.kBrushless);
-                leadEncoder = leadMotor.getAbsoluteEncoder();
+                leftMotor = new SparkMax(ClimberConstants.leftMotorID, MotorType.kBrushless);
+                rightMotor = new SparkMax(ClimberConstants.rightMotorID, MotorType.kBrushless);
+                leftEncoder = leftMotor.getAbsoluteEncoder();
 
-                leadController = leadMotor.getClosedLoopController();
-                followController = followMotor.getClosedLoopController();
+                leftController = leftMotor.getClosedLoopController();
+                rightController = rightMotor.getClosedLoopController();
 
-                SparkMaxConfig leadConfig = new SparkMaxConfig();
-                leadConfig.closedLoop
+                SparkMaxConfig leftConfig = new SparkMaxConfig();
+                leftConfig.closedLoop
                                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                                .pidf(new TunableNumber("Climber/kLeadP", ClimberConstants.kLeadP).get(),
-                                                new TunableNumber("Climber/kLeadI", ClimberConstants.kLeadI).get(),
-                                                new TunableNumber("Climber/kLeadD", ClimberConstants.kLeadD).get(),
-                                                new TunableNumber("Climber/kLeadFF", ClimberConstants.kLeadFF).get())
-                                .outputRange(new TunableNumber("Climber/kLeadMinOutput",
-                                                ClimberConstants.kLeadMinOutput).get(),
-                                                new TunableNumber("Climber/kLeadMaxOutput",
-                                                                ClimberConstants.kLeadMaxOutput).get());
-                leadConfig.inverted(false)
+                                .pidf(new TunableNumber("Climber/kleftP", ClimberConstants.kLeftP).get(),
+                                                new TunableNumber("Climber/kleftI", ClimberConstants.kLeftI).get(),
+                                                new TunableNumber("Climber/kleftD", ClimberConstants.kLeftD).get(),
+                                                new TunableNumber("Climber/kleftFF", ClimberConstants.kLeftFF).get())
+                                .outputRange(new TunableNumber("Climber/kleftMinOutput",
+                                                ClimberConstants.kLeftMinOutput).get(),
+                                                new TunableNumber("Climber/kLeftMaxOutput",
+                                                                ClimberConstants.kLeftMaxOutput).get());
+                leftConfig.inverted(false)
                                 .idleMode(IdleMode.kBrake)
                                 .voltageCompensation(12.0);
-                leadConfig.signals
+                leftConfig.signals
                                 .absoluteEncoderPositionAlwaysOn(true)
                                 .absoluteEncoderPositionPeriodMs(
-                                                (int) (1000.0 / ClimberConstants.leadOdometryFrequency))
+                                                (int) (1000.0 / ClimberConstants.leftOdometryFrequency))
                                 .absoluteEncoderVelocityAlwaysOn(true)
                                 .absoluteEncoderVelocityPeriodMs(20)
                                 .appliedOutputPeriodMs(20)
                                 .busVoltagePeriodMs(20)
                                 .outputCurrentPeriodMs(20);
-                leadConfig.absoluteEncoder
-                                .inverted(ClimberConstants.leadEncoderInverted)
-                                .positionConversionFactor(ClimberConstants.leadEncoderPositionFactor)
-                                .velocityConversionFactor(ClimberConstants.leadEncoderPositionFactor)
+                leftConfig.absoluteEncoder
+                                .inverted(ClimberConstants.leftEncoderInverted)
+                                .positionConversionFactor(ClimberConstants.leftEncoderPositionFactor)
+                                .velocityConversionFactor(ClimberConstants.leftEncoderPositionFactor)
                                 .averageDepth(2);
-                leadMotor.configure(
-                                leadConfig, ResetMode.kResetSafeParameters,
+                leftMotor.configure(
+                                leftConfig, ResetMode.kResetSafeParameters,
                                 PersistMode.kPersistParameters);
 
-                SparkMaxConfig followConfig = new SparkMaxConfig();
-                followConfig.closedLoop
+                SparkMaxConfig rightConfig = new SparkMaxConfig();
+                rightConfig.closedLoop
                                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                                .pidf(new TunableNumber("Climber/kFollowP", ClimberConstants.kFollowP).get(),
-                                                new TunableNumber("Climber/kFollowI", ClimberConstants.kFollowI).get(),
-                                                new TunableNumber("Climber/kFollowD", ClimberConstants.kFollowD).get(),
-                                                new TunableNumber("Climber/kFollowFF", ClimberConstants.kFollowFF)
+                                .pidf(new TunableNumber("Climber/kRightP", ClimberConstants.kRightP).get(),
+                                                new TunableNumber("Climber/kRightI", ClimberConstants.kRightI).get(),
+                                                new TunableNumber("Climber/kRightD", ClimberConstants.kRightD).get(),
+                                                new TunableNumber("Climber/kRightFF", ClimberConstants.kRightFF)
                                                                 .get())
-                                .outputRange(new TunableNumber("Climber/kFollowdMinOutput",
-                                                ClimberConstants.kFollowMinOutput).get(),
-                                                new TunableNumber("Climber/kFollowMaxOutput",
-                                                                ClimberConstants.kFollowMaxOutput).get());
-                followConfig.inverted(false)
+                                .outputRange(new TunableNumber("Climber/kRightdMinOutput",
+                                                ClimberConstants.kRightMinOutput).get(),
+                                                new TunableNumber("Climber/kRightMaxOutput",
+                                                                ClimberConstants.kRightMaxOutput).get());
+                rightConfig.inverted(false)
                                 .idleMode(IdleMode.kBrake)
                                 .voltageCompensation(12.0);
-                followConfig.signals
+                rightConfig.signals
                                 .absoluteEncoderPositionAlwaysOn(true)
                                 .absoluteEncoderPositionPeriodMs(
-                                                (int) (1000.0 / ClimberConstants.followOdometryFrequency))
+                                                (int) (1000.0 / ClimberConstants.rightOdometryFrequency))
                                 .absoluteEncoderVelocityAlwaysOn(true)
                                 .absoluteEncoderVelocityPeriodMs(20)
                                 .appliedOutputPeriodMs(20)
                                 .busVoltagePeriodMs(20)
                                 .outputCurrentPeriodMs(20);
-                followConfig.absoluteEncoder
-                                .inverted(ClimberConstants.followEncoderInverted)
-                                .positionConversionFactor(ClimberConstants.followEncoderPositionFactor)
-                                .velocityConversionFactor(ClimberConstants.followEncoderPositionFactor)
+                rightConfig.absoluteEncoder
+                                .inverted(ClimberConstants.rightEncoderInverted)
+                                .positionConversionFactor(ClimberConstants.rightEncoderPositionFactor)
+                                .velocityConversionFactor(ClimberConstants.rightEncoderPositionFactor)
                                 .averageDepth(2);
-                // followConfig.follow(leadMotor);
-                followMotor.configure(
-                                followConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+                // rightConfig.follow(leftMotor);
+                rightMotor.configure(
+                                rightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         }
 
-        public void setPosition(double pos) {
-                leadController.setReference(pos, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-                followController.setReference(pos, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+        public void setPosition(double posLeft, double posRight) {
+                leftController.setReference(posLeft, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+                rightController.setReference(posRight, ControlType.kPosition, ClosedLoopSlot.kSlot0);
         }
 
         public void resetPosition() {
-                leadController.setReference(0, ControlType.kPosition);
+                leftController.setReference(0, ControlType.kPosition);
+                leftController.setReference(0, ControlType.kPosition);
         }
 
         public void stop() {
-                leadMotor.stopMotor();
-                followMotor.stopMotor();
+                leftMotor.stopMotor();
+                rightMotor.stopMotor();
         }
 
-        public double getPosition() {
-                return leadEncoder.getPosition();
+        public double getPositions() {
+                return leftEncoder.getPosition();
         }
 
         public void setSpeed(double speed) {
-                leadMotor.set(speed);
-                followMotor.set(speed);
+                leftMotor.set(speed);
+                rightMotor.set(speed);
         }
 }

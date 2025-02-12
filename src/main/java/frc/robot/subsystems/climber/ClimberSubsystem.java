@@ -10,8 +10,8 @@ public class ClimberSubsystem extends SubsystemBase {
         this.io = io;
     }
 
-    public void setPosition(double pos) {
-        io.setPosition(pos);
+    public void setPosition(double posLeft, double posRight) {
+        io.setPosition(posLeft, posRight);
     }
 
     public void resetPosition() {

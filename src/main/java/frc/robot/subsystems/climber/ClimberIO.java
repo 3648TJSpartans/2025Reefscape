@@ -2,7 +2,7 @@ package frc.robot.subsystems.climber;
 
 public interface ClimberIO {
 
-    public default void setPosition(double pos) {
+    public default void setPosition(double posLeft, double posRight) {
     }
 
     public default void resetPosition() {
