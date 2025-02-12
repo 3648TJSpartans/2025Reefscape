@@ -67,6 +67,7 @@ import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 
 import frc.robot.commands.coralCommands.CoralCmd;
+import frc.robot.commands.climberCommands.*;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIO;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIOSparkMax;
@@ -80,7 +81,6 @@ import frc.robot.commands.coralCommands.CoralOutCmd;
 import frc.robot.commands.coralCommands.ElevatorCmd;
 import frc.robot.commands.coralCommands.HomeElevatorCmd;
 import frc.robot.commands.coralCommands.ElevatorAnalogCmd;
-import frc.robot.commands.ClimberCmd;
 import frc.robot.commands.coralCommands.WristCmd;
 import frc.robot.commands.coralCommands.WristAnalogCmd;
 
@@ -309,8 +309,11 @@ public class RobotContainer {
   }
 
   public void configureClimber() {
-    Command climberCmd = new ClimberCmd(m_climber, () -> m_copilotController.getRightX());
+    Command climberCmd = new ClimberAnalogCmd(m_climber, () -> m_copilotController.getRightX());
     m_climber.setDefaultCommand(climberCmd);
+    Command climberUpCmd = new ClimberUpCmd(m_climber);
+    m_driveController.povUp().whileTrue(climberUpCmd);
+
   }
 
   public void configureCoralIntake() {

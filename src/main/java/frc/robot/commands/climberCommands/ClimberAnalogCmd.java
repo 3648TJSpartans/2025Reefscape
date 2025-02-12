@@ -1,15 +1,15 @@
-package frc.robot.commands;
+package frc.robot.commands.climberCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 
 import java.util.function.DoubleSupplier;
 
-public class ClimberCmd extends Command {
+public class ClimberAnalogCmd extends Command {
     private final ClimberSubsystem climberSubsystem;
     private final DoubleSupplier rightStickSupplier;
 
-    public ClimberCmd(ClimberSubsystem climberSubsystem, DoubleSupplier rightStickSupplier) {
+    public ClimberAnalogCmd(ClimberSubsystem climberSubsystem, DoubleSupplier rightStickSupplier) {
         this.climberSubsystem = climberSubsystem;
         this.rightStickSupplier = rightStickSupplier;
         addRequirements(climberSubsystem);

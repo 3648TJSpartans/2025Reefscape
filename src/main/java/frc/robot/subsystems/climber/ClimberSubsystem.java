@@ -10,8 +10,8 @@ public class ClimberSubsystem extends SubsystemBase {
         this.io = io;
     }
 
-    public void setPosition(double pos) {
-        io.setPosition(pos);
+    public void setPosition(double position1, double position2) {
+        io.setPosition(position1, position2);
     }
 
     public void resetPosition() {
@@ -24,6 +24,10 @@ public class ClimberSubsystem extends SubsystemBase {
 
     public void setSpeed(double speed) {
         io.setSpeed(speed);
+    }
+
+    public void stop() {
+        io.stop();
     }
 
 }
