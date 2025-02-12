@@ -15,7 +15,7 @@ public class AlgaeDefaultCmd extends Command {
 
     @Override
     public void execute() {
-        algaeSubsystem.setIntakeSpeed(0.5);
+        algaeSubsystem.setIntakeSpeed(0);
         if (algaeSubsystem.getIR()) {
             algaeSubsystem.setLiftPosition(AlgaeConstants.liftUpWithoutBall);
         } else {
