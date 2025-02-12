@@ -46,7 +46,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                 .idleMode(IdleMode.kBrake)
                 .voltageCompensation(12.0);
         motorConfig.closedLoop
-                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .pidf(new TunableNumber("ELevator/kElevatorP", ElevatorConstants.kElevatorP).get(),
                         new TunableNumber("ELevator/kElevatorI", ElevatorConstants.kElevatorI).get(),
                         new TunableNumber("ELevator/kElevatorD", ElevatorConstants.kElevatorD).get(),
