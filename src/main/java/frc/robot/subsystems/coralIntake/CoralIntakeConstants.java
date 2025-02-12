@@ -15,21 +15,21 @@ public class CoralIntakeConstants {
     // coralintake subsytem
     public static final int irSensorPin = 0;
     // these are the constants for the pid of the robot's wrist
-    public static final double kWristP = 1;
+    public static final double kWristP = .5;
     public static final double kWristI = 0;
     public static final double kWristD = 0;
     public static final double kWristFF = 0;
     public static final double wristOdometryFrequency = 100;
-    public static final double kWristMinRange = -.3;
-    public static final double kWristMaxRange = .3;
+    public static final double kWristMinRange = -.5;
+    public static final double kWristMaxRange = .5;
     public static final boolean wristEncoderInverted = false;
     public static final double wristEncoderPositionFactor = 1;
     // this is the angle for the wrist and is subject to change for each level
     public static final double anglevalue = 45;
-    public static final double L1Angle = .4;
-    public static final double L2Angle = .5;
-    public static final double L3Angle = .6;
-    public static final double L4Angle = .7;
+    public static final double L1Angle = .1;
+    public static final double L2Angle = .15;
+    public static final double L3Angle = .25;
+    public static final double L4Angle = .4;
     public static final double IntakeAngle = .0896;
 
 }
