@@ -1,16 +1,29 @@
 #!/bin/bash
+# filepath: /Users/banksmalia/Projects/Robotics/2025Reefscape/src/main/deploy/logroller.sh
 echo "Setting up..."
 logDir="/u/logs"         # directory holding logs
 archiveDir="/u/archives" # directory to store archives
 echo "Directories set"
 
-today=$(date +%Y-%m-%d)                        # current date
-midnight=$(date -d "$today 00:00:00" +%s)      # unix timestamp of midnight today
-yesterday=$(date -d "$today -1 day" +%Y-%m-%d) # yesterday's date
-threeDaysAgo=$(date -d "$today -3 days" +%s)   # unix timestamp of midnight three days ago
+# POSIX-compliant date calculations
+TZ=UTC0 # Set timezone to UTC to avoid DST issues
+export TZ
+now=$(date +%s) # Current Unix timestamp
+
+# Calculate yesterday's date
+yesterday_epoch=$(( now - 86400 )) # Subtract 24 hours (86400 seconds)
+yesterday=$(date -u -d @$yesterday_epoch +%Y-%m-%d)
+
+# Calculate three days ago
+three_days_ago_epoch=$(( now - 259200 )) # Subtract 72 hours (259200 seconds)
+threeDaysAgo=$(date -u -d @$three_days_ago_epoch +%s)
+
+# Calculate midnight (start of today) using arithmetic (no re-parsing)
+midnight=$(( (now / 86400) * 86400 ))
+
 echo "Timestamps and dates obtained"
 
-cd $logDir || exit 1
+cd "$logDir" || exit 1
 mkdir -p oldLogs # temporary directory to hold old logs
 echo "Temporary directory created"
 echo "Ready to go"
@@ -19,8 +32,8 @@ echo "Step 1: Clearing old logs"
 
 movedFiles=0
 for file in "$logDir"/*; do      # loop through all files in the log directory
-  fileAge=$(date -r "$file" +%s) # get unix timestamp of file modification
   if [[ -f "$file" ]]; then      # check if the file is a regular file, not a directory
+    fileAge=$(date -r "$file" +%s) # get unix timestamp of file modification
     echo -n "Checking file $file... "
     if [[ "$fileAge" -lt "$midnight" ]]; then # check if the file is older than today
       mv "$file" oldLogs                      # if so, move it to the temporary directory
@@ -38,18 +51,22 @@ if [[ -z "$(ls -A oldLogs)" ]]; then # check if the temporary directory is empty
   exit 0 # exit the script to avoid performing unnecessary steps
 fi
 echo "Step 2: Archiving old logs"
-tar -czf $archiveDir/"$yesterday"-logs.tgz oldLogs # tarzips the temporary directory into the archive directory
+tar -czf "$archiveDir/$yesterday"-logs.tgz oldLogs # tarzips the temporary directory into the archive directory
 echo "Removing temporary directory"
 rm -rf oldLogs # remove the temporary directory
 echo "Step 2 complete"
 echo "Step 3: Removing old archives"
 remArchives=0
 for file in "$archiveDir"/*.tgz; do # loop through all files in the archive directory
-  fileAge=$(date -r "$file" +%s)
-  if [[ -f "$file" ]]; then                       # check if the file is a regular file, not a directory
-    if [[ "$fileAge" -lt "$threeDaysAgo" ]]; then # check if the file is older than three days
+  if [[ -f "$file" ]]; then
+    archiveName=$(basename "$file")
+    archiveDate=${archiveName%-logs.tgz}
+    archiveTimestamp=$(date -j -f "%Y-%m-%d" "$archiveDate" +%s 2>/dev/null)
+
+    if [[ -n "$archiveTimestamp" ]] && [[ "$archiveTimestamp" -lt "$threeDaysAgo" ]]; then
       remArchives=$((remArchives + 1))
-      rm "$file" # if so, remove the file
+      rm "$file"
+      echo "Removed old archive: $file"
     fi
   fi
 done
