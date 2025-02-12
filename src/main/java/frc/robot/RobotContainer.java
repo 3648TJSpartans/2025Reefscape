@@ -80,7 +80,6 @@ import frc.robot.commands.coralCommands.CoralOutCmd;
 import frc.robot.commands.coralCommands.ElevatorCmd;
 import frc.robot.commands.coralCommands.HomeElevatorCmd;
 import frc.robot.commands.coralCommands.ElevatorAnalogCmd;
-import frc.robot.commands.ClimberCmd;
 import frc.robot.commands.coralCommands.WristCmd;
 import frc.robot.commands.coralCommands.WristAnalogCmd;
 
@@ -307,12 +306,10 @@ public class RobotContainer {
   }
 
   public void configureClimber() {
-    Command climberCmd = new ClimberCmd(m_climber, () -> m_copilotController.getRightX());
+    Command climberCmd = new ClimberAnalogCmd(m_climber, () -> m_copilotController.getRightX());
     m_climber.setDefaultCommand(climberCmd);
     Command climberUpCmd = new ClimberUpCmd(m_climber);
-    Command climberDownCmd = new ClimberDownCmd(m_climber);
     m_driveController.povUp().whileTrue(climberUpCmd);
-    m_driveController.povDown().whileTrue(climberDownCmd);
 
   }
 
