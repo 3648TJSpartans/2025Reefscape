@@ -25,7 +25,6 @@ public class AlgaeIOSparkMax implements AlgaeIO {
         private final SparkMax intakeMotor;
         private final AbsoluteEncoder liftEncoder;
         private final SparkClosedLoopController liftController;
-        private final DigitalInput irSensor = new DigitalInput(AlgaeConstants.irSensorPin);
 
         public AlgaeIOSparkMax() {
                 // define motors and controllers
@@ -91,9 +90,5 @@ public class AlgaeIOSparkMax implements AlgaeIO {
 
         public double getLiftPosition() {
                 return liftEncoder.getPosition();
-        }
-
-        public boolean getIR() {
-                return irSensor.get();
         }
 }

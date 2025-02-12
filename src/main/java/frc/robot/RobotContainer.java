@@ -267,12 +267,8 @@ public class RobotContainer {
     Command algaeDefaultCmd = new AlgaeDefaultCmd(m_algae);
     Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
     Command algaeShootCmd = new AlgaeShootCmd(m_algae);
-
-    if (m_algae.getIR()) {
-      m_copilotController.a().whileTrue(algaeIntakeCmd);
-    } else {
-      m_copilotController.b().whileTrue(algaeShootCmd);
-    }
+    m_copilotController.a().whileTrue(algaeIntakeCmd);
+    m_copilotController.b().whileTrue(algaeShootCmd);
     m_algae.setDefaultCommand(algaeDefaultCmd);
   }
 

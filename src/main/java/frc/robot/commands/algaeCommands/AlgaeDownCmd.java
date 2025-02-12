@@ -19,11 +19,6 @@ public class AlgaeDownCmd extends Command {
     }
 
     @Override
-    public boolean isFinished() {
-        return !algaeSubsystem.getIR();
-    }
-
-    @Override
     public void end(boolean interrupted) {
         algaeSubsystem.setLiftSpeed(0);
     }
