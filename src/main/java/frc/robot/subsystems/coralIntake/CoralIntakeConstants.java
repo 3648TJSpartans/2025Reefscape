@@ -27,9 +27,9 @@ public class CoralIntakeConstants {
     // this is the angle for the wrist and is subject to change for each level
     public static final double anglevalue = 45;
     public static final double L1Angle = .1;
-    public static final double L2Angle = .15;
-    public static final double L3Angle = .25;
+    public static final double L2Angle = .2;
+    public static final double L3Angle = .3;
     public static final double L4Angle = .4;
-    public static final double IntakeAngle = .0896;
+    public static final double IntakeAngle = .723;
 
 }

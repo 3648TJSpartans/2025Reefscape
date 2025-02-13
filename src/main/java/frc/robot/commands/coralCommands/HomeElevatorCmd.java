@@ -26,7 +26,7 @@ public class HomeElevatorCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    elevatorSubsystem.setSpeed(-.05);
+    elevatorSubsystem.setSpeed(-.15);
   }
 
   // Called once the command ends or is interrupted.
