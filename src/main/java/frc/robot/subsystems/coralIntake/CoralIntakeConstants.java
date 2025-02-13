@@ -15,7 +15,7 @@ public class CoralIntakeConstants {
     // coralintake subsytem
     public static final int irSensorPin = 0;
     // these are the constants for the pid of the robot's wrist
-    public static final double kWristP = 1;
+    public static final double kWristP = .5;
     public static final double kWristI = 0;
     public static final double kWristD = 0;
     public static final double kWristFF = 0;
