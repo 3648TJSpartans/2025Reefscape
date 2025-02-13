@@ -34,6 +34,7 @@ import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
 import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPose;
 import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPoseNearest;
 import frc.robot.commands.AlignCommands;
+import frc.robot.commands.GoToAlgaeCmd;
 
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -59,6 +60,7 @@ import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
 import frc.robot.subsystems.coralIntake.CoralIntakeIO;
 import frc.robot.subsystems.coralIntake.CoralIntakeIOSparkMax;
+import frc.robot.subsystems.vision.NeuralVision;
 
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
@@ -94,6 +96,7 @@ public class RobotContainer {
   private final Elevator m_elevator;
   private ClimberSubsystem m_climber;
   private AlgaeSubsystem m_algae;
+  private final NeuralVision m_neuralVision; // TODO: Integrate this into vision
   // Controller
   private final CommandXboxController m_driveController = new CommandXboxController(0);
   private final CommandXboxController m_copilotController = new CommandXboxController(1);
@@ -123,6 +126,7 @@ public class RobotContainer {
             new VisionIOLimelight("limelight-twoplus", m_drive::getRotation));
         m_coral = new CoralIntake(new CoralIntakeIOSparkMax());
         m_elevator = new Elevator(new ElevatorIOSparkMax());
+        m_neuralVision = new NeuralVision();
         break;
 
       case SIM:
@@ -148,6 +152,7 @@ public class RobotContainer {
         m_elevator = new Elevator(new ElevatorIO() {
 
         });
+        m_neuralVision = new NeuralVision();
         break;
 
       default:
@@ -171,6 +176,7 @@ public class RobotContainer {
         m_elevator = new Elevator(new ElevatorIO() {
 
         });
+        m_neuralVision = new NeuralVision();
         break;
     }
     // Set up auto routines
@@ -189,6 +195,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    
     configureAlgae();
     configureClimber();
     configureCoralIntake();
@@ -270,6 +277,10 @@ public class RobotContainer {
         .setLiftPosition(new TunableNumber("Algae/liftWithoutBall", AlgaeConstants.liftUpWithoutBall).get())));
     m_controllerTwo.x().onTrue(new InstantCommand(
         () -> m_algae.setLiftPosition(new TunableNumber("Algae/Shoot", AlgaeConstants.shoot).get())));
+    
+    // Add GoToAlgae command binding
+    Command goToAlgaeCmd = new GoToAlgaeCmd(m_neuralVision, m_drive);
+    m_copilotController.x().whileTrue(goToAlgaeCmd);
   }
 
   public void configureAutoChooser() {
