@@ -42,7 +42,7 @@ public class GoToAlgaeCmd extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        nvision.switchPipeline(oldPipeline); // Switches back to pipeline 0 (Driver camera)
+        nvision.switchPipeline(oldPipeline); // Switches back to pipeline being used before the command
     }
 
     @Override
