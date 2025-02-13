@@ -15,7 +15,7 @@ public class ElevatorConstants {
     public static final double coralLeveL4 = 15;
     public static final double intakePose = 2.262;// this is the postion for the intake
     // these are the constants for the elevator pid
-    public static final double kElevatorP = 1;
+    public static final double kElevatorP = .5;
     public static final double kElevatorI = 0;
     public static final double kElevatorD = 0;
     public static final double kElevatorFF = 0;
