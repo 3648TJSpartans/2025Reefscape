@@ -3,45 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.454460227272728,
-        "y": 2.0605965909090913
+        "x": 8.784971590909091,
+        "y": 5.0520738636363625
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.454460227272728,
-        "y": 2.0605965909090913
+        "x": 9.55477194261398,
+        "y": 4.978787175159879
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Close Starting Position"
     },
     {
       "anchor": {
-        "x": 2.1438920454545456,
-        "y": 2.0605965909090913
+        "x": 4.955880681818181,
+        "y": 5.291392045454545
       },
       "prevControl": {
-        "x": 2.821960117381646,
-        "y": 2.040649673144308
-      },
-      "nextControl": {
-        "x": 1.4658239735274443,
-        "y": 2.0805435086738746
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.423096590909091,
-        "y": 4.413892045454545
-      },
-      "prevControl": {
-        "x": 2.0740909640364493,
-        "y": 4.428851299791482
+        "x": 3.89036898218413,
+        "y": 5.358680956978967
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Branch J"
     }
   ],
   "rotationTargets": [],
@@ -58,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -1.6846843178964082
+    "rotation": -117.75854060106
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 178.47247455778702
   },
   "useDefaultConstraints": true
 }
