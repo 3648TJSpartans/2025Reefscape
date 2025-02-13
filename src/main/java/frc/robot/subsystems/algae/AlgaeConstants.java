@@ -20,6 +20,6 @@ public class AlgaeConstants {
     public static final double liftIntakePosition = 0.28;
     public static final double liftUpWithBall = 0.12;
     public static final double liftUpWithoutBall = 0.06;
-    public static final double shoot = 0.20;
+    public static final double shoot = 0.23;
     public static final double liftIntakeFromElevation = 0.19;
 }

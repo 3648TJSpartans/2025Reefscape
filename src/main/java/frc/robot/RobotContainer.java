@@ -33,6 +33,9 @@ import frc.robot.commands.AlgaeAnalogCmd;
 import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
+import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
+import frc.robot.commands.algaeCommands.AlgaeDownCmd;
+import frc.robot.commands.algaeCommands.AlgaeShootCmd;
 import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPose;
 import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPoseNearest;
 import frc.robot.commands.AlignCommands;
@@ -224,25 +227,12 @@ public class RobotContainer {
    */
 
   public void configureAlgae() {
-    // Command algaeCmd = new AlgaeCmd(m_algae, () ->
-    // MathUtil.applyDeadband(m_copilotController.getLeftX(), 0.2));
-
-    m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> m_algae.setLiftPosition(0)));
-    m_copilotController.rightBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(0.5)));
-    m_copilotController.rightBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
-    m_copilotController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(-0.5)));
-    m_copilotController.leftBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(0)));
-    Command intake = new AlgaeCmd(m_algae, new TunableNumber("Algae/Intake", AlgaeConstants.liftIntakePosition).get());
-    Command liftUp = new AlgaeCmd(m_algae,
-        new TunableNumber("Algae/lifeWithBall", AlgaeConstants.liftUpWithBall).get());
-    Command liftWO = new AlgaeCmd(m_algae,
-        new TunableNumber("Algae/liftWithoutBall", AlgaeConstants.liftUpWithoutBall).get());
-    Command shootHeight = new AlgaeCmd(m_algae, new TunableNumber("Algae/Shoot", AlgaeConstants.shoot).get());
-    // m_algae.setDefaultCommand(algaeCmd);
-    m_copilotController.a().whileTrue(intake);
-    m_copilotController.b().whileTrue(liftUp);
-    m_copilotController.y().whileTrue(liftWO);
-    m_copilotController.x().whileTrue(shootHeight);
+    Command algaeDefaultCmd = new AlgaeDefaultCmd(m_algae);
+    Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
+    Command algaeShootCmd = new AlgaeShootCmd(m_algae);
+    m_copilotController.a().whileTrue(algaeIntakeCmd);
+    m_copilotController.b().whileTrue(algaeShootCmd);
+    m_algae.setDefaultCommand(algaeDefaultCmd);
   }
 
   public void configureAutoChooser() {
