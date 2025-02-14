@@ -50,10 +50,10 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                 .voltageCompensation(12.0);
         motorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pidf(new LoggedTunableNumber("ELevator/kElevatorP", ElevatorConstants.kElevatorP).get(),
-                        new LoggedTunableNumber("ELevator/kElevatorI", ElevatorConstants.kElevatorI).get(),
-                        new LoggedTunableNumber("ELevator/kElevatorD", ElevatorConstants.kElevatorD).get(),
-                        new LoggedTunableNumber("ELevator/kElevatorFF", ElevatorConstants.kElevatorFF).get())
+                .pidf(new LoggedTunableNumber("Elevator/kElevatorP", ElevatorConstants.kElevatorP).get(),
+                        new LoggedTunableNumber("Elevator/kElevatorI", ElevatorConstants.kElevatorI).get(),
+                        new LoggedTunableNumber("Elevator/kElevatorD", ElevatorConstants.kElevatorD).get(),
+                        new LoggedTunableNumber("Elevator/kElevatorFF", ElevatorConstants.kElevatorFF).get())
                 .outputRange(
                         new LoggedTunableNumber("Elevator/kElevatorMinRange", ElevatorConstants.kElevatorMinRange)
                                 .get(),

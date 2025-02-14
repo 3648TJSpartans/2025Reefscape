@@ -50,11 +50,15 @@ public class AutoBuildingBlocks {
                 new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
     }
 
-    public static Command driveToNearestRight(Drive m_drive, Supplier<Pose2d[]> points) {
+    public static Command driveToNearest(Drive m_drive, Supplier<Pose2d[]> points) {
         return new DriveToNearest(m_drive, points);
     }
 
     public static Command driveToPose(Drive m_drive, Supplier<Pose2d> point) {
         return new DriveToPose(m_drive, point);
+    }
+
+    public static Command setCoralPose(Elevator m_elevator, CoralIntake m_coral, double height, double angle) {
+        return new CoralElevatorIntegratedCmd(m_coral, m_elevator, height, angle);
     }
 }
