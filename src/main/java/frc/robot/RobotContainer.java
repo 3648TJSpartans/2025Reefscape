@@ -33,9 +33,13 @@ import frc.robot.commands.AlgaeAnalogCmd;
 import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
+<<<<<<< Updated upstream
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
+=======
+import frc.robot.commands.OnTheFlyAutons.DriveToPose;
+>>>>>>> Stashed changes
 import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPose;
 import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPoseNearest;
 import frc.robot.commands.AlignCommands;
@@ -321,9 +325,15 @@ public class RobotContainer {
                 .ignoringDisable(true));
     Command goToPointCommand = AlignCommands.goToPoint(m_drive);
     m_driveController.leftTrigger().whileTrue(goToPointCommand);
-    Command alignLeftReef = new SwerveAutoAlignPose(PoseConstants.leftReef, PoseConstants.leftReef, m_drive);
+    // Command alignLeftReef = new SwerveAutoAlignPose(PoseConstants.leftReef,
+    // PoseConstants.leftReef, m_drive);
+    // m_driveController.leftBumper().whileTrue(alignLeftReef);
+    // Command alignRightReef = new SwerveAutoAlignPose(PoseConstants.rightReef,
+    // PoseConstants.rightReef, m_drive);
+    // m_driveController.rightBumper().whileTrue(alignRightReef);
+    Command alignLeftReef = new DriveToPose(m_drive, () -> PoseConstants.leftReef);
     m_driveController.leftBumper().whileTrue(alignLeftReef);
-    Command alignRightReef = new SwerveAutoAlignPose(PoseConstants.rightReef, PoseConstants.rightReef, m_drive);
+    Command alignRightReef = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
     m_driveController.rightBumper().whileTrue(alignRightReef);
     Command alignCoralStation = new SwerveAutoAlignPose(PoseConstants.coralStation, PoseConstants.coralStation,
         m_drive);

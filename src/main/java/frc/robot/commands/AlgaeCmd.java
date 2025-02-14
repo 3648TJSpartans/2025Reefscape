@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.algae.AlgaeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import java.util.function.DoubleSupplier;
 
 public class AlgaeCmd extends Command {
     private final AlgaeSubsystem algaeSubsystem;
