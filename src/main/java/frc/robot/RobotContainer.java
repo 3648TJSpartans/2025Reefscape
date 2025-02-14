@@ -38,8 +38,6 @@ import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
 import frc.robot.commands.OnTheFlyAutons.DriveToNearest;
 import frc.robot.commands.OnTheFlyAutons.DriveToPose;
-import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPose;
-import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPoseNearest;
 import frc.robot.commands.AlignCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;

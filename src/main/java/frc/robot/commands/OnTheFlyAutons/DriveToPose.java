@@ -46,18 +46,18 @@ public class DriveToPose extends Command {
     private static final LoggedTunableNumber ffMaxRadius = new LoggedTunableNumber("DriveToPose/FFMinRadius");
 
     static {
-        drivekP.initDefault(2.0);
-        drivekD.initDefault(0.0);
-        thetakP.initDefault(5.0);
-        thetakD.initDefault(0.0);
-        driveMaxVelocity.initDefault(Units.inchesToMeters(150.0 / 4));
-        driveMaxAcceleration.initDefault(Units.inchesToMeters(95.0 / 4));
-        thetaMaxVelocity.initDefault(Units.degreesToRadians(360.0 / 2));
-        thetaMaxAcceleration.initDefault(Units.degreesToRadians(720.0 / 2));
-        driveTolerance.initDefault(0.03);
-        thetaTolerance.initDefault(Units.degreesToRadians(2.5));
-        ffMinRadius.initDefault(0.2);
-        ffMaxRadius.initDefault(0.6);
+        drivekP.initDefault(AutonConstants.drivekP);
+        drivekD.initDefault(AutonConstants.drivekD);
+        thetakP.initDefault(AutonConstants.thetakP);
+        thetakD.initDefault(AutonConstants.thetakD);
+        driveMaxVelocity.initDefault(AutonConstants.driveMaxVelocity);
+        driveMaxAcceleration.initDefault(AutonConstants.driveMaxAcceleration);
+        thetaMaxVelocity.initDefault(AutonConstants.thetaMaxVelocity);
+        thetaMaxAcceleration.initDefault(AutonConstants.thetaMaxAcceleration);
+        driveTolerance.initDefault(AutonConstants.driveTolerance);
+        thetaTolerance.initDefault(AutonConstants.thetaTolerance);
+        ffMinRadius.initDefault(AutonConstants.ffMinRadius);
+        ffMaxRadius.initDefault(AutonConstants.ffMaxRadius);
     }
 
     private final Drive drive;
