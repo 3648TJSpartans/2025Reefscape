@@ -1,8 +1,10 @@
 package frc.robot.commands.autonCommands;
 
+import java.util.function.Supplier;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.OnTheFlyAutons.AutonConstants;
-import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
+import frc.robot.commands.OnTheFlyAutons.DriveToPose;
 import frc.robot.commands.coralCommands.CoralElevatorIntegratedCmd;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
@@ -48,7 +50,11 @@ public class AutoBuildingBlocks {
                 new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
     }
 
-    public static Command driveToNearestRight(Drive m_drive){
-        return new DriveToNearest(m_drive, ()-> PoseConstants.)
+    public static Command driveToNearestRight(Drive m_drive, Supplier<Pose2d[]> points) {
+        return new DriveToNearest(m_drive, points);
+    }
+
+    public static Command driveToPose(Drive m_drive, Supplier<Pose2d> point) {
+        return new DriveToPose(m_drive, point);
     }
 }
