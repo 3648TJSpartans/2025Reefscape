@@ -38,10 +38,10 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
                 .voltageCompensation(12.0);
         wristConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                .pidf(new TunableNumber("CoralINtake/kWristP", CoralIntakeConstants.kWristP).get(),
-                        new TunableNumber("CoralINtake/kWristI", CoralIntakeConstants.kWristI).get(),
-                        new TunableNumber("CoralINtake/kWristD", CoralIntakeConstants.kWristD).get(),
-                        new TunableNumber("CoralINtake/kWristFF", CoralIntakeConstants.kWristFF).get())
+                .pidf(new LoggedTunableNumber("CoralINtake/kWristP", CoralIntakeConstants.kWristP).get(),
+                        new LoggedTunableNumber("CoralINtake/kWristI", CoralIntakeConstants.kWristI).get(),
+                        new LoggedTunableNumber("CoralINtake/kWristD", CoralIntakeConstants.kWristD).get(),
+                        new LoggedTunableNumber("CoralINtake/kWristFF", CoralIntakeConstants.kWristFF).get())
                 .outputRange(CoralIntakeConstants.kWristMinRange, CoralIntakeConstants.kWristMaxRange);
         wristConfig.signals
                 .absoluteEncoderPositionAlwaysOn(true)

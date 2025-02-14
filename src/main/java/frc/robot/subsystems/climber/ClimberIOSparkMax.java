@@ -35,13 +35,16 @@ public class ClimberIOSparkMax implements ClimberIO {
                 SparkMaxConfig leadConfig = new SparkMaxConfig();
                 leadConfig.closedLoop
                                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                                .pidf(new TunableNumber("Climber/kLeadP", ClimberConstants.kLeadP).get(),
-                                                new TunableNumber("Climber/kLeadI", ClimberConstants.kLeadI).get(),
-                                                new TunableNumber("Climber/kLeadD", ClimberConstants.kLeadD).get(),
-                                                new TunableNumber("Climber/kLeadFF", ClimberConstants.kLeadFF).get())
-                                .outputRange(new TunableNumber("Climber/kLeadMinOutput",
+                                .pidf(new LoggedTunableNumber("Climber/kLeadP", ClimberConstants.kLeadP).get(),
+                                                new LoggedTunableNumber("Climber/kLeadI", ClimberConstants.kLeadI)
+                                                                .get(),
+                                                new LoggedTunableNumber("Climber/kLeadD", ClimberConstants.kLeadD)
+                                                                .get(),
+                                                new LoggedTunableNumber("Climber/kLeadFF", ClimberConstants.kLeadFF)
+                                                                .get())
+                                .outputRange(new LoggedTunableNumber("Climber/kLeadMinOutput",
                                                 ClimberConstants.kLeadMinOutput).get(),
-                                                new TunableNumber("Climber/kLeadMaxOutput",
+                                                new LoggedTunableNumber("Climber/kLeadMaxOutput",
                                                                 ClimberConstants.kLeadMaxOutput).get());
                 leadConfig.inverted(false)
                                 .idleMode(IdleMode.kBrake)
@@ -67,14 +70,16 @@ public class ClimberIOSparkMax implements ClimberIO {
                 SparkMaxConfig followConfig = new SparkMaxConfig();
                 followConfig.closedLoop
                                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                                .pidf(new TunableNumber("Climber/kFollowP", ClimberConstants.kFollowP).get(),
-                                                new TunableNumber("Climber/kFollowI", ClimberConstants.kFollowI).get(),
-                                                new TunableNumber("Climber/kFollowD", ClimberConstants.kFollowD).get(),
-                                                new TunableNumber("Climber/kFollowFF", ClimberConstants.kFollowFF)
+                                .pidf(new LoggedTunableNumber("Climber/kFollowP", ClimberConstants.kFollowP).get(),
+                                                new LoggedTunableNumber("Climber/kFollowI", ClimberConstants.kFollowI)
+                                                                .get(),
+                                                new LoggedTunableNumber("Climber/kFollowD", ClimberConstants.kFollowD)
+                                                                .get(),
+                                                new LoggedTunableNumber("Climber/kFollowFF", ClimberConstants.kFollowFF)
                                                                 .get())
-                                .outputRange(new TunableNumber("Climber/kFollowdMinOutput",
+                                .outputRange(new LoggedTunableNumber("Climber/kFollowdMinOutput",
                                                 ClimberConstants.kFollowMinOutput).get(),
-                                                new TunableNumber("Climber/kFollowMaxOutput",
+                                                new LoggedTunableNumber("Climber/kFollowMaxOutput",
                                                                 ClimberConstants.kFollowMaxOutput).get());
                 followConfig.inverted(false)
                                 .idleMode(IdleMode.kBrake)

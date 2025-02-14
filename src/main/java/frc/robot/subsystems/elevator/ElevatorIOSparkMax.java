@@ -48,12 +48,15 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                 .voltageCompensation(12.0);
         motorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pidf(new TunableNumber("ELevator/kElevatorP", ElevatorConstants.kElevatorP).get(),
-                        new TunableNumber("ELevator/kElevatorI", ElevatorConstants.kElevatorI).get(),
-                        new TunableNumber("ELevator/kElevatorD", ElevatorConstants.kElevatorD).get(),
-                        new TunableNumber("ELevator/kElevatorFF", ElevatorConstants.kElevatorFF).get())
-                .outputRange(new TunableNumber("Elevator/kElevatorMinRange", ElevatorConstants.kElevatorMinRange).get(),
-                        new TunableNumber("Elevator/kElevatorMaxRange", ElevatorConstants.kElevatorMaxRange).get());
+                .pidf(new LoggedTunableNumber("ELevator/kElevatorP", ElevatorConstants.kElevatorP).get(),
+                        new LoggedTunableNumber("ELevator/kElevatorI", ElevatorConstants.kElevatorI).get(),
+                        new LoggedTunableNumber("ELevator/kElevatorD", ElevatorConstants.kElevatorD).get(),
+                        new LoggedTunableNumber("ELevator/kElevatorFF", ElevatorConstants.kElevatorFF).get())
+                .outputRange(
+                        new LoggedTunableNumber("Elevator/kElevatorMinRange", ElevatorConstants.kElevatorMinRange)
+                                .get(),
+                        new LoggedTunableNumber("Elevator/kElevatorMaxRange", ElevatorConstants.kElevatorMaxRange)
+                                .get());
         motorConfig.signals
                 .absoluteEncoderPositionAlwaysOn(true)
                 .absoluteEncoderPositionPeriodMs((int) (1000.0 / ElevatorConstants.odometryFrequency))
@@ -64,7 +67,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                 .outputCurrentPeriodMs(20);
         motorConfig.absoluteEncoder
                 .inverted(ElevatorConstants.elevatorEncoderInverted)
-                .positionConversionFactor(new TunableNumber("Elevator/elevatorEncoderPositionFactor",
+                .positionConversionFactor(new LoggedTunableNumber("Elevator/elevatorEncoderPositionFactor",
                         ElevatorConstants.elevatorEncoderPositionFactor).get())
                 .velocityConversionFactor(ElevatorConstants.elevatorEncoderPositionFactor)
                 .averageDepth(2);
