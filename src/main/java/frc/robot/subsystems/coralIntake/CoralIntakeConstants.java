@@ -32,4 +32,7 @@ public class CoralIntakeConstants {
     public static final double L4Angle = .4;
     public static final double IntakeAngle = .723;
 
+    public static final double marginOfError = .05; // this is how close the robot has to be to target rotation to stop,
+                                                    // needs testng
+
 }
