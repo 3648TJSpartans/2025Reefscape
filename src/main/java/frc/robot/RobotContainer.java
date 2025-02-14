@@ -63,6 +63,8 @@ import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
 import frc.robot.subsystems.coralIntake.CoralIntakeIO;
 import frc.robot.subsystems.coralIntake.CoralIntakeIOSparkMax;
+import frc.robot.subsystems.led.*;
+import frc.robot.util.LoggedTunableNumber;
 
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
@@ -108,6 +110,7 @@ public class RobotContainer {
   private final Elevator m_elevator;
   private ClimberSubsystem m_climber;
   private AlgaeSubsystem m_algae;
+  private LedSubsystem m_led;
   // Controller
   private final CommandXboxController m_driveController = new CommandXboxController(0);
   private final CommandXboxController m_copilotController = new CommandXboxController(1);
@@ -137,6 +140,7 @@ public class RobotContainer {
             new VisionIOLimelight("limelight-twoplus", m_drive::getRotation));
         m_coral = new CoralIntake(new CoralIntakeIOSparkMax());
         m_elevator = new Elevator(new ElevatorIOSparkMax());
+        m_led = new LedSubsystem();
         break;
 
       case SIM:
@@ -209,6 +213,7 @@ public class RobotContainer {
     configureDrive();
     configureElevator();
     configureSetpoints();
+    m_led.setColor( LedConstants.yesNoteRGB, 0, 5);
   }
 
   public void cancelCommand(Command cmd) {

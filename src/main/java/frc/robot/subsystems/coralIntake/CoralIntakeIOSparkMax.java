@@ -14,6 +14,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.util.TunableNumber;
+import frc.robot.util.LoggedTunableNumber;
 
 import com.revrobotics.spark.SparkClosedLoopController;
 
