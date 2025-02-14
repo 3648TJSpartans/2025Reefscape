@@ -34,15 +34,17 @@ import frc.robot.commands.AlgaeAnalogCmd;
 import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
+import frc.robot.commands.OnTheFlyAutons.DriveToNearest;
+import frc.robot.commands.OnTheFlyAutons.DriveToPose;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
 import frc.robot.commands.autonCommands.CoralSequentialCmd;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToPose;
+
 import frc.robot.commands.AlignCommands;
-import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.drive.GyroIO;
+import frc.robot.subsystems.drive.Drive;import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
@@ -50,7 +52,7 @@ import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorConstants;
 import frc.robot.subsystems.elevator.ElevatorIO;
-import frc.robot.subsystems.elevator.ElevatorIOSparkMax;
+import r c.robo.subsystems.elevator.ElevatorIOSparkMax;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
@@ -323,6 +325,14 @@ public class RobotContainer {
                         new Rotation2d())),
                 m_drive)
                 .ignoringDisable(true));
+    Command goToPointCommand = AlignCommands.goToPoint(m_drive);
+    m_driveController.leftTrigger().whileTrue(goToPointCommand);
+    // Command alignLeftReef = new SwerveAutoAlignPose(PoseConstants.leftReef,
+    // PoseConstants.leftReef, m_drive);
+    // m_driveController.leftBumper().whileTrue(alignLeftReef);
+    // Command alignRightReef = new SwerveAutoAlignPose(PoseConstants.rightReef,
+    // PoseConstants.rightReef, m_drive);
+    // m_driveController.rightBumper().whileTrue(alignRightReef);
     Command alignLeftReef = new DriveToPose(m_drive, () -> PoseConstants.leftReef);
     m_driveController.leftBumper().whileTrue(alignLeftReef);
     Command alignRightReef = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
