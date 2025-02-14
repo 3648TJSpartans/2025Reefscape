@@ -398,7 +398,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("l2", l2);
     NamedCommands.registerCommand("l1", l1);
     NamedCommands.registerCommand("intakePos", intakePos);
-    NamedCommands.registerCommand("coraln", coralIn);
+    NamedCommands.registerCommand("coralIn", coralIn);
     NamedCommands.registerCommand("slamCoral", slamCoral);
   }
 }
