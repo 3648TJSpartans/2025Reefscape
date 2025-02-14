@@ -1,0 +1,67 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Far Starting Position to Branch A"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "l4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "slamCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Branch A to Top Source"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakePos"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "coralIn"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Top Source to Branch B"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "l4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "slamCoral"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
