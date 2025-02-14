@@ -33,13 +33,11 @@ import frc.robot.commands.AlgaeAnalogCmd;
 import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
-<<<<<<< Updated upstream
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
-=======
+import frc.robot.commands.OnTheFlyAutons.DriveToNearest;
 import frc.robot.commands.OnTheFlyAutons.DriveToPose;
->>>>>>> Stashed changes
 import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPose;
 import frc.robot.commands.OnTheFlyAutons.SwerveAutoAlignPoseNearest;
 import frc.robot.commands.AlignCommands;
@@ -323,22 +321,13 @@ public class RobotContainer {
                         new Rotation2d())),
                 m_drive)
                 .ignoringDisable(true));
-    Command goToPointCommand = AlignCommands.goToPoint(m_drive);
-    m_driveController.leftTrigger().whileTrue(goToPointCommand);
-    // Command alignLeftReef = new SwerveAutoAlignPose(PoseConstants.leftReef,
-    // PoseConstants.leftReef, m_drive);
-    // m_driveController.leftBumper().whileTrue(alignLeftReef);
-    // Command alignRightReef = new SwerveAutoAlignPose(PoseConstants.rightReef,
-    // PoseConstants.rightReef, m_drive);
-    // m_driveController.rightBumper().whileTrue(alignRightReef);
     Command alignLeftReef = new DriveToPose(m_drive, () -> PoseConstants.leftReef);
     m_driveController.leftBumper().whileTrue(alignLeftReef);
     Command alignRightReef = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
     m_driveController.rightBumper().whileTrue(alignRightReef);
-    Command alignCoralStation = new SwerveAutoAlignPose(PoseConstants.coralStation, PoseConstants.coralStation,
-        m_drive);
+    Command alignCoralStation = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
     m_driveController.y().whileTrue(alignCoralStation);
-    Command goToNearestCommand = new SwerveAutoAlignPoseNearest(m_drive);
+    Command goToNearestCommand = new DriveToNearest(m_drive, () -> PoseConstants.criticalPoints);
     m_driveController.rightTrigger().whileTrue(goToNearestCommand);
   }
 
