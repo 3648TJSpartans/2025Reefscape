@@ -27,7 +27,7 @@ public class ElevatorConstants {
     public static final double elevatorEncoderVelocityFactor = 1;
     public static final int bottomLimitSwitchPin = 2;
 
-    public static final double marginOfError = .05; // this is how close the robot has to be to target height to stop,
-                                                    // needs testng
+    public static final double marginOfError = 1; // this is how close the robot has to be to target height to stop,
+                                                  // needs tuning
 
 }

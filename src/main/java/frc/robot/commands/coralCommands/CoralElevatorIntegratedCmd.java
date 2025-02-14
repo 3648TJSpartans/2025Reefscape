@@ -36,14 +36,15 @@ public class CoralElevatorIntegratedCmd extends Command {
         m_elevator.stop();
         m_coralIntake.stopIntakeMotor();
         m_coralIntake.stopWristMotor();
+        System.out.println("command finished");
     }
 
     @Override
     public boolean isFinished() {
-        return (m_elevator.getHeight() - ElevatorConstants.marginOfError) < m_elevator.getHeight() &&
-                m_elevator.getHeight() < (m_elevator.getHeight() + CoralIntakeConstants.marginOfError) &&
-                (m_coralIntake.getAngle() - CoralIntakeConstants.marginOfError) < m_coralIntake.getAngle() &&
-                m_coralIntake.getAngle() < (m_coralIntake.getAngle() + CoralIntakeConstants.marginOfError);
+        return ((height - ElevatorConstants.marginOfError) < m_elevator.getHeight()) &&
+                (m_elevator.getHeight() < (height + CoralIntakeConstants.marginOfError)) &&
+                ((angle - CoralIntakeConstants.marginOfError) < m_coralIntake.getAngle()) &&
+                (m_coralIntake.getAngle() < (angle + CoralIntakeConstants.marginOfError));
     }
 
 }

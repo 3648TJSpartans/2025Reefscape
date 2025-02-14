@@ -42,7 +42,7 @@ public class ElevatorCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (elevatorSubsystem.getHeight() - ElevatorConstants.marginOfError) < elevatorSubsystem.getHeight() &&
-        elevatorSubsystem.getHeight() < (elevatorSubsystem.getHeight() + CoralIntakeConstants.marginOfError);
+    return (height - ElevatorConstants.marginOfError) < elevatorSubsystem.getHeight() &&
+        elevatorSubsystem.getHeight() < (height + CoralIntakeConstants.marginOfError);
   }
 }
