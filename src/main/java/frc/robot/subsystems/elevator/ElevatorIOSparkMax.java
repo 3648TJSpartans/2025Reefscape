@@ -22,6 +22,8 @@ import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.RelativeEncoder;
+
+import frc.robot.util.LoggedTunableNumber;
 import frc.robot.util.TunableNumber;
 
 public class ElevatorIOSparkMax implements ElevatorIO {
