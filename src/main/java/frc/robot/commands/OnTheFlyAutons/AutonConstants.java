@@ -23,9 +23,21 @@ public class AutonConstants {
         public final static Pose2d rightReef = new Pose2d(2.9, 3.73, Rotation2d.fromDegrees(0));
         public final static Pose2d leftReef = new Pose2d(2.9, 4.17, Rotation2d.fromDegrees(0));
         public final static Pose2d coralStation = new Pose2d(1.5, 1.6, Rotation2d.fromDegrees(0));
-        public final static Pose2d[] criticalPoints = new Pose2d[] {
-                new Pose2d(2.423, 3, Rotation2d.fromDegrees(0)),
-                new Pose2d(2.423, 5, Rotation2d.fromDegrees(0))
+        public final static Pose2d[] blueRightReefPoints = new Pose2d[] {
+                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose A
+                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose C
+                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose E
+                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose G
+                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose I
+                new Pose2d(0, 0, Rotation2d.fromDegrees(0)) // Pose K
+        };
+        public final static Pose2d[] blueLeftReefPoints = new Pose2d[] {
+                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose B
+                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose D
+                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose F
+                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose H
+                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose J
+                new Pose2d(0, 0, Rotation2d.fromDegrees(0)) // Pose L
         };
     }
 }
