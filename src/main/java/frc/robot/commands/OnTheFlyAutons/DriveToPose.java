@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.goToCommands.AutonConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.GeomUtil;
-import frc.robot.util.LoggedTunableNumber;
+import frc.robot.util.TunableNumber;
 
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -29,38 +29,38 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 import org.littletonrobotics.junction.Logger;
 
 public class DriveToPose extends Command {
-        private static final LoggedTunableNumber drivekP = new LoggedTunableNumber("DriveToPose/DrivekP");
-        private static final LoggedTunableNumber drivekD = new LoggedTunableNumber("DriveToPose/DrivekD");
-        private static final LoggedTunableNumber thetakP = new LoggedTunableNumber("DriveToPose/ThetakP");
-        private static final LoggedTunableNumber thetakD = new LoggedTunableNumber("DriveToPose/ThetakD");
-        private static final LoggedTunableNumber driveMaxVelocity = new LoggedTunableNumber(
+        private static final TunableNumber drivekP = new TunableNumber("DriveToPose/DrivekP");
+        private static final TunableNumber drivekD = new TunableNumber("DriveToPose/DrivekD");
+        private static final TunableNumber thetakP = new TunableNumber("DriveToPose/ThetakP");
+        private static final TunableNumber thetakD = new TunableNumber("DriveToPose/ThetakD");
+        private static final TunableNumber driveMaxVelocity = new TunableNumber(
                         "DriveToPose/DriveMaxVelocity");
-        private static final LoggedTunableNumber driveMaxVelocitySlow = new LoggedTunableNumber(
+        private static final TunableNumber driveMaxVelocitySlow = new TunableNumber(
                         "DriveToPose/DriveMaxVelocitySlow");
-        private static final LoggedTunableNumber driveMaxAcceleration = new LoggedTunableNumber(
+        private static final TunableNumber driveMaxAcceleration = new TunableNumber(
                         "DriveToPose/DriveMaxAcceleration");
-        private static final LoggedTunableNumber thetaMaxVelocity = new LoggedTunableNumber(
+        private static final TunableNumber thetaMaxVelocity = new TunableNumber(
                         "DriveToPose/ThetaMaxVelocity");
-        private static final LoggedTunableNumber thetaMaxAcceleration = new LoggedTunableNumber(
+        private static final TunableNumber thetaMaxAcceleration = new TunableNumber(
                         "DriveToPose/ThetaMaxAcceleration");
-        private static final LoggedTunableNumber driveTolerance = new LoggedTunableNumber("DriveToPose/DriveTolerance");
-        private static final LoggedTunableNumber thetaTolerance = new LoggedTunableNumber("DriveToPose/ThetaTolerance");
-        private static final LoggedTunableNumber ffMinRadius = new LoggedTunableNumber("DriveToPose/FFMinRadius");
-        private static final LoggedTunableNumber ffMaxRadius = new LoggedTunableNumber("DriveToPose/FFMinRadius");
+        private static final TunableNumber driveTolerance = new TunableNumber("DriveToPose/DriveTolerance");
+        private static final TunableNumber thetaTolerance = new TunableNumber("DriveToPose/ThetaTolerance");
+        private static final TunableNumber ffMinRadius = new TunableNumber("DriveToPose/FFMinRadius");
+        private static final TunableNumber ffMaxRadius = new TunableNumber("DriveToPose/FFMinRadius");
 
         static {
-                drivekP.initDefault(AutonConstants.drivekP);
-                drivekD.initDefault(AutonConstants.drivekD);
-                thetakP.initDefault(AutonConstants.thetakP);
-                thetakD.initDefault(AutonConstants.thetakD);
-                driveMaxVelocity.initDefault(AutonConstants.driveMaxVelocity);
-                driveMaxAcceleration.initDefault(AutonConstants.driveMaxAcceleration);
-                thetaMaxVelocity.initDefault(AutonConstants.thetaMaxVelocity);
-                thetaMaxAcceleration.initDefault(AutonConstants.thetaMaxAcceleration);
-                driveTolerance.initDefault(AutonConstants.driveTolerance);
-                thetaTolerance.initDefault(AutonConstants.thetaTolerance);
-                ffMinRadius.initDefault(AutonConstants.ffMinRadius);
-                ffMaxRadius.initDefault(AutonConstants.ffMaxRadius);
+                drivekP.setDefault(AutonConstants.drivekP);
+                drivekD.setDefault(AutonConstants.drivekD);
+                thetakP.setDefault(AutonConstants.thetakP);
+                thetakD.setDefault(AutonConstants.thetakD);
+                driveMaxVelocity.setDefault(AutonConstants.driveMaxVelocity);
+                driveMaxAcceleration.setDefault(AutonConstants.driveMaxAcceleration);
+                thetaMaxVelocity.setDefault(AutonConstants.thetaMaxVelocity);
+                thetaMaxAcceleration.setDefault(AutonConstants.thetaMaxAcceleration);
+                driveTolerance.setDefault(AutonConstants.driveTolerance);
+                thetaTolerance.setDefault(AutonConstants.thetaTolerance);
+                ffMinRadius.setDefault(AutonConstants.ffMinRadius);
+                ffMaxRadius.setDefault(AutonConstants.ffMaxRadius);
         }
 
         private final Drive drive;
@@ -137,17 +137,17 @@ public class DriveToPose extends Command {
                 running = true;
 
                 // Update from tunable numbers
-                if (driveMaxVelocity.hasChanged(hashCode())
-                                || driveMaxVelocitySlow.hasChanged(hashCode())
-                                || driveMaxAcceleration.hasChanged(hashCode())
-                                || driveTolerance.hasChanged(hashCode())
-                                || thetaMaxVelocity.hasChanged(hashCode())
-                                || thetaMaxAcceleration.hasChanged(hashCode())
-                                || thetaTolerance.hasChanged(hashCode())
-                                || drivekP.hasChanged(hashCode())
-                                || drivekD.hasChanged(hashCode())
-                                || thetakP.hasChanged(hashCode())
-                                || thetakD.hasChanged(hashCode())) {
+                if (driveMaxVelocity.hasChanged()
+                                || driveMaxVelocitySlow.hasChanged()
+                                || driveMaxAcceleration.hasChanged()
+                                || driveTolerance.hasChanged()
+                                || thetaMaxVelocity.hasChanged()
+                                || thetaMaxAcceleration.hasChanged()
+                                || thetaTolerance.hasChanged()
+                                || drivekP.hasChanged()
+                                || drivekD.hasChanged()
+                                || thetakP.hasChanged()
+                                || thetakD.hasChanged()) {
                         driveController.setP(drivekP.get());
                         driveController.setD(drivekD.get());
                         driveController.setConstraints(

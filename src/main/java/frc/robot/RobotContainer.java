@@ -54,7 +54,7 @@ import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
-import frc.robot.util.LoggedTunableNumber;
+import frc.robot.util.TunableNumber;
 import frc.robot.util.TunableNumber;
 import frc.robot.subsystems.algae.AlgaeConstants;
 import frc.robot.subsystems.algae.AlgaeIOSparkMax;
@@ -269,7 +269,7 @@ public class RobotContainer {
   public void configureCoralIntake() {
     Command coralIn = new CoralInCmd(m_coral);
     Command coralOut = new CoralOutCmd(m_coral);
-    Command wrist = new WristCmd(m_coral, new LoggedTunableNumber("WristAngle", CoralIntakeConstants.anglevalue).get());
+    Command wrist = new WristCmd(m_coral, new TunableNumber("WristAngle", CoralIntakeConstants.anglevalue).get());
     Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
     Command slamCoral = new CoralCmd(m_coral, .05, -.2);
     // m_coral.setDefaultCommand(wristAnalog);
@@ -339,18 +339,18 @@ public class RobotContainer {
   public void configureSetpoints() {
     Command homeElevator = new HomeElevatorCmd(m_elevator);
     Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new LoggedTunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
-        new LoggedTunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
+        new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
+        new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
 
     Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new LoggedTunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
-        new LoggedTunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
+        new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
+        new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
     Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new LoggedTunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
-        new LoggedTunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
+        new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
+        new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
     Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new LoggedTunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
-        new LoggedTunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
+        new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
+        new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
     Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
     m_controllerTwo.povUp().whileTrue(l1);
