@@ -41,13 +41,15 @@ public class AlgaeIOSparkMax implements AlgaeIO {
                 liftConfig.idleMode(IdleMode.kBrake);
                 liftConfig.closedLoop
                                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                                .pidf(new TunableNumber("Algae/kLiftP", AlgaeConstants.kLiftP).get(),
-                                                new TunableNumber("Algae/kLiftI", AlgaeConstants.kLiftI).get(),
-                                                new TunableNumber("Algae/kLiftD", AlgaeConstants.kLiftD).get(),
-                                                new TunableNumber("Algae/kLiftFF", AlgaeConstants.kLiftFF).get())
-                                .outputRange(new TunableNumber("Algae/kLiftMinRange", AlgaeConstants.kLiftMinRange)
+                                .pidf(new LoggedTunableNumber("Algae/kLiftP", AlgaeConstants.kLiftP).get(),
+                                                new LoggedTunableNumber("Algae/kLiftI", AlgaeConstants.kLiftI).get(),
+                                                new LoggedTunableNumber("Algae/kLiftD", AlgaeConstants.kLiftD).get(),
+                                                new LoggedTunableNumber("Algae/kLiftFF", AlgaeConstants.kLiftFF).get())
+                                .outputRange(new LoggedTunableNumber("Algae/kLiftMinRange",
+                                                AlgaeConstants.kLiftMinRange)
                                                 .get(),
-                                                new TunableNumber("Algae/kLiftMaxRange", AlgaeConstants.kLiftMaxRange)
+                                                new LoggedTunableNumber("Algae/kLiftMaxRange",
+                                                                AlgaeConstants.kLiftMaxRange)
                                                                 .get());
                 liftConfig.inverted(false)
                                 .idleMode(IdleMode.kBrake)
@@ -55,7 +57,7 @@ public class AlgaeIOSparkMax implements AlgaeIO {
                 liftConfig.signals
                                 .absoluteEncoderPositionAlwaysOn(true)
                                 .absoluteEncoderPositionPeriodMs((int) (1000.0
-                                                / new TunableNumber("Algae/liftOdometryFrequency",
+                                                / new LoggedTunableNumber("Algae/liftOdometryFrequency",
                                                                 AlgaeConstants.liftOdometryFrequency).get()))
                                 .absoluteEncoderVelocityAlwaysOn(true)
                                 .absoluteEncoderVelocityPeriodMs(20)
@@ -65,11 +67,11 @@ public class AlgaeIOSparkMax implements AlgaeIO {
                 liftConfig.absoluteEncoder
                                 .inverted(AlgaeConstants.liftEncoderInverted)
                                 .positionConversionFactor(
-                                                new TunableNumber("Algae/liftEncoderPositionFactor",
+                                                new LoggedTunableNumber("Algae/liftEncoderPositionFactor",
                                                                 AlgaeConstants.liftEncoderPositionFactor)
                                                                 .get())
                                 .velocityConversionFactor(
-                                                new TunableNumber("Algae/liftEncoderVelocityFactor",
+                                                new LoggedTunableNumber("Algae/liftEncoderVelocityFactor",
                                                                 AlgaeConstants.liftEncoderVelocityFactor)
                                                                 .get())
                                 .averageDepth(2);
