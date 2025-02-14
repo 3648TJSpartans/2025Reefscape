@@ -1,4 +1,4 @@
-package frc.robot.commands.OnTheFlyAutons;
+package frc.robot.commands.goToCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;

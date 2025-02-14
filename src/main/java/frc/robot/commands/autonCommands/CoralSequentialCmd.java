@@ -1,9 +1,9 @@
-package frc.robot.commands.coralCommands;
+package frc.robot.commands.autonCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
-import frc.robot.commands.OnTheFlyAutons.DriveToNearest;
+import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
+import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
@@ -27,6 +27,9 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         this.angle = angle;
         addRequirements(m_coralIntake);
         addRequirements(m_elevator);
+
+        addCommands(
+                new SequentialCommandGroup(DriveToNearestPoint, CoralInCmd, ElevatorCmd));
     }
 
     @Override
@@ -38,7 +41,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
 
         m_elevator.elevateTo(height);
         m_coralIntake.rotateTo(angle);
-        DriveToNearest(m_drive, PoseConstants.criticalPoints);
+        DriveToNearestPoint;
 
     }
 
