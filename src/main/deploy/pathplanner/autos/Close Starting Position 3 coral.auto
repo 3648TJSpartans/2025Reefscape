@@ -7,11 +7,7 @@
         {
           "type": "path",
           "data": {
-<<<<<<< Updated upstream
-            "pathName": null
-=======
             "pathName": "Close Starting Position to Branch J"
->>>>>>> Stashed changes
           }
         },
         {
@@ -23,11 +19,7 @@
         {
           "type": "path",
           "data": {
-<<<<<<< Updated upstream
-            "pathName": null
-=======
             "pathName": "Branch J to Top Source"
->>>>>>> Stashed changes
           }
         },
         {
@@ -39,11 +31,7 @@
         {
           "type": "path",
           "data": {
-<<<<<<< Updated upstream
-            "pathName": null
-=======
             "pathName": "Top Source to Branch L"
->>>>>>> Stashed changes
           }
         },
         {
@@ -55,11 +43,7 @@
         {
           "type": "path",
           "data": {
-<<<<<<< Updated upstream
-            "pathName": null
-=======
             "pathName": "Branch L to Top Source"
->>>>>>> Stashed changes
           }
         },
         {
@@ -71,11 +55,7 @@
         {
           "type": "path",
           "data": {
-<<<<<<< Updated upstream
-            "pathName": null
-=======
             "pathName": "Top Source to Branch K"
->>>>>>> Stashed changes
           }
         }
       ]
