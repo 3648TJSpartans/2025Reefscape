@@ -37,7 +37,7 @@ public class CoralElevatorIntegratedCmd extends Command {
         m_elevator.stop();
         m_coralIntake.stopIntakeMotor();
         m_coralIntake.stopWristMotor();
-        System.out.println("command finished");
+        System.out.println("000000000000elevator  finished000000000000000");
     }
 
     @Override

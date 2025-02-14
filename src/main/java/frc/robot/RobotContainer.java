@@ -37,6 +37,7 @@ import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
+import frc.robot.commands.autonCommands.CoralSequentialCmd;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.AlignCommands;
@@ -235,7 +236,7 @@ public class RobotContainer {
     Command algaeShootCmd = new AlgaeShootCmd(m_algae);
     m_copilotController.a().whileTrue(algaeIntakeCmd);
     m_copilotController.b().whileTrue(algaeShootCmd);
-    m_algae.setDefaultCommand(algaeDefaultCmd);
+    // m_algae.setDefaultCommand(algaeDefaultCmd);
   }
 
   public void configureAutoChooser() {
@@ -355,11 +356,13 @@ public class RobotContainer {
         new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
     Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
+    Command sequential = new CoralSequentialCmd(m_drive, m_coral, m_elevator, false, 3, true);
     m_controllerTwo.povUp().whileTrue(l1);
     m_controllerTwo.povRight().whileTrue(l2);
     m_controllerTwo.povDown().whileTrue(l3);
     m_controllerTwo.povLeft().whileTrue(l4);
     m_controllerTwo.leftBumper().whileTrue(intake);
+    m_driveController.leftTrigger().whileTrue(sequential);
 
     // The Below command is ONLY for testing and should be removed in the final
     // build. This allows you to zero the elevator without a limit switch

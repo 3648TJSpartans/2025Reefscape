@@ -216,6 +216,7 @@ public class DriveToNearest extends Command {
 
                 // Log data
                 Logger.recordOutput("DriveToPose/DistanceMeasured", currentDistance);
+                Logger.recordOutput("DriveToPose/IsFinished", isFinished());
                 Logger.recordOutput("DriveToPose/DistanceSetpoint", driveController.getSetpoint().position);
                 Logger.recordOutput("DriveToPose/ThetaMeasured", currentPose.getRotation().getRadians());
                 Logger.recordOutput("DriveToPose/ThetaSetpoint", thetaController.getSetpoint().position);
@@ -234,11 +235,17 @@ public class DriveToNearest extends Command {
                 // Clear logs
                 Logger.recordOutput("DriveToPose/Setpoint", new Pose2d[] {});
                 Logger.recordOutput("DriveToPose/Goal", new Pose2d[] {});
+                System.out.println("!!!!!!!!!!!!!!!!!DriveToNearest finished!!!!!!!!!!!!!");
         }
 
         /** Checks if the robot is stopped at the final pose. */
         public boolean atGoal() {
                 return running && driveController.atGoal() && thetaController.atGoal();
+        }
+
+        @Override
+        public boolean isFinished() {
+                return atGoal();
         }
 
         /**
