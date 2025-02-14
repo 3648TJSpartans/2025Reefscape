@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Close Starting Position to Branch J"
+                  "pathName": "Middle_Start_to_Branch_J"
                 }
               },
               {
@@ -42,7 +42,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Branch J to Top Source"
+                  "pathName": "Branch_J_to_Top_Source"
                 }
               },
               {
@@ -67,7 +67,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Top Source to Branch L"
+                  "pathName": "Top_Source_to_Branch_L"
                 }
               },
               {
@@ -92,7 +92,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Branch L to Top Source"
+                  "pathName": "Branch_L_to_Top_Source"
                 }
               },
               {
@@ -117,7 +117,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Top Source to Branch K"
+                  "pathName": "Top_Source_to_Branch_K"
                 }
               },
               {
@@ -127,6 +127,42 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "slamCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Branch_K_to_Top_Source"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakePos"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "coralIn"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Top_Source_to_Branch_A"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "l4"
           }
         },
         {

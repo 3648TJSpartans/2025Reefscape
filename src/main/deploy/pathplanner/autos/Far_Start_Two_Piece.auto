@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Far Starting Position to Branch A"
+            "pathName": "Far_Start_to_Branch_A"
           }
         },
         {
@@ -25,7 +25,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Branch A to Top Source"
+            "pathName": "Branch_A_to_Top_Source"
           }
         },
         {
@@ -43,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Top Source to Branch B"
+            "pathName": "Top_Source_to_Branch_B"
           }
         },
         {

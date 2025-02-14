@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 9.543216302002026,
-        "y": 7.455038139144033
+        "x": 9.547281810696443,
+        "y": 7.680427765856383
       },
       "isLocked": false,
       "linkedName": "Far Starting Position"
@@ -20,8 +20,8 @@
         "y": 5.291392045454545
       },
       "prevControl": {
-        "x": 4.686306684617243,
-        "y": 5.235250347843301
+        "x": 4.693874511565253,
+        "y": 5.174364570652299
       },
       "nextControl": null,
       "isLocked": false,

@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Close Starting Position to Branch G"
+                  "pathName": "Middle_Start_to_Branch_J"
                 }
               },
               {
@@ -42,7 +42,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Branch G to Bottom Source"
+                  "pathName": "Branch_J_to_Top_Source"
                 }
               },
               {
@@ -67,7 +67,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Bottom Source to Branch C"
+                  "pathName": "Top_Source_to_Branch_L"
                 }
               },
               {
@@ -92,7 +92,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Branch C to Bottom Source"
+                  "pathName": "Branch_L_to_Top_Source"
                 }
               },
               {
@@ -117,7 +117,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Bottom Source to Branch D"
+                  "pathName": "Top_Source_to_Branch_K"
                 }
               },
               {
