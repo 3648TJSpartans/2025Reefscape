@@ -3,22 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-<<<<<<< Updated upstream
-<<<<<<<< Updated upstream:src/main/deploy/pathplanner/paths/Top Source to Branch L.path
-=======
->>>>>>> Stashed changes
         "x": 1.3348484848484847,
         "y": 7.11489898989899
       },
       "prevControl": null,
       "nextControl": {
-<<<<<<< Updated upstream
-        "x": 2.0093807498652296,
-        "y": 6.3101473853146475
-=======
-        "x": 2.099230110722364,
-        "y": 6.395894535916568
->>>>>>> Stashed changes
+        "x": 1.8340927324204461,
+        "y": 6.633897417116552
       },
       "isLocked": false,
       "linkedName": "Top Source"
@@ -29,42 +20,12 @@
         "y": 5.010921717171717
       },
       "prevControl": {
-<<<<<<< Updated upstream
-        "x": 1.1717191477638074,
-        "y": 5.81260877098129
-========
-        "x": 4.955880681818181,
-        "y": 5.291392045454545
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 5.700100966971022,
-        "y": 4.899451316433142
-      },
-      "isLocked": false,
-      "linkedName": "Branch J"
-    },
-    {
-      "anchor": {
-        "x": 1.3348484848484847,
-        "y": 7.11489898989899
-      },
-      "prevControl": {
-        "x": 1.1060307106154281,
-        "y": 7.2156086031195255
->>>>>>>> Stashed changes:src/main/deploy/pathplanner/paths/Branch J to Top Source.path
-      },
-      "nextControl": null,
-      "isLocked": false,
-      "linkedName": "Top Source"
-=======
-        "x": 1.8860124340259996,
-        "y": 6.582608706070378
+        "x": 3.348130201148266,
+        "y": 5.21521676060371
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Branch L"
->>>>>>> Stashed changes
     }
   ],
   "rotationTargets": [],
@@ -81,29 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-<<<<<<< Updated upstream
-<<<<<<<< Updated upstream:src/main/deploy/pathplanner/paths/Top Source to Branch L.path
     "rotation": -57.58769338164883
-========
-    "rotation": -53.285797023953705
->>>>>>>> Stashed changes:src/main/deploy/pathplanner/paths/Branch J to Top Source.path
-=======
-    "rotation": -57.58769338164883
->>>>>>> Stashed changes
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-<<<<<<< Updated upstream
-<<<<<<<< Updated upstream:src/main/deploy/pathplanner/paths/Top Source to Branch L.path
-    "rotation": 128.453709216706
-========
-    "rotation": -117.75854060106
->>>>>>>> Stashed changes:src/main/deploy/pathplanner/paths/Branch J to Top Source.path
-=======
     "rotation": -53.285797023953705
->>>>>>> Stashed changes
   },
   "useDefaultConstraints": true
 }
