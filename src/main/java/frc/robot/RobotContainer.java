@@ -33,11 +33,12 @@ import frc.robot.commands.AlgaeAnalogCmd;
 import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
+import frc.robot.commands.OnTheFlyAutons.DriveToNearest;
+import frc.robot.commands.OnTheFlyAutons.DriveToPose;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
-import frc.robot.commands.OnTheFlyAutons.DriveToNearest;
-import frc.robot.commands.OnTheFlyAutons.DriveToPose;
+
 import frc.robot.commands.AlignCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -54,6 +55,7 @@ import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.util.LoggedTunableNumber;
 import frc.robot.util.TunableNumber;
 import frc.robot.subsystems.algae.AlgaeConstants;
 import frc.robot.subsystems.algae.AlgaeIOSparkMax;
@@ -319,14 +321,22 @@ public class RobotContainer {
                         new Rotation2d())),
                 m_drive)
                 .ignoringDisable(true));
+    Command goToPointCommand = AlignCommands.goToPoint(m_drive);
+    m_driveController.leftTrigger().whileTrue(goToPointCommand);
+    // Command alignLeftReef = new SwerveAutoAlignPose(PoseConstants.leftReef,
+    // PoseConstants.leftReef, m_drive);
+    // m_driveController.leftBumper().whileTrue(alignLeftReef);
+    // Command alignRightReef = new SwerveAutoAlignPose(PoseConstants.rightReef,
+    // PoseConstants.rightReef, m_drive);
+    // m_driveController.rightBumper().whileTrue(alignRightReef);
     Command alignLeftReef = new DriveToPose(m_drive, () -> PoseConstants.leftReef);
     m_driveController.leftBumper().whileTrue(alignLeftReef);
     Command alignRightReef = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
     m_driveController.rightBumper().whileTrue(alignRightReef);
     Command alignCoralStation = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
     m_driveController.y().whileTrue(alignCoralStation);
-    Command goToNearestCommand = new DriveToNearest(m_drive, () -> PoseConstants.criticalPoints);
-    m_driveController.rightTrigger().whileTrue(goToNearestCommand);
+    Command goToNearestRightCommand = new DriveToNearest(m_drive, () -> PoseConstants.rightReefPoints());
+    m_driveController.rightTrigger().whileTrue(goToNearestRightCommand);
   }
 
   public void configureElevator() {
