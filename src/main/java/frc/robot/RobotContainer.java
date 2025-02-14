@@ -325,14 +325,6 @@ public class RobotContainer {
                         new Rotation2d())),
                 m_drive)
                 .ignoringDisable(true));
-    Command goToPointCommand = AlignCommands.goToPoint(m_drive);
-    m_driveController.leftTrigger().whileTrue(goToPointCommand);
-    // Command alignLeftReef = new SwerveAutoAlignPose(PoseConstants.leftReef,
-    // PoseConstants.leftReef, m_drive);
-    // m_driveController.leftBumper().whileTrue(alignLeftReef);
-    // Command alignRightReef = new SwerveAutoAlignPose(PoseConstants.rightReef,
-    // PoseConstants.rightReef, m_drive);
-    // m_driveController.rightBumper().whileTrue(alignRightReef);
     Command alignLeftReef = new DriveToPose(m_drive, () -> PoseConstants.leftReef);
     m_driveController.leftBumper().whileTrue(alignLeftReef);
     Command alignRightReef = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
