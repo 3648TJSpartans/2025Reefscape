@@ -7,21 +7,18 @@ import frc.robot.Robot;
 import frc.robot.subsystems.drive.DriveConstants;
 
 public class AutonConstants {
-    public static final double maxVelocity = 3.0;
-    public static final double maxAngularVelocity = 3.0;
-    public static final double maxAngularAcceleration = 3.0;
-    public static final double maxAcceleration = 2.0;
-    public static final double maxLinearVelocity = maxVelocity / 1.412; // Max velocity in x or y direction going at 45
-                                                                        // degree
-    // angle
-    public static final double driveKp = DriveConstants.driveKp;
-    public static final double driveKd = DriveConstants.driveKd;
-    public static final double turnKp = DriveConstants.turnKp;
-    public static final double turnKd = DriveConstants.turnKd;
-
-    public static final double maxError = 0.025; // Meters
-    public static final double maxLinearError = maxError / 1.412;
-    public static final double maxRotationalError = 5; // degrees
+    public static final double drivekP = 1.0;
+    public static final double drivekD = 0.0;
+    public static final double thetakP = 5.0;
+    public static final double thetakD = 0.0;
+    public static final double driveMaxVelocity = Units.inchesToMeters(150.0 / 4);
+    public static final double driveMaxAcceleration = Units.inchesToMeters(95.0 / 4);
+    public static final double thetaMaxVelocity = Units.degreesToRadians(360.0 / 2);
+    public static final double thetaMaxAcceleration = Units.degreesToRadians(720.0 / 2);
+    public static final double driveTolerance = 0.03;
+    public static final double thetaTolerance = Units.degreesToRadians(2.5);
+    public static final double ffMinRadius = 0.2;
+    public static final double ffMaxRadius = 0.6;
 
     public static class PoseConstants {
         public final static Pose2d rightReef = new Pose2d(2.9, 3.73, Rotation2d.fromDegrees(0));
