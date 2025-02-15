@@ -22,6 +22,8 @@ import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.RelativeEncoder;
+
+import frc.robot.util.TunableNumber;
 import frc.robot.util.TunableNumber;
 
 public class ElevatorIOSparkMax implements ElevatorIO {
@@ -48,14 +50,14 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                 .voltageCompensation(12.0);
         motorConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pidf(new LoggedTunableNumber("ELevator/kElevatorP", ElevatorConstants.kElevatorP).get(),
-                        new LoggedTunableNumber("ELevator/kElevatorI", ElevatorConstants.kElevatorI).get(),
-                        new LoggedTunableNumber("ELevator/kElevatorD", ElevatorConstants.kElevatorD).get(),
-                        new LoggedTunableNumber("ELevator/kElevatorFF", ElevatorConstants.kElevatorFF).get())
+                .pidf(new TunableNumber("Elevator/kElevatorP", ElevatorConstants.kElevatorP).get(),
+                        new TunableNumber("Elevator/kElevatorI", ElevatorConstants.kElevatorI).get(),
+                        new TunableNumber("Elevator/kElevatorD", ElevatorConstants.kElevatorD).get(),
+                        new TunableNumber("Elevator/kElevatorFF", ElevatorConstants.kElevatorFF).get())
                 .outputRange(
-                        new LoggedTunableNumber("Elevator/kElevatorMinRange", ElevatorConstants.kElevatorMinRange)
+                        new TunableNumber("Elevator/kElevatorMinRange", ElevatorConstants.kElevatorMinRange)
                                 .get(),
-                        new LoggedTunableNumber("Elevator/kElevatorMaxRange", ElevatorConstants.kElevatorMaxRange)
+                        new TunableNumber("Elevator/kElevatorMaxRange", ElevatorConstants.kElevatorMaxRange)
                                 .get());
         motorConfig.signals
                 .absoluteEncoderPositionAlwaysOn(true)
@@ -67,7 +69,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
                 .outputCurrentPeriodMs(20);
         motorConfig.absoluteEncoder
                 .inverted(ElevatorConstants.elevatorEncoderInverted)
-                .positionConversionFactor(new LoggedTunableNumber("Elevator/elevatorEncoderPositionFactor",
+                .positionConversionFactor(new TunableNumber("Elevator/elevatorEncoderPositionFactor",
                         ElevatorConstants.elevatorEncoderPositionFactor).get())
                 .velocityConversionFactor(ElevatorConstants.elevatorEncoderPositionFactor)
                 .averageDepth(2);

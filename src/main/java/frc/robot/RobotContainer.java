@@ -14,6 +14,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.MathUtil;
@@ -32,12 +33,13 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.AlgaeAnalogCmd;
 import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.OnTheFlyAutons.AutonConstants.PoseConstants;
+import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
-import frc.robot.commands.OnTheFlyAutons.DriveToNearest;
-import frc.robot.commands.OnTheFlyAutons.DriveToPose;
+import frc.robot.commands.autonCommands.CoralSequentialCmd;
+import frc.robot.commands.goToCommands.DriveToNearest;
+import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.AlignCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -54,6 +56,7 @@ import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.util.TunableNumber;
 import frc.robot.util.TunableNumber;
 import frc.robot.subsystems.algae.AlgaeConstants;
 import frc.robot.subsystems.algae.AlgaeIOSparkMax;
@@ -209,6 +212,7 @@ public class RobotContainer {
     configureDrive();
     configureElevator();
     configureSetpoints();
+    configureAutos();
   }
 
   public void cancelCommand(Command cmd) {
@@ -232,7 +236,7 @@ public class RobotContainer {
     Command algaeShootCmd = new AlgaeShootCmd(m_algae);
     m_copilotController.a().whileTrue(algaeIntakeCmd);
     m_copilotController.b().whileTrue(algaeShootCmd);
-    m_algae.setDefaultCommand(algaeDefaultCmd);
+    // m_algae.setDefaultCommand(algaeDefaultCmd);
   }
 
   public void configureAutoChooser() {
@@ -268,7 +272,7 @@ public class RobotContainer {
   public void configureCoralIntake() {
     Command coralIn = new CoralInCmd(m_coral);
     Command coralOut = new CoralOutCmd(m_coral);
-    Command wrist = new WristCmd(m_coral, new LoggedTunableNumber("WristAngle", CoralIntakeConstants.anglevalue).get());
+    Command wrist = new WristCmd(m_coral, new TunableNumber("WristAngle", CoralIntakeConstants.anglevalue).get());
     Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
     Command slamCoral = new CoralCmd(m_coral, .05, -.2);
     // m_coral.setDefaultCommand(wristAnalog);
@@ -325,8 +329,8 @@ public class RobotContainer {
     m_driveController.rightBumper().whileTrue(alignRightReef);
     Command alignCoralStation = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
     m_driveController.y().whileTrue(alignCoralStation);
-    Command goToNearestCommand = new DriveToNearest(m_drive, () -> PoseConstants.criticalPoints);
-    m_driveController.rightTrigger().whileTrue(goToNearestCommand);
+    Command goToNearestRightCommand = new DriveToNearest(m_drive, () -> PoseConstants.rightReefPoints());
+    m_driveController.rightTrigger().whileTrue(goToNearestRightCommand);
   }
 
   public void configureElevator() {
@@ -338,25 +342,27 @@ public class RobotContainer {
   public void configureSetpoints() {
     Command homeElevator = new HomeElevatorCmd(m_elevator);
     Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new LoggedTunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
-        new LoggedTunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
+        new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
+        new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
 
     Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new LoggedTunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
-        new LoggedTunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
+        new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
+        new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
     Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new LoggedTunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
-        new LoggedTunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
+        new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
+        new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
     Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new LoggedTunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
-        new LoggedTunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
+        new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
+        new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
     Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
+    Command sequential = new CoralSequentialCmd(m_drive, m_coral, m_elevator, false, 3, true);
     m_controllerTwo.povUp().whileTrue(l1);
     m_controllerTwo.povRight().whileTrue(l2);
     m_controllerTwo.povDown().whileTrue(l3);
     m_controllerTwo.povLeft().whileTrue(l4);
     m_controllerTwo.leftBumper().whileTrue(intake);
+    m_driveController.leftTrigger().whileTrue(sequential);
 
     // The Below command is ONLY for testing and should be removed in the final
     // build. This allows you to zero the elevator without a limit switch
@@ -367,5 +373,33 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return autoChooser.get();
+  }
+
+  public void configureAutos() {
+    Command homeElevator = new HomeElevatorCmd(m_elevator);
+    Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
+        new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
+    Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
+        new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
+    Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
+        new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
+    Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
+        new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
+    Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
+    Command coralIn = new CoralInCmd(m_coral);
+    Command slamCoral = new CoralCmd(m_coral, .05, -.2);
+    NamedCommands.registerCommand("homeElevator", homeElevator);
+    NamedCommands.registerCommand("l4", l4);
+    NamedCommands.registerCommand("l3", l3);
+    NamedCommands.registerCommand("l2", l2);
+    NamedCommands.registerCommand("l1", l1);
+    NamedCommands.registerCommand("intakePos", intakePos);
+    NamedCommands.registerCommand("coralIn", coralIn);
+    NamedCommands.registerCommand("slamCoral", slamCoral);
   }
 }

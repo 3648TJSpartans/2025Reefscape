@@ -2,7 +2,10 @@ package frc.robot.commands.coralCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.coralIntake.CoralIntake;
+import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
 import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorConstants;
+import frc.robot.util.TunableNumber;
 
 public class CoralElevatorIntegratedCmd extends Command {
     private final CoralIntake m_coralIntake;
@@ -34,11 +37,17 @@ public class CoralElevatorIntegratedCmd extends Command {
         m_elevator.stop();
         m_coralIntake.stopIntakeMotor();
         m_coralIntake.stopWristMotor();
+        System.out.println("000000000000elevator  finished000000000000000");
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        double elevatorMargin = new TunableNumber("Elevator/MarginOfError", ElevatorConstants.marginOfError).get();
+        double coralIntakeMargin = new TunableNumber("Wrist/MarginOfError", CoralIntakeConstants.marginOfError).get();
+        return ((height - elevatorMargin) < m_elevator.getHeight()) &&
+                (m_elevator.getHeight() < (height + elevatorMargin)) &&
+                ((angle - coralIntakeMargin) < m_coralIntake.getAngle()) &&
+                (m_coralIntake.getAngle() < (angle + coralIntakeMargin));
     }
 
 }

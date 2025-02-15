@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.commands.OnTheFlyAutons;
+package frc.robot.commands.goToCommands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -16,7 +16,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.goToCommands.AutonConstants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.GeomUtil;
 import frc.robot.util.TunableNumber;
@@ -28,7 +28,7 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
 import org.littletonrobotics.junction.Logger;
 
-public class DriveToPose extends Command {
+public class DriveToNearest extends Command {
         private static final TunableNumber drivekP = new TunableNumber("DriveToPose/DrivekP");
         private static final TunableNumber drivekD = new TunableNumber("DriveToPose/DrivekD");
         private static final TunableNumber thetakP = new TunableNumber("DriveToPose/ThetakP");
@@ -65,7 +65,7 @@ public class DriveToPose extends Command {
 
         private final Drive drive;
         private final Supplier<Pose2d> target;
-
+        private final Supplier<Pose2d[]> targetPoints;
         private final ProfiledPIDController driveController = new ProfiledPIDController(
                         0.0, 0.0, 0.0, new TrapezoidProfile.Constraints(0.0, 0.0), 0.02);
         private final ProfiledPIDController thetaController = new ProfiledPIDController(
@@ -80,29 +80,29 @@ public class DriveToPose extends Command {
         private Supplier<Translation2d> linearFF = () -> Translation2d.kZero;
         private DoubleSupplier omegaFF = () -> 0.0;
 
-        public DriveToPose(Drive drive, Supplier<Pose2d> target) {
+        public DriveToNearest(Drive drive, Supplier<Pose2d[]> targets) {
                 this.drive = drive;
                 robot = drive::getPose;
-                this.target = target;
-
+                this.targetPoints = targets;
+                this.target = () -> nearestPoint(robot, targets);
                 // Enable continuous input for theta controller
                 thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
                 addRequirements(drive);
         }
 
-        public DriveToPose(Drive drive, Supplier<Pose2d> target, Supplier<Pose2d> robot) {
-                this(drive, target);
+        public DriveToNearest(Drive drive, Supplier<Pose2d[]> targets, Supplier<Pose2d> robot) {
+                this(drive, targets);
                 this.robot = robot;
         }
 
-        public DriveToPose(
+        public DriveToNearest(
                         Drive drive,
-                        Supplier<Pose2d> target,
+                        Supplier<Pose2d[]> targets,
                         Supplier<Pose2d> robot,
                         Supplier<Translation2d> linearFF,
                         DoubleSupplier omegaFF) {
-                this(drive, target, robot);
+                this(drive, targets, robot);
                 this.linearFF = linearFF;
                 this.omegaFF = omegaFF;
         }
@@ -216,6 +216,7 @@ public class DriveToPose extends Command {
 
                 // Log data
                 Logger.recordOutput("DriveToPose/DistanceMeasured", currentDistance);
+                Logger.recordOutput("DriveToPose/IsFinished", isFinished());
                 Logger.recordOutput("DriveToPose/DistanceSetpoint", driveController.getSetpoint().position);
                 Logger.recordOutput("DriveToPose/ThetaMeasured", currentPose.getRotation().getRadians());
                 Logger.recordOutput("DriveToPose/ThetaSetpoint", thetaController.getSetpoint().position);
@@ -234,11 +235,17 @@ public class DriveToPose extends Command {
                 // Clear logs
                 Logger.recordOutput("DriveToPose/Setpoint", new Pose2d[] {});
                 Logger.recordOutput("DriveToPose/Goal", new Pose2d[] {});
+                System.out.println("!!!!!!!!!!!!!!!!!DriveToNearest finished!!!!!!!!!!!!!");
         }
 
         /** Checks if the robot is stopped at the final pose. */
         public boolean atGoal() {
                 return running && driveController.atGoal() && thetaController.atGoal();
+        }
+
+        @Override
+        public boolean isFinished() {
+                return atGoal();
         }
 
         /**
@@ -248,5 +255,21 @@ public class DriveToPose extends Command {
                 return running
                                 && Math.abs(driveErrorAbs) < driveTolerance
                                 && Math.abs(thetaErrorAbs) < thetaTolerance.getRadians();
+        }
+
+        public Pose2d nearestPoint(Supplier<Pose2d> robotPose, Supplier<Pose2d[]> targetPoints) {
+                Pose2d[] points = targetPoints.get();
+                Pose2d drivePose = robotPose.get();
+                Pose2d targetPose = points[0];
+                double minDistance = Double.MAX_VALUE;
+                for (Pose2d point : points) {
+                        double distance = drivePose.getTranslation().getDistance(point.getTranslation());
+                        if (distance < minDistance) {
+                                minDistance = distance;
+                                targetPose = point;
+                        }
+                }
+                return targetPose;
+
         }
 }

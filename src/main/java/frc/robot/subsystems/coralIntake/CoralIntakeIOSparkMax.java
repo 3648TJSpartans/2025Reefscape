@@ -14,6 +14,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.util.TunableNumber;
+import frc.robot.util.TunableNumber;
 
 import com.revrobotics.spark.SparkClosedLoopController;
 
@@ -38,10 +39,10 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
                 .voltageCompensation(12.0);
         wristConfig.closedLoop
                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                .pidf(new LoggedTunableNumber("CoralINtake/kWristP", CoralIntakeConstants.kWristP).get(),
-                        new LoggedTunableNumber("CoralINtake/kWristI", CoralIntakeConstants.kWristI).get(),
-                        new LoggedTunableNumber("CoralINtake/kWristD", CoralIntakeConstants.kWristD).get(),
-                        new LoggedTunableNumber("CoralINtake/kWristFF", CoralIntakeConstants.kWristFF).get())
+                .pidf(new TunableNumber("CoralIntake/kWristP", CoralIntakeConstants.kWristP).get(),
+                        new TunableNumber("CoralIntake/kWristI", CoralIntakeConstants.kWristI).get(),
+                        new TunableNumber("CoralIntake/kWristD", CoralIntakeConstants.kWristD).get(),
+                        new TunableNumber("CoralIntake/kWristFF", CoralIntakeConstants.kWristFF).get())
                 .outputRange(CoralIntakeConstants.kWristMinRange, CoralIntakeConstants.kWristMaxRange);
         wristConfig.signals
                 .absoluteEncoderPositionAlwaysOn(true)

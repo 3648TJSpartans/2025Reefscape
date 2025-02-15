@@ -15,7 +15,7 @@ public class CoralIntakeConstants {
     // coralintake subsytem
     public static final int irSensorPin = 0;
     // these are the constants for the pid of the robot's wrist
-    public static final double kWristP = .5;
+    public static final double kWristP = 1;
     public static final double kWristI = 0;
     public static final double kWristD = 0;
     public static final double kWristFF = 0;
@@ -31,5 +31,9 @@ public class CoralIntakeConstants {
     public static final double L3Angle = .3;
     public static final double L4Angle = .4;
     public static final double IntakeAngle = .723;
+
+    public static final double marginOfError = 0.05; // this is how close the robot has to be to target rotation to
+    // stop,
+    // needs tuning
 
 }
