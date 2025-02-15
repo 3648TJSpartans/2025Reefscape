@@ -192,6 +192,33 @@ public class RobotContainer {
         });
         break;
     }
+
+    Command homeElevator = new HomeElevatorCmd(m_elevator);
+    Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
+        new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
+    Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
+        new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
+    Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
+        new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
+    Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
+        new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
+    Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
+    Command coralIn = new CoralInCmd(m_coral);
+    Command slamCoral = new CoralCmd(m_coral, .05, -.2);
+    NamedCommands.registerCommand("homeElevator", homeElevator);
+    NamedCommands.registerCommand("l4", l4);
+    NamedCommands.registerCommand("l3", l3);
+    NamedCommands.registerCommand("l2", l2);
+    NamedCommands.registerCommand("l1", l1);
+    NamedCommands.registerCommand("intakePos", intakePos);
+    NamedCommands.registerCommand("coralIn", coralIn);
+    NamedCommands.registerCommand("slamCoral", slamCoral);
+
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
     configureAutoChooser();
@@ -208,13 +235,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // configureAutos();
     configureAlgae();
     configureClimber();
     configureCoralIntake();
     configureDrive();
     configureElevator();
     configureSetpoints();
-    configureAutos();
+
   }
 
   public void cancelCommand(Command cmd) {
@@ -242,6 +270,9 @@ public class RobotContainer {
   }
 
   public void configureAutoChooser() {
+    // configureAutos();
+    // System.out.println("!!!!!!!!!!!!!!!!finished of
+    // configureAutos!!!!!!!!!!!!!!!!!!!");
     // Set up SysId routines
     autoChooser.addOption(
         "Drive Wheel Radius Characterization",
@@ -379,30 +410,30 @@ public class RobotContainer {
   }
 
   public void configureAutos() {
-    Command homeElevator = new HomeElevatorCmd(m_elevator);
-    Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
-        new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
-    Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
-        new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
-    Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
-        new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
-    Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
-        new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
-    Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
-    Command coralIn = new CoralInCmd(m_coral);
-    Command slamCoral = new CoralCmd(m_coral, .05, -.2);
-    NamedCommands.registerCommand("homeElevator", homeElevator);
-    NamedCommands.registerCommand("l4", l4);
-    NamedCommands.registerCommand("l3", l3);
-    NamedCommands.registerCommand("l2", l2);
-    NamedCommands.registerCommand("l1", l1);
-    NamedCommands.registerCommand("intakePos", intakePos);
-    NamedCommands.registerCommand("coralIn", coralIn);
-    NamedCommands.registerCommand("slamCoral", slamCoral);
+    // Command homeElevator = new HomeElevatorCmd(m_elevator);
+    // Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
+    // new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
+    // Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
+    // new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
+    // Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
+    // new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
+    // Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
+    // new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
+    // Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
+    // Command coralIn = new CoralInCmd(m_coral);
+    // Command slamCoral = new CoralCmd(m_coral, .05, -.2);
+    // NamedCommands.registerCommand("homeElevator", homeElevator);
+    // NamedCommands.registerCommand("l4", l4);
+    // NamedCommands.registerCommand("l3", l3);
+    // NamedCommands.registerCommand("l2", l2);
+    // NamedCommands.registerCommand("l1", l1);
+    // NamedCommands.registerCommand("intakePos", intakePos);
+    // NamedCommands.registerCommand("coralIn", coralIn);
+    // NamedCommands.registerCommand("slamCoral", slamCoral);
   }
 }

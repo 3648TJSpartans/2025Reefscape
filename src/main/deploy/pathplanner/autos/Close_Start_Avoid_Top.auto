@@ -25,12 +25,6 @@
         {
           "type": "named",
           "data": {
-            "name": "intakePos"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "coralIn"
           }
         },
@@ -50,12 +44,6 @@
           "type": "path",
           "data": {
             "pathName": "Branch_C_to_Bottom_Source"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intakePos"
           }
         },
         {
