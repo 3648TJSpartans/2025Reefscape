@@ -61,4 +61,9 @@ public class AutoBuildingBlocks {
     public static Command setCoralPose(Elevator m_elevator, CoralIntake m_coral, double height, double angle) {
         return new CoralElevatorIntegratedCmd(m_coral, m_elevator, height, angle);
     }
+
+    public static Command intakeSource(Elevator m_elevator, CoralIntake m_coral) {
+        return new CoralElevatorIntegratedCmd(m_coral, m_elevator, ElevatorConstants.intakePose,
+                CoralIntakeConstants.IntakeAngle);
+    }
 }

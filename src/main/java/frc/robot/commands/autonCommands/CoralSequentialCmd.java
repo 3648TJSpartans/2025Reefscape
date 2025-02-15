@@ -1,6 +1,9 @@
 package frc.robot.commands.autonCommands;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.coralCommands.CoralCmd;
@@ -14,17 +17,13 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
     private final CoralIntake m_coralIntake;
     private final Elevator m_elevator;
     private final Drive m_drive;
-    private final boolean right;
     private final Command coralCommand;
-    private final boolean slam;
 
     public CoralSequentialCmd(Drive drive, CoralIntake coralIntake,
             Elevator elevator, boolean right, int level, boolean slam) {
         m_coralIntake = coralIntake;
         m_elevator = elevator;
         m_drive = drive;
-        this.right = right;
-        this.slam = slam;
         switch (level) {
             case 1:
                 coralCommand = AutoBuildingBlocks.l1(coralIntake, elevator);
@@ -43,13 +42,13 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         }
         addRequirements(m_coralIntake);
         addRequirements(m_elevator);
-
+        Logger.recordOutput("CoralSeqCmd/right", right);
         addCommands(
                 new SequentialCommandGroup(
-                        right ? AutoBuildingBlocks.driveToNearest(m_drive, () -> PoseConstants.rightReefPoints())
-                                : AutoBuildingBlocks.driveToNearest(m_drive,
-                                        () -> PoseConstants.leftReefPoints()),
-                        coralCommand, new WaitCommand(0.5), slam ? new CoralCmd(m_coralIntake, .05, -.2) : null));
+                        // right ? AutoBuildingBlocks.driveToNearest(m_drive, () ->
+                        // PoseConstants.rightReefPoints()):
+                        AutoBuildingBlocks.driveToNearest(m_drive, () -> PoseConstants.leftReefPoints()),
+                        coralCommand, new WaitCommand(1), slam ? new CoralCmd(m_coralIntake, .05, -.2) : null));
     }
 
 }

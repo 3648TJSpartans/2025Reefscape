@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -323,10 +324,6 @@ public class RobotContainer {
                         new Rotation2d())),
                 m_drive)
                 .ignoringDisable(true));
-    Command alignLeftReef = new DriveToPose(m_drive, () -> PoseConstants.leftReef);
-    m_driveController.leftBumper().whileTrue(alignLeftReef);
-    Command alignRightReef = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
-    m_driveController.rightBumper().whileTrue(alignRightReef);
     Command alignCoralStation = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
     m_driveController.y().whileTrue(alignCoralStation);
     Command goToNearestRightCommand = new DriveToNearest(m_drive, () -> PoseConstants.rightReefPoints());
@@ -356,13 +353,15 @@ public class RobotContainer {
         new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
     Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
-    Command sequential = new CoralSequentialCmd(m_drive, m_coral, m_elevator, false, 3, true);
+    Command sequentialRight = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true, 3, true);
+    Command sequentialLeft = new CoralSequentialCmd(m_drive, m_coral, m_elevator, false, 3, true);
     m_controllerTwo.povUp().whileTrue(l1);
     m_controllerTwo.povRight().whileTrue(l2);
     m_controllerTwo.povDown().whileTrue(l3);
     m_controllerTwo.povLeft().whileTrue(l4);
     m_controllerTwo.leftBumper().whileTrue(intake);
-    m_driveController.leftTrigger().whileTrue(sequential);
+    m_driveController.leftTrigger().and(m_driveController.leftBumper()).whileTrue(sequentialLeft);
+    m_driveController.leftTrigger().and(m_driveController.rightBumper()).whileTrue(sequentialRight);
     m_driveController.rightTrigger().whileTrue(homeElevator);
 
     // The Below command is ONLY for testing and should be removed in the final
@@ -403,4 +402,5 @@ public class RobotContainer {
     NamedCommands.registerCommand("coralIn", coralIn);
     NamedCommands.registerCommand("slamCoral", slamCoral);
   }
+
 }
