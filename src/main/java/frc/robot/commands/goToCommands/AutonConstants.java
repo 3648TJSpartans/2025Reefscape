@@ -1,5 +1,7 @@
 package frc.robot.commands.goToCommands;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
@@ -57,6 +59,7 @@ public class AutonConstants {
                 new Pose2d(0, 0, Rotation2d.fromDegrees(0)) // Pose L
         };
 
+        @AutoLogOutput(key = "AutonConstants/RightReefPoints")
         public static Pose2d[] rightReefPoints() {
             if (Robot.isRedAlliance()) {
                 return redRightReefPoints;
@@ -65,6 +68,7 @@ public class AutonConstants {
             }
         }
 
+        @AutoLogOutput(key = "AutonConstants/LeftReefPoints")
         public static Pose2d[] leftReefPoints() {
             if (Robot.isRedAlliance()) {
                 return redLeftReefPoints;

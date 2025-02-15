@@ -2,6 +2,7 @@ package frc.robot.commands.autonCommands;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -43,12 +44,16 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         addRequirements(m_coralIntake);
         addRequirements(m_elevator);
         Logger.recordOutput("CoralSeqCmd/right", right);
+        Pose2d[] targetPoints = right ? PoseConstants.rightReefPoints() : PoseConstants.leftReefPoints();
+        Command driveCommand = AutoBuildingBlocks.driveToNearest(m_drive, () -> targetPoints);
         addCommands(
                 new SequentialCommandGroup(
                         // right ? AutoBuildingBlocks.driveToNearest(m_drive, () ->
                         // PoseConstants.rightReefPoints()):
-                        AutoBuildingBlocks.driveToNearest(m_drive, () -> PoseConstants.leftReefPoints()),
-                        coralCommand, new WaitCommand(1), slam ? new CoralCmd(m_coralIntake, .05, -.2) : null));
+                        driveCommand,
+                        coralCommand,
+                        new WaitCommand(1),
+                        slam ? new CoralCmd(m_coralIntake, .05, -.2) : null));
     }
 
 }
