@@ -1,0 +1,86 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.784971590909091,
+        "y": 5.0520738636363625
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 9.141439538932705,
+        "y": 5.199272050298795
+      },
+      "isLocked": false,
+      "linkedName": "Close Starting Position"
+    },
+    {
+      "anchor": {
+        "x": 6.750767045454545,
+        "y": 3.8554829545454536
+      },
+      "prevControl": {
+        "x": 7.880076986530913,
+        "y": 4.668596198328346
+      },
+      "nextControl": {
+        "x": 5.684046534812075,
+        "y": 3.087434659680061
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.221464646464646,
+        "y": 1.3213383838383834
+      },
+      "prevControl": {
+        "x": 5.270861534708919,
+        "y": 1.1398545930372483
+      },
+      "nextControl": {
+        "x": 3.280885248355862,
+        "y": 1.4840031645619352
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.051306818181818,
+        "y": 3.8554829545454536
+      },
+      "prevControl": {
+        "x": 2.9791919287961695,
+        "y": 3.5926262513797793
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Branch B"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -1.332219853869614
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 178.47247455778702
+  },
+  "useDefaultConstraints": true
+}

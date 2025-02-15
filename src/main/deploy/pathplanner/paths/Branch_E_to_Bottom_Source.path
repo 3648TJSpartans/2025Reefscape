@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.051306818181818,
-        "y": 3.8554829545454536
+        "x": 4.965852272727273,
+        "y": 2.7386647727272724
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.9071140258385455,
-        "y": 3.399203540726207
+        "x": 5.725672860745,
+        "y": 3.1006412677936126
       },
       "isLocked": false,
-      "linkedName": "Branch B"
+      "linkedName": "Branch E"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 1.0634375
       },
       "prevControl": {
-        "x": 0.9133259036301109,
-        "y": 0.6778264708027135
+        "x": 0.8806067694302939,
+        "y": 0.9197757004442955
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -1.332219853869614
+    "rotation": 122.85572195043304
   },
   "useDefaultConstraints": true
 }
