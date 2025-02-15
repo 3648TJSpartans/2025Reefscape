@@ -330,7 +330,7 @@ public class RobotContainer {
     Command alignCoralStation = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
     m_driveController.y().whileTrue(alignCoralStation);
     Command goToNearestRightCommand = new DriveToNearest(m_drive, () -> PoseConstants.rightReefPoints());
-    m_driveController.rightTrigger().whileTrue(goToNearestRightCommand);
+    m_controllerTwo.rightTrigger().whileTrue(goToNearestRightCommand);
   }
 
   public void configureElevator() {
@@ -363,6 +363,7 @@ public class RobotContainer {
     m_controllerTwo.povLeft().whileTrue(l4);
     m_controllerTwo.leftBumper().whileTrue(intake);
     m_driveController.leftTrigger().whileTrue(sequential);
+    m_driveController.rightTrigger().whileTrue(homeElevator);
 
     // The Below command is ONLY for testing and should be removed in the final
     // build. This allows you to zero the elevator without a limit switch
