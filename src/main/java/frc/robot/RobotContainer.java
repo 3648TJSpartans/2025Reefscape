@@ -332,7 +332,7 @@ public class RobotContainer {
     Command alignCoralStation = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
     m_driveController.y().whileTrue(alignCoralStation);
     Command goToNearestRightCommand = new DriveToNearest(m_drive, () -> PoseConstants.rightReefPoints());
-    m_controllerTwo.rightTrigger().whileTrue(goToNearestRightCommand);
+    m_driveController.rightTrigger().whileTrue(goToNearestRightCommand);
   }
 
   public void configureElevator() {
