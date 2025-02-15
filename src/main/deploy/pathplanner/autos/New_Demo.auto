@@ -7,19 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Demo_Path"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "l3"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "slamCoral"
+            "pathName": "Branch_K_to_Top_Source"
           }
         }
       ]
