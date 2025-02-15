@@ -38,6 +38,7 @@ import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
+import frc.robot.commands.autonCommands.AutoBuildingBlocks;
 import frc.robot.commands.autonCommands.CoralSequentialCmd;
 import frc.robot.commands.autonCommands.SourceParallelCmd;
 import frc.robot.commands.goToCommands.DriveToNearest;
@@ -356,7 +357,7 @@ public class RobotContainer {
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
     Command sequentialRight = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true, 3, true);
     Command sequentialLeft = new CoralSequentialCmd(m_drive, m_coral, m_elevator, false, 3, true);
-    Command coralSource = new SourceParallelCmd(m_drive, m_coral, m_elevator);
+    // Command coralSource = new SourceParallelCmd(m_drive, m_coral, m_elevator);
     m_controllerTwo.povUp().whileTrue(l1);
     m_controllerTwo.povRight().whileTrue(l2);
     m_controllerTwo.povDown().whileTrue(l3);
@@ -365,7 +366,11 @@ public class RobotContainer {
     m_driveController.leftBumper().whileTrue(sequentialLeft);
     m_driveController.rightBumper().whileTrue(sequentialRight);
     m_driveController.rightTrigger().whileTrue(homeElevator);
-    m_driveController.y().onTrue(coralSource);
+    // m_driveController.y().onTrue(coralSource);
+    m_driveController.y().onTrue(
+        Commands.parallel(
+            AutoBuildingBlocks.driveToPose(m_drive, () -> new Pose2d(1.5, 1.6, new Rotation2d(Math.PI / 3))),
+            AutoBuildingBlocks.intakeSource(m_elevator, m_coral)));
 
     // The Below command is ONLY for testing and should be removed in the final
     // build. This allows you to zero the elevator without a limit switch
