@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.AlgaeAnalogCmd;
@@ -355,16 +356,26 @@ public class RobotContainer {
         new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
     Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
-    Command sequentialRight = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true, 3, true);
-    Command sequentialLeft = new CoralSequentialCmd(m_drive, m_coral, m_elevator, false, 3, true);
+    // Command sequentialRight = new CoralSequentialCmd(m_drive, m_coral,
+    // m_elevator, true, 3, true);
+    // Command sequentialLeft = new CoralSequentialCmd(m_drive, m_coral, m_elevator,
+    // false, 3, true);
     // Command coralSource = new SourceParallelCmd(m_drive, m_coral, m_elevator);
     m_controllerTwo.povUp().whileTrue(l1);
     m_controllerTwo.povRight().whileTrue(l2);
     m_controllerTwo.povDown().whileTrue(l3);
     m_controllerTwo.povLeft().whileTrue(l4);
     m_controllerTwo.leftBumper().whileTrue(intake);
-    m_driveController.leftBumper().whileTrue(sequentialLeft);
-    m_driveController.rightBumper().whileTrue(sequentialRight);
+    // m_driveController.leftBumper().whileTrue(sequentialLeft);
+    m_driveController.leftBumper().whileTrue(Commands.sequence(
+        AutoBuildingBlocks.driveToNearest(m_drive, () -> PoseConstants.leftReefPoints()),
+        AutoBuildingBlocks.l3(m_coral, m_elevator),
+        new WaitCommand(1)));
+    m_driveController.rightBumper().whileTrue(Commands.sequence(
+        AutoBuildingBlocks.driveToNearest(m_drive, () -> PoseConstants.rightReefPoints()),
+        AutoBuildingBlocks.l3(m_coral, m_elevator),
+        new WaitCommand(1)));
+    // m_driveController.rightBumper().whileTrue(sequentialRight);
     m_driveController.rightTrigger().whileTrue(homeElevator);
     // m_driveController.y().onTrue(coralSource);
     m_driveController.y().onTrue(
