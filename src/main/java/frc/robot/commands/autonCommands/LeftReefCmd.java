@@ -10,7 +10,7 @@ import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
 
-public class CoralSequentialCmd extends SequentialCommandGroup {
+public class LeftReefCmd extends SequentialCommandGroup {
     private final CoralIntake m_coralIntake;
     private final Elevator m_elevator;
     private final Drive m_drive;
@@ -18,13 +18,18 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
     private final Command coralCommand;
     private final boolean slam;
 
-    public CoralSequentialCmd(Drive drive, CoralIntake coralIntake,
-            Elevator elevator, boolean right, int level, boolean slam) {
+    public LeftReefCmd(Drive drive, CoralIntake coralIntake,
+            Elevator elevator, int level, boolean slam) {
+        super();
         m_coralIntake = coralIntake;
         m_elevator = elevator;
         m_drive = drive;
+<<<<<<< Updated upstream:src/main/java/frc/robot/commands/autonCommands/CoralSequentialCmd.java
         this.right = right;
         this.slam = slam;
+=======
+
+>>>>>>> Stashed changes:src/main/java/frc/robot/commands/autonCommands/LeftReefCmd.java
         switch (level) {
             case 1:
                 coralCommand = AutoBuildingBlocks.l1(coralIntake, elevator);
@@ -43,6 +48,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         }
         addRequirements(m_coralIntake);
         addRequirements(m_elevator);
+<<<<<<< Updated upstream:src/main/java/frc/robot/commands/autonCommands/CoralSequentialCmd.java
 
         addCommands(
                 new SequentialCommandGroup(
@@ -50,6 +56,11 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
                                 : AutoBuildingBlocks.driveToNearest(m_drive,
                                         () -> PoseConstants.leftReefPoints()),
                         coralCommand, new WaitCommand(0.5), slam ? new CoralCmd(m_coralIntake, .05, -.2) : null));
+=======
+        addCommands(
+                new SequentialCommandGroup(
+                        AutoBuildingBlocks.driveToNearest(m_drive, () -> PoseConstants.leftReefPoints()),
+                        coralCommand, new WaitCommand(1), slam ? new CoralCmd(m_coralIntake, .05, -.2) : null));
+>>>>>>> Stashed changes:src/main/java/frc/robot/commands/autonCommands/LeftReefCmd.java
     }
-
 }

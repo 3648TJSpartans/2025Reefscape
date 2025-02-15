@@ -37,7 +37,8 @@ import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
-import frc.robot.commands.autonCommands.CoralSequentialCmd;
+import frc.robot.commands.autonCommands.RightReefCmd;
+import frc.robot.commands.autonCommands.LeftReefCmd;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.AlignCommands;
@@ -356,7 +357,12 @@ public class RobotContainer {
         new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
     Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
+<<<<<<< Updated upstream
     Command sequential = new CoralSequentialCmd(m_drive, m_coral, m_elevator, false, 3, true);
+=======
+    Command sequentialRight = new RightReefCmd(m_drive, m_coral, m_elevator, 3, true);
+    Command sequentialLeft = new LeftReefCmd(m_drive, m_coral, m_elevator, 3, true);
+>>>>>>> Stashed changes
     m_controllerTwo.povUp().whileTrue(l1);
     m_controllerTwo.povRight().whileTrue(l2);
     m_controllerTwo.povDown().whileTrue(l3);
