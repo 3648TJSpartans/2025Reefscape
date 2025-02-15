@@ -17,12 +17,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "slamCoral"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Branch_B_to_bottom_source"
@@ -53,12 +47,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "slamCoral"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Branch_C_to_Bottom_Source"
@@ -86,12 +74,6 @@
           "type": "named",
           "data": {
             "name": "l4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "slamCoral"
           }
         }
       ]

@@ -30,12 +30,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "slamCoral"
-          }
-        },
-        {
           "type": "sequential",
           "data": {
             "commands": [
@@ -77,12 +71,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "slamCoral"
           }
         },
         {
@@ -130,12 +118,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "slamCoral"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Branch_K_to_Top_Source"
@@ -163,12 +145,6 @@
           "type": "named",
           "data": {
             "name": "l4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "slamCoral"
           }
         }
       ]

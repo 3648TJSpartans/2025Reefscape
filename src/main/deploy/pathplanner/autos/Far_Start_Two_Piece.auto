@@ -17,12 +17,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "slamCoral"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Branch_A_to_Top_Source"
@@ -50,12 +44,6 @@
           "type": "named",
           "data": {
             "name": "l4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "slamCoral"
           }
         }
       ]
