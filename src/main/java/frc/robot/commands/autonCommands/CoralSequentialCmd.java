@@ -49,7 +49,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
                         right ? AutoBuildingBlocks.driveToNearest(m_drive, () -> PoseConstants.rightReefPoints())
                                 : AutoBuildingBlocks.driveToNearest(m_drive,
                                         () -> PoseConstants.leftReefPoints()),
-                        coralCommand, new WaitCommand(1), slam ? new CoralCmd(m_coralIntake, .05, -.2) : null));
+                        coralCommand, new WaitCommand(0.5), slam ? new CoralCmd(m_coralIntake, .05, -.2) : null));
     }
 
 }
