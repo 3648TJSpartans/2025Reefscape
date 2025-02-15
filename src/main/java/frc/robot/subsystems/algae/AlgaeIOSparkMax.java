@@ -15,7 +15,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import frc.robot.subsystems.elevator.ElevatorConstants;
 import frc.robot.util.TunableNumber;
-import frc.robot.util.TunableNumber;
 
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
