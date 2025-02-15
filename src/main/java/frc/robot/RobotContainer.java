@@ -39,6 +39,7 @@ import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
 import frc.robot.commands.autonCommands.CoralSequentialCmd;
+import frc.robot.commands.autonCommands.SourceParallelCmd;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.AlignCommands;
@@ -325,7 +326,7 @@ public class RobotContainer {
                 m_drive)
                 .ignoringDisable(true));
     Command alignCoralStation = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
-    m_driveController.y().whileTrue(alignCoralStation);
+    // m_driveController.y().whileTrue(alignCoralStation);
     Command goToNearestRightCommand = new DriveToNearest(m_drive, () -> PoseConstants.rightReefPoints());
     m_controllerTwo.rightTrigger().whileTrue(goToNearestRightCommand);
   }
@@ -355,18 +356,20 @@ public class RobotContainer {
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
     Command sequentialRight = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true, 3, true);
     Command sequentialLeft = new CoralSequentialCmd(m_drive, m_coral, m_elevator, false, 3, true);
+    Command coralSource = new SourceParallelCmd(m_drive, m_coral, m_elevator);
     m_controllerTwo.povUp().whileTrue(l1);
     m_controllerTwo.povRight().whileTrue(l2);
     m_controllerTwo.povDown().whileTrue(l3);
     m_controllerTwo.povLeft().whileTrue(l4);
     m_controllerTwo.leftBumper().whileTrue(intake);
-    m_driveController.leftTrigger().and(m_driveController.leftBumper()).whileTrue(sequentialLeft);
-    m_driveController.leftTrigger().and(m_driveController.rightBumper()).whileTrue(sequentialRight);
+    m_driveController.leftBumper().whileTrue(sequentialLeft);
+    m_driveController.rightBumper().whileTrue(sequentialRight);
     m_driveController.rightTrigger().whileTrue(homeElevator);
+    m_driveController.y().onTrue(coralSource);
 
     // The Below command is ONLY for testing and should be removed in the final
     // build. This allows you to zero the elevator without a limit switch
-    // m_controllerTwo.leftBumper().onTrue(new InstantCommand(() ->
+    // m_controllerTwo.leftBumper().onTrue(neCoew InstantCommand(() ->
     // m_elevator.zeroElevator()));
     m_controllerTwo.leftTrigger().whileTrue(homeElevator);
   }
