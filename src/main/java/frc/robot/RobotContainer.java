@@ -281,8 +281,8 @@ public class RobotContainer {
     // m_controllerTwo.povDown().onTrue(l3);
     // m_controllerTwo.povLeft().onTrue(l4);
     m_coral.setDefaultCommand(wristAnalog);
-    m_driveController.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.15)));
-    m_driveController.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
+    m_driveController.a().whileTrue(coralIn);
+    m_driveController.a().onFalse(coralOut);
     m_driveController.b().onTrue(new InstantCommand(() -> m_coral.setSpeed(-.15)));
     m_driveController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
     // m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after
