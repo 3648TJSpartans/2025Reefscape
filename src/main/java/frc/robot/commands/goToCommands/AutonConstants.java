@@ -43,20 +43,20 @@ public class AutonConstants {
                 new Pose2d(3.95, 5.53, Rotation2d.fromDegrees(300)) // Pose L
         };
         public final static Pose2d[] redRightReefPoints = new Pose2d[] {
-                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose A
-                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose C
-                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose E
-                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose G
-                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose I
-                new Pose2d(0, 0, Rotation2d.fromDegrees(0)) // Pose K
+                new Pose2d(14.56, 4.146, Rotation2d.fromDegrees(180)), // Pose A
+                new Pose2d(13.70, 5.31, Rotation2d.fromDegrees(120)), // Pose C
+                new Pose2d(12.21, 5.263, Rotation2d.fromDegrees(60)), // Pose E
+                new Pose2d(11.57, 3.907, Rotation2d.fromDegrees(0)), // Pose G
+                new Pose2d(12.49, 2.683, Rotation2d.fromDegrees(300)), // Pose I
+                new Pose2d(13.935, 2.848, Rotation2d.fromDegrees(240)) // Pose K
         };
         public final static Pose2d[] redLeftReefPoints = new Pose2d[] {
-                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose B
-                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose D
-                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose F
-                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose H
-                new Pose2d(0, 0, Rotation2d.fromDegrees(0)), // Pose J
-                new Pose2d(0, 0, Rotation2d.fromDegrees(0)) // Pose L
+                new Pose2d(14.57, 3.799, Rotation2d.fromDegrees(180)), // Pose B
+                new Pose2d(13.93, 5.19, Rotation2d.fromDegrees(120)), // Pose D
+                new Pose2d(12.53, 5.418, Rotation2d.fromDegrees(60)), // Pose F
+                new Pose2d(11.57, 4.146, Rotation2d.fromDegrees(0)), // Pose H
+                new Pose2d(12.13, 2.831, Rotation2d.fromDegrees(300)), // Pose J
+                new Pose2d(13.67, 2.683, Rotation2d.fromDegrees(240)) // Pose L
         };
 
         @AutoLogOutput(key = "AutonConstants/RightReefPoints")
