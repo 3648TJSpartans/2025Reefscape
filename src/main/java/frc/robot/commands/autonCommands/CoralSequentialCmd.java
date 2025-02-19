@@ -1,5 +1,7 @@
 package frc.robot.commands.autonCommands;
 
+import java.util.function.Supplier;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -11,6 +13,7 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.coralCommands.CoralCmd;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
+import frc.robot.commands.goToCommands.AutonConstants;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.drive.Drive;
@@ -21,7 +24,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
     private final Elevator m_elevator;
     private final Drive m_drive;
     private final Command coralCommand;
-    private static int level;
+    private static int level = AutonConstants.defaultLevel; // Defualt Level
     private static AutonState autonState;
 
     public CoralSequentialCmd(Drive drive, CoralIntake coralIntake,
@@ -29,22 +32,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         m_coralIntake = coralIntake;
         m_elevator = elevator;
         m_drive = drive;
-        switch (level) {
-            case 1:
-                coralCommand = AutoBuildingBlocks.l1(coralIntake, elevator);
-                break;
-            case 2:
-                coralCommand = AutoBuildingBlocks.l2(coralIntake, elevator);
-                break;
-            case 3:
-                coralCommand = AutoBuildingBlocks.l3(coralIntake, elevator);
-                break;
-            case 4:
-                coralCommand = AutoBuildingBlocks.l4(coralIntake, elevator);
-                break;
-            default:
-                coralCommand = null;
-        }
+        coralCommand = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel());
         Command driveCommand = AutoBuildingBlocks.driveToNearest(m_drive, () -> CoralSequentialCmd.poses());
         addCommands(
                 new SequentialCommandGroup(
@@ -71,6 +59,11 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
 
     public static void setAutonState(AutonState state) {
         CoralSequentialCmd.autonState = state;
-        Logger.recordOutput("CoralSequentialCommand/AutonState", state);
+        Logger.recordOutput("CoralSequentialCommand/AutonState", state.toString());
     }
+
+    public int getLevel() {
+        return level;
+    }
+
 }

@@ -8,6 +8,7 @@ import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.coralCommands.CoralElevatorIntegratedCmd;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
+import frc.robot.commands.coralCommands.CoralSmartLevelCmd;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
@@ -65,5 +66,9 @@ public class AutoBuildingBlocks {
     public static Command intakeSource(Elevator m_elevator, CoralIntake m_coral) {
         return new CoralElevatorIntegratedCmd(m_coral, m_elevator, ElevatorConstants.intakePose,
                 CoralIntakeConstants.IntakeAngle);
+    }
+
+    public static Command coralSmartLevelCommand(Elevator elevator, CoralIntake intake, Supplier<Integer> level) {
+        return new CoralSmartLevelCmd(intake, elevator, level);
     }
 }
