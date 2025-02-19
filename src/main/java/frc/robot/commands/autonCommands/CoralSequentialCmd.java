@@ -7,8 +7,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.RobotContainer;
 import frc.robot.commands.coralCommands.CoralCmd;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
+import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.drive.Drive;
@@ -19,9 +21,11 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
     private final Elevator m_elevator;
     private final Drive m_drive;
     private final Command coralCommand;
+    private static int level;
+    private static AutonState autonState;
 
     public CoralSequentialCmd(Drive drive, CoralIntake coralIntake,
-            Elevator elevator, boolean right, int level, boolean slam) {
+            Elevator elevator, boolean slam) {
         m_coralIntake = coralIntake;
         m_elevator = elevator;
         m_drive = drive;
@@ -41,18 +45,32 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
             default:
                 coralCommand = null;
         }
-
-        Logger.recordOutput("CoralSeqCmd/right", right);
-        Pose2d[] targetPoints = right ? PoseConstants.rightReefPoints() : PoseConstants.leftReefPoints();
-        Command driveCommand = AutoBuildingBlocks.driveToNearest(m_drive, () -> targetPoints);
+        Command driveCommand = AutoBuildingBlocks.driveToNearest(m_drive, () -> CoralSequentialCmd.poses());
         addCommands(
                 new SequentialCommandGroup(
-                        // right ? AutoBuildingBlocks.driveToNearest(m_drive, () ->
-                        // PoseConstants.rightReefPoints()):
-                        driveCommand// ,
-                // coralCommand,
-                // new WaitCommand(1),
-                // slam ? new CoralCmd(m_coralIntake, .05, -.2) : null)
-                ));
+                        driveCommand,
+                        coralCommand,
+                        new WaitCommand(1),
+                        slam ? new CoralCmd(m_coralIntake, .05, -.2) : null));
+    }
+
+    public static void setLevel(int level) {
+        CoralSequentialCmd.level = level;
+        Logger.recordOutput("CoralSequentialCommand/level", level);
+    }
+
+    public static Pose2d[] poses() {
+        if (autonState == AutonState.RIGHTREEF) {
+            return PoseConstants.rightReefPoints();
+        } else if (autonState == AutonState.LEFTREEF) {
+            return PoseConstants.leftReefPoints();
+        } else {
+            return null;
+        }
+    }
+
+    public static void setAutonState(AutonState state) {
+        CoralSequentialCmd.autonState = state;
+        Logger.recordOutput("CoralSequentialCommand/AutonState", state);
     }
 }

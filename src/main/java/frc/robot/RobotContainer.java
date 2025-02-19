@@ -116,7 +116,6 @@ public class RobotContainer {
   private final CoralIntake m_coral;
   private final Elevator m_elevator;
   private ClimberSubsystem m_climber;
-  private AutonState autonState;
   private AlgaeSubsystem m_algae;
   // Controller
   private final CommandXboxController m_driveController = new CommandXboxController(0);
@@ -344,10 +343,6 @@ public class RobotContainer {
 
   public void configureSetpoints() {
     Command homeElevator = new HomeElevatorCmd(m_elevator);
-    Command leftDriveCommand = AutoBuildingBlocks.driveToNearest(m_drive, () -> PoseConstants.leftReefPoints());
-    Command rightDriveCommand = AutoBuildingBlocks.driveToNearest(m_drive, () -> PoseConstants.rightReefPoints());
-    Command smartDriveCommand = AutoBuildingBlocks.driveToNearest(m_drive,
-        () -> poses());
     // () -> m_driveController.rightBumper().getAsBoolean()
     Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
@@ -364,8 +359,7 @@ public class RobotContainer {
         new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
     Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
-    Command sequentialRight = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true, 3, true);
-    Command sequentialLeft = new CoralSequentialCmd(m_drive, m_coral, m_elevator, false, 3, true);
+    Command smartSequentialCommand = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true);
     // Command coralSource = new SourceParallelCmd(m_drive, m_coral, m_elevator);
     m_controllerTwo.povUp().whileTrue(l1);
     m_controllerTwo.povRight().whileTrue(l2);
@@ -380,9 +374,15 @@ public class RobotContainer {
     // cancelCommand(sequentialRight)));
     // m_driveController.leftBumper().whileTrue(leftDriveCommand);
     // m_driveController.rightBumper().whileTrue(rightDriveCommand);
-    m_driveController.leftBumper().whileTrue(new InstantCommand(() -> setAutonState(AutonState.LEFTREEF)));
-    m_driveController.rightBumper().whileTrue(new InstantCommand(() -> setAutonState(AutonState.RIGHTREEF)));
-    m_driveController.leftTrigger().whileTrue(smartDriveCommand);
+    m_driveController.povUp().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(1)));
+    m_driveController.povRight().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(2)));
+    m_driveController.povDown().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(3)));
+    m_driveController.povLeft().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(4)));
+    m_driveController.leftBumper()
+        .onTrue(new InstantCommand(() -> CoralSequentialCmd.setAutonState(AutonState.LEFTREEF)));
+    m_driveController.rightBumper()
+        .onTrue(new InstantCommand(() -> CoralSequentialCmd.setAutonState(AutonState.RIGHTREEF)));
+    m_driveController.leftTrigger().whileTrue(smartSequentialCommand);
     m_driveController.rightTrigger().whileTrue(homeElevator);
     // m_driveController.y().onTrue(coralSource);
     m_driveController.y().whileTrue(
@@ -427,20 +427,6 @@ public class RobotContainer {
     NamedCommands.registerCommand("intakePos", intakePos);
     NamedCommands.registerCommand("coralIn", coralIn);
     NamedCommands.registerCommand("slamCoral", slamCoral);
-  }
-
-  public Pose2d[] poses() {
-    if (autonState == AutonState.RIGHTREEF) {
-      return PoseConstants.rightReefPoints();
-    } else if (autonState == AutonState.LEFTREEF) {
-      return PoseConstants.leftReefPoints();
-    } else {
-      return null;
-    }
-  }
-
-  public void setAutonState(AutonState state) {
-    this.autonState = state;
   }
 
 }
