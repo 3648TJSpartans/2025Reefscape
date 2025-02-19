@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -34,10 +35,13 @@ import frc.robot.commands.AlgaeAnalogCmd;
 import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
+import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
+import frc.robot.commands.autonCommands.AutoBuildingBlocks;
 import frc.robot.commands.autonCommands.CoralSequentialCmd;
+import frc.robot.commands.autonCommands.SourceParallelCmd;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.AlignCommands;
@@ -92,6 +96,8 @@ import frc.robot.commands.coralCommands.WristAnalogCmd;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import java.util.List;
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -323,12 +329,8 @@ public class RobotContainer {
                         new Rotation2d())),
                 m_drive)
                 .ignoringDisable(true));
-    Command alignLeftReef = new DriveToPose(m_drive, () -> PoseConstants.leftReef);
-    m_driveController.leftBumper().whileTrue(alignLeftReef);
-    Command alignRightReef = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
-    m_driveController.rightBumper().whileTrue(alignRightReef);
     Command alignCoralStation = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
-    m_driveController.y().whileTrue(alignCoralStation);
+    // m_driveController.y().whileTrue(alignCoralStation);
     Command goToNearestRightCommand = new DriveToNearest(m_drive, () -> PoseConstants.rightReefPoints());
     m_controllerTwo.rightTrigger().whileTrue(goToNearestRightCommand);
   }
@@ -341,6 +343,7 @@ public class RobotContainer {
 
   public void configureSetpoints() {
     Command homeElevator = new HomeElevatorCmd(m_elevator);
+    // () -> m_driveController.rightBumper().getAsBoolean()
     Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
         new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
@@ -356,18 +359,40 @@ public class RobotContainer {
         new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
     Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
-    Command sequential = new CoralSequentialCmd(m_drive, m_coral, m_elevator, false, 3, true);
+    Command smartSequentialCommand = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true);
+    // Command coralSource = new SourceParallelCmd(m_drive, m_coral, m_elevator);
     m_controllerTwo.povUp().whileTrue(l1);
     m_controllerTwo.povRight().whileTrue(l2);
     m_controllerTwo.povDown().whileTrue(l3);
     m_controllerTwo.povLeft().whileTrue(l4);
     m_controllerTwo.leftBumper().whileTrue(intake);
-    m_driveController.leftTrigger().whileTrue(sequential);
+    // m_driveController.rightBumper().onTrue(sequentialRight);
+    // m_driveController.leftBumper().onTrue(sequentialLeft);
+    // m_driveController.leftBumper().onFalse(new InstantCommand(() ->
+    // cancelCommand(sequentialLeft)));
+    // m_driveController.rightBumper().onFalse(new InstantCommand(() ->
+    // cancelCommand(sequentialRight)));
+    // m_driveController.leftBumper().whileTrue(leftDriveCommand);
+    // m_driveController.rightBumper().whileTrue(rightDriveCommand);
+    m_driveController.povUp().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(1)));
+    m_driveController.povRight().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(2)));
+    m_driveController.povDown().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(3)));
+    m_driveController.povLeft().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(4)));
+    m_driveController.leftBumper()
+        .onTrue(new InstantCommand(() -> CoralSequentialCmd.setAutonState(AutonState.LEFTREEF)));
+    m_driveController.rightBumper()
+        .onTrue(new InstantCommand(() -> CoralSequentialCmd.setAutonState(AutonState.RIGHTREEF)));
+    m_driveController.leftTrigger().whileTrue(smartSequentialCommand);
     m_driveController.rightTrigger().whileTrue(homeElevator);
+    // m_driveController.y().onTrue(coralSource);
+    m_driveController.y().whileTrue(
+        Commands.parallel(
+            AutoBuildingBlocks.driveToPose(m_drive, new Pose2d(1.5, 1.6, new Rotation2d(Math.PI / 3))),
+            AutoBuildingBlocks.intakeSource(m_elevator, m_coral)));
 
     // The Below command is ONLY for testing and should be removed in the final
     // build. This allows you to zero the elevator without a limit switch
-    // m_controllerTwo.leftBumper().onTrue(new InstantCommand(() ->
+    // m_controllerTwo.leftBumper().onTrue(neCoew InstantCommand(() ->
     // m_elevator.zeroElevator()));
     m_controllerTwo.leftTrigger().whileTrue(homeElevator);
   }
@@ -403,4 +428,5 @@ public class RobotContainer {
     NamedCommands.registerCommand("coralIn", coralIn);
     NamedCommands.registerCommand("slamCoral", slamCoral);
   }
+
 }

@@ -1,5 +1,7 @@
 package frc.robot.commands.goToCommands;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
@@ -19,6 +21,7 @@ public class AutonConstants {
     public static final double thetaTolerance = Units.degreesToRadians(2.5); // 2.5
     public static final double ffMinRadius = 0.2;
     public static final double ffMaxRadius = 0.6;
+    public static final int defaultLevel = 4;
 
     public static class PoseConstants {
         public final static Pose2d rightReef = new Pose2d(2.9, 3.73, Rotation2d.fromDegrees(0));
@@ -57,6 +60,7 @@ public class AutonConstants {
                 new Pose2d(0, 0, Rotation2d.fromDegrees(0)) // Pose L
         };
 
+        @AutoLogOutput(key = "AutonConstants/RightReefPoints")
         public static Pose2d[] rightReefPoints() {
             if (Robot.isRedAlliance()) {
                 return redRightReefPoints;
@@ -65,12 +69,20 @@ public class AutonConstants {
             }
         }
 
+        @AutoLogOutput(key = "AutonConstants/LeftReefPoints")
         public static Pose2d[] leftReefPoints() {
             if (Robot.isRedAlliance()) {
                 return redLeftReefPoints;
             } else {
                 return blueLeftReefPoints;
             }
+        }
+
+        public static enum AutonState {
+            RIGHTREEF,
+            LEFTREEF,
+            INTAKE,
+            DEFAULT
         }
     }
 }
