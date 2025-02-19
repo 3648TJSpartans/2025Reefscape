@@ -26,7 +26,18 @@ public class AutonConstants {
     public static class PoseConstants {
         public final static Pose2d rightReef = new Pose2d(2.9, 3.73, Rotation2d.fromDegrees(0));
         public final static Pose2d leftReef = new Pose2d(2.9, 4.17, Rotation2d.fromDegrees(0));
-        public final static Pose2d coralStation = new Pose2d(1.5, 1.6, Rotation2d.fromDegrees(0));
+        // public final static Pose2d coralStationRIGHT = new Pose2d(1.127, 0.959,
+        // Rotation2d.fromDegrees(60));
+        // public final static Pose2d CoralStationLEFT = new Pose2d(1.127, 7.2,
+        // Rotation2d.fromDegrees(-60));
+        public static Pose2d[] blueCoralStations = new Pose2d[] {
+                new Pose2d(1.127, 0.959, Rotation2d.fromDegrees(60)), // Right
+                new Pose2d(1.127, 7.2, Rotation2d.fromDegrees(-60)) // Left
+        };
+        public static Pose2d[] redCoralStations = new Pose2d[] {
+                new Pose2d(16.48, 0.959, Rotation2d.fromDegrees(-120)), // Left
+                new Pose2d(16.48, 7.2, Rotation2d.fromDegrees(120)) // Right
+        };
         public final static Pose2d[] blueRightReefPoints = new Pose2d[] {
                 new Pose2d(2.95, 3.85, Rotation2d.fromDegrees(0)), // Pose A
                 new Pose2d(3.57, 2.75, Rotation2d.fromDegrees(60)), // Pose C
@@ -83,6 +94,14 @@ public class AutonConstants {
             LEFTREEF,
             INTAKE,
             DEFAULT
+        }
+
+        public static Pose2d coralStation() {
+            if (Robot.isRedAlliance()) {
+                return PoseConstants.redCoralStations[0];
+            } else {
+                return PoseConstants.blueCoralStations[0];
+            }
         }
     }
 }
