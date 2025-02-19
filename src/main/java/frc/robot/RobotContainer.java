@@ -440,7 +440,7 @@ public class RobotContainer {
   }
 
   public void setAutonState(AutonState state) {
-    this.autonState = autonState;
+    this.autonState = state;
   }
 
 }
