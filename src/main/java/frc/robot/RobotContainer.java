@@ -95,6 +95,8 @@ import frc.robot.commands.coralCommands.WristAnalogCmd;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import java.util.List;
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -113,6 +115,7 @@ public class RobotContainer {
   private final CoralIntake m_coral;
   private final Elevator m_elevator;
   private ClimberSubsystem m_climber;
+  private boolean right;
   private AlgaeSubsystem m_algae;
   // Controller
   private final CommandXboxController m_driveController = new CommandXboxController(0);
@@ -340,6 +343,11 @@ public class RobotContainer {
 
   public void configureSetpoints() {
     Command homeElevator = new HomeElevatorCmd(m_elevator);
+    Command leftDriveCommand = AutoBuildingBlocks.driveToNearest(m_drive, () -> PoseConstants.leftReefPoints());
+    Command rightDriveCommand = AutoBuildingBlocks.driveToNearest(m_drive, () -> PoseConstants.rightReefPoints());
+    Command smartDriveCommand = AutoBuildingBlocks.driveToNearest(m_drive,
+        () -> poses());
+    // () -> m_driveController.rightBumper().getAsBoolean()
     Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
         new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
@@ -363,13 +371,22 @@ public class RobotContainer {
     m_controllerTwo.povDown().whileTrue(l3);
     m_controllerTwo.povLeft().whileTrue(l4);
     m_controllerTwo.leftBumper().whileTrue(intake);
-    m_driveController.leftBumper().whileTrue(sequentialLeft);
-    m_driveController.rightBumper().whileTrue(sequentialRight);
+    // m_driveController.rightBumper().onTrue(sequentialRight);
+    // m_driveController.leftBumper().onTrue(sequentialLeft);
+    // m_driveController.leftBumper().onFalse(new InstantCommand(() ->
+    // cancelCommand(sequentialLeft)));
+    // m_driveController.rightBumper().onFalse(new InstantCommand(() ->
+    // cancelCommand(sequentialRight)));
+    // m_driveController.leftBumper().whileTrue(leftDriveCommand);
+    // m_driveController.rightBumper().whileTrue(rightDriveCommand);
+    m_driveController.leftBumper().whileTrue(new InstantCommand(() -> setRight(false)));
+    m_driveController.rightBumper().whileTrue(new InstantCommand(() -> setRight(true)));
+    m_driveController.leftTrigger().whileTrue(smartDriveCommand);
     m_driveController.rightTrigger().whileTrue(homeElevator);
     // m_driveController.y().onTrue(coralSource);
-    m_driveController.y().onTrue(
+    m_driveController.y().whileTrue(
         Commands.parallel(
-            AutoBuildingBlocks.driveToPose(m_drive, () -> new Pose2d(1.5, 1.6, new Rotation2d(Math.PI / 3))),
+            AutoBuildingBlocks.driveToPose(m_drive, new Pose2d(1.5, 1.6, new Rotation2d(Math.PI / 3))),
             AutoBuildingBlocks.intakeSource(m_elevator, m_coral)));
 
     // The Below command is ONLY for testing and should be removed in the final
@@ -409,6 +426,18 @@ public class RobotContainer {
     NamedCommands.registerCommand("intakePos", intakePos);
     NamedCommands.registerCommand("coralIn", coralIn);
     NamedCommands.registerCommand("slamCoral", slamCoral);
+  }
+
+  public Pose2d[] poses() {
+    if (right) {
+      return PoseConstants.rightReefPoints();
+    } else {
+      return PoseConstants.leftReefPoints();
+    }
+  }
+
+  public void setRight(boolean right) {
+    this.right = right;
   }
 
 }

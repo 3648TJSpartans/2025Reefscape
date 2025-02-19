@@ -41,8 +41,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
             default:
                 coralCommand = null;
         }
-        addRequirements(m_coralIntake);
-        addRequirements(m_elevator);
+
         Logger.recordOutput("CoralSeqCmd/right", right);
         Pose2d[] targetPoints = right ? PoseConstants.rightReefPoints() : PoseConstants.leftReefPoints();
         Command driveCommand = AutoBuildingBlocks.driveToNearest(m_drive, () -> targetPoints);
@@ -50,10 +49,10 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
                 new SequentialCommandGroup(
                         // right ? AutoBuildingBlocks.driveToNearest(m_drive, () ->
                         // PoseConstants.rightReefPoints()):
-                        driveCommand,
-                        coralCommand,
-                        new WaitCommand(1),
-                        slam ? new CoralCmd(m_coralIntake, .05, -.2) : null));
+                        driveCommand// ,
+                // coralCommand,
+                // new WaitCommand(1),
+                // slam ? new CoralCmd(m_coralIntake, .05, -.2) : null)
+                ));
     }
-
 }

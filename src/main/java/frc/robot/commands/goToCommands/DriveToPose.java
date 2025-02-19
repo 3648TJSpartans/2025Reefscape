@@ -224,6 +224,8 @@ public class DriveToPose extends Command {
                                                 lastSetpointTranslation,
                                                 Rotation2d.fromRadians(thetaController.getSetpoint().position)));
                 Logger.recordOutput("DriveToPose/Goal", targetPose);
+                Logger.recordOutput("DriveToPose/Trajectory", currentPose, targetPose);
+
         }
 
         @Override
@@ -233,6 +235,7 @@ public class DriveToPose extends Command {
                 // Clear logs
                 Logger.recordOutput("DriveToPose/Setpoint", new Pose2d[] {});
                 Logger.recordOutput("DriveToPose/Goal", new Pose2d[] {});
+                System.out.println("<<<<<<<<<<<<<<<<<DRIVE TO POSE FINISHED>>>>>>>>>>>>>>>>>>>>>>>");
         }
 
         /** Checks if the robot is stopped at the final pose. */
@@ -247,5 +250,10 @@ public class DriveToPose extends Command {
                 return running
                                 && Math.abs(driveErrorAbs) < driveTolerance
                                 && Math.abs(thetaErrorAbs) < thetaTolerance.getRadians();
+        }
+
+        @Override
+        public boolean isFinished() {
+                return atGoal();
         }
 }

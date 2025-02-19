@@ -54,8 +54,8 @@ public class AutoBuildingBlocks {
         return new DriveToNearest(m_drive, points);
     }
 
-    public static Command driveToPose(Drive m_drive, Supplier<Pose2d> point) {
-        return new DriveToPose(m_drive, point);
+    public static Command driveToPose(Drive m_drive, Pose2d point) {
+        return new DriveToPose(m_drive, () -> point);
     }
 
     public static Command setCoralPose(Elevator m_elevator, CoralIntake m_coral, double height, double angle) {

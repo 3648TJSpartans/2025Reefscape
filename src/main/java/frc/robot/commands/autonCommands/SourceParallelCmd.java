@@ -17,25 +17,25 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
 
 public class SourceParallelCmd extends ParallelCommandGroup {
-    private final CoralIntake m_coralIntake;
-    private final Elevator m_elevator;
-    private final Drive m_drive;
-    private final Command sourceCommand;
+        private final CoralIntake m_coralIntake;
+        private final Elevator m_elevator;
+        private final Drive m_drive;
+        private final Command sourceCommand;
 
-    public SourceParallelCmd(Drive drive, CoralIntake coralIntake,
-            Elevator elevator) {
-        m_coralIntake = coralIntake;
-        m_elevator = elevator;
-        m_drive = drive;
-        sourceCommand = AutoBuildingBlocks.driveToPose(m_drive,
-                () -> new Pose2d(1.5, 1.6, new Rotation2d(Math.PI / 3)));
+        public SourceParallelCmd(Drive drive, CoralIntake coralIntake,
+                        Elevator elevator) {
+                m_coralIntake = coralIntake;
+                m_elevator = elevator;
+                m_drive = drive;
+                sourceCommand = AutoBuildingBlocks.driveToPose(m_drive,
+                                new Pose2d(1.5, 1.6, new Rotation2d(Math.PI / 3)));
 
-        addRequirements(m_coralIntake);
-        addRequirements(m_elevator);
+                addRequirements(m_coralIntake);
+                addRequirements(m_elevator);
 
-        addCommands(
-                AutoBuildingBlocks.intakeSource(elevator, coralIntake),
-                sourceCommand);
-    }
+                addCommands(
+                                AutoBuildingBlocks.intakeSource(elevator, coralIntake),
+                                sourceCommand);
+        }
 
 }
