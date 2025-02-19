@@ -275,16 +275,12 @@ public class RobotContainer {
     Command wrist = new WristCmd(m_coral, new TunableNumber("WristAngle", CoralIntakeConstants.anglevalue).get());
     Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
     Command slamCoral = new CoralCmd(m_coral, .05, -.2);
-    // m_coral.setDefaultCommand(wristAnalog);
-    // m_controllerTwo.povUp().onTrue(l1);
-    // m_controllerTwo.povRight().onTrue(l2);
-    // m_controllerTwo.povDown().onTrue(l3);
-    // m_controllerTwo.povLeft().onTrue(l4);
     m_coral.setDefaultCommand(wristAnalog);
     m_driveController.a().whileTrue(coralIn);
-    m_driveController.a().onFalse(coralOut);
-    m_driveController.b().onTrue(new InstantCommand(() -> m_coral.setSpeed(-.15)));
-    m_driveController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
+    m_driveController.y().whileTrue(coralOut);
+    // m_driveController.b().onTrue(new InstantCommand(() ->
+    // m_coral.setSpeed(-.15)));
+    // m_driveController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
     // m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after
     // testing// Subject to Change
     m_controllerTwo.y().whileTrue(slamCoral);
@@ -328,7 +324,7 @@ public class RobotContainer {
     Command alignRightReef = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
     m_driveController.rightBumper().whileTrue(alignRightReef);
     Command alignCoralStation = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
-    m_driveController.y().whileTrue(alignCoralStation);
+    // m_driveController.y().whileTrue(alignCoralStation);
     Command goToNearestRightCommand = new DriveToNearest(m_drive, () -> PoseConstants.rightReefPoints());
     m_controllerTwo.rightTrigger().whileTrue(goToNearestRightCommand);
   }

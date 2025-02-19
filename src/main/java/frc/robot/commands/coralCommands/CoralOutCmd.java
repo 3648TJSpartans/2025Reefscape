@@ -1,17 +1,18 @@
 package frc.robot.commands.coralCommands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
-import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.elevator.ElevatorConstants;
 
 public class CoralOutCmd extends Command {
     private final CoralIntake m_coralIntake;
     private final Timer m_timer;
     private Boolean isFinished = false;
 
-    public CoralOutCmd(CoralIntake coralIntake) {
-        m_coralIntake = coralIntake;
+    public CoralOutCmd(CoralIntake m_coralIntake) {
+        this.m_coralIntake = m_coralIntake;
         addRequirements(m_coralIntake);
         m_timer = new Timer();
     }
@@ -29,7 +30,7 @@ public class CoralOutCmd extends Command {
             m_coralIntake.setSpeed(-CoralIntakeConstants.intakeSpeed);
             m_timer.reset();
         } else {
-            if (!m_timer.hasElapsed(0.02)) {
+            if (!m_timer.hasElapsed(0.1)) {
                 if (!m_timer.isRunning()) {
                     m_timer.start();
                 }

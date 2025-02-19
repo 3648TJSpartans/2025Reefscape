@@ -30,7 +30,7 @@ public class CoralInCmd extends Command {
             m_coralIntake.setSpeed(CoralIntakeConstants.intakeSpeed);
             m_timer.reset();
         } else {
-            if (!m_timer.hasElapsed(0.02)) {
+            if (!m_timer.hasElapsed(0.1)) {
                 if (!m_timer.isRunning()) {
                     m_timer.start();
                 }
@@ -48,7 +48,7 @@ public class CoralInCmd extends Command {
 
     @Override
     public boolean isFinished() {
-        return isFinished();
+        return isFinished;
     }
 
 }
