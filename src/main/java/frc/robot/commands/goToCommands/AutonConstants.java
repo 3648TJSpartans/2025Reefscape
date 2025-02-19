@@ -16,7 +16,7 @@ public class AutonConstants {
     public static final double thetaMaxVelocity = Units.degreesToRadians(360.0 / 2);
     public static final double thetaMaxAcceleration = Units.degreesToRadians(720.0 / 2);
     public static final double driveTolerance = 0.1; // 0.03
-    public static final double thetaTolerance = Units.degreesToRadians(10); // 2.5
+    public static final double thetaTolerance = Units.degreesToRadians(2.5); // 2.5
     public static final double ffMinRadius = 0.2;
     public static final double ffMaxRadius = 0.6;
 
