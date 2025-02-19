@@ -76,5 +76,12 @@ public class AutonConstants {
                 return blueLeftReefPoints;
             }
         }
+
+        public static enum AutonState {
+            RIGHTREEF,
+            LEFTREEF,
+            INTAKE,
+            DEFAULT
+        }
     }
 }

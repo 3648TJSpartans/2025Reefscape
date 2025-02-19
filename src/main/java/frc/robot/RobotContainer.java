@@ -35,6 +35,7 @@ import frc.robot.commands.AlgaeAnalogCmd;
 import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
+import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
@@ -115,7 +116,7 @@ public class RobotContainer {
   private final CoralIntake m_coral;
   private final Elevator m_elevator;
   private ClimberSubsystem m_climber;
-  private boolean right;
+  private AutonState autonState;
   private AlgaeSubsystem m_algae;
   // Controller
   private final CommandXboxController m_driveController = new CommandXboxController(0);
@@ -379,8 +380,8 @@ public class RobotContainer {
     // cancelCommand(sequentialRight)));
     // m_driveController.leftBumper().whileTrue(leftDriveCommand);
     // m_driveController.rightBumper().whileTrue(rightDriveCommand);
-    m_driveController.leftBumper().whileTrue(new InstantCommand(() -> setRight(false)));
-    m_driveController.rightBumper().whileTrue(new InstantCommand(() -> setRight(true)));
+    m_driveController.leftBumper().whileTrue(new InstantCommand(() -> setAutonState(AutonState.LEFTREEF)));
+    m_driveController.rightBumper().whileTrue(new InstantCommand(() -> setAutonState(AutonState.RIGHTREEF)));
     m_driveController.leftTrigger().whileTrue(smartDriveCommand);
     m_driveController.rightTrigger().whileTrue(homeElevator);
     // m_driveController.y().onTrue(coralSource);
@@ -429,15 +430,17 @@ public class RobotContainer {
   }
 
   public Pose2d[] poses() {
-    if (right) {
+    if (autonState == AutonState.RIGHTREEF) {
       return PoseConstants.rightReefPoints();
-    } else {
+    } else if (autonState == AutonState.LEFTREEF) {
       return PoseConstants.leftReefPoints();
+    } else {
+      return null;
     }
   }
 
-  public void setRight(boolean right) {
-    this.right = right;
+  public void setAutonState(AutonState state) {
+    this.autonState = autonState;
   }
 
 }
