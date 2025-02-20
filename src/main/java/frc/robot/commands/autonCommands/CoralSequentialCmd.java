@@ -27,9 +27,10 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
     private static int level = AutonConstants.defaultLevel; // Defualt Level
     private static AutonState autonState = AutonState.RIGHTREEF;
 
-
     public CoralSequentialCmd(Drive drive, CoralIntake coralIntake,
             Elevator elevator, boolean slam) {
+        Logger.recordOutput("CoralSequentialCommand/level", level);
+        Logger.recordOutput("CoralSequentialCommand/AutonState", autonState.toString());
         m_coralIntake = coralIntake;
         m_elevator = elevator;
         m_drive = drive;
@@ -58,7 +59,6 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
             System.out.println("return Null");
             System.out.println("Auton State: " + autonState.toString());
             return null;
-
 
         }
     }
