@@ -110,7 +110,10 @@ public class DriveToNearest extends Command {
         @Override
         public void initialize() {
                 Pose2d currentPose = robot.get();
-                ChassisSpeeds fieldVelocity = drive.getChassisSpeeds();
+                // ChassisSpeeds fieldVelocity = drive.getChassisSpeeds();
+                ChassisSpeeds fieldVelocity = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getChassisSpeeds(),
+                                drive.getRotation());
+                System.out.println("fieldVelocity: " + fieldVelocity.toString());
                 Translation2d linearFieldVelocity = new Translation2d(fieldVelocity.vxMetersPerSecond,
                                 fieldVelocity.vyMetersPerSecond);
                 driveController.reset(
@@ -135,6 +138,7 @@ public class DriveToNearest extends Command {
         @Override
         public void execute() {
                 running = true;
+                System.out.println("running: " + running);
 
                 // Update from tunable numbers
                 if (driveMaxVelocity.hasChanged()
@@ -160,40 +164,78 @@ public class DriveToNearest extends Command {
                                         new TrapezoidProfile.Constraints(thetaMaxVelocity.get(),
                                                         thetaMaxAcceleration.get()));
                         thetaController.setTolerance(thetaTolerance.get());
+                        System.out.println("vars changed");
+                } else {
+                        System.out.println("vars didn't changed");
                 }
+
+                Logger.recordOutput("DriveToPose/varIsChanged", false);
+                Logger.recordOutput("DriveToPose/running", running);
 
                 // Get current pose and target pose
                 Pose2d currentPose = robot.get();
                 Pose2d targetPose = target.get();
+                System.out.println("currentPose: " + currentPose.toString());
+                System.out.println("targetPose: " + targetPose.toString());
 
                 // Calculate drive speed
                 double currentDistance = currentPose.getTranslation().getDistance(targetPose.getTranslation());
+                System.out.println("currentDistance: " + currentDistance);
                 double ffScaler = MathUtil.clamp(
                                 (currentDistance - ffMinRadius.get()) / (ffMaxRadius.get() - ffMinRadius.get()),
                                 0.0,
                                 1.0);
+                System.out.println("ffScaler: " + ffScaler);
+                Logger.recordOutput("DriveToPose/ffScaler", ffScaler);
                 driveErrorAbs = currentDistance;
+
+                System.out.println("driveErrorAbs: " + driveErrorAbs);
+
+                System.out.println("BEFORE DRIVECONTROLLER RESET");
+
+                System.out.println("driveController setpoint: " + driveController.getSetpoint().position);
+                System.out.println("driveVelocityScalar 1:" + driveController.getSetpoint().velocity);
+                System.out.println("driveVelocityScalar 2: " + driveController.calculate(driveErrorAbs, 0.0));
                 driveController.reset(
                                 lastSetpointTranslation.getDistance(targetPose.getTranslation()),
                                 driveController.getSetpoint().velocity);
+                System.out.println("driverController is reset");
                 double driveVelocityScalar = driveController.getSetpoint().velocity * ffScaler
                                 + driveController.calculate(driveErrorAbs, 0.0);
+                System.out.println("driveController setpoint: " + driveController.getSetpoint().position);
+                System.out.println("driveVelocityScalar 1:" + driveController.getSetpoint().velocity);
+                System.out.println("driveVelocityScalar 2: " + driveController.calculate(driveErrorAbs, 0.0));
+                System.out.println("driveVelocityScalar: " + driveVelocityScalar);
+
                 if (currentDistance < driveController.getPositionTolerance())
                         driveVelocityScalar = 0.0;
+                System.out.println("driveVelocityScalar after tolerance: " + driveVelocityScalar);
+
+                Logger.recordOutput("DriveToPose/driveVelocityScalar", driveVelocityScalar);
                 lastSetpointTranslation = new Pose2d(
                                 targetPose.getTranslation(),
                                 currentPose.getTranslation().minus(targetPose.getTranslation()).getAngle())
                                 .transformBy(GeomUtil.toTransform2d(driveController.getSetpoint().position, 0.0))
                                 .getTranslation();
+                System.out.println("lastSetpointTranslation: " + lastSetpointTranslation.toString());
+
+                Logger.recordOutput("DriveToPose/lastSetpointTranslation", lastSetpointTranslation);
 
                 // Calculate theta speed
                 double thetaVelocity = thetaController.getSetpoint().velocity * ffScaler
                                 + thetaController.calculate(
                                                 currentPose.getRotation().getRadians(),
                                                 targetPose.getRotation().getRadians());
+
+                System.out.println("thetaVelocity: " + thetaVelocity);
+
                 thetaErrorAbs = Math.abs(currentPose.getRotation().minus(targetPose.getRotation()).getRadians());
                 if (thetaErrorAbs < thetaController.getPositionTolerance())
                         thetaVelocity = 0.0;
+
+                System.out.println("thetaVelocity after tolerance: " + thetaVelocity);
+
+                Logger.recordOutput("DriveToPose/thetaErrorAbs", thetaErrorAbs);
 
                 Translation2d driveVelocity = new Pose2d(
                                 new Translation2d(),
@@ -201,20 +243,28 @@ public class DriveToNearest extends Command {
                                 .transformBy(GeomUtil.toTransform2d(driveVelocityScalar, 0.0))
                                 .getTranslation();
 
+                System.out.println("driveVelocity: " + driveVelocity.toString());
+
                 // Scale feedback velocities by input ff
                 final double linearS = linearFF.get().getNorm();
                 final double thetaS = omegaFF.getAsDouble();
                 driveVelocity = driveVelocity.interpolate(linearFF.get().times(driveMaxVelocity.get()), linearS);
+                System.out.println("driveVelocity after interpolation: " + driveVelocity);
+
                 thetaVelocity = MathUtil.interpolate(
                                 thetaVelocity, omegaFF.getAsDouble() * thetaMaxVelocity.get(), thetaS);
+                System.out.println("thetaVelocity after interpolation: " + thetaVelocity);
 
                 // Command speeds
                 drive.runVelocity(
                                 ChassisSpeeds.fromFieldRelativeSpeeds(
                                                 driveVelocity.getX(), driveVelocity.getY(), thetaVelocity,
                                                 currentPose.getRotation()));
+                System.out.println("runVelocity ran");
 
                 // Log data
+                Logger.recordOutput("DriveToPose/driveVelocity", driveVelocity);
+                Logger.recordOutput("DriveToPose/thetaVelocity", thetaVelocity);
                 Logger.recordOutput("DriveToPose/DistanceMeasured", currentDistance);
                 Logger.recordOutput("DriveToPose/IsFinished", isFinished());
                 Logger.recordOutput("DriveToPose/DistanceSetpoint", driveController.getSetpoint().position);
@@ -226,6 +276,8 @@ public class DriveToNearest extends Command {
                                                 lastSetpointTranslation,
                                                 Rotation2d.fromRadians(thetaController.getSetpoint().position)));
                 Logger.recordOutput("DriveToPose/Goal", targetPose);
+                Logger.recordOutput("DriveToPose/Trajectory", currentPose, targetPose);
+
         }
 
         @Override
@@ -235,16 +287,24 @@ public class DriveToNearest extends Command {
                 // Clear logs
                 Logger.recordOutput("DriveToPose/Setpoint", new Pose2d[] {});
                 Logger.recordOutput("DriveToPose/Goal", new Pose2d[] {});
-                System.out.println("!!!!!!!!!!!!!!!!!DriveToNearest finished!!!!!!!!!!!!!");
+                System.out.println("!!!!!!!!!!!!!!!DriveToNearest finished!!!!!!!!!!!!!");
         }
 
         /** Checks if the robot is stopped at the final pose. */
         public boolean atGoal() {
+                System.out.println("atGoal ran");
                 return running && driveController.atGoal() && thetaController.atGoal();
+
+        }
+
+        public Pose2d finalPose(Supplier<Pose2d> robotPose) {
+                Pose2d drivePose = robotPose.get();
+                return drivePose;
         }
 
         @Override
         public boolean isFinished() {
+                System.out.println("isFinished ran. atGoal:" + atGoal());
                 return atGoal();
         }
 
@@ -269,6 +329,7 @@ public class DriveToNearest extends Command {
                                 targetPose = point;
                         }
                 }
+                System.out.println("nearestPoint ran");
                 return targetPose;
 
         }
