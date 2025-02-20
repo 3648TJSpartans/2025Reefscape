@@ -63,6 +63,7 @@ import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.util.AllianceFlipUtil;
 import frc.robot.util.TunableNumber;
 import frc.robot.util.TunableNumber;
 import frc.robot.subsystems.algae.AlgaeConstants;
@@ -102,6 +103,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
+import org.littletonrobotics.junction.Logger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -114,126 +116,95 @@ import java.util.function.Supplier;
  */
 public class RobotContainer {
 
-    // Subsystems
-    private final Drive m_drive;
-    private final Vision m_vision;
-    private final CoralIntake m_coral;
-    private final Elevator m_elevator;
-    private ClimberSubsystem m_climber;
-    private AlgaeSubsystem m_algae;
-    private boolean override;
-    // Controller
-    private final CommandXboxController m_driveController = new CommandXboxController(0);
-    private final CommandXboxController m_copilotController = new CommandXboxController(1);
-    private final CommandXboxController m_controllerTwo = new CommandXboxController(2);
 
-    // Dashboard inputs
-    private final LoggedDashboardChooser<Command> autoChooser;
+  // Subsystems
+  private final Drive m_drive;
+  private final Vision m_vision;
+  private final CoralIntake m_coral;
+  private final Elevator m_elevator;
+  private ClimberSubsystem m_climber;
+  private AlgaeSubsystem m_algae;
+  // Controller
+  private final CommandXboxController m_driveController = new CommandXboxController(0);
+  private final CommandXboxController m_copilotController = new CommandXboxController(1);
+  private final CommandXboxController m_controllerTwo = new CommandXboxController(2);
 
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
-    public RobotContainer() {
-        Logger.recordOutput("Override", override);
-        switch (Constants.currentMode) {
-            case REAL:
-                // Real robot, instantiate hardware IO implementations
-                m_climber = new ClimberSubsystem(new ClimberIOSparkMax());
-                m_algae = new AlgaeSubsystem(new AlgaeIOSparkMax());
-                m_drive = new Drive(
-                        new GyroIONavX(),
-                        new ModuleIOSpark(0),
-                        new ModuleIOSpark(1),
-                        new ModuleIOSpark(2),
-                        new ModuleIOSpark(3));
-                m_vision = new Vision(
-                        m_drive::addVisionMeasurement,
-                        new VisionIOLimelight("limelight-three", m_drive::getRotation),
-                        new VisionIOLimelight("limelight-twoplus", m_drive::getRotation));
-                m_coral = new CoralIntake(new CoralIntakeIOSparkMax());
-                m_elevator = new Elevator(new ElevatorIOSparkMax());
-                break;
+  // Dashboard inputs
+  private final LoggedDashboardChooser<Command> autoChooser;
 
-            case SIM:
-                // Sim robot, instantiate physics sim IO implementations
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
+  public RobotContainer() {
+    Logger.recordOutput("Poses/shouldFlip", AllianceFlipUtil.shouldFlip());
 
-                m_drive = new Drive(
-                        new GyroIO() {
-                        },
-                        new ModuleIOSim(),
-                        new ModuleIOSim(),
-                        new ModuleIOSim(),
-                        new ModuleIOSim());
-                m_vision = new Vision(
-                        m_drive::addVisionMeasurement,
-                        // new VisionIOPhotonVisionSim(camera0Name, robotToCamera0,
-                        // m_drive::getPose),
-                        new VisionIOPhotonVisionSim(VisionConstants.camera1Name,
-                                VisionConstants.robotToCamera1,
-                                m_drive::getPose));
-                // To later be replaced with CoralIntakeIOSim
-                m_coral = new CoralIntake(new CoralIntakeIO() {
-                });
-                m_elevator = new Elevator(new ElevatorIO() {
+    switch (Constants.currentMode) {
+      case REAL:
+        // Real robot, instantiate hardware IO implementations
+        m_climber = new ClimberSubsystem(new ClimberIOSparkMax());
+        m_algae = new AlgaeSubsystem(new AlgaeIOSparkMax());
+        m_drive = new Drive(
+            new GyroIONavX(),
+            new ModuleIOSpark(0),
+            new ModuleIOSpark(1),
+            new ModuleIOSpark(2),
+            new ModuleIOSpark(3));
+        m_vision = new Vision(
+            m_drive::addVisionMeasurement,
+            new VisionIOLimelight("limelight-three", m_drive::getRotation),
+            new VisionIOLimelight("limelight-twoplus", m_drive::getRotation));
+        m_coral = new CoralIntake(new CoralIntakeIOSparkMax());
+        m_elevator = new Elevator(new ElevatorIOSparkMax());
+        break;
 
-                });
-                break;
+      case SIM:
+        // Sim robot, instantiate physics sim IO implementations
 
-            default:
-                // Replayed robot, disable IO implementations
-                m_drive = new Drive(
-                        new GyroIO() {
-                        },
-                        new ModuleIO() {
-                        },
-                        new ModuleIO() {
-                        },
-                        new ModuleIO() {
-                        },
-                        new ModuleIO() {
-                        });
-                m_vision = new Vision(m_drive::addVisionMeasurement, new VisionIO() {
-                }, new VisionIO() {
-                });
-                m_coral = new CoralIntake(new CoralIntakeIO() {
-                });
-                m_elevator = new Elevator(new ElevatorIO() {
+        m_drive = new Drive(
+            new GyroIO() {
+            },
+            new ModuleIOSim(),
+            new ModuleIOSim(),
+            new ModuleIOSim(),
+            new ModuleIOSim());
+        m_vision = new Vision(
+            m_drive::addVisionMeasurement,
+            // new VisionIOPhotonVisionSim(camera0Name, robotToCamera0,
+            // m_drive::getPose),
+            new VisionIOPhotonVisionSim(VisionConstants.camera1Name,
+                VisionConstants.robotToCamera1,
+                m_drive::getPose));
+        // To later be replaced with CoralIntakeIOSim
+        m_coral = new CoralIntake(new CoralIntakeIO() {
+        });
+        m_elevator = new Elevator(new ElevatorIO() {
 
-                });
-                break;
-        }
+        });
+        break;
 
-        Command homeElevator = new HomeElevatorCmd(m_elevator);
-        Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-                new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
-                new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
-        Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-                new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
-                new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
-        Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-                new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
-                new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
-        Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-                new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
-                new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
-        Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-                ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
-        Command coralIn = new CoralInCmd(m_coral);
-        Command slamCoral = new CoralCmd(m_coral, .05, -.2);
-        NamedCommands.registerCommand("homeElevator", homeElevator);
-        NamedCommands.registerCommand("l4", l4);
-        NamedCommands.registerCommand("l3", l3);
-        NamedCommands.registerCommand("l2", l2);
-        NamedCommands.registerCommand("l1", l1);
-        NamedCommands.registerCommand("intakePos", intakePos);
-        NamedCommands.registerCommand("intake", coralIn);
-        NamedCommands.registerCommand("slamCoral", slamCoral);
+      default:
+        // Replayed robot, disable IO implementations
+        m_drive = new Drive(
+            new GyroIO() {
+            },
+            new ModuleIO() {
+            },
+            new ModuleIO() {
+            },
+            new ModuleIO() {
+            },
+            new ModuleIO() {
+            });
+        m_vision = new Vision(m_drive::addVisionMeasurement, new VisionIO() {
+        }, new VisionIO() {
+        });
+        m_coral = new CoralIntake(new CoralIntakeIO() {
+        });
+        m_elevator = new Elevator(new ElevatorIO() {
 
-        // Set up auto routines
-        autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
-        configureAutoChooser();
-        // Configure the button bindings
-        configureButtonBindings();
+        });
+        break;
+
     }
 
     /**
