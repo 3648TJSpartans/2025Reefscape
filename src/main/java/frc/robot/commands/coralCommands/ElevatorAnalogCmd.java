@@ -29,6 +29,6 @@ public class ElevatorAnalogCmd extends Command {
     @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
-        return !elevator.getLimitSwitch();
+        return false;
     }
 }

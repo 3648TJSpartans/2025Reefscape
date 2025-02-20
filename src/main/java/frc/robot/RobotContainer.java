@@ -392,7 +392,9 @@ public class RobotContainer {
     m_driveController.y().whileTrue(
         Commands.sequence(
             Commands.parallel(
+
                 new DriveToNearestIntake(m_drive),
+
                 AutoBuildingBlocks.intakeSource(m_elevator, m_coral)),
             new CoralInCmd(m_coral)));
   }
