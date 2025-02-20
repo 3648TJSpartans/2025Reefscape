@@ -34,7 +34,8 @@ public class CoralCmd extends Command {
 
     @Override
     public boolean isFinished() {
-        return m_coralIntake.getIR() && ((angle - CoralIntakeConstants.marginOfError) < m_coralIntake.getAngle() &&
+        return /* m_coralIntake.getIR() && */ ((angle - CoralIntakeConstants.marginOfError) < m_coralIntake.getAngle()
+                &&
                 m_coralIntake.getAngle() < (angle + CoralIntakeConstants.marginOfError));
     }
 
