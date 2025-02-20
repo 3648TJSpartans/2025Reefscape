@@ -277,14 +277,14 @@ public class RobotContainer {
             () -> -m_driveController.getRightX()));
 
     // Lock to 0° when A button is held
-    m_driveController
-        .b()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                m_drive,
-                () -> m_driveController.getLeftY(),
-                () -> m_driveController.getLeftX(),
-                () -> new Rotation2d()));
+    // m_driveController
+    // .b()
+    // .whileTrue(
+    // DriveCommands.joystickDriveAtAngle(
+    // m_drive,
+    // () -> m_driveController.getLeftY(),
+    // () -> m_driveController.getLeftX(),
+    // () -> new Rotation2d()));
 
     // Switch to X pattern when X button is pressed
     m_driveController.x().onTrue(Commands.runOnce(m_drive::stopWithX, m_drive));
@@ -340,13 +340,13 @@ public class RobotContainer {
     // cancelCommand(sequentialRight)));
     // m_driveController.leftBumper().whileTrue(leftDriveCommand);
     // m_driveController.rightBumper().whileTrue(rightDriveCommand);
-    m_driveController.povUp().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(1)));
-    m_driveController.povRight().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(2)));
-    m_driveController.povDown().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(3)));
-    m_driveController.povLeft().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(4)));
-    m_driveController.leftBumper()
+    m_copilotController.povUp().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(1)));
+    m_copilotController.povRight().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(2)));
+    m_copilotController.povDown().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(3)));
+    m_copilotController.povLeft().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(4)));
+    m_copilotController.leftBumper()
         .onTrue(new InstantCommand(() -> CoralSequentialCmd.setAutonState(AutonState.LEFTREEF)));
-    m_driveController.rightBumper()
+    m_copilotController.rightBumper()
         .onTrue(new InstantCommand(() -> CoralSequentialCmd.setAutonState(AutonState.RIGHTREEF)));
     m_driveController.leftTrigger().whileTrue(smartSequentialCommand);
     m_driveController.rightTrigger().whileTrue(homeElevator);
