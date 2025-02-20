@@ -36,6 +36,7 @@ import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 import frc.robot.commands.goToCommands.DriveToNearest;
+import frc.robot.commands.goToCommands.DriveToNearestIntake;
 import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
@@ -391,8 +392,7 @@ public class RobotContainer {
     m_driveController.y().whileTrue(
         Commands.sequence(
             Commands.parallel(
-                AutoBuildingBlocks.driveToPose(m_drive, PoseConstants.coralStation()),
-
+                new DriveToNearestIntake(m_drive),
                 AutoBuildingBlocks.intakeSource(m_elevator, m_coral)),
             new CoralInCmd(m_coral)));
   }
