@@ -29,6 +29,8 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
 
     public CoralSequentialCmd(Drive drive, CoralIntake coralIntake,
             Elevator elevator, boolean slam) {
+        Logger.recordOutput("CoralSequentialCommand/level", level);
+        Logger.recordOutput("CoralSequentialCommand/AutonState", autonState.toString());
         m_coralIntake = coralIntake;
         m_elevator = elevator;
         m_drive = drive;
