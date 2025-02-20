@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Robot;
-import frc.robot.subsystems.drive.DriveConstants;
 
 public class AutonConstants {
     public static final double drivekP = 1.0;
@@ -96,13 +95,13 @@ public class AutonConstants {
             DEFAULT
         }
 
-        public static Pose2d coralStation() {
+        public static Pose2d[] coralStation() {
             if (Robot.isRedAlliance()) {
                 System.out.println("is Red");
-                return PoseConstants.redCoralStations[0];
+                return PoseConstants.redCoralStations;
             } else {
                 System.out.println("is Blue");
-                return PoseConstants.blueCoralStations[0];
+                return PoseConstants.blueCoralStations;
             }
         }
 
