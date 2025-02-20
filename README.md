@@ -20,5 +20,6 @@ In order to build and run the robot code, you'll need the following:
 ### Local IPs
 *`##.##`* should be replaced with the robot's team number (e.g. `10.36.48`). \
 **RoboRIO:** `10.##.##.2` \
-**Limelight:** `http://limelight.local:5801` \
+**Limelight 3:** `http://limelight-three.local:5801` \
+**Limelight 2+:** `http://limelight-twoplus.local:5801` \
 **Radio:** `10.##.##.1`
