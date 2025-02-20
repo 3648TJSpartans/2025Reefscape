@@ -20,7 +20,6 @@ public class GoToAlgaeCmd extends Command {
 
     @Override
     public void execute() {
-        neuralVision.alignToAlgae(); // Aligns to the closest algae
     }
 
     @Override

@@ -96,7 +96,6 @@ public class RobotContainer {
   private final Elevator m_elevator;
   private ClimberSubsystem m_climber;
   private AlgaeSubsystem m_algae;
-  private final NeuralVision m_neuralVision; // TODO: Integrate this into vision
   // Controller
   private final CommandXboxController m_driveController = new CommandXboxController(0);
   private final CommandXboxController m_copilotController = new CommandXboxController(1);
@@ -126,7 +125,6 @@ public class RobotContainer {
             new VisionIOLimelight("limelight-twoplus", m_drive::getRotation));
         m_coral = new CoralIntake(new CoralIntakeIOSparkMax());
         m_elevator = new Elevator(new ElevatorIOSparkMax());
-        m_neuralVision = new NeuralVision();
         break;
 
       case SIM:
@@ -152,7 +150,6 @@ public class RobotContainer {
         m_elevator = new Elevator(new ElevatorIO() {
 
         });
-        m_neuralVision = new NeuralVision();
         break;
 
       default:
@@ -176,7 +173,6 @@ public class RobotContainer {
         m_elevator = new Elevator(new ElevatorIO() {
 
         });
-        m_neuralVision = new NeuralVision();
         break;
     }
     // Set up auto routines
@@ -279,8 +275,6 @@ public class RobotContainer {
         () -> m_algae.setLiftPosition(new TunableNumber("Algae/Shoot", AlgaeConstants.shoot).get())));
     
     // Add GoToAlgae command binding
-    Command goToAlgaeCmd = new GoToAlgaeCmd(m_neuralVision, m_drive);
-    m_copilotController.x().whileTrue(goToAlgaeCmd);
   }
 
   public void configureAutoChooser() {
