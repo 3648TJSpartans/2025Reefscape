@@ -98,8 +98,10 @@ public class AutonConstants {
 
         public static Pose2d coralStation() {
             if (Robot.isRedAlliance()) {
+                System.out.println("is Red");
                 return PoseConstants.redCoralStations[0];
             } else {
+                System.out.println("is Blue");
                 return PoseConstants.blueCoralStations[0];
             }
         }
