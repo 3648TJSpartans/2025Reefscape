@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Far_Top_Start_to_Branch_A"
+            "pathName": "Close_Start_to_Branch_B"
           }
         },
         {
@@ -19,13 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Branch_A_to_Top_Source"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intakePos"
+            "pathName": "Branch_B_to_Bottom_Source"
           }
         },
         {
@@ -37,7 +31,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Top_Source_to_Branch_B"
+            "pathName": "Bottom_Source_to_Branch_C"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "l4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Branch_C_to_Bottom_Source"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "coralIn"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom_source_to_Branch_E"
           }
         },
         {
