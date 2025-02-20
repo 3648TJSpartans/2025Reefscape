@@ -54,4 +54,8 @@ public class VisionConstants {
 
     // Sensitivity for neural alage align. Defines the range of offset values the robot will accept as "aligned", from -x to x
     public static double alignSensitivity = 0.1;
+
+    public static double limelightMountAngleDeg = 0; 
+    public static double limelightMountHeightIn = 36;
+    public static double targetHeightIn = 6;
 }
