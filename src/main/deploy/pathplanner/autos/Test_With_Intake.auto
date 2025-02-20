@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "intake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Bottom_Source_to_Branch_B"
@@ -26,12 +32,6 @@
           "type": "named",
           "data": {
             "name": "slamCoral"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Branch_B_to_Bottom_Source"
           }
         }
       ]

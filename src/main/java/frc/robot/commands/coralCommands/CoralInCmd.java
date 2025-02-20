@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
-import frc.robot.subsystems.elevator.ElevatorConstants;
 
 public class CoralInCmd extends Command {
     private final CoralIntake m_coralIntake;

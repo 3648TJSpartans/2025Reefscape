@@ -216,7 +216,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("l2", l2);
     NamedCommands.registerCommand("l1", l1);
     NamedCommands.registerCommand("intakePos", intakePos);
-    NamedCommands.registerCommand("coralIn", coralIn);
+    NamedCommands.registerCommand("intake", coralIn);
     NamedCommands.registerCommand("slamCoral", slamCoral);
 
     // Set up auto routines
