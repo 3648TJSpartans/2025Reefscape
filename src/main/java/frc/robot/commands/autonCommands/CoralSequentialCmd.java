@@ -27,7 +27,6 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
     private static int level = AutonConstants.defaultLevel; // Defualt Level
     private static AutonState autonState = AutonState.RIGHTREEF;
 
-
     public CoralSequentialCmd(Drive drive, CoralIntake coralIntake,
             Elevator elevator, boolean slam) {
         m_coralIntake = coralIntake;
@@ -50,15 +49,14 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
 
     public static Pose2d[] poses() {
         if (autonState == AutonState.RIGHTREEF) {
-            return PoseConstants.rightReefPoints();
+            return PoseConstants.rightReefPoints;
         } else if (autonState == AutonState.LEFTREEF) {
 
-            return PoseConstants.leftReefPoints();
+            return PoseConstants.leftReefPoints;
         } else {
             System.out.println("return Null");
             System.out.println("Auton State: " + autonState.toString());
             return null;
-
 
         }
     }

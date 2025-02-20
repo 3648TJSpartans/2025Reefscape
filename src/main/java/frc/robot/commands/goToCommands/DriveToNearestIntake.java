@@ -84,7 +84,7 @@ public class DriveToNearestIntake extends Command {
         public DriveToNearestIntake(Drive drive) {
                 this.drive = drive;
                 robot = drive::getPose;
-                this.targetPoints = () -> PoseConstants.coralStation();
+                this.targetPoints = () -> PoseConstants.coralStations;
                 this.target = () -> nearestPoint(robot, targetPoints);
                 // Enable continuous input for theta controller
                 thetaController.enableContinuousInput(-Math.PI, Math.PI);
