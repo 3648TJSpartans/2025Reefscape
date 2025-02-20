@@ -221,28 +221,11 @@ public class RobotContainer {
     configureAutos();
   }
 
-  public void cancelCommand(Command cmd) {
-    if (cmd.isScheduled()) {
-
-      System.out.println(cmd + " canceled");
-
-      cmd.cancel();
-    }
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-
   public void configureAlgae() {
-    Command algaeDefaultCmd = new AlgaeDefaultCmd(m_algae);
     Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
     Command algaeShootCmd = new AlgaeShootCmd(m_algae);
-    m_copilotController.a().whileTrue(algaeIntakeCmd);
-    m_copilotController.b().whileTrue(algaeShootCmd);
-    // m_algae.setDefaultCommand(algaeDefaultCmd);
+    m_driveController.b().whileTrue(algaeIntakeCmd);
+    m_driveController.y().whileTrue(algaeShootCmd);// TODO
   }
 
   public void configureAutoChooser() {
@@ -268,32 +251,20 @@ public class RobotContainer {
   }
 
   public void configureClimber() {
-    Command climberCmd = new ClimberAnalogCmd(m_climber, () -> m_copilotController.getRightX());
+    Command climberCmd = new ClimberAnalogCmd(m_climber, () -> m_controllerTwo.getRightX());
     m_climber.setDefaultCommand(climberCmd);
     Command climberUpCmd = new ClimberUpCmd(m_climber);
-    m_driveController.povUp().whileTrue(climberUpCmd);
+    m_copilotController.y().whileTrue(climberUpCmd);
 
   }
 
   public void configureCoralIntake() {
     Command coralIn = new CoralInCmd(m_coral);
     Command coralOut = new CoralOutCmd(m_coral);
-    Command wrist = new WristCmd(m_coral, new TunableNumber("WristAngle", CoralIntakeConstants.anglevalue).get());
-    Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
-    Command slamCoral = new CoralCmd(m_coral, .05, -.2);
-    // m_coral.setDefaultCommand(wristAnalog);
-    // m_controllerTwo.povUp().onTrue(l1);
-    // m_controllerTwo.povRight().onTrue(l2);
-    // m_controllerTwo.povDown().onTrue(l3);
-    // m_controllerTwo.povLeft().onTrue(l4);
-    m_coral.setDefaultCommand(wristAnalog);
-    m_driveController.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.15)));
-    m_driveController.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
-    m_driveController.b().onTrue(new InstantCommand(() -> m_coral.setSpeed(-.15)));
-    m_driveController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
-    // m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after
-    // testing// Subject to Change
-    m_controllerTwo.y().whileTrue(slamCoral);
+    m_controllerTwo.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.15)));
+    m_controllerTwo.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
+    m_controllerTwo.b().onTrue(new InstantCommand(() -> m_coral.setSpeed(-.15)));
+    m_controllerTwo.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
   }
 
   public void configureDrive() {
@@ -329,10 +300,6 @@ public class RobotContainer {
                         new Rotation2d())),
                 m_drive)
                 .ignoringDisable(true));
-    Command alignCoralStation = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
-    // m_driveController.y().whileTrue(alignCoralStation);
-    Command goToNearestRightCommand = new DriveToNearest(m_drive, () -> PoseConstants.rightReefPoints());
-    m_controllerTwo.rightTrigger().whileTrue(goToNearestRightCommand);
   }
 
   public void configureElevator() {
@@ -343,7 +310,6 @@ public class RobotContainer {
 
   public void configureSetpoints() {
     Command homeElevator = new HomeElevatorCmd(m_elevator);
-    // () -> m_driveController.rightBumper().getAsBoolean()
     Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
         new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
@@ -386,15 +352,12 @@ public class RobotContainer {
     m_driveController.rightTrigger().whileTrue(homeElevator);
     // m_driveController.y().onTrue(coralSource);
     m_driveController.y().whileTrue(
-        Commands.parallel(
-            AutoBuildingBlocks.driveToPose(m_drive, new Pose2d(1.5, 1.6, new Rotation2d(Math.PI / 3))),
-            AutoBuildingBlocks.intakeSource(m_elevator, m_coral)));
+        Commands.sequence(
+            Commands.parallel(
+                AutoBuildingBlocks.driveToPose(m_drive, new Pose2d(1.5, 1.6, new Rotation2d(Math.PI / 3))),
+                AutoBuildingBlocks.intakeSource(m_elevator, m_coral)),
+            new CoralInCmd(m_coral)));
 
-    // The Below command is ONLY for testing and should be removed in the final
-    // build. This allows you to zero the elevator without a limit switch
-    // m_controllerTwo.leftBumper().onTrue(neCoew InstantCommand(() ->
-    // m_elevator.zeroElevator()));
-    m_controllerTwo.leftTrigger().whileTrue(homeElevator);
   }
 
   public Command getAutonomousCommand() {
