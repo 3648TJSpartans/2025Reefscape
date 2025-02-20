@@ -387,7 +387,8 @@ public class RobotContainer {
     // m_driveController.y().onTrue(coralSource);
     m_driveController.y().whileTrue(
         Commands.parallel(
-            AutoBuildingBlocks.driveToPose(m_drive, new Pose2d(1.5, 1.6, new Rotation2d(Math.PI / 3))),
+            AutoBuildingBlocks.driveToPose(m_drive, PoseConstants.coralStation()),
+
             AutoBuildingBlocks.intakeSource(m_elevator, m_coral)));
 
     // The Below command is ONLY for testing and should be removed in the final
