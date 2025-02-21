@@ -46,7 +46,7 @@ public class ClimberIOSparkMax implements ClimberIO {
                                                 ClimberConstants.kLeadMinOutput).get(),
                                                 new TunableNumber("Climber/kLeadMaxOutput",
                                                                 ClimberConstants.kLeadMaxOutput).get());
-                leadConfig.inverted(false)
+                leadConfig.inverted(true)
                                 .idleMode(IdleMode.kBrake)
                                 .voltageCompensation(12.0);
                 leadConfig.signals

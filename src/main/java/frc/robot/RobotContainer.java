@@ -116,303 +116,345 @@ import org.littletonrobotics.junction.Logger;
  */
 public class RobotContainer {
 
+        // Subsystems
+        private final Drive m_drive;
+        private final Vision m_vision;
+        private final CoralIntake m_coral;
+        private final Elevator m_elevator;
+        private ClimberSubsystem m_climber;
+        private AlgaeSubsystem m_algae;
+        private boolean override;
 
-  // Subsystems
-  private final Drive m_drive;
-  private final Vision m_vision;
-  private final CoralIntake m_coral;
-  private final Elevator m_elevator;
-  private ClimberSubsystem m_climber;
-  private AlgaeSubsystem m_algae;
-  // Controller
-  private final CommandXboxController m_driveController = new CommandXboxController(0);
-  private final CommandXboxController m_copilotController = new CommandXboxController(1);
-  private final CommandXboxController m_controllerTwo = new CommandXboxController(2);
+        // Controller
+        private final CommandXboxController m_driveController = new CommandXboxController(0);
+        private final CommandXboxController m_copilotController = new CommandXboxController(1);
+        private final CommandXboxController m_controllerTwo = new CommandXboxController(2);
 
-  // Dashboard inputs
-  private final LoggedDashboardChooser<Command> autoChooser;
+        // Dashboard inputs
+        private final LoggedDashboardChooser<Command> autoChooser;
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
-    Logger.recordOutput("Poses/shouldFlip", AllianceFlipUtil.shouldFlip());
+        /**
+         * The container for the robot. Contains subsystems, OI devices, and commands.
+         */
 
-    switch (Constants.currentMode) {
-      case REAL:
-        // Real robot, instantiate hardware IO implementations
-        m_climber = new ClimberSubsystem(new ClimberIOSparkMax());
-        m_algae = new AlgaeSubsystem(new AlgaeIOSparkMax());
-        m_drive = new Drive(
-            new GyroIONavX(),
-            new ModuleIOSpark(0),
-            new ModuleIOSpark(1),
-            new ModuleIOSpark(2),
-            new ModuleIOSpark(3));
-        m_vision = new Vision(
-            m_drive::addVisionMeasurement,
-            new VisionIOLimelight("limelight-three", m_drive::getRotation),
-            new VisionIOLimelight("limelight-twoplus", m_drive::getRotation));
-        m_coral = new CoralIntake(new CoralIntakeIOSparkMax());
-        m_elevator = new Elevator(new ElevatorIOSparkMax());
-        break;
+        public RobotContainer() {
+                Logger.recordOutput("Poses/shouldFlip", AllianceFlipUtil.shouldFlip());
+                Logger.recordOutput("Override", override);
+                override = false;
+                switch (Constants.currentMode) {
+                        case REAL:
+                                // Real robot, instantiate hardware IO implementations
+                                m_climber = new ClimberSubsystem(new ClimberIOSparkMax());
+                                m_algae = new AlgaeSubsystem(new AlgaeIOSparkMax());
+                                m_drive = new Drive(
+                                                new GyroIONavX(),
+                                                new ModuleIOSpark(0),
+                                                new ModuleIOSpark(1),
+                                                new ModuleIOSpark(2),
+                                                new ModuleIOSpark(3));
+                                m_vision = new Vision(
+                                                m_drive::addVisionMeasurement,
+                                                new VisionIOLimelight("limelight-three", m_drive::getRotation),
+                                                new VisionIOLimelight("limelight-twoplus", m_drive::getRotation));
+                                m_coral = new CoralIntake(new CoralIntakeIOSparkMax());
+                                m_elevator = new Elevator(new ElevatorIOSparkMax());
+                                break;
 
-      case SIM:
-        // Sim robot, instantiate physics sim IO implementations
+                        case SIM:
+                                // Sim robot, instantiate physics sim IO implementations
 
-        m_drive = new Drive(
-            new GyroIO() {
-            },
-            new ModuleIOSim(),
-            new ModuleIOSim(),
-            new ModuleIOSim(),
-            new ModuleIOSim());
-        m_vision = new Vision(
-            m_drive::addVisionMeasurement,
-            // new VisionIOPhotonVisionSim(camera0Name, robotToCamera0,
-            // m_drive::getPose),
-            new VisionIOPhotonVisionSim(VisionConstants.camera1Name,
-                VisionConstants.robotToCamera1,
-                m_drive::getPose));
-        // To later be replaced with CoralIntakeIOSim
-        m_coral = new CoralIntake(new CoralIntakeIO() {
-        });
-        m_elevator = new Elevator(new ElevatorIO() {
+                                m_drive = new Drive(
+                                                new GyroIO() {
+                                                },
+                                                new ModuleIOSim(),
+                                                new ModuleIOSim(),
+                                                new ModuleIOSim(),
+                                                new ModuleIOSim());
+                                m_vision = new Vision(
+                                                m_drive::addVisionMeasurement,
+                                                // new VisionIOPhotonVisionSim(camera0Name, robotToCamera0,
+                                                // m_drive::getPose),
+                                                new VisionIOPhotonVisionSim(VisionConstants.camera1Name,
+                                                                VisionConstants.robotToCamera1,
+                                                                m_drive::getPose));
+                                // To later be replaced with CoralIntakeIOSim
+                                m_coral = new CoralIntake(new CoralIntakeIO() {
+                                });
+                                m_elevator = new Elevator(new ElevatorIO() {
 
-        });
-        break;
+                                });
+                                break;
 
-      default:
-        // Replayed robot, disable IO implementations
-        m_drive = new Drive(
-            new GyroIO() {
-            },
-            new ModuleIO() {
-            },
-            new ModuleIO() {
-            },
-            new ModuleIO() {
-            },
-            new ModuleIO() {
-            });
-        m_vision = new Vision(m_drive::addVisionMeasurement, new VisionIO() {
-        }, new VisionIO() {
-        });
-        m_coral = new CoralIntake(new CoralIntakeIO() {
-        });
-        m_elevator = new Elevator(new ElevatorIO() {
+                        default:
+                                // Replayed robot, disable IO implementations
+                                m_drive = new Drive(
+                                                new GyroIO() {
+                                                },
+                                                new ModuleIO() {
+                                                },
+                                                new ModuleIO() {
+                                                },
+                                                new ModuleIO() {
+                                                },
+                                                new ModuleIO() {
+                                                });
+                                m_vision = new Vision(m_drive::addVisionMeasurement, new VisionIO() {
+                                }, new VisionIO() {
+                                });
+                                m_coral = new CoralIntake(new CoralIntakeIO() {
+                                });
+                                m_elevator = new Elevator(new ElevatorIO() {
 
-        });
-        break;
+                                });
+                                break;
+                }
 
-    }
+                Command homeElevator = new HomeElevatorCmd(m_elevator);
+                Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+                                new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
+                                new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
+                Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+                                new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
+                                new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
+                Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+                                new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
+                                new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
+                Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+                                new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
+                                new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
+                Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+                                ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
+                Command coralIn = new CoralInCmd(m_coral);
+                Command slamCoral = new CoralCmd(m_coral, .05, -.2);
+                NamedCommands.registerCommand("homeElevator", homeElevator);
+                NamedCommands.registerCommand("l4", l4);
+                NamedCommands.registerCommand("l3", l3);
+                NamedCommands.registerCommand("l2", l2);
+                NamedCommands.registerCommand("l1", l1);
+                NamedCommands.registerCommand("intakePos", intakePos);
+                NamedCommands.registerCommand("intake", coralIn);
+                NamedCommands.registerCommand("slamCoral", slamCoral);
 
-    /**
-     * Use this method to define your button->command mappings. Buttons can be
-     * created by
-     * instantiating a {@link GenericHID} or one of its subclasses ({@link
-     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
-     * it to a {@link
-     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-     */
-    private void configureButtonBindings() {
-        // configureAutos();
-        configureAlgae();
-        configureClimber();
-        configureCoralIntake();
-        configureDrive();
-        configureElevator();
-        configureSetpoints();
-        m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> toggleOverride()));
+                // Set up auto routines
+                autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+                configureAutoChooser();
+                // Configure the button bindings
+                configureButtonBindings();
+        }
 
-    }
+        /**
+         * Use this method to define your button->command mappings. Buttons can be
+         * created by
+         * instantiating a {@link GenericHID} or one of its subclasses ({@link
+         * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+         * it to a {@link
+         * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+         */
+        private void configureButtonBindings() {
+                // configureAutos();
+                configureAlgae();
+                configureClimber();
+                configureCoralIntake();
+                configureDrive();
+                configureElevator();
+                configureSetpoints();
+                m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> toggleOverride()));
 
-    public void configureAlgae() {
-        Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
-        Command algaeShootCmd = new AlgaeShootCmd(m_algae);
-        m_driveController.b().whileTrue(algaeIntakeCmd);
-        m_driveController.y().whileTrue(algaeShootCmd);// TODO
-    }
+        }
 
-    public void configureAutoChooser() {
-        // configureAutos();
-        // System.out.println("!!!!!!!!!!!!!!!!finished of
-        // configureAutos!!!!!!!!!!!!!!!!!!!");
-        // Set up SysId routines
-        autoChooser.addOption(
-                "Drive Wheel Radius Characterization",
-                DriveCommands.wheelRadiusCharacterization(m_drive));
-        autoChooser.addOption(
-                "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(m_drive));
-        autoChooser.addOption(
-                "Drive SysId (Quasistatic Forward)",
-                m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-        autoChooser.addOption(
-                "Drive SysId (Quasistatic Reverse)",
-                m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-        autoChooser.addOption(
-                "Drive SysId (Dynamic Forward)", m_drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-        autoChooser.addOption(
-                "Drive SysId (Dynamic Reverse)", m_drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-        autoChooser.addOption(
-                "Micah's test",
-                AutoBuilder.buildAuto("src\\main\\deploy\\pathplanner\\autos\\test.auto"));
-    }
+        public void configureAlgae() {
+                Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
+                Command algaeShootCmd = new AlgaeShootCmd(m_algae);
+                Command algaeAnalogCommand = new AlgaeAnalogCmd(m_algae, () -> m_controllerTwo.getRightX());
+                m_algae.setDefaultCommand(algaeAnalogCommand);
+                m_driveController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setLiftSpeed(.15)));
+                m_driveController.leftBumper().onFalse(new InstantCommand(() -> m_coral.setSpeed(.0)));
+                m_driveController.b().whileTrue(algaeIntakeCmd);
+                m_driveController.y().whileTrue(algaeShootCmd);// TODO
+        }
 
-    public void configureClimber() {
-        Command climberCmd = new ClimberAnalogCmd(m_climber, () -> m_copilotController.getLeftX());
-        m_climber.setDefaultCommand(climberCmd);
-        Command climberUpCmd = new ClimberUpCmd(m_climber);
-        m_copilotController.y().whileTrue(climberUpCmd);
+        public void configureAutoChooser() {
+                // configureAutos();
+                // System.out.println("!!!!!!!!!!!!!!!!finished of
+                // configureAutos!!!!!!!!!!!!!!!!!!!");
+                // Set up SysId routines
+                autoChooser.addOption(
+                                "Drive Wheel Radius Characterization",
+                                DriveCommands.wheelRadiusCharacterization(m_drive));
+                autoChooser.addOption(
+                                "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(m_drive));
+                autoChooser.addOption(
+                                "Drive SysId (Quasistatic Forward)",
+                                m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+                autoChooser.addOption(
+                                "Drive SysId (Quasistatic Reverse)",
+                                m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+                autoChooser.addOption(
+                                "Drive SysId (Dynamic Forward)", m_drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+                autoChooser.addOption(
+                                "Drive SysId (Dynamic Reverse)", m_drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+                autoChooser.addOption(
+                                "Micah's test",
+                                AutoBuilder.buildAuto("src\\main\\deploy\\pathplanner\\autos\\test.auto"));
+        }
 
-    }
+        public void configureClimber() {
+                Command climberCmd = new ClimberAnalogCmd(m_climber, () -> m_copilotController.getLeftX());
+                m_climber.setDefaultCommand(climberCmd);
+                Command climberUpCmd = new ClimberUpCmd(m_climber);
+                m_copilotController.y().whileTrue(climberUpCmd);
 
-    public void configureCoralIntake() {
-        Command coralIn = new CoralInCmd(m_coral);
-        Command coralOut = new CoralOutCmd(m_coral);
-        m_copilotController.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.15)));
-        m_copilotController.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
-        m_copilotController.b().onTrue(new InstantCommand(() -> m_coral.setSpeed(-.15)));
-        m_copilotController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
-        Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_copilotController.getRightX());
-        Command slamCoral = new CoralCmd(m_coral, .05, -.2);
-        m_coral.setDefaultCommand(wristAnalog);
-        m_controllerTwo.y().whileTrue(slamCoral);
-    }
+        }
 
-    public void configureDrive() {
-        // Default command, normal field-relative drive
-        m_drive.setDefaultCommand(
-                DriveCommands.joystickDrive(
-                        m_drive,
-                        () -> m_driveController.getLeftY(),
-                        () -> m_driveController.getLeftX(),
-                        () -> -m_driveController.getRightX()));
+        public void configureCoralIntake() {
+                Command coralIn = new CoralInCmd(m_coral);
+                Command coralOut = new CoralOutCmd(m_coral);
+                m_copilotController.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.15)));
+                m_copilotController.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
+                m_copilotController.b().onTrue(new InstantCommand(() -> m_coral.setSpeed(-.15)));
+                m_copilotController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
+                Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_copilotController.getRightX());
+                Command slamCoral = new CoralCmd(m_coral, .05, -.2);
+                m_coral.setDefaultCommand(wristAnalog);
+                m_controllerTwo.y().whileTrue(slamCoral);
+        }
 
-        // Lock to 0° when A button is held
-        // m_driveController
-        // .b()
-        // .whileTrue(
-        // DriveCommands.joystickDriveAtAngle(
-        // m_drive,
-        // () -> m_driveController.getLeftY(),
-        // () -> m_driveController.getLeftX(),
-        // () -> new Rotation2d()));
+        public void configureDrive() {
+                // Default command, normal field-relative drive
+                m_drive.setDefaultCommand(
+                                DriveCommands.joystickDrive(
+                                                m_drive,
+                                                () -> m_driveController.getLeftY(),
+                                                () -> m_driveController.getLeftX(),
+                                                () -> -m_driveController.getRightX()));
 
-        // Switch to X pattern when X button is pressed
-        m_driveController.x().onTrue(Commands.runOnce(m_drive::stopWithX, m_drive));
+                // Lock to 0° when A button is held
+                // m_driveController
+                // .b()
+                // .whileTrue(
+                // DriveCommands.joystickDriveAtAngle(
+                // m_drive,
+                // () -> m_driveController.getLeftY(),
+                // () -> m_driveController.getLeftX(),
+                // () -> new Rotation2d()));
 
-        // Reset gyro to 0° when B button is pressed
-        m_driveController
-                .a()
-                .onTrue(
-                        Commands.runOnce(
-                                () -> m_drive.setPose(
-                                        new Pose2d(m_drive.getPose()
-                                                .getTranslation(),
-                                                new Rotation2d())),
-                                m_drive)
-                                .ignoringDisable(true));
-    }
+                // Switch to X pattern when X button is pressed
+                m_driveController.x().onTrue(Commands.runOnce(m_drive::stopWithX, m_drive));
 
-    public void configureElevator() {
+                // Reset gyro to 0° when B button is pressed
+                m_driveController
+                                .a()
+                                .onTrue(
+                                                Commands.runOnce(
+                                                                () -> m_drive.setPose(
+                                                                                new Pose2d(m_drive.getPose()
+                                                                                                .getTranslation(),
+                                                                                                new Rotation2d())),
+                                                                m_drive)
+                                                                .ignoringDisable(true));
+        }
 
-        Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
-        m_elevator.setDefaultCommand(elevatorAnalog);
-    }
+        public void configureElevator() {
 
-    public void configureSetpoints() {
-        Command homeElevator = new HomeElevatorCmd(m_elevator);
-        Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-                new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
-                new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
+                Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
+                m_elevator.setDefaultCommand(elevatorAnalog);
 
-        Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-                new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
-                new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
-        Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-                new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
-                new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
-        Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-                new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
-                new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
-        Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-                ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
-        Command smartSequentialCommand = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true);
-        // Command coralSource = new SourceParallelCmd(m_drive, m_coral, m_elevator);
-        m_controllerTwo.povUp().whileTrue(l1);
-        m_controllerTwo.povRight().whileTrue(l2);
-        m_controllerTwo.povDown().whileTrue(l3);
-        m_controllerTwo.povLeft().whileTrue(l4);
-        m_controllerTwo.leftBumper().whileTrue(intake);
-        // m_driveController.rightBumper().onTrue(sequentialRight);
-        // m_driveController.leftBumper().onTrue(sequentialLeft);
-        // m_driveController.leftBumper().onFalse(new InstantCommand(() ->
-        // cancelCommand(sequentialLeft)));
-        // m_driveController.rightBumper().onFalse(new InstantCommand(() ->
-        // cancelCommand(sequentialRight)));
-        // m_driveController.leftBumper().whileTrue(leftDriveCommand);
-        // m_driveController.rightBumper().whileTrue(rightDriveCommand);
-        m_copilotController.povUp().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(1)));
-        m_copilotController.povRight().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(2)));
-        m_copilotController.povDown().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(3)));
-        m_copilotController.povLeft().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(4)));
-        m_copilotController.povUp().and(() -> override).whileTrue(l1);
-        m_copilotController.povLeft().and(() -> override).whileTrue(l2);
-        m_copilotController.povDown().and(() -> override).whileTrue(l3);
-        m_copilotController.povRight().and(() -> override).whileTrue(l4);
-        m_copilotController.leftBumper()
-                .onTrue(new InstantCommand(() -> CoralSequentialCmd.setAutonState(AutonState.LEFTREEF)));
-        m_copilotController.rightBumper()
-                .onTrue(new InstantCommand(() -> CoralSequentialCmd.setAutonState(AutonState.RIGHTREEF)));
-        m_driveController.leftTrigger().whileTrue(smartSequentialCommand);
-        m_driveController.rightTrigger().whileTrue(homeElevator);
-        // m_driveController.y().onTrue(coralSource);
-        m_driveController.y().whileTrue(
-                Commands.sequence(
-                        Commands.parallel(
+        }
 
-                                new DriveToNearestIntake(m_drive),
+        public void configureSetpoints() {
+                Command homeElevator = new HomeElevatorCmd(m_elevator);
+                Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+                                new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
+                                new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
 
-                                AutoBuildingBlocks.intakeSource(m_elevator, m_coral)),
-                        new CoralInCmd(m_coral)));
-    }
+                Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+                                new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
+                                new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
+                Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+                                new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
+                                new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
+                Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+                                new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
+                                new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
+                Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+                                ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
+                Command smartSequentialCommand = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true);
+                // Command coralSource = new SourceParallelCmd(m_drive, m_coral, m_elevator);
+                m_controllerTwo.povUp().whileTrue(l1);
+                m_controllerTwo.povRight().whileTrue(l2);
+                m_controllerTwo.povDown().whileTrue(l3);
+                m_controllerTwo.povLeft().whileTrue(l4);
+                m_controllerTwo.leftBumper().whileTrue(intake);
+                // m_driveController.rightBumper().onTrue(sequentialRight);
+                // m_driveController.leftBumper().onTrue(sequentialLeft);
+                // m_driveController.leftBumper().onFalse(new InstantCommand(() ->
+                // cancelCommand(sequentialLeft)));
+                // m_driveController.rightBumper().onFalse(new InstantCommand(() ->
+                // cancelCommand(sequentialRight)));
+                // m_driveController.leftBumper().whileTrue(leftDriveCommand);
+                // m_driveController.rightBumper().whileTrue(rightDriveCommand);
+                m_copilotController.povUp().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(1)));
+                m_copilotController.povRight().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(2)));
+                m_copilotController.povDown().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(3)));
+                m_copilotController.povLeft().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(4)));
+                m_copilotController.povUp().and(() -> override).whileTrue(l1);
+                m_copilotController.povLeft().and(() -> override).whileTrue(l2);
+                m_copilotController.povDown().and(() -> override).whileTrue(l3);
+                m_copilotController.povRight().and(() -> override).whileTrue(l4);
+                m_copilotController.leftBumper()
+                                .onTrue(new InstantCommand(
+                                                () -> CoralSequentialCmd.setAutonState(AutonState.LEFTREEF)));
+                m_copilotController.rightBumper()
+                                .onTrue(new InstantCommand(
+                                                () -> CoralSequentialCmd.setAutonState(AutonState.RIGHTREEF)));
+                m_driveController.leftTrigger().whileTrue(smartSequentialCommand);
+                m_driveController.rightTrigger().whileTrue(homeElevator);
+                // m_driveController.y().onTrue(coralSource);
+                m_driveController.y().whileTrue(
+                                Commands.sequence(
+                                                Commands.parallel(
 
-    public Command getAutonomousCommand() {
-        return autoChooser.get();
-    }
+                                                                new DriveToNearestIntake(m_drive),
 
-    public void configureAutos() {
-        // Command homeElevator = new HomeElevatorCmd(m_elevator);
-        // Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        // new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
-        // new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
-        // Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        // new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
-        // new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
-        // Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        // new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
-        // new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
-        // Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        // new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
-        // new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
-        // Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        // ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
-        // Command coralIn = new CoralInCmd(m_coral);
-        // Command slamCoral = new CoralCmd(m_coral, .05, -.2);
-        // NamedCommands.registerCommand("homeElevator", homeElevator);
-        // NamedCommands.registerCommand("l4", l4);
-        // NamedCommands.registerCommand("l3", l3);
-        // NamedCommands.registerCommand("l2", l2);
-        // NamedCommands.registerCommand("l1", l1);
-        // NamedCommands.registerCommand("intakePos", intakePos);
-        // NamedCommands.registerCommand("coralIn", coralIn);
-        // NamedCommands.registerCommand("slamCoral", slamCoral);
-    }
+                                                                AutoBuildingBlocks.intakeSource(m_elevator, m_coral)),
+                                                new CoralInCmd(m_coral)));
+        }
 
-    public void toggleOverride() {
-        override = !override;
-        Logger.recordOutput("Override", override);
-    }
+        public Command getAutonomousCommand() {
+                return autoChooser.get();
+        }
+
+        public void configureAutos() {
+                // Command homeElevator = new HomeElevatorCmd(m_elevator);
+                // Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+                // new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
+                // new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
+                // Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+                // new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
+                // new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
+                // Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+                // new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
+                // new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
+                // Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+                // new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
+                // new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
+                // Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+                // ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
+                // Command coralIn = new CoralInCmd(m_coral);
+                // Command slamCoral = new CoralCmd(m_coral, .05, -.2);
+                // NamedCommands.registerCommand("homeElevator", homeElevator);
+                // NamedCommands.registerCommand("l4", l4);
+                // NamedCommands.registerCommand("l3", l3);
+                // NamedCommands.registerCommand("l2", l2);
+                // NamedCommands.registerCommand("l1", l1);
+                // NamedCommands.registerCommand("intakePos", intakePos);
+                // NamedCommands.registerCommand("coralIn", coralIn);
+                // NamedCommands.registerCommand("slamCoral", slamCoral);
+        }
+
+        public void toggleOverride() {
+                override = !override;
+                Logger.recordOutput("Override", override);
+        }
 
 }
