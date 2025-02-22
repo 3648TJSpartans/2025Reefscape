@@ -78,6 +78,7 @@ import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
 import frc.robot.subsystems.coralIntake.CoralIntakeIO;
 import frc.robot.subsystems.coralIntake.CoralIntakeIOSparkMax;
+import frc.robot.subsystems.leds.*;
 
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
@@ -128,6 +129,7 @@ public class RobotContainer {
         private final Vision m_vision;
         private final CoralIntake m_coral;
         private final Elevator m_elevator;
+        private final LedSubsystem m_led;
         private ClimberSubsystem m_climber;
         private AlgaeSubsystem m_algae;
         private boolean override;
@@ -153,6 +155,7 @@ public class RobotContainer {
          */
 
         public RobotContainer() {
+                m_led = new LedSubsystem();
                 Logger.recordOutput("Poses/shouldFlip", AllianceFlipUtil.shouldFlip());
                 Logger.recordOutput("Override", override);
                 override = false;
@@ -275,6 +278,7 @@ public class RobotContainer {
                 configureSetpoints();
                 configureAlerts();
                 m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> toggleOverride()));
+                m_led.setLedPattern(LedConstants.rainbow);
 
         }
 
