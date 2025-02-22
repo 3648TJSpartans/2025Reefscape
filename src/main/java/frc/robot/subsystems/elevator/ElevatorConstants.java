@@ -9,16 +9,16 @@ public class ElevatorConstants {
     // these are the ids for the CANs that will be use in the coral subsystem
     public static final int coralElevator = 9;
 
-    public static final double coralLeveL1 = 1; // this is a momentary value that will be changed later
-    public static final double coralLeveL2 = 0.1; // this is a momentary value that will be changed later
-    public static final double coralLeveL3 = 13.3; // this is a momentary value that will be changed later
-    public static final double coralLeveL4 = 15;
-    public static final double intakePose = 2.262;// this is the postion for the intake
+    public static final double coralLeveL1 = 0; // this is a momentary value that will be changed later
+    public static final double coralLeveL2 = 0.15; // this is a momentary value that will be changed later
+    public static final double coralLeveL3 = 0.69; // this is a momentary value that will be changed later
+    public static final double coralLeveL4 = 70;
+    public static final double intakePose = 3.4;// this is the postion for the intake
     // these are the constants for the elevator pid
-    public static final double kElevatorP = .5;
+    public static final double kElevatorP = .3;
     public static final double kElevatorI = 0;
     public static final double kElevatorD = 0;
-    public static final double kElevatorFF = 0;
+    public static final double kElevatorFF = .15;
     public static final double odometryFrequency = 100;
     public static final double kElevatorMinRange = -.45;
     public static final double kElevatorMaxRange = .45;
