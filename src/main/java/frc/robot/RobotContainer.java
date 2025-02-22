@@ -25,6 +25,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -143,6 +144,8 @@ public class RobotContainer {
       30.0);
   private final LoggedNetworkNumber endgameAlert2 = new LoggedNetworkNumber("/SmartDashboard/Endgame Alert #2",
       15.0);
+  private final LoggedNetworkNumber endgameAlert3 = new LoggedNetworkNumber("/SmartDashboard/Endgame Alert #3",
+      5.0);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -282,6 +285,22 @@ public class RobotContainer {
         .onTrue(
             controllerRumbleCommand()
                 .withTimeout(0.5)
+                .andThen(Commands.waitSeconds(4.75))
+                .repeatedly()
+                .withTimeout(15)
+        // .beforeStarting(() -> leds.endgameAlert = true)
+        // .finallyDo(() -> leds.endgameAlert = false)
+        );
+    new Trigger(
+        () -> DriverStation.isTeleopEnabled()
+            && DriverStation.getMatchTime() > 0
+            && DriverStation.getMatchTime() <= Math.round(endgameAlert2.get()))
+        .onTrue(
+            controllerRumbleCommand()
+                .withTimeout(0.1)
+                .andThen(Commands.waitSeconds(0.1))
+                .repeatedly()
+                .withTimeout(8)
         // .beforeStarting(() -> leds.endgameAlert = true)
         // .finallyDo(() -> leds.endgameAlert = false)
         );
@@ -292,14 +311,26 @@ public class RobotContainer {
         .onTrue(
             controllerRumbleCommand()
                 .withTimeout(0.2)
-                .andThen(Commands.waitSeconds(0.1))
+                .andThen(Commands.waitSeconds(0.3))
                 .repeatedly()
-                .withTimeout(0.9)
+                .withTimeout(10)
         // .beforeStarting(() -> leds.endgameAlert = true)
         // .finallyDo(() -> leds.endgameAlert = false)
-        ); // Rumble
-           // three
-           // times
+        );
+    // Countdown
+    new Trigger(
+        () -> DriverStation.isTeleopEnabled()
+            && DriverStation.getMatchTime() > 0
+            && DriverStation.getMatchTime() <= Math.round(endgameAlert3.get()))
+        .onTrue(
+            controllerRumbleCommand()
+                .withTimeout(0.8)
+                .andThen(Commands.waitSeconds(0.2))
+                .repeatedly()
+                .withTimeout(5)
+        // .beforeStarting(() -> leds.endgameAlert = true)
+        // .finallyDo(() -> leds.endgameAlert = false)
+        );
   }
 
   public void configureAlgae() {
