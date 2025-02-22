@@ -266,9 +266,9 @@ public class RobotContainer {
                 Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
                 Command algaeShootCmd = new AlgaeShootCmd(m_algae);
                 Command algaeDefaultCmd = new AlgaeDefaultCmd(m_algae);
-                Command algaeAnalogCommand = new AlgaeAnalogCmd(m_algae, () -> m_controllerTwo.getRightX());
-                // m_algae.setDefaultCommand(algaeAnalogCmd);
-                m_algae.setDefaultCommand(algaeDefaultCmd);
+                Command algaeAnalogCommand = new AlgaeAnalogCmd(m_algae, () -> m_copilotController.getRightX());
+                m_algae.setDefaultCommand(algaeAnalogCommand);
+                // m_algae.setDefaultCommand(algaeDefaultCmd);
                 m_driveController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(.15)));
                 m_driveController.leftBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(.0)));
                 m_driveController.rightBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(-.15)));
@@ -319,7 +319,7 @@ public class RobotContainer {
                 m_copilotController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
                 Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_copilotController.getRightX());
                 Command slamCoral = new CoralCmd(m_coral, .03, -.2);
-                m_coral.setDefaultCommand(wristAnalog);
+                // m_coral.setDefaultCommand(wristAnalog);
                 m_controllerTwo.y().whileTrue(slamCoral);
         }
 
