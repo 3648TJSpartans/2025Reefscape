@@ -22,3 +22,7 @@ In order to build and run the robot code, you'll need the following:
 **RoboRIO:** `10.##.##.2` \
 **Limelight:** `http://limelight.local:5801` \
 **Radio:** `10.##.##.1`
+
+## Control Schemes
+![Driver Controller](assets/DriverController.png)
+![Copilot Controller](assets/CopilotController.png)
