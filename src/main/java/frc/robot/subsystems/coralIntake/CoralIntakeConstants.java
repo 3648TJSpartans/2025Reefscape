@@ -31,7 +31,7 @@ public class CoralIntakeConstants {
     public static final double L3Angle = .34;
     public static final double L4Angle = .326;
     public static final double IntakeAngle = .94;
-
+    public static final double slamAngle = .06;
     public static final double marginOfError = 0.05; // this is how close the robot has to be to target rotation to
     // stop,
     // needs tuning
