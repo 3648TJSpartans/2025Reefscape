@@ -36,8 +36,13 @@ public class CoralSmartLevelCmd extends Command {
     @Override
     public void execute() {
         updateHandA();
-        m_elevator.elevateTo(height);
-        m_coralIntake.rotateTo(angle);
+        if (m_elevator.getHeight() < AutonConstants.elevatorCutoff
+                && m_coralIntake.getAngle() > AutonConstants.coralCutoff) {
+            m_elevator.elevateTo(AutonConstants.elevatorCutoff + 1);
+        } else {
+            m_elevator.elevateTo(height);
+            m_coralIntake.rotateTo(angle);
+        }
         Logger.recordOutput("Commands/CoralSmartCommand/setHeight", height);
         Logger.recordOutput("Commands/CoralSmartCommand/setAngle", angle);
     }
