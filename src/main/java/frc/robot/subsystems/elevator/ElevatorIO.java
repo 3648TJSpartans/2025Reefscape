@@ -39,4 +39,8 @@ public interface ElevatorIO {
 
     public default void zeroElevator() {
     }
+
+    public default boolean getLimitReset() {
+        return true;
+    }
 }

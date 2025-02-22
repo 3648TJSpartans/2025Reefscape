@@ -56,4 +56,8 @@ public class Elevator extends SubsystemBase {
   public void zeroElevator() {
     io.zeroElevator();
   }
+
+  public boolean getLimitReset() {
+    return io.getLimitReset();
+  }
 }
