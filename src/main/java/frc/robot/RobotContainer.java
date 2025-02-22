@@ -265,8 +265,10 @@ public class RobotContainer {
         public void configureAlgae() {
                 Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
                 Command algaeShootCmd = new AlgaeShootCmd(m_algae);
+                Command algaeDefaultCmd = new AlgaeDefaultCmd(m_algae);
                 Command algaeAnalogCommand = new AlgaeAnalogCmd(m_algae, () -> m_controllerTwo.getRightX());
-                m_algae.setDefaultCommand(algaeAnalogCommand);
+                // m_algae.setDefaultCommand(algaeAnalogCmd);
+                m_algae.setDefaultCommand(algaeDefaultCmd);
                 m_driveController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(.15)));
                 m_driveController.leftBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(.0)));
                 m_driveController.rightBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(-.15)));
@@ -406,20 +408,28 @@ public class RobotContainer {
                 m_copilotController.leftBumper()
                                 .onTrue(new InstantCommand(
                                                 () -> CoralSequentialCmd.setAutonState(AutonState.LEFTREEF)));
+                m_copilotController.leftBumper().and(() -> override)
+                                .whileTrue(new InstantCommand(() -> m_coral.setSpeed(0.5)));
+                m_copilotController.leftBumper().and(() -> override)
+                                .whileFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
+                m_copilotController.rightBumper().and(() -> override)
+                                .whileTrue(new InstantCommand(() -> m_coral.setSpeed(-0.5)));
+                m_copilotController.rightBumper().and(() -> override)
+                                .whileFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
                 m_copilotController.rightBumper()
                                 .onTrue(new InstantCommand(
                                                 () -> CoralSequentialCmd.setAutonState(AutonState.RIGHTREEF)));
                 m_driveController.leftTrigger().whileTrue(smartSequentialCommand);
-                m_driveController.rightTrigger().whileTrue(homeElevator);
+                m_copilotController.leftTrigger().whileTrue(homeElevator);
                 // m_driveController.y().onTrue(coralSource);
-                m_driveController.y().whileTrue(
-                                Commands.sequence(
+                m_driveController.rightTrigger().whileTrue(
+                                new ConditionalCommand(intake, Commands.sequence(
                                                 Commands.parallel(
 
                                                                 new DriveToNearestIntake(m_drive),
 
                                                                 AutoBuildingBlocks.intakeSource(m_elevator, m_coral)),
-                                                new CoralInCmd(m_coral)));
+                                                new CoralInCmd(m_coral)), () -> override));
         }
 
         public Command getAutonomousCommand() {
