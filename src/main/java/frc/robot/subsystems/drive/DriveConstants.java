@@ -55,13 +55,13 @@ public class DriveConstants {
         // Constants for 3649 Protobot Chassis
         public static final int frontLeftDriveCanId = 8;
         public static final int backLeftDriveCanId = 6;
-        public static final int frontRightDriveCanId = 2;
-        public static final int backRightDriveCanId = 4;
+        public static final int frontRightDriveCanId = 4;
+        public static final int backRightDriveCanId = 2;
 
         public static final int frontLeftTurnCanId = 7;
         public static final int backLeftTurnCanId = 5;
-        public static final int frontRightTurnCanId = 1;
-        public static final int backRightTurnCanId = 3;
+        public static final int frontRightTurnCanId = 3;
+        public static final int backRightTurnCanId = 1;
 
         // Drive motor configuration
         public static final int driveMotorCurrentLimit = 50;
