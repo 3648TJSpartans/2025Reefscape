@@ -278,7 +278,7 @@ public class RobotContainer {
                 configureSetpoints();
                 configureAlerts();
                 m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> toggleOverride()));
-                m_led.setLedPattern(LedConstants.rainbow);
+                m_led.setLedPattern(LedConstants.rainbow, m_led.elevatorBuffer);
 
         }
 

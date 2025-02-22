@@ -71,7 +71,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         Logger.recordOutput("CoralSequentialCommand/AutonState", state.toString());
     }
 
-    public int getLevel() {
+    public static int getLevel() {
         return level;
     }
 
