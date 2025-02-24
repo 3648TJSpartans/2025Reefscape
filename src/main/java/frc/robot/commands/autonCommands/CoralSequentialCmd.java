@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.commands.coralCommands.CoralCmd;
+import frc.robot.commands.coralCommands.SlamCoralCmd;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
 import frc.robot.commands.goToCommands.AutonConstants;
@@ -41,7 +42,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
                         driveCommand,
                         coralCommand,
                         new WaitCommand(1),
-                        slam ? new CoralCmd(m_coralIntake, .05, -.2) : null));
+                        slam ? new SlamCoralCmd(coralIntake) : null));
     }
 
     public static void setLevel(int level) {
