@@ -98,6 +98,7 @@ import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
 import frc.robot.commands.coralCommands.ElevatorCmd;
 import frc.robot.commands.coralCommands.HomeElevatorCmd;
+import frc.robot.commands.coralCommands.SlamCoralCmd;
 import frc.robot.commands.coralCommands.ElevatorAnalogCmd;
 import frc.robot.commands.coralCommands.WristCmd;
 import frc.robot.commands.coralCommands.WristAnalogCmd;
@@ -121,7 +122,6 @@ import org.littletonrobotics.junction.Logger;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-
   // Subsystems
   private final Drive m_drive;
   private final Vision m_vision;
@@ -239,7 +239,7 @@ public class RobotContainer {
     Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
     Command coralIn = new CoralInCmd(m_coral);
-    Command slamCoral = new CoralCmd(m_coral, .05, -.2);
+    Command slamCoral = new SlamCoralCmd(m_coral);
     NamedCommands.registerCommand("homeElevator", homeElevator);
     NamedCommands.registerCommand("l4", l4);
     NamedCommands.registerCommand("l3", l3);
@@ -332,14 +332,13 @@ public class RobotContainer {
         // .finallyDo(() -> leds.endgameAlert = false)
         );
   }
-
   public void configureAlgae() {
     Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
     Command algaeShootCmd = new AlgaeShootCmd(m_algae);
     Command algaeDefaultCmd = new AlgaeDefaultCmd(m_algae);
-    Command algaeAnalogCommand = new AlgaeAnalogCmd(m_algae, () -> m_controllerTwo.getRightX());
-    // m_algae.setDefaultCommand(algaeAnalogCmd);
-    m_algae.setDefaultCommand(algaeDefaultCmd);
+    Command algaeAnalogCommand = new AlgaeAnalogCmd(m_algae, () -> m_copilotController.getRightX());
+    m_algae.setDefaultCommand(algaeAnalogCommand);
+    // m_algae.setDefaultCommand(algaeDefaultCmd);
     m_driveController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(.15)));
     m_driveController.leftBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(.0)));
     m_driveController.rightBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(-.15)));
@@ -389,7 +388,7 @@ public class RobotContainer {
     m_copilotController.b().onTrue(new InstantCommand(() -> m_coral.setSpeed(-.15)));
     m_copilotController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
     Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_copilotController.getRightX());
-    Command slamCoral = new CoralCmd(m_coral, .03, -.2);
+    Command slamCoral = new SlamCoralCmd(m_coral);
     m_coral.setDefaultCommand(wristAnalog);
     m_controllerTwo.y().whileTrue(slamCoral);
   }
@@ -534,12 +533,10 @@ public class RobotContainer {
     // NamedCommands.registerCommand("coralIn", coralIn);
     // NamedCommands.registerCommand("slamCoral", slamCoral);
   }
-
   public void toggleOverride() {
     override = !override;
     Logger.recordOutput("Override", override);
   }
-
   // Creates controller rumble command
   private Command controllerRumbleCommand() {
     return Commands.startEnd(

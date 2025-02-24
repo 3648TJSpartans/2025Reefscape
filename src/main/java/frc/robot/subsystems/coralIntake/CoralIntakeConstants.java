@@ -20,17 +20,22 @@ public class CoralIntakeConstants {
     public static final double kWristD = 0.1;
     public static final double kWristFF = 0;
     public static final double wristOdometryFrequency = 100;
-    public static final double kWristMinRange = -0.5;
-    public static final double kWristMaxRange = 0.75;
+    public static final double kWristMinRange = -1;
+    public static final double kWristMaxRange = 1;
     public static final boolean wristEncoderInverted = false;
     public static final double wristEncoderPositionFactor = 1;
     // this is the angle for the wrist and is subject to change for each level
     public static final double anglevalue = 45;
-    public static final double L1Angle = .03;
-    public static final double L2Angle = .12;
-    public static final double L3Angle = .34;
-    public static final double L4Angle = .326;
-    public static final double IntakeAngle = .83;
+
+    public static final double L1Angle = .1;
+    public static final double L2Angle = .2;
+    public static final double L3Angle = .28;
+    public static final double L4Angle = .4;
+    public static final double IntakeAngle = .723;
+
+    public static final double minAngle = 0.1;
+    public static double maxAngle = 0.95;
+
 
     public static final double marginOfError = 0.05; // this is how close the robot has to be to target rotation to
     // stop,
