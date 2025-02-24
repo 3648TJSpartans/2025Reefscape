@@ -138,4 +138,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     public void zeroElevator() {
         setZero();
     }
+    @Override
+    public boolean getLimitReset(){
+        return limitReset;
+    }
 }
