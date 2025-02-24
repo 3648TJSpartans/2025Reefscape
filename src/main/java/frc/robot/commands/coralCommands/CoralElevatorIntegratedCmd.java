@@ -1,6 +1,7 @@
 package frc.robot.commands.coralCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.goToCommands.AutonConstants;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
 import frc.robot.subsystems.elevator.Elevator;
@@ -28,8 +29,13 @@ public class CoralElevatorIntegratedCmd extends Command {
 
     @Override
     public void execute() {
-        m_elevator.elevateTo(height);
-        m_coralIntake.rotateTo(angle);
+        if (m_elevator.getHeight() < AutonConstants.elevatorCutoff
+                && m_coralIntake.getAngle() > AutonConstants.coralCutoff) {
+            m_elevator.elevateTo(AutonConstants.elevatorCutoff + 1);
+        } else {
+            m_elevator.elevateTo(height);
+            m_coralIntake.rotateTo(angle);
+        }
     }
 
     @Override

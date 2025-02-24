@@ -22,6 +22,8 @@ public class AutonConstants {
     public static final double ffMinRadius = 0.2;
     public static final double ffMaxRadius = 0.6;
     public static final int defaultLevel = 4;
+    public static final double coralCutoff = .8;
+    public static final double elevatorCutoff = 5;
 
     public static class PoseConstants {
         public final static Pose2d rightReef = new Pose2d(2.9, 3.73, Rotation2d.fromDegrees(0));
