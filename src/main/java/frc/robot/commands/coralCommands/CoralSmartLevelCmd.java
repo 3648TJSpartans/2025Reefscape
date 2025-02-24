@@ -1,6 +1,11 @@
 package frc.robot.commands.coralCommands;
 
+import java.util.function.Supplier;
+
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.autonCommands.AutoBuildingBlocks;
 import frc.robot.commands.goToCommands.AutonConstants;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
@@ -8,27 +13,29 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorConstants;
 import frc.robot.util.TunableNumber;
 
-public class CoralElevatorIntegratedCmd extends Command {
+public class CoralSmartLevelCmd extends Command {
     private final CoralIntake m_coralIntake;
     private final Elevator m_elevator;
-    private final double height;
-    private final double angle;
+    private double height;
+    private double angle;
+    private Supplier<Integer> level;
 
-    public CoralElevatorIntegratedCmd(CoralIntake coralIntake, Elevator elevator, double height, double angle) {
+    public CoralSmartLevelCmd(CoralIntake coralIntake, Elevator elevator, Supplier<Integer> level) {
         m_coralIntake = coralIntake;
         m_elevator = elevator;
-        this.height = height;
-        this.angle = angle;
+        this.level = level;
         addRequirements(m_coralIntake);
         addRequirements(m_elevator);
     }
 
     @Override
     public void initialize() {
+        updateHandA();
     }
 
     @Override
     public void execute() {
+        updateHandA();
         if (m_elevator.getHeight() < AutonConstants.elevatorCutoff
                 && m_coralIntake.getAngle() > AutonConstants.coralCutoff) {
             m_elevator.elevateTo(AutonConstants.elevatorCutoff + 1);
@@ -36,6 +43,8 @@ public class CoralElevatorIntegratedCmd extends Command {
             m_elevator.elevateTo(height);
             m_coralIntake.rotateTo(angle);
         }
+        Logger.recordOutput("Commands/CoralSmartCommand/setHeight", height);
+        Logger.recordOutput("Commands/CoralSmartCommand/setAngle", angle);
     }
 
     @Override
@@ -56,4 +65,29 @@ public class CoralElevatorIntegratedCmd extends Command {
                 (m_coralIntake.getAngle() < (angle + coralIntakeMargin));
     }
 
+    public void updateHandA() {
+        switch (level.get()) {
+            case 1:
+                angle = CoralIntakeConstants.L1Angle;
+                height = ElevatorConstants.coralLeveL1;
+                break;
+            case 2:
+                angle = CoralIntakeConstants.L2Angle;
+                height = ElevatorConstants.coralLeveL2;
+                break;
+            case 3:
+                angle = CoralIntakeConstants.L3Angle;
+                height = ElevatorConstants.coralLeveL3;
+                break;
+            case 4:
+                angle = CoralIntakeConstants.L4Angle;
+                height = ElevatorConstants.coralLeveL4;
+                break;
+            default:
+                // SEE HERE
+
+                System.out.println("IF THIS IS RUNNING< YOU %#$! UP!, Go To Coral Smart Command");
+                System.out.println("Level Inputed: " + level.get());
+        }
+    }
 }

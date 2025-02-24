@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -34,10 +35,16 @@ import frc.robot.commands.AlgaeAnalogCmd;
 import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
+import frc.robot.commands.goToCommands.DriveToNearest;
+import frc.robot.commands.goToCommands.DriveToNearestIntake;
+import frc.robot.commands.goToCommands.DriveToPose;
+import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
+import frc.robot.commands.autonCommands.AutoBuildingBlocks;
 import frc.robot.commands.autonCommands.CoralSequentialCmd;
+import frc.robot.commands.autonCommands.SourceParallelCmd;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.AlignCommands;
@@ -56,6 +63,7 @@ import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.util.AllianceFlipUtil;
 import frc.robot.util.TunableNumber;
 import frc.robot.util.TunableNumber;
 import frc.robot.subsystems.algae.AlgaeConstants;
@@ -86,12 +94,17 @@ import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
 import frc.robot.commands.coralCommands.ElevatorCmd;
 import frc.robot.commands.coralCommands.HomeElevatorCmd;
+import frc.robot.commands.coralCommands.SlamCoralCmd;
 import frc.robot.commands.coralCommands.ElevatorAnalogCmd;
 import frc.robot.commands.coralCommands.WristCmd;
 import frc.robot.commands.coralCommands.WristAnalogCmd;
 
+import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import java.util.List;
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
+import org.littletonrobotics.junction.Logger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -111,6 +124,8 @@ public class RobotContainer {
   private final Elevator m_elevator;
   private ClimberSubsystem m_climber;
   private AlgaeSubsystem m_algae;
+  private boolean override;
+
   // Controller
   private final CommandXboxController m_driveController = new CommandXboxController(0);
   private final CommandXboxController m_copilotController = new CommandXboxController(1);
@@ -122,7 +137,11 @@ public class RobotContainer {
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
+
   public RobotContainer() {
+    Logger.recordOutput("Poses/shouldFlip", AllianceFlipUtil.shouldFlip());
+    Logger.recordOutput("Override", override);
+    override = false;
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
@@ -190,6 +209,33 @@ public class RobotContainer {
         });
         break;
     }
+
+    Command homeElevator = new HomeElevatorCmd(m_elevator);
+    Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
+        new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
+    Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
+        new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
+    Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
+        new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
+    Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
+        new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
+    Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+        ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
+    Command coralIn = new CoralInCmd(m_coral);
+    Command slamCoral = new SlamCoralCmd(m_coral);
+    NamedCommands.registerCommand("homeElevator", homeElevator);
+    NamedCommands.registerCommand("l4", l4);
+    NamedCommands.registerCommand("l3", l3);
+    NamedCommands.registerCommand("l2", l2);
+    NamedCommands.registerCommand("l1", l1);
+    NamedCommands.registerCommand("intakePos", intakePos);
+    NamedCommands.registerCommand("intake", coralIn);
+    NamedCommands.registerCommand("slamCoral", slamCoral);
+
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
     configureAutoChooser();
@@ -206,40 +252,36 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // configureAutos();
     configureAlgae();
     configureClimber();
     configureCoralIntake();
     configureDrive();
     configureElevator();
     configureSetpoints();
-    configureAutos();
+    m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> toggleOverride()));
+
   }
-
-  public void cancelCommand(Command cmd) {
-    if (cmd.isScheduled()) {
-
-      System.out.println(cmd + " canceled");
-
-      cmd.cancel();
-    }
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
 
   public void configureAlgae() {
-    Command algaeDefaultCmd = new AlgaeDefaultCmd(m_algae);
     Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
     Command algaeShootCmd = new AlgaeShootCmd(m_algae);
-    m_copilotController.a().whileTrue(algaeIntakeCmd);
-    m_copilotController.b().whileTrue(algaeShootCmd);
+    Command algaeDefaultCmd = new AlgaeDefaultCmd(m_algae);
+    Command algaeAnalogCommand = new AlgaeAnalogCmd(m_algae, () -> m_copilotController.getRightX());
+    m_algae.setDefaultCommand(algaeAnalogCommand);
     // m_algae.setDefaultCommand(algaeDefaultCmd);
+    m_driveController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(.15)));
+    m_driveController.leftBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(.0)));
+    m_driveController.rightBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(-.15)));
+    m_driveController.rightBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(.0)));
+    m_driveController.b().whileTrue(algaeIntakeCmd);
+    m_driveController.y().whileTrue(algaeShootCmd);// TODO
   }
 
   public void configureAutoChooser() {
+    // configureAutos();
+    // System.out.println("!!!!!!!!!!!!!!!!finished of
+    // configureAutos!!!!!!!!!!!!!!!!!!!");
     // Set up SysId routines
     autoChooser.addOption(
         "Drive Wheel Radius Characterization",
@@ -262,31 +304,23 @@ public class RobotContainer {
   }
 
   public void configureClimber() {
-    Command climberCmd = new ClimberAnalogCmd(m_climber, () -> m_copilotController.getRightX());
+    Command climberCmd = new ClimberAnalogCmd(m_climber, () -> m_copilotController.getLeftX());
     m_climber.setDefaultCommand(climberCmd);
     Command climberUpCmd = new ClimberUpCmd(m_climber);
-    m_driveController.povUp().whileTrue(climberUpCmd);
+    m_copilotController.y().whileTrue(climberUpCmd);
 
   }
 
   public void configureCoralIntake() {
     Command coralIn = new CoralInCmd(m_coral);
     Command coralOut = new CoralOutCmd(m_coral);
-    Command wrist = new WristCmd(m_coral, new TunableNumber("WristAngle", CoralIntakeConstants.anglevalue).get());
-    Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_controllerTwo.getRightX());
-    Command slamCoral = new CoralCmd(m_coral, .05, -.2);
+    m_copilotController.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.15)));
+    m_copilotController.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
+    m_copilotController.b().onTrue(new InstantCommand(() -> m_coral.setSpeed(-.15)));
+    m_copilotController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
+    Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_copilotController.getRightX());
+    Command slamCoral = new SlamCoralCmd(m_coral);
     // m_coral.setDefaultCommand(wristAnalog);
-    // m_controllerTwo.povUp().onTrue(l1);
-    // m_controllerTwo.povRight().onTrue(l2);
-    // m_controllerTwo.povDown().onTrue(l3);
-    // m_controllerTwo.povLeft().onTrue(l4);
-    m_coral.setDefaultCommand(wristAnalog);
-    m_driveController.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.15)));
-    m_driveController.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
-    m_driveController.b().onTrue(new InstantCommand(() -> m_coral.setSpeed(-.15)));
-    m_driveController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
-    // m_controllerTwo.b().whileTrue(coralOut); // change back to copilot after
-    // testing// Subject to Change
     m_controllerTwo.y().whileTrue(slamCoral);
   }
 
@@ -300,14 +334,14 @@ public class RobotContainer {
             () -> -m_driveController.getRightX()));
 
     // Lock to 0° when A button is held
-    m_driveController
-        .b()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                m_drive,
-                () -> m_driveController.getLeftY(),
-                () -> m_driveController.getLeftX(),
-                () -> new Rotation2d()));
+    // m_driveController
+    // .b()
+    // .whileTrue(
+    // DriveCommands.joystickDriveAtAngle(
+    // m_drive,
+    // () -> m_driveController.getLeftY(),
+    // () -> m_driveController.getLeftX(),
+    // () -> new Rotation2d()));
 
     // Switch to X pattern when X button is pressed
     m_driveController.x().onTrue(Commands.runOnce(m_drive::stopWithX, m_drive));
@@ -323,20 +357,13 @@ public class RobotContainer {
                         new Rotation2d())),
                 m_drive)
                 .ignoringDisable(true));
-    Command alignLeftReef = new DriveToPose(m_drive, () -> PoseConstants.leftReef);
-    m_driveController.leftBumper().whileTrue(alignLeftReef);
-    Command alignRightReef = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
-    m_driveController.rightBumper().whileTrue(alignRightReef);
-    Command alignCoralStation = new DriveToPose(m_drive, () -> PoseConstants.rightReef);
-    m_driveController.y().whileTrue(alignCoralStation);
-    Command goToNearestRightCommand = new DriveToNearest(m_drive, () -> PoseConstants.rightReefPoints());
-    m_controllerTwo.rightTrigger().whileTrue(goToNearestRightCommand);
   }
 
   public void configureElevator() {
 
     Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
     m_elevator.setDefaultCommand(elevatorAnalog);
+
   }
 
   public void configureSetpoints() {
@@ -356,20 +383,54 @@ public class RobotContainer {
         new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
     Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
         ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
-    Command sequential = new CoralSequentialCmd(m_drive, m_coral, m_elevator, false, 3, true);
+    Command smartSequentialCommand = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true);
+    // Command coralSource = new SourceParallelCmd(m_drive, m_coral, m_elevator);
     m_controllerTwo.povUp().whileTrue(l1);
     m_controllerTwo.povRight().whileTrue(l2);
     m_controllerTwo.povDown().whileTrue(l3);
     m_controllerTwo.povLeft().whileTrue(l4);
     m_controllerTwo.leftBumper().whileTrue(intake);
-    m_driveController.leftTrigger().whileTrue(sequential);
-    m_driveController.rightTrigger().whileTrue(homeElevator);
+    // m_driveController.rightBumper().onTrue(sequentialRight);
+    // m_driveController.leftBumper().onTrue(sequentialLeft);
+    // m_driveController.leftBumper().onFalse(new InstantCommand(() ->
+    // cancelCommand(sequentialLeft)));
+    // m_driveController.rightBumper().onFalse(new InstantCommand(() ->
+    // cancelCommand(sequentialRight)));
+    // m_driveController.leftBumper().whileTrue(leftDriveCommand);
+    // m_driveController.rightBumper().whileTrue(rightDriveCommand);
+    m_copilotController.povUp().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(1)));
+    m_copilotController.povRight().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(2)));
+    m_copilotController.povDown().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(3)));
+    m_copilotController.povLeft().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(4)));
+    m_copilotController.povUp().and(() -> override).whileTrue(l1);
+    m_copilotController.povLeft().and(() -> override).whileTrue(l2);
+    m_copilotController.povDown().and(() -> override).whileTrue(l3);
+    m_copilotController.povRight().and(() -> override).whileTrue(l4);
+    m_copilotController.leftBumper()
+        .onTrue(new InstantCommand(
+            () -> CoralSequentialCmd.setAutonState(AutonState.LEFTREEF)));
+    m_copilotController.leftBumper().and(() -> override)
+        .whileTrue(new InstantCommand(() -> m_coral.setSpeed(0.5)));
+    m_copilotController.leftBumper().and(() -> override)
+        .whileFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
+    m_copilotController.rightBumper().and(() -> override)
+        .whileTrue(new InstantCommand(() -> m_coral.setSpeed(-0.5)));
+    m_copilotController.rightBumper().and(() -> override)
+        .whileFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
+    m_copilotController.rightBumper()
+        .onTrue(new InstantCommand(
+            () -> CoralSequentialCmd.setAutonState(AutonState.RIGHTREEF)));
+    m_driveController.leftTrigger().whileTrue(smartSequentialCommand);
+    m_copilotController.leftTrigger().whileTrue(homeElevator);
+    // m_driveController.y().onTrue(coralSource);
+    m_driveController.rightTrigger().whileTrue(
+        new ConditionalCommand(intake, Commands.sequence(
+            Commands.parallel(
 
-    // The Below command is ONLY for testing and should be removed in the final
-    // build. This allows you to zero the elevator without a limit switch
-    // m_controllerTwo.leftBumper().onTrue(new InstantCommand(() ->
-    // m_elevator.zeroElevator()));
-    m_controllerTwo.leftTrigger().whileTrue(homeElevator);
+                new DriveToNearestIntake(m_drive),
+
+                AutoBuildingBlocks.intakeSource(m_elevator, m_coral)),
+            new CoralInCmd(m_coral)), () -> override));
   }
 
   public Command getAutonomousCommand() {
@@ -377,30 +438,36 @@ public class RobotContainer {
   }
 
   public void configureAutos() {
-    Command homeElevator = new HomeElevatorCmd(m_elevator);
-    Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
-        new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
-    Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
-        new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
-    Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
-        new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
-    Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
-        new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
-    Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
-        ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
-    Command coralIn = new CoralInCmd(m_coral);
-    Command slamCoral = new CoralCmd(m_coral, .05, -.2);
-    NamedCommands.registerCommand("homeElevator", homeElevator);
-    NamedCommands.registerCommand("l4", l4);
-    NamedCommands.registerCommand("l3", l3);
-    NamedCommands.registerCommand("l2", l2);
-    NamedCommands.registerCommand("l1", l1);
-    NamedCommands.registerCommand("intakePos", intakePos);
-    NamedCommands.registerCommand("coralIn", coralIn);
-    NamedCommands.registerCommand("slamCoral", slamCoral);
+    // Command homeElevator = new HomeElevatorCmd(m_elevator);
+    // Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
+    // new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
+    // Command l2 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // new TunableNumber("Elevator/Height/L2", ElevatorConstants.coralLeveL2).get(),
+    // new TunableNumber("Elevator/Angle/L2", CoralIntakeConstants.L2Angle).get());
+    // Command l3 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // new TunableNumber("Elevator/Height/L3", ElevatorConstants.coralLeveL3).get(),
+    // new TunableNumber("Elevator/Angle/L3", CoralIntakeConstants.L3Angle).get());
+    // Command l4 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // new TunableNumber("Elevator/Height/L4", ElevatorConstants.coralLeveL4).get(),
+    // new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
+    // Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
+    // ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
+    // Command coralIn = new CoralInCmd(m_coral);
+    // Command slamCoral = new CoralCmd(m_coral, .05, -.2);
+    // NamedCommands.registerCommand("homeElevator", homeElevator);
+    // NamedCommands.registerCommand("l4", l4);
+    // NamedCommands.registerCommand("l3", l3);
+    // NamedCommands.registerCommand("l2", l2);
+    // NamedCommands.registerCommand("l1", l1);
+    // NamedCommands.registerCommand("intakePos", intakePos);
+    // NamedCommands.registerCommand("coralIn", coralIn);
+    // NamedCommands.registerCommand("slamCoral", slamCoral);
   }
+
+  public void toggleOverride() {
+    override = !override;
+    Logger.recordOutput("Override", override);
+  }
+
 }

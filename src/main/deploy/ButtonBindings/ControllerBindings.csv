@@ -1,0 +1,51 @@
+Drive Controller,Subsystem,Command
+RightJoystickX,Swerve,Turn
+RightJoystickY,,
+LeftJoystickX,Swerve,X
+LeftJoystickY,Swerve,Y
+A,Swerve ,Set 0 Rotation
+B,Algae,Down
+Y,Algae,Up
+X,Swerve,X Stop
+POVUp,,
+POVRight,,
+POVDown,,
+POVLeft,,
+LeftBumper,,
+RightBumper,,
+LeftTrigger,,
+RightTrigger,Elevator,Home
+Copilot Controller,,
+RightJoystickX,,
+RightJoystickY,,
+LeftJoystickX,,
+LeftJoystickY,,
+A,,
+B,,
+Y,Climber,Climb
+X,,
+POVUp,Auton,Set L1
+POVRight,Auton,Set L2
+POVDown,Auton,Set L3
+POVLeft,Auton,Set L4
+LeftBumper,Auton,Set Left Reef
+RightBumper,Auton,Set Right Reef
+LeftTrigger,Auton,Run Auton
+RightTrigger,,
+Test Controller,,
+RightJoystickX,Climber,Analog
+RightJoystickY,,
+LeftJoystickX,Elevator,Analog
+LeftJoystickY,,
+A,Intake,In(Manual)
+B,Intake,Out(Manual)
+Y,,
+X,,
+POVUp,Coral,L1
+POVRight,Coral,L2
+POVDown,Coral,L3
+POVLeft,Coral,L4
+LeftBumper,Coral,Intake
+RightBumper,,
+LeftTrigger,,
+RightTrigger,,

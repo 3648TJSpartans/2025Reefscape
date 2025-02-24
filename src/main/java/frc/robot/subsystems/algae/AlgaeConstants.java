@@ -17,9 +17,9 @@ public class AlgaeConstants {
     public static final double liftEncoderVelocityFactor = 1.0;
     public static final double liftOdometryFrequency = 100.0;
 
-    public static final double liftIntakePosition = 0.28;
-    public static final double liftUpWithBall = 0.12;
-    public static final double liftUpWithoutBall = 0.06;
-    public static final double shoot = 0.23;
-    public static final double liftIntakeFromElevation = 0.19;
+    public static final double liftIntakePosition = 0.970;
+    public static final double liftUpWithBall = 0.775;
+    public static final double liftUpWithoutBall = 0.716;
+    public static final double shoot = 0.924;
+    public static final double liftIntakeFromElevation = 0.885;
 }

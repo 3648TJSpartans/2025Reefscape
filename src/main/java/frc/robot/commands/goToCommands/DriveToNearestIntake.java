@@ -17,6 +17,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
+import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.GeomUtil;
 import frc.robot.util.TunableNumber;
@@ -28,7 +29,7 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
 import org.littletonrobotics.junction.Logger;
 
-public class DriveToNearest extends Command {
+public class DriveToNearestIntake extends Command {
         private static final TunableNumber drivekP = new TunableNumber("DriveToPose/DrivekP");
         private static final TunableNumber drivekD = new TunableNumber("DriveToPose/DrivekD");
         private static final TunableNumber thetakP = new TunableNumber("DriveToPose/ThetakP");
@@ -80,29 +81,28 @@ public class DriveToNearest extends Command {
         private Supplier<Translation2d> linearFF = () -> Translation2d.kZero;
         private DoubleSupplier omegaFF = () -> 0.0;
 
-        public DriveToNearest(Drive drive, Supplier<Pose2d[]> targets) {
+        public DriveToNearestIntake(Drive drive) {
                 this.drive = drive;
                 robot = drive::getPose;
-                this.targetPoints = targets;
-                this.target = () -> nearestPoint(robot, targets);
+                this.targetPoints = () -> PoseConstants.coralStations;
+                this.target = () -> nearestPoint(robot, targetPoints);
                 // Enable continuous input for theta controller
                 thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
                 addRequirements(drive);
         }
 
-        public DriveToNearest(Drive drive, Supplier<Pose2d[]> targets, Supplier<Pose2d> robot) {
-                this(drive, targets);
+        public DriveToNearestIntake(Drive drive, Supplier<Pose2d> robot) {
+                this(drive);
                 this.robot = robot;
         }
 
-        public DriveToNearest(
+        public DriveToNearestIntake(
                         Drive drive,
-                        Supplier<Pose2d[]> targets,
                         Supplier<Pose2d> robot,
                         Supplier<Translation2d> linearFF,
                         DoubleSupplier omegaFF) {
-                this(drive, targets, robot);
+                this(drive, robot);
                 this.linearFF = linearFF;
                 this.omegaFF = omegaFF;
         }

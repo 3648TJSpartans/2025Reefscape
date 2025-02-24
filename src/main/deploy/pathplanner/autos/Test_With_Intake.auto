@@ -5,45 +5,33 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Far_Top_Start_to_Branch_A"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "l4"
+            "name": "intake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Branch_A_to_Top_Source"
+            "pathName": "Bottom_Source_to_Branch_B"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "intakePos"
+            "name": "l3"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "coralIn"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Top_Source_to_Branch_B"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "l4"
+            "name": "slamCoral"
           }
         }
       ]

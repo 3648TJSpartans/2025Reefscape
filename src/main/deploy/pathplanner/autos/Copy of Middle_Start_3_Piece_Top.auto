@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Middle_Start_to_Branch_J"
+                  "pathName": "Bottom_Middle_Start_to_Branch_E"
                 }
               },
               {
@@ -30,19 +30,13 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "slamCoral"
-          }
-        },
-        {
           "type": "sequential",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Branch_J_to_Top_Source"
+                  "pathName": "Branch_E_to_Bottom_Source"
                 }
               },
               {
@@ -67,7 +61,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Top_Source_to_Branch_L"
+                  "pathName": "Bottom_Source_to_Branch_C"
                 }
               },
               {
@@ -80,19 +74,13 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "slamCoral"
-          }
-        },
-        {
           "type": "sequential",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Branch_L_to_Top_Source"
+                  "pathName": "Branch_C_to_Bottom_Source"
                 }
               },
               {
@@ -117,7 +105,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Top_Source_to_Branch_K"
+                  "pathName": "Bottom_Source_to_Branch_D"
                 }
               },
               {
@@ -127,12 +115,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "slamCoral"
           }
         }
       ]
