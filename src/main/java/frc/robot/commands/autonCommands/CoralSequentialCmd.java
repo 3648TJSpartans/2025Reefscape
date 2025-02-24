@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.commands.coralCommands.CoralCmd;
+import frc.robot.commands.coralCommands.SlamCoralCmd;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
 import frc.robot.commands.goToCommands.AutonConstants;
@@ -27,9 +28,10 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
     private static int level = AutonConstants.defaultLevel; // Defualt Level
     private static AutonState autonState = AutonState.RIGHTREEF;
 
-
     public CoralSequentialCmd(Drive drive, CoralIntake coralIntake,
             Elevator elevator, boolean slam) {
+        Logger.recordOutput("CoralSequentialCommand/level", level);
+        Logger.recordOutput("CoralSequentialCommand/AutonState", autonState.toString());
         m_coralIntake = coralIntake;
         m_elevator = elevator;
         m_drive = drive;
@@ -40,7 +42,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
                         driveCommand,
                         coralCommand,
                         new WaitCommand(1),
-                        slam ? new CoralCmd(m_coralIntake, .05, -.2) : null));
+                        slam ? new SlamCoralCmd(coralIntake) : null));
     }
 
     public static void setLevel(int level) {
@@ -50,15 +52,14 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
 
     public static Pose2d[] poses() {
         if (autonState == AutonState.RIGHTREEF) {
-            return PoseConstants.rightReefPoints();
+            return PoseConstants.rightReefPoints;
         } else if (autonState == AutonState.LEFTREEF) {
 
-            return PoseConstants.leftReefPoints();
+            return PoseConstants.leftReefPoints;
         } else {
             System.out.println("return Null");
             System.out.println("Auton State: " + autonState.toString());
             return null;
-
 
         }
     }

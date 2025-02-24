@@ -18,7 +18,7 @@ public class ElevatorAnalogCmd extends Command {
 
     @Override
     public void execute() {
-        elevator.setSpeed(rightStickSupplier.getAsDouble() * 0.1);
+        elevator.setSpeed(rightStickSupplier.getAsDouble() * 0.5);
     }
 
     @Override
