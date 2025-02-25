@@ -84,6 +84,7 @@ import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 
 import frc.robot.commands.coralCommands.CoralCmd;
+import frc.robot.commands.coralCommands.CoralDefaultCmd;
 import frc.robot.commands.climberCommands.*;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIO;
@@ -158,7 +159,9 @@ public class RobotContainer {
                         case REAL:
                                 // Real robot, instantiate hardware IO implementations
                                 m_climber = new ClimberSubsystem(new ClimberIOSparkMax());
+
                                 m_algae = new AlgaeSubsystem(new AlgaeIOSparkMax());
+
                                 m_drive = new Drive(
                                                 new GyroIONavX(),
                                                 new ModuleIOSpark(0),
@@ -197,6 +200,7 @@ public class RobotContainer {
 
                                 });
                                 break;
+                    
                         default:
                                 // Replayed robot, disable IO implementations
                                 m_drive = new Drive(
@@ -332,18 +336,23 @@ public class RobotContainer {
         }
 
         public void configureAlgae() {
-                Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
-                Command algaeShootCmd = new AlgaeShootCmd(m_algae);
-                Command algaeDefaultCmd = new AlgaeDefaultCmd(m_algae);
-                Command algaeAnalogCommand = new AlgaeAnalogCmd(m_algae, () -> m_copilotController.getRightX());
-                m_algae.setDefaultCommand(algaeAnalogCommand);
+                // Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
+                // Command algaeShootCmd = new AlgaeShootCmd(m_algae);
+                // Command algaeDefaultCmd = new AlgaeDefaultCmd(m_algae);
+                // Command algaeAnalogCommand = new AlgaeAnalogCmd(m_algae, () ->
+                // m_copilotController.getRightX());
+                // m_algae.setDefaultCommand(algaeAnalogCommand);
                 // m_algae.setDefaultCommand(algaeDefaultCmd);
-                m_driveController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(.15)));
-                m_driveController.leftBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(.0)));
-                m_driveController.rightBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(-.15)));
-                m_driveController.rightBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(.0)));
-                m_driveController.b().whileTrue(algaeIntakeCmd);
-                m_driveController.y().whileTrue(algaeShootCmd);// TODO
+                // m_driveController.leftBumper().onTrue(new InstantCommand(() ->
+                // m_algae.setIntakeSpeed(.15)));
+                // m_driveController.leftBumper().onFalse(new InstantCommand(() ->
+                // m_algae.setIntakeSpeed(.0)));
+                // m_driveController.rightBumper().onTrue(new InstantCommand(() ->
+                // m_algae.setIntakeSpeed(-.15)));
+                // m_driveController.rightBumper().onFalse(new InstantCommand(() ->
+                // m_algae.setIntakeSpeed(.0)));
+                // m_driveController.b().whileTrue(algaeIntakeCmd);
+                // m_driveController.y().whileTrue(algaeShootCmd);
         }
 
         public void configureAutoChooser() {
@@ -388,7 +397,9 @@ public class RobotContainer {
                 m_copilotController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
                 Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_copilotController.getRightX());
                 Command slamCoral = new SlamCoralCmd(m_coral);
-                m_coral.setDefaultCommand(wristAnalog);
+
+                // m_coral.setDefaultCommand(wristAnalog);
+
                 m_controllerTwo.y().whileTrue(slamCoral);
         }
 
@@ -428,9 +439,13 @@ public class RobotContainer {
         }
 
         public void configureElevator() {
-
+                Command homeElevator = new HomeElevatorCmd(m_elevator);
+                Command coralDefaultCommand = new CoralDefaultCmd(m_coral, m_elevator);
                 Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
-                m_elevator.setDefaultCommand(elevatorAnalog);
+                m_elevator.setDefaultCommand(coralDefaultCommand);
+                m_coral.setDefaultCommand(coralDefaultCommand);
+                new Trigger(() -> DriverStation.isTeleopEnabled() && !m_elevator.getLimitReset())
+                                .whileTrue(homeElevator);
 
         }
 

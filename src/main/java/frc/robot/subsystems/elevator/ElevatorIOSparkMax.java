@@ -40,8 +40,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         motor = new SparkMax(ElevatorConstants.coralElevator, MotorType.kBrushless);
         motorController = motor.getClosedLoopController();
         limitReset = false;
-        Logger.recordOutput("Subsystems/Elevator/EncoderReset", false);
-        Logger.recordOutput("Subsystems/Elevator/Setpoint", 0);
+        Logger.recordOutput("Elevator/EncoderReset", false);
+        Logger.recordOutput("Elevator/Setpoint", 0.0);
         encoder = motor.getEncoder();
         var motorConfig = new SparkMaxConfig();
         motorConfig.idleMode(IdleMode.kBrake);// idle mode here!
