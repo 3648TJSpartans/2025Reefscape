@@ -281,6 +281,11 @@ public class RobotContainer {
         }
 
         private void configureTest() {
+                m_controllerTwo.leftTrigger().onTrue(new InstantCommand(
+                                () -> m_objectiveTracker.setObjectiveValue(
+                                                m_objectiveTracker.getObjectives(() -> 4)[0].asFilled(true)))
+                                .andThen(new InstantCommand(() -> m_objectiveTracker.getObjectivePoses())));
+
                 m_controllerTwo.rightTrigger()
                                 .whileTrue(new DriveToNearestObjective(m_drive, m_objectiveTracker, () -> 4));
         }

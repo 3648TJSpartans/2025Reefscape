@@ -3,6 +3,8 @@ package frc.robot.util.objectiveTracking;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 
@@ -138,6 +140,7 @@ public class ObjectiveTracker {
         return out.toArray(outArr);
     }
 
+    @AutoLogOutput(key = "ObjectiveTracker/Poses")
     public Pose2d[] getObjectivePoses() {
         ObjectiveTrackerObject[] objectivePoses = getObjectives();
         Pose2d[] out = new Pose2d[objectivePoses.length];
@@ -147,6 +150,7 @@ public class ObjectiveTracker {
         return out;
     }
 
+    @AutoLogOutput(key = "ObjectiveTracker/Poses")
     public Pose2d[] getObjectivePoses(Supplier<Integer> level) {
         ObjectiveTrackerObject[] objectivePoses = getObjectives(level);
         Pose2d[] out = new Pose2d[objectivePoses.length];
@@ -156,6 +160,7 @@ public class ObjectiveTracker {
         return out;
     }
 
+    @AutoLogOutput(key = "ObjectiveTracker/Poses")
     public Pose2d[] getObjectivePoses(Reefpoint reefpoint) {
         ObjectiveTrackerObject[] objectivePoses = getObjectives(reefpoint);
         Pose2d[] out = new Pose2d[objectivePoses.length];
