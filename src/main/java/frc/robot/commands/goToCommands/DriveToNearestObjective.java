@@ -20,6 +20,8 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.GeomUtil;
 import frc.robot.util.TunableNumber;
+import frc.robot.util.objectiveTracking.ObjectiveTracker;
+import frc.robot.util.objectiveTracking.ObjectiveTrackerObject;
 
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -65,7 +67,6 @@ public class DriveToNearestObjective extends Command {
 
         private final Drive drive;
         private final Supplier<Pose2d> target;
-        private final Supplier<Pose2d[]> targetPoints;
         private final ProfiledPIDController driveController = new ProfiledPIDController(
                         0.0, 0.0, 0.0, new TrapezoidProfile.Constraints(0.0, 0.0), 0.02);
         private final ProfiledPIDController thetaController = new ProfiledPIDController(
@@ -76,33 +77,36 @@ public class DriveToNearestObjective extends Command {
         private double thetaErrorAbs = 0.0;
         private boolean running = false;
         private Supplier<Pose2d> robot;
-
+        private final ObjectiveTracker m_objectiveTracker;
         private Supplier<Translation2d> linearFF = () -> Translation2d.kZero;
         private DoubleSupplier omegaFF = () -> 0.0;
+        private ObjectiveTrackerObject targetInfo;
 
-        public DriveToNearestObjective(Drive drive, Supplier<Pose2d[]> targets) {
+        public DriveToNearestObjective(Drive drive, ObjectiveTracker objectiveTracker, Supplier<Integer> level) {
                 this.drive = drive;
                 robot = drive::getPose;
-                this.targetPoints = targets;
-                this.target = () -> nearestPoint(robot, targets);
+                this.m_objectiveTracker = objectiveTracker;
+                this.target = () -> nearestObjectivePose(robot, objectiveTracker, level).getPose();
                 // Enable continuous input for theta controller
                 thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
                 addRequirements(drive);
         }
 
-        public DriveToNearestObjective(Drive drive, Supplier<Pose2d[]> targets, Supplier<Pose2d> robot) {
-                this(drive, targets);
+        public DriveToNearestObjective(Drive drive, ObjectiveTracker objectiveTracker, Supplier<Integer> level,
+                        Supplier<Pose2d> robot) {
+                this(drive, objectiveTracker, level);
                 this.robot = robot;
         }
 
         public DriveToNearestObjective(
                         Drive drive,
-                        Supplier<Pose2d[]> targets,
+                        ObjectiveTracker objectiveTracker,
                         Supplier<Pose2d> robot,
+                        Supplier<Integer> level,
                         Supplier<Translation2d> linearFF,
                         DoubleSupplier omegaFF) {
-                this(drive, targets, robot);
+                this(drive, objectiveTracker, level, robot);
                 this.linearFF = linearFF;
                 this.omegaFF = omegaFF;
         }
@@ -287,6 +291,10 @@ public class DriveToNearestObjective extends Command {
                 // Clear logs
                 Logger.recordOutput("DriveToPose/Setpoint", new Pose2d[] {});
                 Logger.recordOutput("DriveToPose/Goal", new Pose2d[] {});
+                if (!interrupted) {
+                        targetInfo.setFilled(true);
+                        m_objectiveTracker.setObjectiveValue(targetInfo);
+                }
                 System.out.println("!!!!!!!!!!!!!!!DriveToNearest finished!!!!!!!!!!!!!");
         }
 
@@ -317,20 +325,42 @@ public class DriveToNearestObjective extends Command {
                                 && Math.abs(thetaErrorAbs) < thetaTolerance.getRadians();
         }
 
-        public Pose2d nearestPoint(Supplier<Pose2d> robotPose, Supplier<Pose2d[]> targetPoints) {
-                Pose2d[] points = targetPoints.get();
+        // public Pose2d nearestPoint(Supplier<Pose2d> robotPose, Supplier<Pose2d[]>
+        // targetPoints) {
+        // Pose2d[] points = targetPoints.get();
+        // Pose2d drivePose = robotPose.get();
+        // Pose2d targetPose = points[0];
+        // double minDistance = Double.MAX_VALUE;
+        // for (Pose2d point : points) {
+        // double distance =
+        // drivePose.getTranslation().getDistance(point.getTranslation());
+        // if (distance < minDistance) {
+        // minDistance = distance;
+        // targetPose = point;
+        // }
+        // }
+        // System.out.println("nearestPoint ran");
+        // return targetPose;
+
+        // }
+
+        public ObjectiveTrackerObject nearestObjectivePose(Supplier<Pose2d> robotPose,
+                        ObjectiveTracker objectiveTracker, Supplier<Integer> level) {
+                ObjectiveTrackerObject[] pointInfo = objectiveTracker.getObjectives(level);
+                Pose2d[] points = objectiveTracker.getObjectivePoses(level);
                 Pose2d drivePose = robotPose.get();
-                Pose2d targetPose = points[0];
+                ObjectiveTrackerObject targetTrackerObject = pointInfo[0];
+                int criticalPoseId = 0;
                 double minDistance = Double.MAX_VALUE;
-                for (Pose2d point : points) {
-                        double distance = drivePose.getTranslation().getDistance(point.getTranslation());
+                for (int i = 0; i < points.length; i++) {
+                        double distance = drivePose.getTranslation().getDistance(points[i].getTranslation());
                         if (distance < minDistance) {
                                 minDistance = distance;
-                                targetPose = point;
+                                targetTrackerObject = pointInfo[i];
+
                         }
                 }
-                System.out.println("nearestPoint ran");
-                return targetPose;
-
+                this.targetInfo = targetTrackerObject;
+                return targetTrackerObject;
         }
 }

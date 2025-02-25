@@ -165,5 +165,12 @@ public class ObjectiveTracker {
         return out;
     }
 
-    public void update
+    public void setObjectiveValue(ObjectiveTrackerObject objectiveTrackerObject) {
+        for (ObjectiveTrackerObject value : objectives) {
+            if (value.getReefpoint() == objectiveTrackerObject.getReefpoint()
+                    && value.getLevel() == objectiveTrackerObject.getLevel()) {
+                value = objectiveTrackerObject;
+            }
+        }
+    }
 }
