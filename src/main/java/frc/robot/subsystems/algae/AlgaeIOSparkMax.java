@@ -103,6 +103,6 @@ public class AlgaeIOSparkMax implements AlgaeIO {
 
         @Override
         public void updateValues() {
-                Logger.recordOutput("Algae/EncoderPosition", liftEncoder.getPosition());
+                Logger.recordOutput("Subsystems/Algae/EncoderPosition", liftEncoder.getPosition());
         }
 }

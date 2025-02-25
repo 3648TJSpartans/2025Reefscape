@@ -214,17 +214,17 @@ public class DriveToPose extends Command {
                                                 currentPose.getRotation()));
 
                 // Log data
-                Logger.recordOutput("DriveToPose/DistanceMeasured", currentDistance);
-                Logger.recordOutput("DriveToPose/DistanceSetpoint", driveController.getSetpoint().position);
-                Logger.recordOutput("DriveToPose/ThetaMeasured", currentPose.getRotation().getRadians());
-                Logger.recordOutput("DriveToPose/ThetaSetpoint", thetaController.getSetpoint().position);
+                Logger.recordOutput("Commands/DriveToPose/DistanceMeasured", currentDistance);
+                Logger.recordOutput("Commands/DriveToPose/DistanceSetpoint", driveController.getSetpoint().position);
+                Logger.recordOutput("Commands/DriveToPose/ThetaMeasured", currentPose.getRotation().getRadians());
+                Logger.recordOutput("Commands/DriveToPose/ThetaSetpoint", thetaController.getSetpoint().position);
                 Logger.recordOutput(
                                 "DriveToPose/Setpoint",
                                 new Pose2d(
                                                 lastSetpointTranslation,
                                                 Rotation2d.fromRadians(thetaController.getSetpoint().position)));
-                Logger.recordOutput("DriveToPose/Goal", targetPose);
-                Logger.recordOutput("DriveToPose/Trajectory", currentPose, targetPose);
+                Logger.recordOutput("Commands/DriveToPose/Goal", targetPose);
+                Logger.recordOutput("Commands/DriveToPose/Trajectory", currentPose, targetPose);
 
         }
 
@@ -233,8 +233,8 @@ public class DriveToPose extends Command {
                 drive.stop();
                 running = false;
                 // Clear logs
-                Logger.recordOutput("DriveToPose/Setpoint", new Pose2d[] {});
-                Logger.recordOutput("DriveToPose/Goal", new Pose2d[] {});
+                Logger.recordOutput("Commands/DriveToPose/Setpoint", new Pose2d[] {});
+                Logger.recordOutput("Commands/DriveToPose/Goal", new Pose2d[] {});
                 System.out.println("<<<<<<<<<<<<<<<<<DRIVE TO POSE FINISHED>>>>>>>>>>>>>>>>>>>>>>>");
         }
 

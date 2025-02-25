@@ -30,8 +30,8 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
 
     public CoralSequentialCmd(Drive drive, CoralIntake coralIntake,
             Elevator elevator, boolean slam) {
-        Logger.recordOutput("CoralSequentialCommand/level", level);
-        Logger.recordOutput("CoralSequentialCommand/AutonState", autonState.toString());
+        Logger.recordOutput("Commands/CoralSequentialCommand/level", level);
+        Logger.recordOutput("Commands/CoralSequentialCommand/AutonState", autonState.toString());
         m_coralIntake = coralIntake;
         m_elevator = elevator;
         m_drive = drive;
@@ -47,7 +47,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
 
     public static void setLevel(int level) {
         CoralSequentialCmd.level = level;
-        Logger.recordOutput("CoralSequentialCommand/level", level);
+        Logger.recordOutput("Commands/CoralSequentialCommand/level", level);
     }
 
     public static Pose2d[] poses() {
@@ -66,7 +66,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
 
     public static void setAutonState(AutonState state) {
         CoralSequentialCmd.autonState = state;
-        Logger.recordOutput("CoralSequentialCommand/AutonState", state.toString());
+        Logger.recordOutput("Commands/CoralSequentialCommand/AutonState", state.toString());
     }
 
     public int getLevel() {

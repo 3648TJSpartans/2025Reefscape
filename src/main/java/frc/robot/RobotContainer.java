@@ -51,7 +51,6 @@ import frc.robot.commands.autonCommands.CoralSequentialCmd;
 import frc.robot.commands.autonCommands.SourceParallelCmd;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToPose;
-import frc.robot.commands.AlignCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
@@ -160,7 +159,9 @@ public class RobotContainer {
                         case REAL:
                                 // Real robot, instantiate hardware IO implementations
                                 m_climber = new ClimberSubsystem(new ClimberIOSparkMax());
-                                // m_algae = new AlgaeSubsystem(new AlgaeIOSparkMax());
+
+                                m_algae = new AlgaeSubsystem(new AlgaeIOSparkMax());
+
                                 m_drive = new Drive(
                                                 new GyroIONavX(),
                                                 new ModuleIOSpark(0),
@@ -199,7 +200,7 @@ public class RobotContainer {
 
                                 });
                                 break;
-
+                    
                         default:
                                 // Replayed robot, disable IO implementations
                                 m_drive = new Drive(
@@ -351,7 +352,7 @@ public class RobotContainer {
                 // m_driveController.rightBumper().onFalse(new InstantCommand(() ->
                 // m_algae.setIntakeSpeed(.0)));
                 // m_driveController.b().whileTrue(algaeIntakeCmd);
-                // m_driveController.y().whileTrue(algaeShootCmd);// TODO
+                // m_driveController.y().whileTrue(algaeShootCmd);
         }
 
         public void configureAutoChooser() {
@@ -396,7 +397,9 @@ public class RobotContainer {
                 m_copilotController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
                 Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_copilotController.getRightX());
                 Command slamCoral = new SlamCoralCmd(m_coral);
+
                 // m_coral.setDefaultCommand(wristAnalog);
+
                 m_controllerTwo.y().whileTrue(slamCoral);
         }
 

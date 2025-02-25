@@ -91,7 +91,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     @Override
     public void elevateTo(double position) {
         if (limitReset) {
-            Logger.recordOutput("Elevator/Setpoint", position);
+            Logger.recordOutput("Subsystems/Elevator/Setpoint", position);
             motorController.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
         }
     }
@@ -107,12 +107,12 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     @Override
     public void updateValues() {
-        Logger.recordOutput("Elevator/EncoderValue", encoder.getPosition());
+        Logger.recordOutput("Subsystems/Elevator/EncoderValue", encoder.getPosition());
     }
 
     @Override
     public void updateLimitSwitch() {
-        Logger.recordOutput("Elevator/LimitSwitchPushed", !limitSwitch.get());
+        Logger.recordOutput("Subsystems/Elevator/LimitSwitchPushed", !limitSwitch.get());
         if (!limitSwitch.get()) {
             setZero();
         }
@@ -126,7 +126,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     private void setZero() {
         encoder.setPosition(0);
         limitReset = true;
-        Logger.recordOutput("Elevator/EncoderReset", limitReset);
+        Logger.recordOutput("Subsystems/Elevator/EncoderReset", limitReset);
     }
 
     @Override

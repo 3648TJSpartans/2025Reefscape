@@ -15,7 +15,7 @@ public class AlgaeShootCmd extends Command {
     @Override
     public void execute() {
         algaeSubsystem.setLiftPosition(AlgaeConstants.shoot);// lift down
-        if (Math.floor(algaeSubsystem.getLiftPosition()*100) == 0.23) {
+        if (Math.floor(algaeSubsystem.getLiftPosition() * 100) == 0.23) {
             algaeSubsystem.setIntakeSpeed(-0.5);
         } else {
             algaeSubsystem.setIntakeSpeed(0);
