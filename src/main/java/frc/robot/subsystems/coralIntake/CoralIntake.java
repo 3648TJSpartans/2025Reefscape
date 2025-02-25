@@ -47,10 +47,7 @@ public class CoralIntake extends SubsystemBase {
   }
 
   public void setSpeed(double speed) {
-    if ((CoralIntakeConstants.minAngle < getAngle() || speed > 0)
-        && (CoralIntakeConstants.minAngle > getAngle() || speed < 0)) {
-      io.setSpeed(speed);
-    }
+    io.setSpeed(speed);
   }
 
   public boolean getIR() {
@@ -58,6 +55,9 @@ public class CoralIntake extends SubsystemBase {
   }
 
   public void setWristSpeed(double speed) {
-    io.setWristSpeed(speed);
+    if ((CoralIntakeConstants.minAngle < getAngle() || speed >= 0)
+        && (CoralIntakeConstants.minAngle > getAngle() || speed <= 0)) {
+      io.setWristSpeed(speed);
+    }
   }
 }
