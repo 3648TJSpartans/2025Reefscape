@@ -33,3 +33,14 @@ These can be used to access their respective component's web interfaces, or for 
 - [Phoenix](https://maven.ctr-electronics.com/release/)
 - [Studica](https://dev.studica.com/releases/2025/Studica-2025.0.0.json)
 - [UCRL](https://raw.githubusercontent.com/Mechanical-Advantage/URCL/maven/URCL.json)
+
+## Best Practices:
+- For the proper functioning of swerve, it is best practice to recalibrate the NavX Gyro. To do this, go to the board, hold down the CAL button for 5 seconds, and then hold the RES button for another 5.
+
+## References
+### Local IPs
+*`##.##`* should be replaced with the robot's team number (e.g. `10.36.48`). \
+**RoboRIO:** `10.##.##.2` \
+**Limelight 3:** `http://limelight-three.local:5801` \
+**Limelight 2+:** `http://limelight-twoplus.local:5801` \
+**Radio:** `10.##.##.1`
