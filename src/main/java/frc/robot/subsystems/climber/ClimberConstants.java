@@ -31,11 +31,11 @@ public class ClimberConstants {
     public static final boolean followEncoderInverted = false;
     public static final double followEncoderPositionFactor = 1;
 
-    public static final double upPosition1 = 0.134; // change later //left
-    public static final double upPosition2 = 0.004; // change later //right
+    public static final double upPosition1 = 0.025; // change later //left
+    public static final double upPosition2 = 0.025; // change later //right
 
     public static final double downPosition1 = 1; // placeholder value
-    public static final double downPosition2 = 1; // placeholder value
+    public static final double downPosition2 = 0.45; // placeholder value
     // These might need flipping
 
 }
