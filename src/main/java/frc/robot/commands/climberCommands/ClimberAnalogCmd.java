@@ -18,9 +18,19 @@ public class ClimberAnalogCmd extends Command {
 
     @Override
     public void execute() {
-        if (rightStickSupplier.getAsDouble() > 0) {
-            if (climberSubsystem.getPosition() < ClimberConstants.downPosition1) {
+        if (rightStickSupplier.getAsDouble() < 0) {
+            if (climberSubsystem.getPosition() > ClimberConstants.upPosition2) {
                 climberSubsystem.setSpeed(rightStickSupplier.getAsDouble() * 0.25);
+            } else {
+                climberSubsystem.setSpeed(0);
+
+            }
+        } else {
+            if (climberSubsystem.getPosition() < ClimberConstants.downPosition2) {
+                climberSubsystem.setSpeed(rightStickSupplier.getAsDouble() * 0.25);
+            } else {
+                climberSubsystem.setSpeed(0);
+
             }
         }
 
