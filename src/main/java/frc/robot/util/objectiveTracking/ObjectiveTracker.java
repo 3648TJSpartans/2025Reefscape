@@ -2,10 +2,10 @@ package frc.robot.util.objectiveTracking;
 
 import java.util.ArrayList;
 import java.util.function.Supplier;
-
 import org.littletonrobotics.junction.AutoLogOutput;
-
+import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 
 public class ObjectiveTracker {
@@ -103,9 +103,22 @@ public class ObjectiveTracker {
                 new ObjectiveTrackerObject(Defualt_L, false, Reefpoint.L, 3),
                 new ObjectiveTrackerObject(Defualt_L, false, Reefpoint.L, 4)
         };
+        updateLoggedPoses();
     }
 
     public ObjectiveTrackerObject[] getObjectives() {
+        ArrayList<ObjectiveTrackerObject> out = new ArrayList<ObjectiveTrackerObject>();
+
+        for (ObjectiveTrackerObject objective : objectives) {
+            if (!objective.getFilled()) {
+                out.add(objective);
+            }
+        }
+        ObjectiveTrackerObject[] outArr = new ObjectiveTrackerObject[out.size()];
+        return out.toArray(outArr);
+    }
+
+    public ObjectiveTrackerObject[] getObjectivesFilled() {
         ArrayList<ObjectiveTrackerObject> out = new ArrayList<ObjectiveTrackerObject>();
 
         for (ObjectiveTrackerObject objective : objectives) {
@@ -121,7 +134,7 @@ public class ObjectiveTracker {
         int levelNum = level.get();
         ArrayList<ObjectiveTrackerObject> out = new ArrayList<ObjectiveTrackerObject>();
         for (ObjectiveTrackerObject objective : objectives) {
-            if (objective.getLevel() == levelNum && objective.getFilled()) {
+            if (objective.getLevel() == levelNum && !objective.getFilled()) {
                 out.add(objective);
             }
         }
@@ -132,7 +145,7 @@ public class ObjectiveTracker {
     public ObjectiveTrackerObject[] getObjectives(Reefpoint reefpoint) {
         ArrayList<ObjectiveTrackerObject> out = new ArrayList<ObjectiveTrackerObject>();
         for (ObjectiveTrackerObject objective : objectives) {
-            if (objective.getReefpoint() == reefpoint && objective.getFilled()) {
+            if (objective.getReefpoint() == reefpoint && !objective.getFilled()) {
                 out.add(objective);
             }
         }
@@ -170,6 +183,21 @@ public class ObjectiveTracker {
         return out;
     }
 
+    public void updateLoggedPoses() {
+        ObjectiveTrackerObject[] objectivePoses = getObjectives();
+        Pose3d[] out = new Pose3d[objectivePoses.length];
+        for (int i = 0; i < objectivePoses.length; i++) {
+            out[i] = objectivePoses[i].getPose3d();
+        }
+        Logger.recordOutput("ObjectiveTracker/UnfilledPoses", out);
+        objectivePoses = getObjectivesFilled();
+        out = new Pose3d[objectivePoses.length];
+        for (int i = 0; i < objectivePoses.length; i++) {
+            out[i] = objectivePoses[i].getPose3d();
+        }
+        Logger.recordOutput("ObjectiveTracker/FilledPoses", out);
+    }
+
     public void setObjectiveValue(ObjectiveTrackerObject objectiveTrackerObject) {
         for (ObjectiveTrackerObject value : objectives) {
             if (value.getReefpoint() == objectiveTrackerObject.getReefpoint()
@@ -177,5 +205,6 @@ public class ObjectiveTracker {
                 value = objectiveTrackerObject;
             }
         }
+        updateLoggedPoses();
     }
 }
