@@ -26,12 +26,17 @@ public class CoralIntakeConstants {
     public static final double wristEncoderPositionFactor = 1;
     // this is the angle for the wrist and is subject to change for each level
     public static final double anglevalue = 45;
-    public static final double L1Angle = .03;
-    public static final double L2Angle = .12;
-    public static final double L3Angle = .34;
-    public static final double L4Angle = .326;
-    public static final double IntakeAngle = .94;
 
+    public static final double L1Angle = .1;
+    public static final double L2Angle = .2;
+    public static final double L3Angle = .28;
+    public static final double L4Angle = .4;
+    public static final double IntakeAngle = .723;
+
+    public static final double minAngle = 0.1;
+    public static final double maxAngle = 0.95;
+
+    public static final double slamAngle = 0.06;
     public static final double marginOfError = 0.05; // this is how close the robot has to be to target rotation to
     // stop,
     // needs tuning
