@@ -55,9 +55,10 @@ public class CoralIntake extends SubsystemBase {
   }
 
   public void setWristSpeed(double speed) {
-    if ((CoralIntakeConstants.minAngle < getAngle() || speed >= 0)
-        && (CoralIntakeConstants.minAngle > getAngle() || speed <= 0)) {
-      io.setWristSpeed(speed);
-    }
+    // if ((CoralIntakeConstants.minAngle < getAngle() || speed >= 0)
+    // && (CoralIntakeConstants.minAngle > getAngle() || speed <= 0)) {
+    // io.setWristSpeed(speed);
+    // }
+    io.setWristSpeed(speed);
   }
 }

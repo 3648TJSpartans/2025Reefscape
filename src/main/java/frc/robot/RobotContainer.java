@@ -435,9 +435,11 @@ public class RobotContainer {
         }
 
         public void configureElevator() {
-
+                Command homeElevator = new HomeElevatorCmd(m_elevator);
                 Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
                 m_elevator.setDefaultCommand(elevatorAnalog);
+                new Trigger(() -> DriverStation.isTeleopEnabled() && !m_elevator.getLimitReset())
+                                .whileTrue(homeElevator);
 
         }
 

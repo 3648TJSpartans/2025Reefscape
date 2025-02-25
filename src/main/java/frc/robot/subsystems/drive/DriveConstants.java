@@ -21,7 +21,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 
 public class DriveConstants {
-        public static final double maxSpeedMetersPerSec = 2; // 4.46
+        public static final double maxSpeedMetersPerSec = 4; // 4.46 is max on rev product page, 2 is what it was before
         public static final double odometryFrequency = 100.0; // Hz
         public static final double trackWidth = .6;
         public static final double wheelBase = .6;
@@ -65,7 +65,7 @@ public class DriveConstants {
 
         // Drive motor configuration
         public static final int driveMotorCurrentLimit = 50;
-        public static final double wheelRadiusMeters = Units.inchesToMeters(1.5);
+        public static final double wheelRadiusMeters = Units.inchesToMeters(1.458);
         public static final double driveMotorReduction = (45.0 * 22.0) / (13.0 * 15.0); // MAXSwerve with 14 pinion
                                                                                         // teeth
                                                                                         // and 22 spur teeth
@@ -82,8 +82,8 @@ public class DriveConstants {
         // Drive PID configuration
         public static final double driveKp = 0.0;
         public static final double driveKd = 0.0;
-        public static final double driveKs = 0.0;
-        public static final double driveKv = 0.1;
+        public static final double driveKs = 0.14381;
+        public static final double driveKv = 0.10033;
         public static final double driveSimP = 0.05;
         public static final double driveSimD = 0.0;
         public static final double driveSimKs = 0.0;
