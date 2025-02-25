@@ -27,6 +27,7 @@ public class SlamCoralCmd extends Command {
     @Override
     public void execute() {
         coralIntake.rotateTo(CoralIntakeConstants.slamAngle);
+        coralIntake.setSpeed(1);
     }
 
     // Called once the command ends or is interrupted.
@@ -34,6 +35,7 @@ public class SlamCoralCmd extends Command {
     public void end(boolean interrupted) {
         // coralIntake.stopIntakeMotor();
         coralIntake.stopWristMotor();
+        coralIntake.setSpeed(0);
     }
 
     // Returns true when the command should end.

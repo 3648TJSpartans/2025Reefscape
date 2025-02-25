@@ -41,9 +41,10 @@ public class CoralIntake extends SubsystemBase {
 
   public void rotateTo(double setAngle) {
     Logger.recordOutput("Intake/setAngle", setAngle);
-    if (CoralIntakeConstants.minAngle < setAngle && setAngle < CoralIntakeConstants.maxAngle) {
-      io.rotateTo(setAngle);
-    }
+    // if (CoralIntakeConstants.minAngle < setAngle && setAngle <
+    // CoralIntakeConstants.maxAngle) {
+    io.rotateTo(setAngle);
+    // }
   }
 
   public void setSpeed(double speed) {

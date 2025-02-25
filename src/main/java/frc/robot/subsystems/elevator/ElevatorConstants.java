@@ -12,13 +12,13 @@ public class ElevatorConstants {
     public static final double coralLeveL1 = 0; // this is a momentary value that will be changed later
     public static final double coralLeveL2 = 0.15; // this is a momentary value that will be changed later
     public static final double coralLeveL3 = 0.69; // this is a momentary value that will be changed later
-    public static final double coralLeveL4 = 60;
+    public static final double coralLeveL4 = 53;
     public static final double intakePose = 0;// this is the postion for the intake
     // these are the constants for the elevator pid
     public static final double kElevatorP = .3;
     public static final double kElevatorI = 0;
     public static final double kElevatorD = 0.1;
-    public static final double kElevatorFF = 0;
+    public static final double kElevatorFF = 0.1;
     public static final double odometryFrequency = 100;
     public static final double kElevatorMinRange = -.45;
     public static final double kElevatorMaxRange = .45;
@@ -27,7 +27,7 @@ public class ElevatorConstants {
     public static final double elevatorEncoderVelocityFactor = 1;
     public static final int bottomLimitSwitchPin = 2;
 
-    public static final double marginOfError = 1; // this is how close the robot has to be to target height to stop,
+    public static final double marginOfError = 2; // this is how close the robot has to be to target height to stop,
                                                   // needs tuning
 
 }
