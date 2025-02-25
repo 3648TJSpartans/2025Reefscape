@@ -199,10 +199,17 @@ public class ObjectiveTracker {
     }
 
     public void setObjectiveValue(ObjectiveTrackerObject objectiveTrackerObject) {
+        setObjectiveValue(objectiveTrackerObject.getReefpoint(), objectiveTrackerObject.getLevel(),
+                objectiveTrackerObject.getFilled());
+        updateLoggedPoses();
+    }
+
+    public void setObjectiveValue(Reefpoint reefpoint, int level, boolean state) {
         for (ObjectiveTrackerObject value : objectives) {
-            if (value.getReefpoint() == objectiveTrackerObject.getReefpoint()
-                    && value.getLevel() == objectiveTrackerObject.getLevel()) {
-                value = objectiveTrackerObject;
+            if (value.getReefpoint() == reefpoint
+                    && value.getLevel() == level) {
+                value.setFilled(state);
+                break;
             }
         }
         updateLoggedPoses();
