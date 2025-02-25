@@ -197,7 +197,6 @@ public class RobotContainer {
 
                                 });
                                 break;
-
                         default:
                                 // Replayed robot, disable IO implementations
                                 m_drive = new Drive(
