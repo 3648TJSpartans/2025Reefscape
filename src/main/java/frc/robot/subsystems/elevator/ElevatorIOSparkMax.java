@@ -40,8 +40,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         motor = new SparkMax(ElevatorConstants.coralElevator, MotorType.kBrushless);
         motorController = motor.getClosedLoopController();
         limitReset = false;
-        Logger.recordOutput("Elevator/EncoderReset", false);
-        Logger.recordOutput("Elevator/Setpoint", 0);
+        Logger.recordOutput("Subsystems/Elevator/EncoderReset", false);
+        Logger.recordOutput("Subsystems/Elevator/Setpoint", 0);
         encoder = motor.getEncoder();
         var motorConfig = new SparkMaxConfig();
         motorConfig.idleMode(IdleMode.kBrake);// idle mode here!
@@ -91,7 +91,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     @Override
     public void elevateTo(double position) {
         if (limitReset) {
-            Logger.recordOutput("Elevator/Setpoint", position);
+            Logger.recordOutput("Subsystems/Elevator/Setpoint", position);
             motorController.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
         }
     }
@@ -107,12 +107,12 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     @Override
     public void updateValues() {
-        Logger.recordOutput("Elevator/EncoderValue", encoder.getPosition());
+        Logger.recordOutput("Subsystems/Elevator/EncoderValue", encoder.getPosition());
     }
 
     @Override
     public void updateLimitSwitch() {
-        Logger.recordOutput("Elevator/LimitSwitchPushed", !limitSwitch.get());
+        Logger.recordOutput("Subsystems/Elevator/LimitSwitchPushed", !limitSwitch.get());
         if (!limitSwitch.get()) {
             setZero();
         }
@@ -126,7 +126,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     private void setZero() {
         encoder.setPosition(0);
         limitReset = true;
-        Logger.recordOutput("Elevator/EncoderReset", limitReset);
+        Logger.recordOutput("Subsystems/Elevator/EncoderReset", limitReset);
     }
 
     @Override
@@ -138,8 +138,9 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     public void zeroElevator() {
         setZero();
     }
+
     @Override
-    public boolean getLimitReset(){
+    public boolean getLimitReset() {
         return limitReset;
     }
 }

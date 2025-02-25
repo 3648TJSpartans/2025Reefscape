@@ -100,10 +100,10 @@ public class SwerveAutoAlignStraight extends Command {
     }
     double normalXDif = Math.max(xDif / Math.sqrt(xDif * xDif + yDif * yDif), .5);
     double normalYDif = Math.max(yDif / Math.sqrt(xDif * xDif + yDif * yDif), .5);
-    Logger.recordOutput("Autons/Trajectory", currentPose, targetPose);
-    Logger.recordOutput("Autons/xVelocity", xVel);
-    Logger.recordOutput("Autons/yVelocity", yVel);
-    Logger.recordOutput("Autons/RotationalVelocity", rotVel);
+    Logger.recordOutput("Commands/Autons/Trajectory", currentPose, targetPose);
+    Logger.recordOutput("Commands/Autons/xVelocity", xVel);
+    Logger.recordOutput("Commands/Autons/yVelocity", yVel);
+    Logger.recordOutput("Commands/Autons/RotationalVelocity", rotVel);
     drive.runVelocity(new ChassisSpeeds(xVel * normalXDif, yVel * normalYDif, rotVel));
   }
 

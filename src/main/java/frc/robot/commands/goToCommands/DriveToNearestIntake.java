@@ -169,8 +169,8 @@ public class DriveToNearestIntake extends Command {
                         System.out.println("vars didn't changed");
                 }
 
-                Logger.recordOutput("DriveToPose/varIsChanged", false);
-                Logger.recordOutput("DriveToPose/running", running);
+                Logger.recordOutput("Commands/DriveToPose/varIsChanged", false);
+                Logger.recordOutput("Commands/DriveToPose/running", running);
 
                 // Get current pose and target pose
                 Pose2d currentPose = robot.get();
@@ -186,7 +186,7 @@ public class DriveToNearestIntake extends Command {
                                 0.0,
                                 1.0);
                 System.out.println("ffScaler: " + ffScaler);
-                Logger.recordOutput("DriveToPose/ffScaler", ffScaler);
+                Logger.recordOutput("Commands/DriveToPose/ffScaler", ffScaler);
                 driveErrorAbs = currentDistance;
 
                 System.out.println("driveErrorAbs: " + driveErrorAbs);
@@ -211,7 +211,7 @@ public class DriveToNearestIntake extends Command {
                         driveVelocityScalar = 0.0;
                 System.out.println("driveVelocityScalar after tolerance: " + driveVelocityScalar);
 
-                Logger.recordOutput("DriveToPose/driveVelocityScalar", driveVelocityScalar);
+                Logger.recordOutput("Commands/DriveToPose/driveVelocityScalar", driveVelocityScalar);
                 lastSetpointTranslation = new Pose2d(
                                 targetPose.getTranslation(),
                                 currentPose.getTranslation().minus(targetPose.getTranslation()).getAngle())
@@ -219,7 +219,7 @@ public class DriveToNearestIntake extends Command {
                                 .getTranslation();
                 System.out.println("lastSetpointTranslation: " + lastSetpointTranslation.toString());
 
-                Logger.recordOutput("DriveToPose/lastSetpointTranslation", lastSetpointTranslation);
+                Logger.recordOutput("Commands/DriveToPose/lastSetpointTranslation", lastSetpointTranslation);
 
                 // Calculate theta speed
                 double thetaVelocity = thetaController.getSetpoint().velocity * ffScaler
@@ -235,7 +235,7 @@ public class DriveToNearestIntake extends Command {
 
                 System.out.println("thetaVelocity after tolerance: " + thetaVelocity);
 
-                Logger.recordOutput("DriveToPose/thetaErrorAbs", thetaErrorAbs);
+                Logger.recordOutput("Commands/DriveToPose/thetaErrorAbs", thetaErrorAbs);
 
                 Translation2d driveVelocity = new Pose2d(
                                 new Translation2d(),
@@ -263,20 +263,20 @@ public class DriveToNearestIntake extends Command {
                 System.out.println("runVelocity ran");
 
                 // Log data
-                Logger.recordOutput("DriveToPose/driveVelocity", driveVelocity);
-                Logger.recordOutput("DriveToPose/thetaVelocity", thetaVelocity);
-                Logger.recordOutput("DriveToPose/DistanceMeasured", currentDistance);
-                Logger.recordOutput("DriveToPose/IsFinished", isFinished());
-                Logger.recordOutput("DriveToPose/DistanceSetpoint", driveController.getSetpoint().position);
-                Logger.recordOutput("DriveToPose/ThetaMeasured", currentPose.getRotation().getRadians());
-                Logger.recordOutput("DriveToPose/ThetaSetpoint", thetaController.getSetpoint().position);
+                Logger.recordOutput("Commands/DriveToPose/driveVelocity", driveVelocity);
+                Logger.recordOutput("Commands/DriveToPose/thetaVelocity", thetaVelocity);
+                Logger.recordOutput("Commands/DriveToPose/DistanceMeasured", currentDistance);
+                Logger.recordOutput("Commands/DriveToPose/IsFinished", isFinished());
+                Logger.recordOutput("Commands/DriveToPose/DistanceSetpoint", driveController.getSetpoint().position);
+                Logger.recordOutput("Commands/DriveToPose/ThetaMeasured", currentPose.getRotation().getRadians());
+                Logger.recordOutput("Commands/DriveToPose/ThetaSetpoint", thetaController.getSetpoint().position);
                 Logger.recordOutput(
                                 "DriveToPose/Setpoint",
                                 new Pose2d(
                                                 lastSetpointTranslation,
                                                 Rotation2d.fromRadians(thetaController.getSetpoint().position)));
-                Logger.recordOutput("DriveToPose/Goal", targetPose);
-                Logger.recordOutput("DriveToPose/Trajectory", currentPose, targetPose);
+                Logger.recordOutput("Commands/DriveToPose/Goal", targetPose);
+                Logger.recordOutput("Commands/DriveToPose/Trajectory", currentPose, targetPose);
 
         }
 
@@ -285,7 +285,7 @@ public class DriveToNearestIntake extends Command {
                 drive.stop();
                 running = false;
                 // Clear logs
-                Logger.recordOutput("DriveToPose/Setpoint", new Pose2d[] {});
+                Logger.recordOutput("Commands/DriveToPose/Setpoint", new Pose2d[] {});
                 Logger.recordOutput("DriveToPose/Goal", new Pose2d[] {});
                 System.out.println("!!!!!!!!!!!!!!!DriveToNearest finished!!!!!!!!!!!!!");
         }
