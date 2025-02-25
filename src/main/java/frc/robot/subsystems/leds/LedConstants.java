@@ -11,6 +11,10 @@ public final class LedConstants {
     public static final int ledPWMID = 1;
     public static final int elevatorLedStart = 0;
     public static final int elevatorLedEnd = 60;
+    public static final int leftGuideStart = 61;
+    public static final int leftGuideEnd = 100;
+    public static final int rightGuideStart = 101;
+    public static final int rightGuideEnd = 150;
 
     // Colors & Patterns //
     
@@ -28,6 +32,6 @@ public final class LedConstants {
     public static LEDPattern purpleGradient = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kRed, Color.kBlue);
     
     // Other Patterns
-    public static LEDPattern elevatorMask = LEDPattern.progressMaskLayer(() -> CoralSequentialCmd.getLevel() / 4); // Just a mask, don't use
+    public static LEDPattern elevatorMask = LEDPattern.progressMaskLayer(() -> (double) CoralSequentialCmd.getLevel() / 4); // Just a mask, don't use
     public static LEDPattern elevatorHeight = purple.mask(elevatorMask); // Use this
 }

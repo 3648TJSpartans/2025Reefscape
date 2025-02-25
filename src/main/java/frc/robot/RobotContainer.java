@@ -248,7 +248,7 @@ public class RobotContainer {
                 NamedCommands.registerCommand("l4", l4);
                 NamedCommands.registerCommand("l3", l3);
                 NamedCommands.registerCommand("l2", l2);
-                NamedCommands.registerCommand("l1", l1);
+
                 NamedCommands.registerCommand("intakePos", intakePos);
                 NamedCommands.registerCommand("intake", coralIn);
                 NamedCommands.registerCommand("slamCoral", slamCoral);
@@ -278,8 +278,9 @@ public class RobotContainer {
                 configureSetpoints();
                 configureAlerts();
                 m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> toggleOverride()));
-                m_led.setLedPattern(LedConstants.rainbow, m_led.elevatorBuffer);
-
+                m_led.setLedPattern(LedConstants.elevatorHeight, m_led.elevatorBuffer);
+                m_led.setLedPattern(LedConstants.teal, m_led.leftGuideBuffer);
+                m_led.setLedPattern(LedConstants.yellow, m_led.rightGuideBuffer);
         }
 
         private void configureAlerts() {
