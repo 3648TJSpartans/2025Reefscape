@@ -26,7 +26,7 @@ public class ObjectiveTrackerObject {
         return reefpoint;
     }
 
-    public boolean filled() {
+    public boolean getFilled() {
         return filled;
     }
 
