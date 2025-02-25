@@ -291,10 +291,6 @@ public class DriveToNearestObjective extends Command {
                 // Clear logs
                 Logger.recordOutput("DriveToPose/Setpoint", new Pose2d[] {});
                 Logger.recordOutput("DriveToPose/Goal", new Pose2d[] {});
-                if (!interrupted) {
-                        targetInfo.setFilled(true);
-                        m_objectiveTracker.setObjectiveValue(targetInfo);
-                }
                 System.out.println("!!!!!!!!!!!!!!!DriveToNearest finished!!!!!!!!!!!!!");
         }
 
@@ -362,5 +358,10 @@ public class DriveToNearestObjective extends Command {
                 }
                 this.targetInfo = targetTrackerObject;
                 return targetTrackerObject;
+        }
+
+        public void setTrackerFilled() {
+                targetInfo.setFilled(true);
+                m_objectiveTracker.setObjectiveValue(targetInfo);
         }
 }
