@@ -43,6 +43,8 @@ import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToNearestIntake;
 import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
+import frc.robot.commands.ledTestCommands.TurnGreen;
+import frc.robot.commands.ledTestCommands.TurnRed;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
@@ -133,12 +135,11 @@ public class RobotContainer {
         private ClimberSubsystem m_climber;
         private AlgaeSubsystem m_algae;
         private boolean override;
-
         // Controller
         private final CommandXboxController m_driveController = new CommandXboxController(0);
         private final CommandXboxController m_copilotController = new CommandXboxController(1);
         private final CommandXboxController m_controllerTwo = new CommandXboxController(2);
-
+        private final CommandXboxController m_ledController = new CommandXboxController(3);
         // Dashboard inputs
         private final LoggedDashboardChooser<Command> autoChooser;
 
@@ -270,6 +271,7 @@ public class RobotContainer {
          */
         private void configureButtonBindings() {
                 // configureAutos();
+                configureLeds();
                 configureAlgae();
                 configureClimber();
                 configureCoralIntake();
@@ -278,12 +280,11 @@ public class RobotContainer {
                 configureSetpoints();
                 configureAlerts();
                 m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> toggleOverride()));
-                m_led.setGlobalPattern(LedConstants.elevatorHeight);
                 /*
-                m_led.setLedPattern(LedConstants.elevatorHeight, m_led.elevatorBuffer);
-                m_led.setLedPattern(LedConstants.teal, m_led.leftGuideBuffer);
-                m_led.setLedPattern(LedConstants.yellow, m_led.rightGuideBuffer);
-                */
+                 * m_led.setLedPattern(LedConstants.elevatorHeight, m_led.elevatorBuffer);
+                 * m_led.setLedPattern(LedConstants.teal, m_led.leftGuideBuffer);
+                 * m_led.setLedPattern(LedConstants.yellow, m_led.rightGuideBuffer);
+                 */
         }
 
         private void configureAlerts() {
@@ -393,6 +394,13 @@ public class RobotContainer {
                 Command climberUpCmd = new ClimberUpCmd(m_climber);
                 m_copilotController.y().whileTrue(climberUpCmd);
 
+        }
+
+        public void configureLeds() {
+                Command ledRedCommand = new TurnRed(m_led);
+                Command ledGreenCommand = new TurnGreen(m_led);
+                m_ledController.a().whileTrue(ledRedCommand);
+                m_ledController.b().whileTrue(ledGreenCommand);
         }
 
         public void configureCoralIntake() {
