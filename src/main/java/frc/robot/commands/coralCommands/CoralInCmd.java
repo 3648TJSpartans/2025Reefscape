@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
 import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorConstants;
 
 public class CoralInCmd extends Command {
     private final CoralIntake m_coralIntake;
@@ -31,20 +32,17 @@ public class CoralInCmd extends Command {
         boolean coralInArm = !m_coralIntake.getIR();
         if (coralInSFT) {
             m_coralIntake.setSpeed(CoralIntakeConstants.intakeSpeed);
-            m_elevator.set
-            if (!coralInArm) {
-                m_timer.reset();
-
+            m_elevator.setHeight(ElevatorConstants.intakePose);
+            if (coralInArm && !m_timer.isRunning()) {
+                m_timer.start();
             }
         } else {
-            if (!m_timer.hasElapsed(0.1)) {
-                if (!m_timer.isRunning()) {
-                    m_timer.start();
-                }
-                m_coralIntake.setSpeed(CoralIntakeConstants.intakeSpeed);
-            } else {
-                isFinished = true;
-            }
+            m_coralIntake.setSpeed(0);
+            m_elevator.setHeight(ElevatorConstants.defaultPosition);
+        }
+
+        if (m_timer.hasElapsed(0.1)) {
+            isFinished = true;
         }
     }
 
