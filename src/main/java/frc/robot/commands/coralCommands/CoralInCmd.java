@@ -32,13 +32,13 @@ public class CoralInCmd extends Command {
         boolean coralInArm = !m_coralIntake.getIR();
         if (coralInSFT) {
             m_coralIntake.setSpeed(CoralIntakeConstants.intakeSpeed);
-            m_elevator.setHeight(ElevatorConstants.intakePose);
+            m_elevator.elevateTo(ElevatorConstants.intakePose);
             if (coralInArm && !m_timer.isRunning()) {
                 m_timer.start();
             }
         } else {
             m_coralIntake.setSpeed(0);
-            m_elevator.setHeight(ElevatorConstants.defaultPosition);
+            m_elevator.elevateTo(ElevatorConstants.defaultPosition);
         }
 
         if (m_timer.hasElapsed(0.1)) {
