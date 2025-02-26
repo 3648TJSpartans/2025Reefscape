@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * value not in dashboard.
  */
 public class TunableBoolean {
-  private static final String TABLE_KEY = "TunableNumbers";
+  private static final String TABLE_KEY = "TunableBooleans";
 
   private String key;
   private boolean defaultValue;
