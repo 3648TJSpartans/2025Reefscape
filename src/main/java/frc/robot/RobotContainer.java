@@ -86,6 +86,7 @@ import com.pathplanner.lib.path.PathConstraints;
 
 import frc.robot.commands.coralCommands.CoralCmd;
 import frc.robot.commands.coralCommands.CoralDefaultCmd;
+import frc.robot.commands.coralCommands.CoralElevatorEndgameCmd;
 import frc.robot.commands.climberCommands.*;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIO;
@@ -280,14 +281,15 @@ public class RobotContainer {
 
         public void configureEndgameTriggers() {
                 configureAlerts();
+                System.out.println(Math.abs(m_drive.getPose().getX() - PoseConstants.fieldLength / 2) < 1.5);
                 new Trigger(
                                 () -> DriverStation.isTeleopEnabled()
                                                 && DriverStation.getMatchTime() > 0
                                                 && DriverStation.getMatchTime() <= Math.round(endgameAlert1.get())
-                                                && Math.abs(drive.getPose.x - PoseConstants.fieldLength / 2) < 1.5)
+                                                && Math.abs(m_drive.getPose().getX()
+                                                                - PoseConstants.fieldLength / 2) < 1.5)
                                 .whileTrue(
-                                                new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
-                                                                CoralIntakeConstants.endgamePose));
+                                                new CoralElevatorEndgameCmd(m_coral, m_elevator));
         }
 
         private void configureAlerts() {
@@ -449,12 +451,19 @@ public class RobotContainer {
 
         public void configureElevator() {
                 Command homeElevator = new HomeElevatorCmd(m_elevator);
-                Command coralDefaultCommand = new CoralDefaultCmd(m_coral, m_elevator);
+                Command coralDefaultCommand = new CoralDefaultCmd(m_coral, m_elevator)
+                                .onlyWhile(() -> DriverStation.isTeleopEnabled() &&
+                                                !m_elevator.getLimitReset());
                 Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
-                m_elevator.setDefaultCommand(coralDefaultCommand);
-                m_coral.setDefaultCommand(coralDefaultCommand);
-                new Trigger(() -> DriverStation.isTeleopEnabled() && !m_elevator.getLimitReset())
-                                .whileTrue(homeElevator);
+                Command smartDefualt = new ConditionalCommand(homeElevator, coralDefaultCommand,
+                                () -> !m_elevator.getLimitReset());
+                // m_elevator.setDefaultCommand(coralDefaultCommand);
+                // m_coral.setDefaultCommand(coralDefaultCommand);
+                m_elevator.setDefaultCommand(smartDefualt);
+                m_coral.setDefaultCommand(smartDefualt);
+                // new Trigger(() -> DriverStation.isTeleopEnabled() &&
+                // !m_elevator.getLimitReset())
+                // .whileTrue(homeElevator);
 
         }
 
