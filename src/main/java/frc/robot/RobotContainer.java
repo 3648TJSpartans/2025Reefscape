@@ -273,9 +273,21 @@ public class RobotContainer {
                 configureDrive();
                 configureElevator();
                 configureSetpoints();
-                configureAlerts();
+                configureEndgameTriggers();
                 m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> toggleOverride()));
 
+        }
+
+        public void configureEndgameTriggers() {
+                configureAlerts();
+                new Trigger(
+                                () -> DriverStation.isTeleopEnabled()
+                                                && DriverStation.getMatchTime() > 0
+                                                && DriverStation.getMatchTime() <= Math.round(endgameAlert1.get())
+                                                && Math.abs(drive.getPose.x - PoseConstants.fieldLength / 2) < 1.5)
+                                .whileTrue(
+                                                new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
+                                                                CoralIntakeConstants.endgamePose));
         }
 
         private void configureAlerts() {
