@@ -5,10 +5,16 @@
 package frc.robot.commands.ledTestCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.leds.LedConstants;
+import frc.robot.subsystems.leds.LedSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class TurnRed extends Command {
-  public TurnRed() {
+  private final LedSubsystem m_leds;
+
+  public TurnRed(LedSubsystem leds) {
+    this.m_leds = leds;
+
   }
 
   // Called when the command is initially scheduled.
@@ -19,6 +25,9 @@ public class TurnRed extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_leds.setLedPattern(LedConstants.red, m_leds.leftSideBuffer);
+    m_leds.setLedPattern(LedConstants.red, m_leds.rightSideBuffer);
+
   }
 
   // Called once the command ends or is interrupted.
@@ -29,6 +38,6 @@ public class TurnRed extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
