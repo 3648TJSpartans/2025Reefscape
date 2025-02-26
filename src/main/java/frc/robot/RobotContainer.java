@@ -239,7 +239,7 @@ public class RobotContainer {
                                 new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
                 Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
                                 ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
-                Command coralIn = new CoralInCmd(m_coral);
+                Command coralIn = new CoralInCmd(m_coral, m_elevator);
                 Command slamCoral = new SlamCoralCmd(m_coral);
                 NamedCommands.registerCommand("homeElevator", homeElevator);
                 NamedCommands.registerCommand("l4", l4);
@@ -388,7 +388,7 @@ public class RobotContainer {
         }
 
         public void configureCoralIntake() {
-                Command coralIn = new CoralInCmd(m_coral);
+                Command coralIn = new CoralInCmd(m_coral, m_elevator);
                 Command coralOut = new CoralOutCmd(m_coral);
                 m_copilotController.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.15)));
                 m_copilotController.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
@@ -510,7 +510,7 @@ public class RobotContainer {
                                                                 new DriveToNearestIntake(m_drive),
 
                                                                 AutoBuildingBlocks.intakeSource(m_elevator, m_coral)),
-                                                new CoralInCmd(m_coral)), () -> override));
+                                                new CoralInCmd(m_coral, m_elevator)), () -> override));
         }
 
         public Command getAutonomousCommand() {

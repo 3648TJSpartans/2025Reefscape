@@ -18,8 +18,8 @@ import frc.robot.subsystems.elevator.ElevatorConstants;
 import frc.robot.util.TunableNumber;
 
 public class AutoBuildingBlocks {
-    public static Command intake(CoralIntake m_coralIntake) {
-        return new CoralInCmd(m_coralIntake);
+    public static Command intake(CoralIntake m_coralIntake, Elevator m_elevator) {
+        return new CoralInCmd(m_coralIntake, m_elevator);
 
     }
 
