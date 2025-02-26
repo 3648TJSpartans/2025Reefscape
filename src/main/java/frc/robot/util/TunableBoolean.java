@@ -82,9 +82,9 @@ public class TunableBoolean {
     boolean currentValue = get();
     if (currentValue != lastHasChangedValue) {
       lastHasChangedValue = currentValue;
+      System.out.println("Bool changed");
       return true;
     }
-
     return false;
   }
 }

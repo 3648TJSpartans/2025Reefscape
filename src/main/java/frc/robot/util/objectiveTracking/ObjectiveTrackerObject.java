@@ -28,6 +28,7 @@ public class ObjectiveTrackerObject {
         // SmartDashboard.putBoolean("ObjectiveTracker/Objectives/" +
         // reefpoint.toString() + "/" + level + "/Filled",
         // filled);
+        tunableFilled = new TunableBoolean("ObjectiveTest", false);
 
         Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Filled", filled);
         Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Pose2d", pose);
@@ -35,8 +36,9 @@ public class ObjectiveTrackerObject {
     }
 
     public void updateValues() {
-        // filled = tunableFilled.get();
-        // System.out.println(filled);
+
+        filled = tunableFilled.get();
+        Logger.recordOutput("TestFilled", filled);
     }
 
     public Pose2d getPose() {

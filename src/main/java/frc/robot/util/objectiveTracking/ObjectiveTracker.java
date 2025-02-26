@@ -6,6 +6,7 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 
@@ -39,7 +40,7 @@ public class ObjectiveTracker extends SubsystemBase {
     private Pose2d Defualt_J = leftReefPoints[4];
     private Pose2d Defualt_K = rightReefPoints[5];
     private Pose2d Defualt_L = leftReefPoints[5];
-
+    NetworkTable Ne
     private ObjectiveTrackerObject[] objectives;
 
     public ObjectiveTracker() {
