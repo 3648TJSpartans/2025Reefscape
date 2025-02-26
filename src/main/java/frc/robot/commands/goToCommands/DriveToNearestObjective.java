@@ -22,6 +22,7 @@ import frc.robot.util.GeomUtil;
 import frc.robot.util.TunableNumber;
 import frc.robot.util.objectiveTracking.ObjectiveTracker;
 import frc.robot.util.objectiveTracking.ObjectiveTrackerObject;
+import frc.robot.util.objectiveTracking.ObjectiveTracker.Reefpoint;
 
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -343,21 +344,27 @@ public class DriveToNearestObjective extends Command {
         public ObjectiveTrackerObject nearestObjectivePose(Supplier<Pose2d> robotPose,
                         ObjectiveTracker objectiveTracker, Supplier<Integer> level) {
                 ObjectiveTrackerObject[] pointInfo = objectiveTracker.getObjectives(level);
-                Pose2d[] points = objectiveTracker.getObjectivePoses(level);
-                Pose2d drivePose = robotPose.get();
-                ObjectiveTrackerObject targetTrackerObject = pointInfo[0];
-                int criticalPoseId = 0;
-                double minDistance = Double.MAX_VALUE;
-                for (int i = 0; i < points.length; i++) {
-                        double distance = drivePose.getTranslation().getDistance(points[i].getTranslation());
-                        if (distance < minDistance) {
-                                minDistance = distance;
-                                targetTrackerObject = pointInfo[i];
+                if (pointInfo.length == 0) {
+                        this.cancel();
+                        System.out.println("No Objectives!");
+                        return new ObjectiveTrackerObject(new Pose2d(0, 0, new Rotation2d()), true, Reefpoint.A, 0);
+                } else {
+                        Pose2d[] points = objectiveTracker.getObjectivePoses(level);
+                        Pose2d drivePose = robotPose.get();
+                        ObjectiveTrackerObject targetTrackerObject = pointInfo[0];
+                        int criticalPoseId = 0;
+                        double minDistance = Double.MAX_VALUE;
+                        for (int i = 0; i < points.length; i++) {
+                                double distance = drivePose.getTranslation().getDistance(points[i].getTranslation());
+                                if (distance < minDistance) {
+                                        minDistance = distance;
+                                        targetTrackerObject = pointInfo[i];
 
+                                }
                         }
+                        this.targetInfo = targetTrackerObject;
+                        return targetTrackerObject;
                 }
-                this.targetInfo = targetTrackerObject;
-                return targetTrackerObject;
         }
 
         public void setTrackerFilled() {

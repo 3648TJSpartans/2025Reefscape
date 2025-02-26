@@ -7,6 +7,9 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.networktables.DoubleSubscriber;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.util.objectiveTracking.ObjectiveTracker.Reefpoint;
 
 public class ObjectiveTrackerObject {
@@ -15,6 +18,9 @@ public class ObjectiveTrackerObject {
     private final Reefpoint reefpoint;
     private final int level;
     private final Pose3d pose3d;
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    NetworkTable table = inst.getTable("ReefInfo");
+    DoubleSubscriber filledSub;
 
     public ObjectiveTrackerObject(Pose2d pose, boolean filled, Reefpoint reefpoint, int level) {
         this.pose = pose;
@@ -22,9 +28,18 @@ public class ObjectiveTrackerObject {
         this.filled = filled;
         this.level = level;
         this.pose3d = new Pose3d(pose.getX(), pose.getY(), getHeight(level), new Rotation3d(pose.getRotation()));
-        Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Filled", filled);
+        filledSub = table.getDoubleTopic(reefpoint.toString() + level + "/isFilled").subscribe(0.0);
+        inst.startClient4("example client");
+        inst.setServerTeam(3648); // where TEAM=190, 294, etc, or use inst.setServer("hostname") or similar
+        inst.startDSClient();
+        Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Filled",
+                filled);
         Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Pose2d", pose);
         Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Pose3d", pose3d);
+    }
+
+    public void updateNetworkSubscriber() {
+        filled = filledSub.get() == 1;
     }
 
     public Pose2d getPose() {

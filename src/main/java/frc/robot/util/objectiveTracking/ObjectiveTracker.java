@@ -6,9 +6,12 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 
-public class ObjectiveTracker {
+public class ObjectiveTracker extends SubsystemBase {
     public enum Reefpoint {
         A,
         B,
@@ -23,6 +26,9 @@ public class ObjectiveTracker {
         K,
         L
     }
+
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    NetworkTable table = inst.getTable("ReefInfo");
 
     private Pose2d[] rightReefPoints = PoseConstants.rightReefPoints;
     private Pose2d[] leftReefPoints = PoseConstants.leftReefPoints;
@@ -104,6 +110,13 @@ public class ObjectiveTracker {
                 new ObjectiveTrackerObject(Defualt_L, false, Reefpoint.L, 4)
         };
         updateLoggedPoses();
+    }
+
+    @Override
+    public void periodic() {
+        for (ObjectiveTrackerObject object : objectives) {
+            object.updateNetworkSubscriber();
+        }
     }
 
     public ObjectiveTrackerObject[] getObjectives() {
