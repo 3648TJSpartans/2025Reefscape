@@ -7,6 +7,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.TunableBoolean;
 import frc.robot.util.objectiveTracking.ObjectiveTracker.Reefpoint;
@@ -17,28 +18,28 @@ public class ObjectiveTrackerObject {
     private final Reefpoint reefpoint;
     private final int level;
     private final Pose3d pose3d;
-    TunableBoolean tunableFilled;
+    private final NetworkTable table;
 
-    public ObjectiveTrackerObject(Pose2d pose, boolean filled, Reefpoint reefpoint, int level) {
+    public ObjectiveTrackerObject(Pose2d pose, boolean filled, Reefpoint reefpoint, int level, NetworkTable table) {
         this.pose = pose;
         this.reefpoint = reefpoint;
         this.filled = filled;
         this.level = level;
+        this.table = table;
         this.pose3d = new Pose3d(pose.getX(), pose.getY(), getHeight(level), new Rotation3d(pose.getRotation()));
         // SmartDashboard.putBoolean("ObjectiveTracker/Objectives/" +
         // reefpoint.toString() + "/" + level + "/Filled",
         // filled);
-        tunableFilled = new TunableBoolean("ObjectiveTest", false);
-
+        table.getBooleanTopic("testEnrty").publish();
         Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Filled", filled);
         Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Pose2d", pose);
         Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Pose3d", pose3d);
     }
 
     public void updateValues() {
-
-        filled = tunableFilled.get();
-        Logger.recordOutput("TestFilled", filled);
+        // filled = !filled;
+        filled = table.getEntry("testEntry").getBoolean(filled);
+        Logger.recordOutput("TestEntry", filled);
     }
 
     public Pose2d getPose() {
