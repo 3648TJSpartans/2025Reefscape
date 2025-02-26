@@ -30,8 +30,9 @@ public final class LedConstants {
     // Gradients
     public static LEDPattern rainbow = LEDPattern.rainbow(255, 128);
     public static LEDPattern purpleGradient = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kRed, Color.kBlue);
+    public static LEDPattern elevatorGradient = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kRed, Color.kYellow, Color.kGreen, Color.kTeal); // Stoplight-esque gradient to use on the elevator
     
     // Other Patterns
     public static LEDPattern elevatorMask = LEDPattern.progressMaskLayer(() -> (double) CoralSequentialCmd.getLevel() / 4); // Just a mask, don't use
-    public static LEDPattern elevatorHeight = purple.mask(elevatorMask); // Use this
+    public static LEDPattern elevatorHeight = elevatorGradient.mask(elevatorMask); // Use this
 }

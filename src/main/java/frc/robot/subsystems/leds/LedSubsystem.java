@@ -37,4 +37,9 @@ public class LedSubsystem extends SubsystemBase {
         pattern.applyTo(subBuffer);
         led.setData(ledBuffer);
     }
+
+    public void setGlobalPattern(LEDPattern pattern) {
+        pattern.applyTo(ledBuffer);
+        led.setData(ledBuffer);
+    }
 }
