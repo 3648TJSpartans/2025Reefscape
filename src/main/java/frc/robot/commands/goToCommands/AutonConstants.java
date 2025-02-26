@@ -28,6 +28,7 @@ public class AutonConstants {
     public static class PoseConstants {
         public final static Pose2d rightReef = new Pose2d(2.9, 3.73, Rotation2d.fromDegrees(0));
         public final static Pose2d leftReef = new Pose2d(2.9, 4.17, Rotation2d.fromDegrees(0));
+        public final static Pose2d START = new Pose2d(2.85, 3.85, Rotation2d.fromDegrees(0));
         public final static double fieldLength = 17.548;
         public final static double fieldWidth = 8.042;
 
@@ -36,15 +37,16 @@ public class AutonConstants {
                 new Pose2d(1.127, 7.2, Rotation2d.fromDegrees(-60)) // Left
         };
         private final static Pose2d[] blueRightReefPoints = new Pose2d[] {
-                new Pose2d(2.95, 3.85, Rotation2d.fromDegrees(0)), // Pose A
+                new Pose2d(3.05, 3.85, Rotation2d.fromDegrees(0)), // Pose A
                 new Pose2d(3.57, 2.75, Rotation2d.fromDegrees(60)), // Pose C
                 new Pose2d(5.44, 2.75, Rotation2d.fromDegrees(120)), // Pose E
                 new Pose2d(6.08, 4.12, Rotation2d.fromDegrees(180)), // Pose G
                 new Pose2d(5.13, 5.51, Rotation2d.fromDegrees(240)), // Pose I
                 new Pose2d(3.54, 5.33, Rotation2d.fromDegrees(300)) // Pose K
         };
+
         private final static Pose2d[] blueLeftReefPoints = new Pose2d[] {
-                new Pose2d(2.95, 4.12, Rotation2d.fromDegrees(0)), // Pose B
+                new Pose2d(3.05, 4.12, Rotation2d.fromDegrees(0)), // Pose B
                 new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
                 new Pose2d(5.17, 2.61, Rotation2d.fromDegrees(120)), // Pose F
                 new Pose2d(6.08, 3.78, Rotation2d.fromDegrees(180)), // Pose H

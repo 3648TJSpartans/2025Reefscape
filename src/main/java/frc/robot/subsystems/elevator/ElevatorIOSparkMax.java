@@ -92,7 +92,11 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     public void elevateTo(double position) {
         if (limitReset) {
             Logger.recordOutput("Elevator/Setpoint", position);
-            motorController.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+            if (getHeight() < ElevatorConstants.coralLimit) {
+                motorController.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+            } else {
+                setSpeed(0);
+            }
         }
     }
 

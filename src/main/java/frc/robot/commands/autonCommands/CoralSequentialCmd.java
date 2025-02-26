@@ -39,10 +39,12 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         Command driveCommand = AutoBuildingBlocks.driveToNearest(m_drive, () -> CoralSequentialCmd.poses());
         addCommands(
                 new SequentialCommandGroup(
+                        // AutoBuildingBlocks.driveToPose(drive, PoseConstants.START),
                         driveCommand,
                         coralCommand,
                         new WaitCommand(1),
                         slam ? new SlamCoralCmd(coralIntake) : null));
+        // AutoBuildingBlocks.driveToPose(drive, PoseConstants.START));
     }
 
     public static void setLevel(int level) {
