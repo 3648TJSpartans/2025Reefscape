@@ -6,9 +6,10 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 
-public class ObjectiveTracker {
+public class ObjectiveTracker extends SubsystemBase {
     public enum Reefpoint {
         A,
         B,
@@ -103,6 +104,14 @@ public class ObjectiveTracker {
                 new ObjectiveTrackerObject(Defualt_L, false, Reefpoint.L, 3),
                 new ObjectiveTrackerObject(Defualt_L, false, Reefpoint.L, 4)
         };
+        updateLoggedPoses();
+    }
+
+    @Override
+    public void periodic() {
+        for (ObjectiveTrackerObject object : objectives) {
+            object.updateValues();
+        }
         updateLoggedPoses();
     }
 

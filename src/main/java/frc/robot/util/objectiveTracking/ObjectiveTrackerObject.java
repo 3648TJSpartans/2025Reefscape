@@ -7,6 +7,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.objectiveTracking.ObjectiveTracker.Reefpoint;
 
 public class ObjectiveTrackerObject {
@@ -22,9 +23,17 @@ public class ObjectiveTrackerObject {
         this.filled = filled;
         this.level = level;
         this.pose3d = new Pose3d(pose.getX(), pose.getY(), getHeight(level), new Rotation3d(pose.getRotation()));
+        SmartDashboard.putBoolean("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Filled",
+                filled);
         Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Filled", filled);
         Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Pose2d", pose);
         Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Pose3d", pose3d);
+    }
+
+    public void updateValues() {
+        filled = SmartDashboard.getBoolean(
+                "ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Filled",
+                filled);
     }
 
     public Pose2d getPose() {
@@ -46,11 +55,15 @@ public class ObjectiveTrackerObject {
     public void setFilled(boolean filled) {
         Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Filled", filled);
         this.filled = filled;
+        SmartDashboard.putBoolean("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Filled",
+                filled);
     }
 
     public ObjectiveTrackerObject asFilled(boolean filled) {
         Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Filled", filled);
         this.filled = filled;
+        SmartDashboard.putBoolean("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Filled",
+                filled);
         return this;
     }
 
