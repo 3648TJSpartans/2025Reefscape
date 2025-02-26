@@ -11,9 +11,8 @@ public class LedSubsystem extends SubsystemBase {
 
     private final AddressableLEDBuffer ledBuffer;
 
-    public final AddressableLEDBufferView elevatorBuffer;
-    public final AddressableLEDBufferView leftGuideBuffer;
-    public final AddressableLEDBufferView rightGuideBuffer;
+    public final AddressableLEDBufferView leftSideBuffer;
+    public final AddressableLEDBufferView rightSideBuffer;
 
     private final AddressableLED led;
 
@@ -22,9 +21,8 @@ public class LedSubsystem extends SubsystemBase {
         led = new AddressableLED(LedConstants.ledPWMID);
 
         // Create sub-buffers
-        elevatorBuffer = ledBuffer.createView(LedConstants.elevatorLedStart, LedConstants.elevatorLedEnd);
-        leftGuideBuffer = ledBuffer.createView(LedConstants.leftGuideStart, LedConstants.leftGuideEnd);
-        rightGuideBuffer = ledBuffer.createView(LedConstants.rightGuideStart, LedConstants.rightGuideEnd);
+        leftSideBuffer = ledBuffer.createView(LedConstants.leftSideLedStart, LedConstants.leftSideLedEnd);
+        rightSideBuffer = ledBuffer.createView(LedConstants.rightSideLedStart, LedConstants.rightSideLedEnd);
         
         led.setLength(ledBuffer.getLength());
         led.setData(ledBuffer);

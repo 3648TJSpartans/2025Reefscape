@@ -9,10 +9,10 @@ public final class LedConstants {
     // Values //
     public static final int ledLength = 150;
     public static final int ledPWMID = 1;
-    public static final int elevatorLedStart = 0;
-    public static final int elevatorLedEnd = 60;
-    public static final int leftGuideStart = 61;
-    public static final int leftGuideEnd = 100;
+    public static final int leftSideLedStart = 0;
+    public static final int leftSideLedEnd = 75;
+    public static final int rightSideLedStart = 76;
+    public static final int rightSideLedEnd = 149;
     public static final int rightGuideStart = 101;
     public static final int rightGuideEnd = 150;
 
