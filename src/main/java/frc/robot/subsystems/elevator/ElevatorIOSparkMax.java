@@ -41,7 +41,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         motorController = motor.getClosedLoopController();
         limitReset = false;
         Logger.recordOutput("Elevator/EncoderReset", false);
-        Logger.recordOutput("Elevator/Setpoint", 0);
+        Logger.recordOutput("Elevator/Setpoint", 0.0);
         encoder = motor.getEncoder();
         var motorConfig = new SparkMaxConfig();
         motorConfig.idleMode(IdleMode.kBrake);// idle mode here!
@@ -92,7 +92,11 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     public void elevateTo(double position) {
         if (limitReset) {
             Logger.recordOutput("Elevator/Setpoint", position);
-            motorController.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+            if (getHeight() < ElevatorConstants.coralLimit) {
+                motorController.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+            } else {
+                setSpeed(0);
+            }
         }
     }
 
@@ -138,8 +142,9 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     public void zeroElevator() {
         setZero();
     }
+
     @Override
-    public boolean getLimitReset(){
+    public boolean getLimitReset() {
         return limitReset;
     }
 }

@@ -46,6 +46,7 @@ import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
+import frc.robot.commands.autonCommands.AlgaeRemovalCmd;
 import frc.robot.commands.autonCommands.AutoBuildingBlocks;
 import frc.robot.commands.autonCommands.CoralSequentialCmd;
 import frc.robot.commands.autonCommands.SourceParallelCmd;
@@ -85,6 +86,7 @@ import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 
 import frc.robot.commands.coralCommands.CoralCmd;
+import frc.robot.commands.coralCommands.CoralDefaultCmd;
 import frc.robot.commands.climberCommands.*;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIO;
@@ -96,9 +98,11 @@ import frc.robot.commands.climberCommands.*;
 import frc.robot.commands.coralCommands.CoralElevatorIntegratedCmd;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
+import frc.robot.commands.coralCommands.DownToIntakeCmd;
 import frc.robot.commands.coralCommands.ElevatorCmd;
 import frc.robot.commands.coralCommands.HomeElevatorCmd;
 import frc.robot.commands.coralCommands.SlamCoralCmd;
+import frc.robot.commands.coralCommands.UpFromIntakeCmd;
 import frc.robot.commands.coralCommands.ElevatorAnalogCmd;
 import frc.robot.commands.coralCommands.WristCmd;
 import frc.robot.commands.coralCommands.WristAnalogCmd;
@@ -159,7 +163,7 @@ public class RobotContainer {
             case REAL:
                 // Real robot, instantiate hardware IO implementations
                 m_climber = new ClimberSubsystem(new ClimberIOSparkMax());
-                m_algae = new AlgaeSubsystem(new AlgaeIOSparkMax());
+                // m_algae = new AlgaeSubsystem(new AlgaeIOSparkMax());
                 m_drive = new Drive(
                         new GyroIONavX(),
                         new ModuleIOSpark(0),
@@ -273,8 +277,15 @@ public class RobotContainer {
         configureElevator();
         configureSetpoints();
         configureAlerts();
+        configureTest();
         m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> toggleOverride()));
 
+    }
+
+    private void configureTest() {
+        m_controllerTwo.leftTrigger().whileTrue(new AlgaeRemovalCmd(m_drive, m_coral, m_elevator, () -> true));
+        m_driveController.b().whileTrue(new DownToIntakeCmd(m_coral, m_elevator))
+                .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
     }
 
     private void configureAlerts() {
@@ -334,18 +345,23 @@ public class RobotContainer {
     }
 
     public void configureAlgae() {
-        Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
-        Command algaeShootCmd = new AlgaeShootCmd(m_algae);
-        Command algaeDefaultCmd = new AlgaeDefaultCmd(m_algae);
-        Command algaeAnalogCommand = new AlgaeAnalogCmd(m_algae, () -> m_copilotController.getRightX());
-        m_algae.setDefaultCommand(algaeAnalogCommand);
+        // Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
+        // Command algaeShootCmd = new AlgaeShootCmd(m_algae);
+        // Command algaeDefaultCmd = new AlgaeDefaultCmd(m_algae);
+        // Command algaeAnalogCommand = new AlgaeAnalogCmd(m_algae, () ->
+        // m_copilotController.getRightX());
+        // m_algae.setDefaultCommand(algaeAnalogCommand);
         // m_algae.setDefaultCommand(algaeDefaultCmd);
-        m_driveController.leftBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(.15)));
-        m_driveController.leftBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(.0)));
-        m_driveController.rightBumper().onTrue(new InstantCommand(() -> m_algae.setIntakeSpeed(-.15)));
-        m_driveController.rightBumper().onFalse(new InstantCommand(() -> m_algae.setIntakeSpeed(.0)));
-        m_driveController.b().whileTrue(algaeIntakeCmd);
-        m_driveController.y().whileTrue(algaeShootCmd);// TODO
+        // m_driveController.leftBumper().onTrue(new InstantCommand(() ->
+        // m_algae.setIntakeSpeed(.15)));
+        // m_driveController.leftBumper().onFalse(new InstantCommand(() ->
+        // m_algae.setIntakeSpeed(.0)));
+        // m_driveController.rightBumper().onTrue(new InstantCommand(() ->
+        // m_algae.setIntakeSpeed(-.15)));
+        // m_driveController.rightBumper().onFalse(new InstantCommand(() ->
+        // m_algae.setIntakeSpeed(.0)));
+        // m_driveController.b().whileTrue(algaeIntakeCmd);
+        // m_driveController.y().whileTrue(algaeShootCmd);// TODO
     }
 
     public void configureAutoChooser() {
@@ -390,7 +406,7 @@ public class RobotContainer {
         m_copilotController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
         Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_copilotController.getRightX());
         Command slamCoral = new SlamCoralCmd(m_coral);
-        m_coral.setDefaultCommand(wristAnalog);
+        // m_coral.setDefaultCommand(wristAnalog);
         m_controllerTwo.y().whileTrue(slamCoral);
     }
 
@@ -430,9 +446,16 @@ public class RobotContainer {
     }
 
     public void configureElevator() {
-
+        Command homeElevator = new HomeElevatorCmd(m_elevator);
+        Command coralDefaultCommand = new CoralDefaultCmd(m_coral, m_elevator);
         Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
-        m_elevator.setDefaultCommand(elevatorAnalog);
+        // m_elevator.setDefaultCommand(elevatorAnalog);
+        m_elevator.setDefaultCommand(coralDefaultCommand);
+        m_coral.setDefaultCommand(coralDefaultCommand);
+
+        // new Trigger(() -> DriverStation.isTeleopEnabled() &&
+        // !m_elevator.getLimitReset())
+        // .whileTrue(homeElevator);
 
     }
 
