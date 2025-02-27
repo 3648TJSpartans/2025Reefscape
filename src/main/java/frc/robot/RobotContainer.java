@@ -399,8 +399,10 @@ public class RobotContainer {
         public void configureLeds() {
                 Command ledRedCommand = new TurnRed(m_led);
                 Command ledGreenCommand = new TurnGreen(m_led);
-                m_ledController.a().whileTrue(ledRedCommand);
+                Command ledIdleCommand = new idle();
                 m_ledController.b().whileTrue(ledGreenCommand);
+                m_ledController.a().whileTrue(ledRedCommand);
+                m_ledController.y().whileTrue(ledIdleCommand);
         }
 
         public void configureCoralIntake() {
