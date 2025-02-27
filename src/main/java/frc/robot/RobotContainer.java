@@ -402,7 +402,7 @@ public class RobotContainer {
                 m_ledController.b().onTrue(ledGreenCommand);
                 m_ledController.a().onTrue(ledRedCommand);
                 Trigger autonomous = new Trigger(() -> DriverStation.isAutonomousEnabled());
-                autonomous.whileTrue(ledGreenCommand);
+                autonomous().whileTrue(ledGreenCommand);
         }
 
         public void configureCoralIntake() {
