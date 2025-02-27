@@ -3,8 +3,9 @@ package frc.robot.subsystems.leds;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.AddressableLEDBufferView;
 import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.commands.ledTestCommands.breathBlue;
 import edu.wpi.first.wpilibj.AddressableLED;
 
 public class LedSubsystem extends SubsystemBase {
@@ -23,17 +24,24 @@ public class LedSubsystem extends SubsystemBase {
         // Create sub-buffers
         leftSideBuffer = ledBuffer.createView(LedConstants.leftSideLedStart, LedConstants.leftSideLedEnd);
         rightSideBuffer = ledBuffer.createView(LedConstants.rightSideLedStart, LedConstants.rightSideLedEnd);
-        
+
         led.setLength(ledBuffer.getLength());
         led.setData(ledBuffer);
         led.start();
 
     }
 
-    //Writes a specified LED pattern to the buffer. A bunch of patterns can be found in LEDConstants, or you can make your own.
+    // Writes a specified LED pattern to the buffer. A bunch of patterns can be
+    // found in LEDConstants, or you can make your own.
     public void setLedPattern(LEDPattern pattern, AddressableLEDBufferView subBuffer) {
         pattern.applyTo(subBuffer);
         led.setData(ledBuffer);
+    }
+
+    public void turnLedsOff() {
+        LedConstants.noColor.applyTo(ledBuffer);
+        led.setData(ledBuffer);
+
     }
 
     public void setGlobalPattern(LEDPattern pattern) {

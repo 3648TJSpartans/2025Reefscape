@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.leds.*;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class TurnYellow extends Command {
+public class breathBlue extends Command {
     private final LedSubsystem m_leds;
 
-    public TurnYellow(LedSubsystem leds) {
+    public breathBlue(LedSubsystem leds) {
         m_leds = leds;
         addRequirements(m_leds);
     }
@@ -24,12 +24,13 @@ public class TurnYellow extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_leds.setLedPattern(LedConstants.yellow, m_leds.leftSideBuffer);
+        m_leds.setLedPattern(LedConstants.breathingBlue, m_leds.leftSideBuffer);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+        m_leds.turnLedsOff();
     }
 
     // Returns true when the command should end.
