@@ -6,6 +6,7 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
@@ -40,70 +41,71 @@ public class ObjectiveTracker extends SubsystemBase {
     private Pose2d Defualt_J = leftReefPoints[4];
     private Pose2d Defualt_K = rightReefPoints[5];
     private Pose2d Defualt_L = leftReefPoints[5];
-    NetworkTable Ne
     private ObjectiveTrackerObject[] objectives;
+    NetworkTable table;
 
     public ObjectiveTracker() {
+        table = NetworkTableInstance.getDefault().getTable("ObjectiveTable");
         objectives = new ObjectiveTrackerObject[] {
-                new ObjectiveTrackerObject(Defualt_A, false, Reefpoint.A, 1),
-                new ObjectiveTrackerObject(Defualt_A, false, Reefpoint.A, 2),
-                new ObjectiveTrackerObject(Defualt_A, false, Reefpoint.A, 3),
-                new ObjectiveTrackerObject(Defualt_A, false, Reefpoint.A, 4),
+                new ObjectiveTrackerObject(Defualt_A, false, Reefpoint.A, 1, table),
+                new ObjectiveTrackerObject(Defualt_A, false, Reefpoint.A, 2, table),
+                new ObjectiveTrackerObject(Defualt_A, false, Reefpoint.A, 3, table),
+                new ObjectiveTrackerObject(Defualt_A, false, Reefpoint.A, 4, table),
 
-                new ObjectiveTrackerObject(Defualt_B, false, Reefpoint.B, 1),
-                new ObjectiveTrackerObject(Defualt_B, false, Reefpoint.B, 2),
-                new ObjectiveTrackerObject(Defualt_B, false, Reefpoint.B, 3),
-                new ObjectiveTrackerObject(Defualt_B, false, Reefpoint.B, 4),
+                new ObjectiveTrackerObject(Defualt_B, false, Reefpoint.B, 1, table),
+                new ObjectiveTrackerObject(Defualt_B, false, Reefpoint.B, 2, table),
+                new ObjectiveTrackerObject(Defualt_B, false, Reefpoint.B, 3, table),
+                new ObjectiveTrackerObject(Defualt_B, false, Reefpoint.B, 4, table),
 
-                new ObjectiveTrackerObject(Defualt_C, false, Reefpoint.C, 1),
-                new ObjectiveTrackerObject(Defualt_C, false, Reefpoint.C, 2),
-                new ObjectiveTrackerObject(Defualt_C, false, Reefpoint.C, 3),
-                new ObjectiveTrackerObject(Defualt_C, false, Reefpoint.C, 4),
+                new ObjectiveTrackerObject(Defualt_C, false, Reefpoint.C, 1, table),
+                new ObjectiveTrackerObject(Defualt_C, false, Reefpoint.C, 2, table),
+                new ObjectiveTrackerObject(Defualt_C, false, Reefpoint.C, 3, table),
+                new ObjectiveTrackerObject(Defualt_C, false, Reefpoint.C, 4, table),
 
-                new ObjectiveTrackerObject(Defualt_D, false, Reefpoint.D, 1),
-                new ObjectiveTrackerObject(Defualt_D, false, Reefpoint.D, 2),
-                new ObjectiveTrackerObject(Defualt_D, false, Reefpoint.D, 3),
-                new ObjectiveTrackerObject(Defualt_D, false, Reefpoint.D, 4),
+                new ObjectiveTrackerObject(Defualt_D, false, Reefpoint.D, 1, table),
+                new ObjectiveTrackerObject(Defualt_D, false, Reefpoint.D, 2, table),
+                new ObjectiveTrackerObject(Defualt_D, false, Reefpoint.D, 3, table),
+                new ObjectiveTrackerObject(Defualt_D, false, Reefpoint.D, 4, table),
 
-                new ObjectiveTrackerObject(Defualt_E, false, Reefpoint.E, 1),
-                new ObjectiveTrackerObject(Defualt_E, false, Reefpoint.E, 2),
-                new ObjectiveTrackerObject(Defualt_E, false, Reefpoint.E, 3),
-                new ObjectiveTrackerObject(Defualt_E, false, Reefpoint.E, 4),
+                new ObjectiveTrackerObject(Defualt_E, false, Reefpoint.E, 1, table),
+                new ObjectiveTrackerObject(Defualt_E, false, Reefpoint.E, 2, table),
+                new ObjectiveTrackerObject(Defualt_E, false, Reefpoint.E, 3, table),
+                new ObjectiveTrackerObject(Defualt_E, false, Reefpoint.E, 4, table),
 
-                new ObjectiveTrackerObject(Defualt_F, false, Reefpoint.F, 1),
-                new ObjectiveTrackerObject(Defualt_F, false, Reefpoint.F, 2),
-                new ObjectiveTrackerObject(Defualt_F, false, Reefpoint.F, 3),
-                new ObjectiveTrackerObject(Defualt_F, false, Reefpoint.F, 4),
+                new ObjectiveTrackerObject(Defualt_F, false, Reefpoint.F, 1, table),
+                new ObjectiveTrackerObject(Defualt_F, false, Reefpoint.F, 2, table),
+                new ObjectiveTrackerObject(Defualt_F, false, Reefpoint.F, 3, table),
+                new ObjectiveTrackerObject(Defualt_F, false, Reefpoint.F, 4, table),
 
-                new ObjectiveTrackerObject(Defualt_G, false, Reefpoint.G, 1),
-                new ObjectiveTrackerObject(Defualt_G, false, Reefpoint.G, 2),
-                new ObjectiveTrackerObject(Defualt_G, false, Reefpoint.G, 3),
-                new ObjectiveTrackerObject(Defualt_G, false, Reefpoint.G, 4),
+                new ObjectiveTrackerObject(Defualt_G, false, Reefpoint.G, 1, table),
+                new ObjectiveTrackerObject(Defualt_G, false, Reefpoint.G, 2, table),
+                new ObjectiveTrackerObject(Defualt_G, false, Reefpoint.G, 3, table),
+                new ObjectiveTrackerObject(Defualt_G, false, Reefpoint.G, 4, table),
 
-                new ObjectiveTrackerObject(Defualt_H, false, Reefpoint.H, 1),
-                new ObjectiveTrackerObject(Defualt_H, false, Reefpoint.H, 2),
-                new ObjectiveTrackerObject(Defualt_H, false, Reefpoint.H, 3),
-                new ObjectiveTrackerObject(Defualt_H, false, Reefpoint.H, 4),
+                new ObjectiveTrackerObject(Defualt_H, false, Reefpoint.H, 1, table),
+                new ObjectiveTrackerObject(Defualt_H, false, Reefpoint.H, 2, table),
+                new ObjectiveTrackerObject(Defualt_H, false, Reefpoint.H, 3, table),
+                new ObjectiveTrackerObject(Defualt_H, false, Reefpoint.H, 4, table),
 
-                new ObjectiveTrackerObject(Defualt_I, false, Reefpoint.I, 1),
-                new ObjectiveTrackerObject(Defualt_I, false, Reefpoint.I, 2),
-                new ObjectiveTrackerObject(Defualt_I, false, Reefpoint.I, 3),
-                new ObjectiveTrackerObject(Defualt_I, false, Reefpoint.I, 4),
+                new ObjectiveTrackerObject(Defualt_I, false, Reefpoint.I, 1, table),
+                new ObjectiveTrackerObject(Defualt_I, false, Reefpoint.I, 2, table),
+                new ObjectiveTrackerObject(Defualt_I, false, Reefpoint.I, 3, table),
+                new ObjectiveTrackerObject(Defualt_I, false, Reefpoint.I, 4, table),
 
-                new ObjectiveTrackerObject(Defualt_J, false, Reefpoint.J, 1),
-                new ObjectiveTrackerObject(Defualt_J, false, Reefpoint.J, 2),
-                new ObjectiveTrackerObject(Defualt_J, false, Reefpoint.J, 3),
-                new ObjectiveTrackerObject(Defualt_J, false, Reefpoint.J, 4),
+                new ObjectiveTrackerObject(Defualt_J, false, Reefpoint.J, 1, table),
+                new ObjectiveTrackerObject(Defualt_J, false, Reefpoint.J, 2, table),
+                new ObjectiveTrackerObject(Defualt_J, false, Reefpoint.J, 3, table),
+                new ObjectiveTrackerObject(Defualt_J, false, Reefpoint.J, 4, table),
 
-                new ObjectiveTrackerObject(Defualt_K, false, Reefpoint.K, 1),
-                new ObjectiveTrackerObject(Defualt_K, false, Reefpoint.K, 2),
-                new ObjectiveTrackerObject(Defualt_K, false, Reefpoint.K, 3),
-                new ObjectiveTrackerObject(Defualt_K, false, Reefpoint.K, 4),
+                new ObjectiveTrackerObject(Defualt_K, false, Reefpoint.K, 1, table),
+                new ObjectiveTrackerObject(Defualt_K, false, Reefpoint.K, 2, table),
+                new ObjectiveTrackerObject(Defualt_K, false, Reefpoint.K, 3, table),
+                new ObjectiveTrackerObject(Defualt_K, false, Reefpoint.K, 4, table),
 
-                new ObjectiveTrackerObject(Defualt_L, false, Reefpoint.L, 1),
-                new ObjectiveTrackerObject(Defualt_L, false, Reefpoint.L, 2),
-                new ObjectiveTrackerObject(Defualt_L, false, Reefpoint.L, 3),
-                new ObjectiveTrackerObject(Defualt_L, false, Reefpoint.L, 4)
+                new ObjectiveTrackerObject(Defualt_L, false, Reefpoint.L, 1, table),
+                new ObjectiveTrackerObject(Defualt_L, false, Reefpoint.L, 2, table),
+                new ObjectiveTrackerObject(Defualt_L, false, Reefpoint.L, 3, table),
+                new ObjectiveTrackerObject(Defualt_L, false, Reefpoint.L, 4, table)
         };
         updateLoggedPoses();
     }
