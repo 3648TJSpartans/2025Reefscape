@@ -3,7 +3,6 @@ package frc.robot.subsystems.leds;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.AddressableLEDBufferView;
 import edu.wpi.first.wpilibj.LEDPattern;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.wpilibj.AddressableLED;
@@ -41,19 +40,4 @@ public class LedSubsystem extends SubsystemBase {
         pattern.applyTo(ledBuffer);
         led.setData(ledBuffer);
     }
-
-    @Override
-  public void periodic() {
-    // Periodically send the latest LED color data to the LED strip for it to display
-    led.setData(ledBuffer);
-  }
-
-  /**
-   * Creates a command that runs a pattern on the entire LED strip.
-   *
-   * @param pattern the LED pattern to run
-   */
-  public Command runPattern(LEDPattern pattern, AddressableLEDBufferView subBuffer) {
-    return run(() -> pattern.applyTo(subBuffer));
-  }
 }
