@@ -22,6 +22,7 @@ import frc.robot.util.GeomUtil;
 import frc.robot.util.TunableNumber;
 import frc.robot.util.objectiveTracking.ObjectiveTracker;
 import frc.robot.util.objectiveTracking.ObjectiveTrackerObject;
+import frc.robot.util.objectiveTracking.ObjectiveTracker.Reefpoint;
 
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -81,11 +82,13 @@ public class DriveToNearestObjective extends Command {
         private Supplier<Translation2d> linearFF = () -> Translation2d.kZero;
         private DoubleSupplier omegaFF = () -> 0.0;
         private ObjectiveTrackerObject targetInfo;
+        private boolean terminate;
 
         public DriveToNearestObjective(Drive drive, ObjectiveTracker objectiveTracker, Supplier<Integer> level) {
                 this.drive = drive;
                 robot = drive::getPose;
                 this.m_objectiveTracker = objectiveTracker;
+                terminate = false;
                 this.target = () -> nearestObjectivePose(robot, objectiveTracker, level).getPose();
                 // Enable continuous input for theta controller
                 thetaController.enableContinuousInput(-Math.PI, Math.PI);
@@ -113,6 +116,9 @@ public class DriveToNearestObjective extends Command {
 
         @Override
         public void initialize() {
+                // if (terminate) {
+                // return;
+                // }
                 Pose2d currentPose = robot.get();
                 // ChassisSpeeds fieldVelocity = drive.getChassisSpeeds();
                 ChassisSpeeds fieldVelocity = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getChassisSpeeds(),
@@ -309,7 +315,7 @@ public class DriveToNearestObjective extends Command {
         @Override
         public boolean isFinished() {
                 System.out.println("isFinished ran. atGoal:" + atGoal());
-                return atGoal();
+                return atGoal() || terminate;
         }
 
         /**
@@ -343,21 +349,26 @@ public class DriveToNearestObjective extends Command {
         public ObjectiveTrackerObject nearestObjectivePose(Supplier<Pose2d> robotPose,
                         ObjectiveTracker objectiveTracker, Supplier<Integer> level) {
                 ObjectiveTrackerObject[] pointInfo = objectiveTracker.getObjectives(level);
-                Pose2d[] points = objectiveTracker.getObjectivePoses(level);
-                Pose2d drivePose = robotPose.get();
-                ObjectiveTrackerObject targetTrackerObject = pointInfo[0];
-                int criticalPoseId = 0;
-                double minDistance = Double.MAX_VALUE;
-                for (int i = 0; i < points.length; i++) {
-                        double distance = drivePose.getTranslation().getDistance(points[i].getTranslation());
-                        if (distance < minDistance) {
-                                minDistance = distance;
-                                targetTrackerObject = pointInfo[i];
+                if (pointInfo.length == 0) {
+                        terminate = true;
+                        return new ObjectiveTrackerObject(new Pose2d(), true, Reefpoint.DEFAULT, 0);
+                } else {
+                        Pose2d[] points = objectiveTracker.getObjectivePoses(level);
+                        Pose2d drivePose = robotPose.get();
+                        ObjectiveTrackerObject targetTrackerObject = pointInfo[0];
+                        int criticalPoseId = 0;
+                        double minDistance = Double.MAX_VALUE;
+                        for (int i = 0; i < points.length; i++) {
+                                double distance = drivePose.getTranslation().getDistance(points[i].getTranslation());
+                                if (distance < minDistance) {
+                                        minDistance = distance;
+                                        targetTrackerObject = pointInfo[i];
 
+                                }
                         }
+                        this.targetInfo = targetTrackerObject;
+                        return targetTrackerObject;
                 }
-                this.targetInfo = targetTrackerObject;
-                return targetTrackerObject;
         }
 
         public void setTrackerFilled() {

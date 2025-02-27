@@ -24,7 +24,8 @@ public class ObjectiveTracker {
         I,
         J,
         K,
-        L
+        L,
+        DEFAULT
     }
 
     private Pose2d[] rightReefPoints = PoseConstants.rightReefPoints;
