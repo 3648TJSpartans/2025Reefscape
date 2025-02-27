@@ -32,7 +32,6 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
         wristMotor = new SparkMax(CoralIntakeConstants.coralWrist, MotorType.kBrushless);
         intakeMotor = new SparkMax(CoralIntakeConstants.coralIntake, MotorType.kBrushless);
         irSensor = new DigitalInput(CoralIntakeConstants.irSensorPin);
-        SFTirSensor = new DigitalInput(CoralIntakeConstants.SFTirSensorPin);
         wristController = wristMotor.getClosedLoopController();
         absoluteEncoder = wristMotor.getAbsoluteEncoder();
         var wristConfig = new SparkMaxConfig();
@@ -97,10 +96,6 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     @Override
     public boolean getIR() {
         return irSensor.get();
-    }
-
-    public boolean getSFTIR() {
-        return SFTirSensor.get();
     }
 
     public void setWristSpeed(double speed) {

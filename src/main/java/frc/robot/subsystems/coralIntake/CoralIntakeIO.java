@@ -31,10 +31,6 @@ public interface CoralIntakeIO {
         return false;
     }
 
-    public default boolean getSFTIR() {
-        return false;
-    }
-
     public default void setWristSpeed(double speed) {
 
     }

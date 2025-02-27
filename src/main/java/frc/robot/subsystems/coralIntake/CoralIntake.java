@@ -55,10 +55,6 @@ public class CoralIntake extends SubsystemBase {
     return io.getIR();
   }
 
-  public boolean getSFTIR() {
-    return io.getSFTIR();
-  }
-
   public void setWristSpeed(double speed) {
     // if ((CoralIntakeConstants.minAngle < getAngle() || speed >= 0)
     // && (CoralIntakeConstants.minAngle > getAngle() || speed <= 0)) {
