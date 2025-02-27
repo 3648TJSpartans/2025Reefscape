@@ -17,7 +17,9 @@ public class DownToIntakeCmd extends SequentialCommandGroup {
         Command coralIn = new CoralSmartInCmd(coralIntake, CoralIntakeConstants.IntakeAngle);
         addCommands(
                 firstElevator.withTimeout(1),
+
                 firstWrist.withTimeout(2),
+
                 secondElevator.alongWith(coralIn));
     }
 }
