@@ -20,7 +20,6 @@ public final class LedConstants {
         // Colors & Patterns //
 
         // Solid Colors
-
         public static LEDPattern green = LEDPattern.solid(Color.kGreen);
         public static LEDPattern red = LEDPattern.solid(Color.kRed);
         public static LEDPattern blue = LEDPattern.solid(Color.kBlue);
@@ -28,8 +27,7 @@ public final class LedConstants {
         public static LEDPattern yellow = LEDPattern.solid(Color.kYellow);
         public static LEDPattern purple = LEDPattern.solid(Color.kPurple);
         public static LEDPattern white = LEDPattern.solid(Color.kWhite);
-        public static LEDPattern noColor = LEDPattern.solid(Color.kBlack);
-        public static LEDPattern orange = LEDPattern.solid(Color.kOrange);
+
         // Gradients
         public static LEDPattern rainbow = LEDPattern.rainbow(255, 128);
         public static LEDPattern purpleGradient = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous,
@@ -41,8 +39,7 @@ public final class LedConstants {
 
         // Animated Patterns
         public static LEDPattern breathingGreen = green.breathe(Seconds.of(2));
-        public static LEDPattern breathingOrange = orange.breathe(Seconds.of(2));
-        public static LEDPattern breathingBlue = blue.breathe(Seconds.of(2));
+
         // Other Patterns
         public static LEDPattern elevatorMask = LEDPattern
                         .progressMaskLayer(() -> (double) CoralSequentialCmd.getLevel() / 4); // Just a mask, don't use
