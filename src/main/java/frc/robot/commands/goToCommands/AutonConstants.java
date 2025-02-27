@@ -146,7 +146,7 @@ public class AutonConstants {
                 };
 
                 private final static Pose2d[] blueCloseReefPoints = new Pose2d[] {
-                                new Pose2d(2.97, 4, Rotation2d.fromDegrees(0)), // Pose B
+                                new Pose2d(3.14, 4, Rotation2d.fromDegrees(0)), // Pose B
                                 // new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
                                 // new Pose2d(5.17, 2.61, Rotation2d.fromDegrees(120)), // Pose F
                                 // new Pose2d(6.08, 3.78, Rotation2d.fromDegrees(180)), // Pose H
@@ -154,14 +154,21 @@ public class AutonConstants {
                                 // new Pose2d(3.95, 5.53, Rotation2d.fromDegrees(300)) // Pose L
                 };
                 private final static Pose2d[] blueFarReefPoints = new Pose2d[] {
-                                new Pose2d(2.75, 4, Rotation2d.fromDegrees(0)), // Pose B
+                                new Pose2d(2.65, 4, Rotation2d.fromDegrees(0)), // Pose B
                                 // new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
                                 // new Pose2d(5.17, 2.61, Rotation2d.fromDegrees(120)), // Pose F
                                 // new Pose2d(6.08, 3.78, Rotation2d.fromDegrees(180)), // Pose H
                                 // new Pose2d(5.41, 5.35, Rotation2d.fromDegrees(240)), // Pose J
                                 // new Pose2d(3.95, 5.53, Rotation2d.fromDegrees(300)) // Pose L
                 };
-
+                private final static Pose2d[] blueFarrerReefPoints = new Pose2d[] {
+                                new Pose2d(2.45, 4, Rotation2d.fromDegrees(0)), // Pose B
+                                // new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
+                                // new Pose2d(5.17, 2.61, Rotation2d.fromDegrees(120)), // Pose F
+                                // new Pose2d(6.08, 3.78, Rotation2d.fromDegrees(180)), // Pose H
+                                // new Pose2d(5.41, 5.35, Rotation2d.fromDegrees(240)), // Pose J
+                                // new Pose2d(3.95, 5.53, Rotation2d.fromDegrees(300)) // Pose L
+                };
                 public final static Pose2d[] l4ExactRightReefPoints = AllianceFlipUtil
                                 .apply(l4ExactBlueRightReefPoints);
                 public final static Pose2d[] l4ExactLeftReefPoints = AllianceFlipUtil.apply(l4ExactBlueLeftReefPoints);
@@ -182,6 +189,7 @@ public class AutonConstants {
                 public final static Pose2d[] l1CloseLeftReefPoints = AllianceFlipUtil.apply(l1CloseBlueLeftReefPoints);
                 public final static Pose2d[] closeReefPoints = AllianceFlipUtil.apply(blueCloseReefPoints);
                 public final static Pose2d[] farReefPoints = AllianceFlipUtil.apply(blueFarReefPoints);
+                public final static Pose2d[] farrerReefPoints = AllianceFlipUtil.apply(blueFarrerReefPoints);
                 public final static Pose2d[] coralStations = AllianceFlipUtil.apply(blueCoralStations);
 
                 public static enum AutonState {
