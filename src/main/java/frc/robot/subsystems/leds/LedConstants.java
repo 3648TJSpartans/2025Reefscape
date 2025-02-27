@@ -3,6 +3,9 @@ package frc.robot.subsystems.leds;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.commands.autonCommands.CoralSequentialCmd;
+import edu.wpi.first.units.Units.*;
+
+
 
 public final class LedConstants {
 
@@ -31,6 +34,9 @@ public final class LedConstants {
     public static LEDPattern rainbow = LEDPattern.rainbow(255, 128);
     public static LEDPattern purpleGradient = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kRed, Color.kBlue);
     public static LEDPattern elevatorGradient = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Color.kRed, Color.kYellow, Color.kGreen, Color.kTeal); // Stoplight-esque gradient to use on the elevator
+
+    // Animated Patterns
+    public static LEDPattern breathingRainbow = rainbow.breathe(Seconds.of(2));
     
     // Other Patterns
     public static LEDPattern elevatorMask = LEDPattern.progressMaskLayer(() -> (double) CoralSequentialCmd.getLevel() / 4); // Just a mask, don't use
