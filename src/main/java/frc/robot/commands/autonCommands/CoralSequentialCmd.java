@@ -1,5 +1,6 @@
 package frc.robot.commands.autonCommands;
 
+import java.lang.Thread.State;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -72,6 +73,15 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
     public static void setAutonState(AutonState state) {
         CoralSequentialCmd.autonState = state;
         Logger.recordOutput("CoralSequentialCommand/AutonState", state.toString());
+    }
+
+    public static int getLeftOrRIghtState() {
+        if (CoralSequentialCmd.autonState == autonState.RIGHTREEF) {
+            return 1;
+        } else {
+            return 0;
+        }
+
     }
 
     public static int getLevel() {

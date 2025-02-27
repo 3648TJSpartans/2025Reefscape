@@ -43,9 +43,8 @@ import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToNearestIntake;
 import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
-import frc.robot.commands.ledTestCommands.ElevatorIndicator;
-import frc.robot.commands.ledTestCommands.breathBlue;
-import frc.robot.commands.ledTestCommands.breathGreen;
+import frc.robot.commands.ledCommands.autonoumousIndicator;
+import frc.robot.commands.ledCommands.teleopStatesIndicators;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
@@ -399,24 +398,20 @@ public class RobotContainer {
 
         public void configureLeds() {
                 // define commands
-                Command ledAutnomousIndicator = new breathGreen(m_led);
-                Command ledTeleopIndicator = new breathBlue(m_led);
-                Command ledElevatorHeihgtIndicator = new ElevatorIndicator(m_led);
+                Command ledAutnomousIndicator = new autonoumousIndicator(m_led);
+                Command ledTeleopIndicator = new teleopStatesIndicators(m_led, m_coral);
                 // create triggers
                 Trigger autonomous = new Trigger(() -> DriverStation.isAutonomousEnabled());
                 Trigger teleop = new Trigger(() -> DriverStation.isTeleopEnabled());
-                // Trigger elevatorMoving = new Trigger(() -> getLevel());
                 // apply triggers
                 autonomous.onTrue(ledAutnomousIndicator);
                 teleop.onTrue(ledTeleopIndicator);
-                m_driveController.leftTrigger().whileTrue(ledAutnomousIndicator);
-
-                teleop.onTrue(ledTeleopIndicator);
-                // teleleop
-                // autonoumous
+                // teleleop >done
+                // autonomous >done
                 // algea intak running
                 // elevator level
-                // coral intake and placing running
+                // coral intake >done
+                // and placing running
 
         }
 

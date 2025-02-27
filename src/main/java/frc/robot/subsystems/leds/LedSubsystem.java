@@ -9,10 +9,12 @@ import edu.wpi.first.wpilibj.AddressableLED;
 
 public class LedSubsystem extends SubsystemBase {
 
-    private final AddressableLEDBuffer ledBuffer;
+    public final AddressableLEDBuffer ledBuffer;
 
-    public final AddressableLEDBufferView leftSideBuffer;
-    public final AddressableLEDBufferView rightSideBuffer;
+    public final AddressableLEDBufferView buffer1;
+    public final AddressableLEDBufferView buffer2;
+    public final AddressableLEDBufferView buffer3;
+    public final AddressableLEDBufferView buffer4;
 
     private final AddressableLED led;
 
@@ -21,8 +23,10 @@ public class LedSubsystem extends SubsystemBase {
         led = new AddressableLED(LedConstants.ledPWMID);
 
         // Create sub-buffers
-        leftSideBuffer = ledBuffer.createView(LedConstants.leftSideLedStart, LedConstants.leftSideLedEnd);
-        rightSideBuffer = ledBuffer.createView(LedConstants.rightSideLedStart, LedConstants.rightSideLedEnd);
+        buffer1 = ledBuffer.createView(LedConstants.buffer1Start, LedConstants.buffer1End);
+        buffer2 = ledBuffer.createView(LedConstants.buffer2Start, LedConstants.buffer2End);
+        buffer3 = ledBuffer.createView(LedConstants.buffer3Start, LedConstants.buffer3End);
+        buffer4 = ledBuffer.createView(LedConstants.buffer4Start, LedConstants.buffer4End);
 
         led.setLength(ledBuffer.getLength());
         led.setData(ledBuffer);
@@ -38,13 +42,42 @@ public class LedSubsystem extends SubsystemBase {
     }
 
     public void turnLedsOff() {
+
         LedConstants.noColor.applyTo(ledBuffer);
         led.setData(ledBuffer);
 
     }
 
-    public void setGlobalPattern(LEDPattern pattern) {
-        pattern.applyTo(ledBuffer);
+    // left or right
+    public void setGlobalPattern(LEDPattern pattern, int level) {
+        if (level == 1) {
+            pattern.applyTo(buffer1);
+            LedConstants.noColor.applyTo(buffer2);
+            LedConstants.noColor.applyTo(buffer3);
+            LedConstants.noColor.applyTo(buffer4);
+
+        }
+        if (level == 2) {
+            pattern.applyTo(buffer1);
+            pattern.applyTo(buffer2);
+            LedConstants.noColor.applyTo(buffer3);
+            LedConstants.noColor.applyTo(buffer4);
+
+        }
+        if (level == 3) {
+            pattern.applyTo(buffer1);
+            pattern.applyTo(buffer2);
+            pattern.applyTo(buffer3);
+            LedConstants.noColor.applyTo(buffer4);
+
+        }
+        if (level == 4) {
+            pattern.applyTo(buffer1);
+            pattern.applyTo(buffer2);
+            pattern.applyTo(buffer3);
+            pattern.applyTo(buffer4);
+
+        }
         led.setData(ledBuffer);
     }
 }
