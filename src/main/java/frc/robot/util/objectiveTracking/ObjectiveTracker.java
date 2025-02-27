@@ -11,7 +11,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 
-public class ObjectiveTracker extends SubsystemBase {
+public class ObjectiveTracker {
     public enum Reefpoint {
         A,
         B,
@@ -108,13 +108,13 @@ public class ObjectiveTracker extends SubsystemBase {
         updateLoggedPoses();
     }
 
-    @Override
-    public void periodic() {
-        for (ObjectiveTrackerObject object : objectives) {
-            object.updateValues();
-        }
-        updateLoggedPoses();
-    }
+    // @Override
+    // public void periodic() {
+    // for (ObjectiveTrackerObject object : objectives) {
+    // object.updateValues();
+    // }
+    // updateLoggedPoses();
+    // }
 
     public ObjectiveTrackerObject[] getObjectives() {
         ArrayList<ObjectiveTrackerObject> out = new ArrayList<ObjectiveTrackerObject>();
