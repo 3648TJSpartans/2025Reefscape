@@ -284,7 +284,7 @@ public class RobotContainer {
 
     private void configureTest() {
         m_controllerTwo.leftTrigger().whileTrue(new AlgaeRemovalCmd(m_drive, m_coral, m_elevator, () -> true));
-        m_controllerTwo.rightTrigger().whileTrue(new DownToIntakeCmd(m_coral, m_elevator))
+        m_driveController.b().whileTrue(new DownToIntakeCmd(m_coral, m_elevator))
                 .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
     }
 
@@ -406,7 +406,7 @@ public class RobotContainer {
         m_copilotController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
         Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_copilotController.getRightX());
         Command slamCoral = new SlamCoralCmd(m_coral);
-        m_coral.setDefaultCommand(wristAnalog);
+        // m_coral.setDefaultCommand(wristAnalog);
         m_controllerTwo.y().whileTrue(slamCoral);
     }
 
@@ -450,10 +450,12 @@ public class RobotContainer {
         Command coralDefaultCommand = new CoralDefaultCmd(m_coral, m_elevator);
         Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
         // m_elevator.setDefaultCommand(elevatorAnalog);
-        // m_elevator.setDefaultCommand(coralDefaultCommand);
-        // m_coral.setDefaultCommand(coralDefaultCommand);
-        new Trigger(() -> DriverStation.isTeleopEnabled() && !m_elevator.getLimitReset())
-                .whileTrue(homeElevator);
+        m_elevator.setDefaultCommand(coralDefaultCommand);
+        m_coral.setDefaultCommand(coralDefaultCommand);
+
+        // new Trigger(() -> DriverStation.isTeleopEnabled() &&
+        // !m_elevator.getLimitReset())
+        // .whileTrue(homeElevator);
 
     }
 
