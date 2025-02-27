@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -19,6 +20,8 @@ import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.leds.LedConstants;
+import frc.robot.subsystems.leds.LedSubsystem;
 
 public class CoralSequentialCmd extends SequentialCommandGroup {
     private final CoralIntake m_coralIntake;
