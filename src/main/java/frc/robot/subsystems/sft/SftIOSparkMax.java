@@ -3,6 +3,7 @@ package frc.robot.subsystems.sft;
 import org.littletonrobotics.junction.Logger;
 
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -22,7 +23,7 @@ public class SftIOSparkMax implements SftIO {
     // declaration of motors, IR sensor and encoder
     private SparkMax motor;
     private DigitalInput irSensor;
-    private AbsoluteEncoder absoluteEncoder;
+    private RelativeEncoder encoder;
     private SparkClosedLoopController motorController;
 
     // this is the constructor of the class
@@ -30,13 +31,13 @@ public class SftIOSparkMax implements SftIO {
         motor = new SparkMax(SftConstants.SftMotorPin, MotorType.kBrushless);
         irSensor = new DigitalInput(CoralIntakeConstants.irSensorPin);
         motorController = motor.getClosedLoopController();
-        absoluteEncoder = motor.getAbsoluteEncoder();
+        encoder = motor.getEncoder();
         var config = new SparkMaxConfig();
         config.inverted(false)
                 .idleMode(IdleMode.kBrake)
                 .voltageCompensation(12.0);
         config.closedLoop
-                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .pidf(new TunableNumber("SFT/kP", SftConstants.kP).get(),
                         new TunableNumber("SFT/kI", SftConstants.kI).get(),
                         new TunableNumber("SFT/kD", SftConstants.kD).get(),
@@ -50,11 +51,11 @@ public class SftIOSparkMax implements SftIO {
                 .appliedOutputPeriodMs(20)
                 .busVoltagePeriodMs(20)
                 .outputCurrentPeriodMs(20);
-        config.absoluteEncoder
-                .inverted(SftConstants.encoderInverted)
-                .positionConversionFactor(SftConstants.encoderPositionFactor)
-                .velocityConversionFactor(SftConstants.encoderPositionFactor)
-                .averageDepth(2);
+        // config.absoluteEncoder
+        // .inverted(SftConstants.encoderInverted)
+        // .positionConversionFactor(SftConstants.encoderPositionFactor)
+        // .velocityConversionFactor(SftConstants.encoderPositionFactor)
+        // .averageDepth(2);
         motor.configure(
                 config, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
@@ -76,8 +77,8 @@ public class SftIOSparkMax implements SftIO {
     }
 
     @Override
-    public double getAngle() {
-        return absoluteEncoder.getPosition();
+    public double getPosition() {
+        return encoder.getPosition();
     }
 
     @Override

@@ -14,8 +14,8 @@ public class Sft extends SubsystemBase {
         io.updateValues();
     }
 
-    public double getAngle() {
-        return io.getAngle();
+    public double getPosition() {
+        return io.getPosition();
     }
 
     public void rotateTo(double setangle) {
