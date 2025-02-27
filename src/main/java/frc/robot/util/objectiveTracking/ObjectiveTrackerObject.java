@@ -20,34 +20,17 @@ public class ObjectiveTrackerObject {
     private final Reefpoint reefpoint;
     private final int level;
     private final Pose3d pose3d;
-    private final NetworkTable table;
     BooleanSubscriber filledSub;
 
-    public ObjectiveTrackerObject(Pose2d pose, boolean filled, Reefpoint reefpoint, int level, NetworkTable table) {
+    public ObjectiveTrackerObject(Pose2d pose, boolean filled, Reefpoint reefpoint, int level) {
         this.pose = pose;
         this.reefpoint = reefpoint;
         this.filled = filled;
         this.level = level;
         this.pose3d = new Pose3d(pose.getX(), pose.getY(), getHeight(level), new Rotation3d(pose.getRotation()));
-        this.table = table;
-        // SmartDashboard.putBoolean("ObjectiveTracker/Objectives/" +
-        // reefpoint.toString() + "/" + level + "/Filled",
-        // filled);
-        table.getBooleanTopic("testEntry").publish();
-        filledSub = table.getBooleanTopic("testEntry").subscribe(filled);
         Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Filled", filled);
         Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Pose2d", pose);
         Logger.recordOutput("ObjectiveTracker/Objectives/" + reefpoint.toString() + "/" + level + "/Pose3d", pose3d);
-    }
-
-    public void updateValues() {
-        // filled = !filled;
-
-        filled = filledSub.get();
-        table.getEntry("testEntry").setBoolean(filled);
-        // boolean foo = new TunableNumber("foo", 0.0) == 0.0;
-        Logger.recordOutput("TestEntry", filled);
-        System.out.println("TestEntry " + filled);
     }
 
     public Pose2d getPose() {
