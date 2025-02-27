@@ -399,10 +399,10 @@ public class RobotContainer {
         public void configureLeds() {
                 Command ledRedCommand = new TurnRed(m_led);
                 Command ledGreenCommand = new TurnGreen(m_led);
-                Command ledIdleCommand = new idle();
-                m_ledController.b().whileTrue(ledGreenCommand);
-                m_ledController.a().whileTrue(ledRedCommand);
-                m_ledController.y().whileTrue(ledIdleCommand);
+                m_ledController.b().onTrue(ledGreenCommand);
+                m_ledController.a().onTrue(ledRedCommand);
+                Trigger autonomous = new Trigger(() -> DriverStation.isAutonomousEnabled());
+                autonomous.whileTrue(ledGreenCommand);
         }
 
         public void configureCoralIntake() {
