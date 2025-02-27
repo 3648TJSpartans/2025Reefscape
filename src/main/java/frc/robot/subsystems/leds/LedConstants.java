@@ -38,7 +38,7 @@ public final class LedConstants {
                         Color.kYellow, Color.kGreen, Color.kTeal); // Stoplight-esque gradient to use on the elevator
 
         // Animated Patterns
-        public static LEDPattern breathingRainbow = rainbow.breathe(Seconds.of(2));
+        public static LEDPattern breathingGreen = green.breathe(Seconds.of(2));
 
         // Other Patterns
         public static LEDPattern elevatorMask = LEDPattern

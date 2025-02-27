@@ -24,8 +24,7 @@ public class TurnGreen extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_leds.setLedPattern(LedConstants.breathingRainbow, m_leds.leftSideBuffer);
-        m_leds.setLedPattern(LedConstants.breathingRainbow, m_leds.rightSideBuffer);
+        m_leds.setLedPattern(LedConstants.breathingGreen, m_leds.leftSideBuffer);
     }
 
     // Called once the command ends or is interrupted.

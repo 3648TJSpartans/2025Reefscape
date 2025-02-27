@@ -45,6 +45,7 @@ import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
 import frc.robot.commands.ledTestCommands.TurnGreen;
 import frc.robot.commands.ledTestCommands.TurnRed;
+import frc.robot.commands.ledTestCommands.TurnYellow;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
@@ -399,10 +400,12 @@ public class RobotContainer {
         public void configureLeds() {
                 Command ledRedCommand = new TurnRed(m_led);
                 Command ledGreenCommand = new TurnGreen(m_led);
+                Command ledYellowCommand = new TurnYellow(m_led)
                 m_ledController.b().onTrue(ledGreenCommand);
                 m_ledController.a().onTrue(ledRedCommand);
                 Trigger autonomous = new Trigger(() -> DriverStation.isAutonomousEnabled());
-                autonomous().whileTrue(ledGreenCommand);
+                autonomous.whileTrue(ledGreenCommand);
+                autonomous.whileFalse(ledYellowCommand);
         }
 
         public void configureCoralIntake() {
