@@ -34,6 +34,7 @@ public class CoralIntakeConstants {
     public static final double L4Angle = .34;
     public static final double IntakeAngle = .723;
     public static final double defaultAngle = .6; // TODO: change
+    public static final double algaeRemovalAngle = .14;
 
     public static final double minAngle = 0.1;
     public static final double maxAngle = 0.95;

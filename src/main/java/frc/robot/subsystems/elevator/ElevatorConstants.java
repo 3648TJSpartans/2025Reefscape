@@ -15,7 +15,9 @@ public class ElevatorConstants {
     public static final double coralLeveL4 = 68;
     public static final double coralLimit = 70;
     public static final double intakePose = 0;// this is the postion for the intake
-    public static final double defaultPosition = 0.5; // TODO: change this to the correct number
+    public static final double defaultPosition = 0.5;
+    public static final double algaeRemovalHeightLow = 0;
+    public static final double algaeRemovalHeightHigh = 42; // TODO: change this to the correct number
     // these are the constants for the elevator pid
     public static final double kElevatorP = .3;
     public static final double kElevatorI = 0;
@@ -27,6 +29,7 @@ public class ElevatorConstants {
     public static final boolean elevatorEncoderInverted = false;
     public static final double elevatorEncoderPositionFactor = 1;
     public static final double elevatorEncoderVelocityFactor = 1;
+
     public static final int bottomLimitSwitchPin = 2;
 
     public static final double marginOfError = 1; // this is how close the robot has to be to target height to stop,
