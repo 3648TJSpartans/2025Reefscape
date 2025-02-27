@@ -98,9 +98,11 @@ import frc.robot.commands.climberCommands.*;
 import frc.robot.commands.coralCommands.CoralElevatorIntegratedCmd;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
+import frc.robot.commands.coralCommands.DownToIntakeCmd;
 import frc.robot.commands.coralCommands.ElevatorCmd;
 import frc.robot.commands.coralCommands.HomeElevatorCmd;
 import frc.robot.commands.coralCommands.SlamCoralCmd;
+import frc.robot.commands.coralCommands.UpFromIntakeCmd;
 import frc.robot.commands.coralCommands.ElevatorAnalogCmd;
 import frc.robot.commands.coralCommands.WristCmd;
 import frc.robot.commands.coralCommands.WristAnalogCmd;
@@ -282,6 +284,8 @@ public class RobotContainer {
 
     private void configureTest() {
         m_controllerTwo.leftTrigger().whileTrue(new AlgaeRemovalCmd(m_drive, m_coral, m_elevator, () -> true));
+        m_controllerTwo.rightTrigger().whileTrue(new DownToIntakeCmd(m_coral, m_elevator))
+                .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
     }
 
     private void configureAlerts() {
