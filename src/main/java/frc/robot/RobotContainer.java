@@ -43,9 +43,10 @@ import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToNearestIntake;
 import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
-import frc.robot.commands.ledTestCommands.TurnGreen;
+import frc.robot.commands.ledTestCommands.breathGreen;
 import frc.robot.commands.ledTestCommands.TurnRed;
-import frc.robot.commands.ledTestCommands.TurnYellow;
+import frc.robot.commands.ledTestCommands.breathBlue;
+import frc.robot.commands.ledTestCommands.ledDefault;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
@@ -398,14 +399,18 @@ public class RobotContainer {
         }
 
         public void configureLeds() {
+
+                // define all the commands for the colors
                 Command ledRedCommand = new TurnRed(m_led);
-                Command ledGreenCommand = new TurnGreen(m_led);
-                Command ledYellowCommand = new TurnYellow(m_led)
-                m_ledController.b().onTrue(ledGreenCommand);
-                m_ledController.a().onTrue(ledRedCommand);
+                Command ledAutonsIndicator = new breathGreen(m_led);
+                Command ledTeleopIndicator = new breathBlue(m_led);
+                // define all the triggers
+                Trigger teleop = new Trigger(() -> DriverStation.isTeleopEnabled());
                 Trigger autonomous = new Trigger(() -> DriverStation.isAutonomousEnabled());
-                autonomous.whileTrue(ledGreenCommand);
-                autonomous.whileFalse(ledYellowCommand);
+                // apply the triggers
+                teleop.onTrue(ledTeleopIndicator);
+                autonomous.onTrue(ledAutonsIndicator);
+                m_driveController.leftTrigger().whileTrue(ledAutonsIndicator);
         }
 
         public void configureCoralIntake() {
@@ -419,6 +424,7 @@ public class RobotContainer {
                 Command slamCoral = new SlamCoralCmd(m_coral);
                 m_coral.setDefaultCommand(wristAnalog);
                 m_controllerTwo.y().whileTrue(slamCoral);
+
         }
 
         public void configureDrive() {
