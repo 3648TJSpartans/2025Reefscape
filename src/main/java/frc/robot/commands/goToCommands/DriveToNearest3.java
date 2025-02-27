@@ -28,7 +28,7 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
 import org.littletonrobotics.junction.Logger;
 
-public class DriveToNearest extends Command {
+public class DriveToNearest3 extends Command {
         private static final TunableNumber drivekP = new TunableNumber("DriveToPose/DrivekP");
         private static final TunableNumber drivekD = new TunableNumber("DriveToPose/DrivekD");
         private static final TunableNumber thetakP = new TunableNumber("DriveToPose/ThetakP");
@@ -80,7 +80,7 @@ public class DriveToNearest extends Command {
         private Supplier<Translation2d> linearFF = () -> Translation2d.kZero;
         private DoubleSupplier omegaFF = () -> 0.0;
 
-        public DriveToNearest(Drive drive, Supplier<Pose2d[]> targets) {
+        public DriveToNearest3(Drive drive, Supplier<Pose2d[]> targets) {
                 this.drive = drive;
                 robot = drive::getPose;
                 this.targetPoints = targets;
@@ -91,12 +91,12 @@ public class DriveToNearest extends Command {
                 addRequirements(drive);
         }
 
-        public DriveToNearest(Drive drive, Supplier<Pose2d[]> targets, Supplier<Pose2d> robot) {
+        public DriveToNearest3(Drive drive, Supplier<Pose2d[]> targets, Supplier<Pose2d> robot) {
                 this(drive, targets);
                 this.robot = robot;
         }
 
-        public DriveToNearest(
+        public DriveToNearest3(
                         Drive drive,
                         Supplier<Pose2d[]> targets,
                         Supplier<Pose2d> robot,
