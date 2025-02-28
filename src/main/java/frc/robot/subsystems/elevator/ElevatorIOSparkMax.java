@@ -33,7 +33,8 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     private PIDController pid;
     private final SparkClosedLoopController motorController;
     private boolean limitReset;
-    private final DigitalInput limitSwitch = new DigitalInput(ElevatorConstants.bottomLimitSwitchPin);
+    private final DigitalInput bottomLimitSwitch = new DigitalInput(ElevatorConstants.bottomLimitSwitchPin);
+    private final DigitalInput topLimitSwitch = new DigitalInput(ElevatorConstants.topLimitSwitchPin);
 
     // constructor
     public ElevatorIOSparkMax() {
@@ -116,15 +117,23 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     @Override
     public void updateLimitSwitch() {
-        Logger.recordOutput("Elevator/LimitSwitchPushed", !limitSwitch.get());
-        if (!limitSwitch.get()) {
+        Logger.recordOutput("Elevator/BottomLimitSwitchPushed", !bottomLimitSwitch.get());
+        Logger.recordOutput("Elevator/TopLimitSwitchPushed", !topLimitSwitch.get());
+        if (!bottomLimitSwitch.get()) {
             setZero();
+        } else if (!topLimitSwitch.get()) {
+            setTop();
         }
     }
 
     @Override
-    public boolean getLimitSwitch() {
-        return limitSwitch.get();
+    public boolean getBottomLimitSwitch() {
+        return bottomLimitSwitch.get();
+    }
+
+    @Override
+    public boolean getTopLimitSwitch() {
+        return bottomLimitSwitch.get();
     }
 
     private void setZero() {
@@ -133,9 +142,15 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         Logger.recordOutput("Elevator/EncoderReset", limitReset);
     }
 
+    private void setTop() {
+        encoder.setPosition(ElevatorConstants.coralLimit);
+        limitReset = true;
+        Logger.recordOutput("Elevator/EncoderReset", limitReset);
+    }
+
     @Override
     public boolean atBottom() {
-        return !limitSwitch.get();
+        return !bottomLimitSwitch.get();
     }
 
     @Override

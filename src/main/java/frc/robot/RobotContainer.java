@@ -227,7 +227,7 @@ public class RobotContainer {
                 break;
         }
 
-        Command homeElevator = new HomeElevatorCmd(m_elevator);
+        Command homeElevator = new HomeElevatorCmd(m_elevator, m_coral);
         Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
                 new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
                 new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
@@ -446,7 +446,7 @@ public class RobotContainer {
     }
 
     public void configureElevator() {
-        Command homeElevator = new HomeElevatorCmd(m_elevator);
+        Command homeElevator = new HomeElevatorCmd(m_elevator, m_coral);
         Command coralDefaultCommand = new CoralDefaultCmd(m_coral, m_elevator);
         Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
         // m_elevator.setDefaultCommand(elevatorAnalog);
@@ -460,7 +460,7 @@ public class RobotContainer {
     }
 
     public void configureSetpoints() {
-        Command homeElevator = new HomeElevatorCmd(m_elevator);
+        Command homeElevator = new HomeElevatorCmd(m_elevator, m_coral);
         Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
                 new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
                 new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
