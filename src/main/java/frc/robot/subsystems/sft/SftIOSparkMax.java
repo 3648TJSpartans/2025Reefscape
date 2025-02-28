@@ -25,12 +25,13 @@ public class SftIOSparkMax implements SftIO {
     private DigitalInput irSensor;
     private RelativeEncoder encoder;
     private AbsoluteEncoder absoluteEncoder;
-    private SparkClosedLoopController motorController;
+    private final SparkClosedLoopController motorController;
 
     // this is the constructor of the class
     public SftIOSparkMax() {
         motor = new SparkMax(SftConstants.sftMotorPin, MotorType.kBrushless);
         irSensor = new DigitalInput(SftConstants.irSensorPin);
+        motorController = motor.getClosedLoopController();
         absoluteEncoder = motor.getAbsoluteEncoder();
         var config = new SparkMaxConfig();
         config.inverted(false)
@@ -38,11 +39,11 @@ public class SftIOSparkMax implements SftIO {
                 .voltageCompensation(12.0);
         config.closedLoop
                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                .pidf(new TunableNumber("Sft/kWristP", SftConstants.kWristP).get(),
-                        new TunableNumber("Sft/kWristI", SftConstants.kWristI).get(),
-                        new TunableNumber("Sft/kWristD", SftConstants.kWristD).get(),
-                        new TunableNumber("Sft/kWristFF", SftConstants.kWristFF).get())
-                .outputRange(SftConstants.kWristMinRange, SftConstants.kWristMaxRange);
+                .pidf(new TunableNumber("Sft/kWristP", SftConstants.kP).get(),
+                        new TunableNumber("Sft/kWristI", SftConstants.kI).get(),
+                        new TunableNumber("Sft/kWristD", SftConstants.kD).get(),
+                        new TunableNumber("Sft/kWristFF", SftConstants.kFF).get())
+                .outputRange(SftConstants.kMinRange, SftConstants.kMaxRange);
         config.signals
                 .absoluteEncoderPositionAlwaysOn(true)
                 .absoluteEncoderPositionPeriodMs((int) (1000.0 / SftConstants.kSftOdometryFrequency))
@@ -89,7 +90,8 @@ public class SftIOSparkMax implements SftIO {
         return irSensor.get();
     }
 
-    public void setWristSpeed(double speed) {
+    @Override
+    public void setSpeed(double speed) {
         Logger.recordOutput("Sft/setSpeed", speed);
         motor.set(speed);
     }

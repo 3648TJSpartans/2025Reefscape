@@ -1,5 +1,7 @@
 package frc.robot.commands.sftCommands;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
 import frc.robot.subsystems.sft.Sft;
@@ -17,6 +19,7 @@ public class SftCmd extends Command {
 
     @Override
     public void initialize() {
+        Logger.recordOutput("Sft/CommandScheduled", true);
     }
 
     @Override
@@ -27,6 +30,7 @@ public class SftCmd extends Command {
     @Override
     public void end(boolean interrupted) {
         m_sft.stopMotor();
+        Logger.recordOutput("Sft/CommandScheduled", false);
     }
 
     @Override

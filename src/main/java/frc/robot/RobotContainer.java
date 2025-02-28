@@ -44,6 +44,7 @@ import frc.robot.commands.goToCommands.DriveToNearestIntake;
 import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
 import frc.robot.commands.sftCommands.SftAnalogCmd;
+import frc.robot.commands.sftCommands.SftCmd;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
@@ -65,6 +66,7 @@ import frc.robot.subsystems.elevator.ElevatorConstants;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOSparkMax;
 import frc.robot.subsystems.sft.Sft;
+import frc.robot.subsystems.sft.SftConstants;
 import frc.robot.subsystems.sft.SftIOSparkMax;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
@@ -369,8 +371,11 @@ public class RobotContainer {
         }
 
         public void configureSft() {
-                SftAnalogCmd sftAnalogCmd = new SftAnalogCmd(m_sft, () -> m_controllerTwo.getRightX() / 10);
+                SftAnalogCmd sftAnalogCmd = new SftAnalogCmd(m_sft,
+                                () -> MathUtil.applyDeadband(m_controllerTwo.getRightX(), 0.1) / 10);
                 m_sft.setDefaultCommand(sftAnalogCmd);
+                m_controllerTwo.x().whileTrue(new SftCmd(m_sft, SftConstants.endgameSetPoint))
+                                .onFalse(new SftCmd(m_sft, 0));
         }
 
         public void configureAutoChooser() {
@@ -457,7 +462,6 @@ public class RobotContainer {
         }
 
         public void configureElevator() {
-
                 Command homeElevator = new HomeElevatorCmd(m_elevator, m_coral);
                 Command coralDefaultCommand = new CoralDefaultCmd(m_coral, m_elevator);
                 Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
