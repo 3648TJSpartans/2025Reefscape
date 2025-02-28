@@ -20,7 +20,7 @@ public class ElevatorConstants {
     public static final double algaeRemovalHeightLow = 0;
     public static final double algaeRemovalHeightHigh = 42; // TODO: change this to the correct number
     // these are the constants for the elevator pid
-    public static final double kElevatorP = .3;
+    public static final double kElevatorP = .15;
     public static final double kElevatorI = 0;
     public static final double kElevatorD = 0.1;
     public static final double kElevatorFF = 0.1;
