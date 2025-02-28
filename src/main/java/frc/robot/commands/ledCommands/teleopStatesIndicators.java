@@ -37,18 +37,15 @@ public class teleopStatesIndicators extends Command {
         // right case
         if (CoralSequentialCmd.getLeftOrRIghtState() == 1) {
             if (m_corCoralIntake.getIR() == false) {
-                m_leds.setLedPattern(LedConstants.red, CoralSequentialCmd.getLevel());
+                m_leds.setLedPattern(LedConstants.teal, CoralSequentialCmd.getLevel());
             }
             if (m_corCoralIntake.getIR() == true) {
-                LedConstants.ledLength = 4 * CoralSequentialCmd.getLevel();
-                m_leds.setLedPattern(LedConstants.blinkingRed, CoralSequentialCmd.getLevel());
+                m_leds.setLedPattern(LedConstants.blinkingteal, CoralSequentialCmd.getLevel());
             }
         }
         // left case
         if (CoralSequentialCmd.getLeftOrRIghtState() == 0) {
             if (m_corCoralIntake.getIR() == false) {
-                System.out.println(CoralSequentialCmd.getLevel());
-                LedConstants.ledLength = 4 * CoralSequentialCmd.getLevel();
                 m_leds.setLedPattern(LedConstants.blue, CoralSequentialCmd.getLevel());
             }
             if (m_corCoralIntake.getIR() == true) {

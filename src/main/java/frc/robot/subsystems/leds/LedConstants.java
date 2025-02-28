@@ -8,16 +8,25 @@ import static edu.wpi.first.units.Units.*;
 public final class LedConstants {
 
         // Values //
-        public static int ledLength = 27;
+        public static int ledLength = 120;
         public static final int ledPWMID = 1;
-        public static final int buffer1Start = 0;
-        public static final int buffer1End = 6;
-        public static final int buffer2Start = 7;
-        public static final int buffer2End = 14;
-        public static final int buffer3Start = 15;
-        public static final int buffer3End = 21;
-        public static final int buffer4Start = 22;
-        public static final int buffer4End = 26;
+        public static final int buffer1StartLeft = 0;
+        public static final int buffer1EndLeft = 14;
+        public static final int buffer2StartLeft = 15;
+        public static final int buffer2EndLeft = 29;
+        public static final int buffer3StartLeft = 30;
+        public static final int buffer3EndLeft = 44;
+        public static final int buffer4StartLeft = 45;
+        public static final int buffer4EndLeft = 59;
+        // right side
+        public static final int buffer1StartRight = 60;
+        public static final int buffer1EndRight = 74;
+        public static final int buffer2StartRight = 75;
+        public static final int buffer2EndRight = 89;
+        public static final int buffer3StartRight = 90;
+        public static final int buffer3EndRight = 104;
+        public static final int buffer4StartRight = 105;
+        public static final int buffer4EndRight = 119;
         // Colors & Patterns //
 
         // Solid Colors
@@ -40,8 +49,8 @@ public final class LedConstants {
 
         // Animated Patterns
         public static LEDPattern breathingGreen = green.breathe(Seconds.of(2));
-        public static LEDPattern blinkingBlue = blue.breathe(Seconds.of(.2));
-        public static LEDPattern blinkingRed = red.blink(Seconds.of(.2));
+        public static LEDPattern blinkingBlue = blue.breathe(Seconds.of(1.5));
+        public static LEDPattern blinkingteal = teal.breathe(Seconds.of(1.5));
         // Other Patterns
         public static LEDPattern elevatorMask = LEDPattern
                         .progressMaskLayer(() -> (double) CoralSequentialCmd.getLevel() / 4); // Just a mask, don't use
