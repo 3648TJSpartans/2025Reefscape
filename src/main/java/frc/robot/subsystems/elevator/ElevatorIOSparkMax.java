@@ -16,6 +16,7 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.AbsoluteEncoder;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import org.littletonrobotics.junction.Logger;
@@ -33,12 +34,18 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     private PIDController pid;
     private final SparkClosedLoopController motorController;
     private boolean limitReset;
+    private final TrapezoidProfile profile;
+    private TrapezoidProfile.State goal = new TrapezoidProfile.State();
+    private TrapezoidProfile.State setpoint = new TrapezoidProfile.State();
     private final DigitalInput limitSwitch = new DigitalInput(ElevatorConstants.bottomLimitSwitchPin);
 
     // constructor
     public ElevatorIOSparkMax() {
         motor = new SparkMax(ElevatorConstants.coralElevator, MotorType.kBrushless);
         motorController = motor.getClosedLoopController();
+        profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(ElevatorConstants.elevatorMaxVelocity,
+                ElevatorConstants.elevatorMaxAcceleration));
+
         limitReset = false;
         Logger.recordOutput("Elevator/EncoderReset", false);
         Logger.recordOutput("Elevator/Setpoint", 0.0);
@@ -90,10 +97,12 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     @Override
     public void elevateTo(double position) {
+        goal = new TrapezoidProfile.State(position, 0);
+        setpoint = profile.calculate((new TunableNumber("Elevator/", 1)).get(), setpoint, goal);
         if (limitReset) {
             Logger.recordOutput("Elevator/Setpoint", position);
             if (getHeight() < ElevatorConstants.coralLimit) {
-                motorController.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+                motorController.setReference(setpoint.position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
             } else {
                 setSpeed(0);
             }
