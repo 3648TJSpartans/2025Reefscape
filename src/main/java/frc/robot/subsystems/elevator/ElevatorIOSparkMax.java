@@ -18,6 +18,7 @@ import com.revrobotics.AbsoluteEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -85,14 +86,15 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     }
 
     @Override
+    @AutoLogOutput(key = "Elevator/GetHeight")
     public double getHeight() {
         return encoder.getPosition();
     }
 
     @Override
     public void elevateTo(double position) {
+        Logger.recordOutput("Elevator/Setpoint", position);
         if (limitReset) {
-            Logger.recordOutput("Elevator/Setpoint", position);
             if (getHeight() < ElevatorConstants.coralLimit) {
                 motorController.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
             } else {

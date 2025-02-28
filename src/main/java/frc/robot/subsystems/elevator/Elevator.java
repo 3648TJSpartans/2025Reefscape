@@ -50,7 +50,7 @@ public class Elevator extends SubsystemBase {
     return io.getHeight();
   }
 
-  @AutoLogOutput
+  @AutoLogOutput(key = "Elevator/IsInNoGoZone")
   public boolean isInNoGoZone() {
     double noGoBottom = new TunableNumber("Elevator/NoGoZoneBottom", ElevatorConstants.NoGoZoneBottom).get();
     double noGoTop = new TunableNumber("Elevator/NoGoZoneTop", ElevatorConstants.NoGoZoneTop).get();

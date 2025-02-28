@@ -24,8 +24,8 @@ public class CoralIntake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     io.updateValues();
-    Logger.recordOutput("Intake/EncoderAngle", getAngle());
-    Logger.recordOutput("Intake/IR", getIR());
+    Logger.recordOutput("CoralIntake/EncoderAngle", getAngle());
+    Logger.recordOutput("CoralIntake/IR", getIR());
 
     if (m_elevator != null && m_elevator.isInNoGoZone()) {
       io.goToSafeAngle();
@@ -46,7 +46,7 @@ public class CoralIntake extends SubsystemBase {
   }
 
   public void rotateTo(double setAngle) {
-    Logger.recordOutput("Intake/setAngle", setAngle);
+    Logger.recordOutput("CoralIntake/setAngle", setAngle);
     io.rotateTo(setAngle);
   }
 

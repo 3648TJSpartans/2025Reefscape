@@ -104,7 +104,6 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     }
 
     @Override
-    @AutoLogOutput(key = "Coral/goToSafeAngle")
     public void goToSafeAngle() {
         double topSafeAngle = new TunableNumber("Coral/TopSafeAngle", CoralIntakeConstants.TopSafeAngle).get();
         double bottomSafeAngle = new TunableNumber("Coral/BottomSafeAngle", CoralIntakeConstants.BottomSafeAngle).get();
@@ -112,9 +111,9 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
         double diffToTopAngle = Math.abs(topSafeAngle - currentAngle);
         double diffToBottomAngle = Math.abs(bottomSafeAngle - currentAngle);
         double newTargetAngle = diffToTopAngle < diffToBottomAngle ? diffToTopAngle : diffToBottomAngle;
-        Logger.recordOutput("Coral/diffToTopAngle", diffToTopAngle);
-        Logger.recordOutput("Coral/diffToBottomAngle", diffToBottomAngle);
-        Logger.recordOutput("Coral/NewSafeTargetAngle", newTargetAngle);
+        Logger.recordOutput("CoralIntake/diffToTopAngle", diffToTopAngle);
+        Logger.recordOutput("CoralIntake/diffToBottomAngle", diffToBottomAngle);
+        Logger.recordOutput("CoralIntake/NewSafeTargetAngle", newTargetAngle);
         rotateTo(newTargetAngle);
     };
 
