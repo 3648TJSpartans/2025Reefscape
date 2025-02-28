@@ -23,6 +23,7 @@ public class Elevator extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateValues();
     io.updateLimitSwitch();
+    isInNoGoZone();
   }
 
   public boolean getBottomLimitSwitch() {
