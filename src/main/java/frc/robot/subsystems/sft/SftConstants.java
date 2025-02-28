@@ -12,6 +12,8 @@ public class SftConstants {
     public static final double kMinRange = -.3;
     public static final double kMaxRange = .3;
 
+    public static final double endgameSetPoint = .32;
+
     public static double kSftOdometryFrequency = 100;
     public static final boolean encoderInverted = false;
     public static final double encoderPositionFactor = 1;
