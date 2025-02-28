@@ -289,7 +289,8 @@ public class RobotContainer {
         public void configureEndgameTriggers() {
                 configureAlerts();
                 System.out.println(Math.abs(m_drive.getPose().getX() - PoseConstants.fieldLength / 2) < 1.5);
-                m_driveController.y().onTrue(new CoralElevatorEndgameCmd(m_coral, m_elevator));
+                m_driveController.y().onTrue(new CoralElevatorEndgameCmd(m_coral, m_elevator)
+                                .andThen(new SftCmd(m_sft, SftConstants.endgameSetPoint)));
                 // new Trigger(
                 // () -> DriverStation.isTeleopEnabled()
                 // && DriverStation.getMatchTime() > 0
