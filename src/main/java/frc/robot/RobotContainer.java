@@ -227,7 +227,6 @@ public class RobotContainer {
                 break;
         }
 
-
         Command homeElevator = new HomeElevatorCmd(m_elevator, m_coral);
         Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
                 new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
@@ -244,7 +243,7 @@ public class RobotContainer {
         Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
                 ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
 
-        Command coralIn = new CoralInCmd(m_coral);
+        Command coralIn = new CoralInCmd(m_coral, m_elevator);
 
         Command slamCoral = new SlamCoralCmd(m_coral);
         NamedCommands.registerCommand("homeElevator", homeElevator);
@@ -399,7 +398,7 @@ public class RobotContainer {
 
     public void configureCoralIntake() {
 
-        Command coralIn = new CoralInCmd(m_coral);
+        Command coralIn = new CoralInCmd(m_coral, m_elevator);
 
         Command coralOut = new CoralOutCmd(m_coral);
         m_copilotController.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.15)));
@@ -462,7 +461,6 @@ public class RobotContainer {
         // !m_elevator.getLimitReset())
         // .whileTrue(homeElevator);
 
-
     }
 
     public void configureSetpoints() {
@@ -523,7 +521,6 @@ public class RobotContainer {
                         () -> CoralSequentialCmd.setAutonState(AutonState.RIGHTREEF)));
         m_driveController.leftTrigger().whileTrue(smartSequentialCommand);
 
-
         // m_driveController.y().onTrue(coralSource);
         m_driveController.rightTrigger().whileTrue(
                 new ConditionalCommand(intake, Commands.sequence(
@@ -531,10 +528,9 @@ public class RobotContainer {
 
                                 new DriveToNearestIntake(m_drive),
 
-
                                 new DownToIntakeCmd(m_coral, m_elevator)
                                         .andThen(new UpFromIntakeCmd(m_coral, m_elevator))),
-                        new CoralInCmd(m_coral)), () -> override))
+                        new CoralInCmd(m_coral, m_elevator)), () -> override))
                 .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
 
     }
