@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -42,6 +43,8 @@ import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToNearestIntake;
 import frc.robot.commands.goToCommands.DriveToPose;
+import frc.robot.commands.sftCommands.SftAnalogCmd;
+import frc.robot.commands.sftCommands.SftCmd;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
@@ -63,6 +66,9 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorConstants;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOSparkMax;
+import frc.robot.subsystems.sft.Sft;
+import frc.robot.subsystems.sft.SftConstants;
+import frc.robot.subsystems.sft.SftIOSparkMax;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
@@ -134,7 +140,7 @@ public class RobotContainer {
         private ClimberSubsystem m_climber;
         private AlgaeSubsystem m_algae;
         private boolean override;
-
+        private Sft m_sft;
         // Controller
         private final CommandXboxController m_driveController = new CommandXboxController(0);
         private final CommandXboxController m_copilotController = new CommandXboxController(1);
@@ -163,6 +169,7 @@ public class RobotContainer {
                         case REAL:
                                 // Real robot, instantiate hardware IO implementations
                                 m_climber = new ClimberSubsystem(new ClimberIOSparkMax());
+                                m_sft = new Sft(new SftIOSparkMax());
                                 // m_algae = new AlgaeSubsystem(new AlgaeIOSparkMax());
                                 m_drive = new Drive(
                                                 new GyroIONavX(),
@@ -286,7 +293,8 @@ public class RobotContainer {
         public void configureEndgameTriggers() {
                 configureAlerts();
                 System.out.println(Math.abs(m_drive.getPose().getX() - PoseConstants.fieldLength / 2) < 1.5);
-                m_driveController.y().onTrue(new CoralElevatorEndgameCmd(m_coral, m_elevator)
+                m_driveController.y().onTrue(new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
+                                CoralIntakeConstants.endgameAngle)
                                 .alongWith(new WaitCommand(.75)
                                                 .andThen(new SftCmd(m_sft, SftConstants.endgameSetPoint))));
                 // new Trigger(
@@ -297,6 +305,14 @@ public class RobotContainer {
                 // - PoseConstants.fieldLength / 2) < 1.5)
                 // .whileTrue(
                 // new CoralElevatorEndgameCmd(m_coral, m_elevator)));
+        }
+
+        public void configureSft() {
+                SftAnalogCmd sftAnalogCmd = new SftAnalogCmd(m_sft,
+                                () -> MathUtil.applyDeadband(m_controllerTwo.getRightX(), 0.1) / 10);
+                m_sft.setDefaultCommand(sftAnalogCmd);
+                m_controllerTwo.x().whileTrue(new SftCmd(m_sft, SftConstants.endgameSetPoint))
+                                .onFalse(new SftCmd(m_sft, 0));
         }
 
         private void configureAlerts() {
