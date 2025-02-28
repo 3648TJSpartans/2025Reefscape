@@ -12,6 +12,7 @@ public class CoralIntakeConstants {
     public static final int coralElevator = 9;
     public static final int coralWrist = 10;
     public static final int coralIntake = 11;
+
     // this is the constant for the pin of the ir sensor on the intake system of the
     // coralintake subsytem
     public static final int irSensorPin = 1;
@@ -39,7 +40,7 @@ public class CoralIntakeConstants {
     public static final double marginOfErrorIntake = .001;
     public static final double minAngle = 0.1;
     public static final double maxAngle = 0.95;
-
+    public static final double coralHomeCutoff = .78;
     public static final double slamAngle = 0.06;
     public static final double marginOfError = 0.05; // this is how close the robot has to be to target rotation to
     // stop,
