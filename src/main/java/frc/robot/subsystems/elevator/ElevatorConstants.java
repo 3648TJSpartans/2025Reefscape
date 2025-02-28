@@ -37,4 +37,8 @@ public class ElevatorConstants {
     public static final double marginOfError = 1; // this is how close the robot has to be to target height to stop,
                                                   // needs tuning
 
+    public static final double NoGoZoneBottom = 0.0;
+
+    public static final double NoGoZoneTop = 0.15;
+
 }

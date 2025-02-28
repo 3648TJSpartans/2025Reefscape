@@ -176,6 +176,7 @@ public class RobotContainer {
                         new VisionIOLimelight("limelight-twoplus", m_drive::getRotation));
                 m_coral = new CoralIntake(new CoralIntakeIOSparkMax());
                 m_elevator = new Elevator(new ElevatorIOSparkMax());
+                m_coral.addElevator(m_elevator);
                 break;
 
             case SIM:
@@ -201,6 +202,7 @@ public class RobotContainer {
                 m_elevator = new Elevator(new ElevatorIO() {
 
                 });
+                m_coral.addElevator(m_elevator);
                 break;
 
             default:

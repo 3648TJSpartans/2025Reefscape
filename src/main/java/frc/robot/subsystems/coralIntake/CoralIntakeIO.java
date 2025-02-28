@@ -34,4 +34,7 @@ public interface CoralIntakeIO {
     public default void setWristSpeed(double speed) {
 
     }
+
+    public default void goToSafeAngle() {
+    }
 }
