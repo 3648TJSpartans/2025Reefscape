@@ -47,6 +47,6 @@ public class CoralIntakeConstants {
     // stop,
     // needs tuning
     public static final double TopSafeAngle = 0.70;
-    public static final double BottomSafeAngle = 0.93;
+    public static final double BottomSafeAngle = 0.85;
 
 }

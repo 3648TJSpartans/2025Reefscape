@@ -409,7 +409,7 @@ public class RobotContainer {
                 m_copilotController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
                 Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_copilotController.getRightX());
                 Command slamCoral = new SlamCoralCmd(m_coral);
-                // m_coral.setDefaultCommand(wristAnalog);
+                m_coral.setDefaultCommand(wristAnalog);
                 m_controllerTwo.y().whileTrue(slamCoral);
         }
 
@@ -455,9 +455,9 @@ public class RobotContainer {
                 Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_copilotController.getLeftX());
                 Command coralSmartDefualt = new ConditionalCommand(coralDefaultCommand, homeElevator,
                                 () -> m_elevator.getLimitReset());
-                // m_elevator.setDefaultCommand(elevatorAnalog);
-                m_elevator.setDefaultCommand(coralSmartDefualt);
-                m_coral.setDefaultCommand(coralSmartDefualt);
+                m_elevator.setDefaultCommand(elevatorAnalog);
+                // m_elevator.setDefaultCommand(coralSmartDefualt);
+                // m_coral.setDefaultCommand(coralSmartDefualt);
 
                 // new Trigger(() -> DriverStation.isTeleopEnabled() &&
                 // !m_elevator.getLimitReset())

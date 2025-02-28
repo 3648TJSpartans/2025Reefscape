@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.elevator;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.TunableNumber;
 import frc.robot.subsystems.coralIntake.CoralIntake;
@@ -48,6 +50,7 @@ public class Elevator extends SubsystemBase {
     return io.getHeight();
   }
 
+  @AutoLogOutput
   public boolean isInNoGoZone() {
     double noGoBottom = new TunableNumber("Elevator/NoGoZoneBottom", ElevatorConstants.NoGoZoneBottom).get();
     double noGoTop = new TunableNumber("Elevator/NoGoZoneTop", ElevatorConstants.NoGoZoneTop).get();

@@ -39,6 +39,6 @@ public class ElevatorConstants {
 
     public static final double NoGoZoneBottom = 0.0;
 
-    public static final double NoGoZoneTop = 0.15;
+    public static final double NoGoZoneTop = 16.07;
 
 }
