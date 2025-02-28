@@ -35,9 +35,7 @@ public class SftCmd extends Command {
 
     @Override
     public boolean isFinished() {
-        return /* m_coralIntake.getIR() && */ ((angle - CoralIntakeConstants.marginOfError) < m_sft.getAngle()
-                &&
-                m_sft.getAngle() < (angle + CoralIntakeConstants.marginOfError));
+        return false;
     }
 
 }

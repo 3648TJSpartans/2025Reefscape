@@ -32,7 +32,7 @@ public class CoralIntakeConstants {
     public static final double L3Angle = .28;
     public static final double L4Angle = .4;
     public static final double IntakeAngle = .723;
-    public static final double endgamePose = .35; // TODO change, want this straight up.
+    public static final double endgamePose = .15; // TODO change, want this straight up.
     public static final double defaultAngle = .6; // TODO: change
 
     public static final double minAngle = 0.1;
