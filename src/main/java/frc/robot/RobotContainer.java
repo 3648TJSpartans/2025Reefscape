@@ -43,6 +43,7 @@ import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToNearestIntake;
 import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
+import frc.robot.commands.sftCommands.SftAnalogCmd;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
@@ -63,6 +64,8 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorConstants;
 import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.elevator.ElevatorIOSparkMax;
+import frc.robot.subsystems.sft.Sft;
+import frc.robot.subsystems.sft.SftIOSparkMax;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIO;
@@ -132,7 +135,8 @@ public class RobotContainer {
         private final CoralIntake m_coral;
         private final Elevator m_elevator;
         private ClimberSubsystem m_climber;
-        private AlgaeSubsystem m_algae;
+        // private AlgaeSubsystem m_algae;
+        private Sft m_sft;
         private boolean override;
 
         // Controller
@@ -164,6 +168,7 @@ public class RobotContainer {
                                 // Real robot, instantiate hardware IO implementations
                                 m_climber = new ClimberSubsystem(new ClimberIOSparkMax());
                                 // m_algae = new AlgaeSubsystem(new AlgaeIOSparkMax());
+                                m_sft = new Sft(new SftIOSparkMax());
                                 m_drive = new Drive(
                                                 new GyroIONavX(),
                                                 new ModuleIOSpark(0),
@@ -180,7 +185,6 @@ public class RobotContainer {
 
                         case SIM:
                                 // Sim robot, instantiate physics sim IO implementations
-
                                 m_drive = new Drive(
                                                 new GyroIO() {
                                                 },
@@ -279,6 +283,7 @@ public class RobotContainer {
                 configureElevator();
                 configureSetpoints();
                 configureAlerts();
+                configureSft();
                 m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> toggleOverride()));
 
         }
@@ -361,6 +366,11 @@ public class RobotContainer {
                 // m_algae.setIntakeSpeed(.0)));
                 // m_driveController.b().whileTrue(algaeIntakeCmd);
                 // m_driveController.y().whileTrue(algaeShootCmd);// TODO
+        }
+
+        public void configureSft() {
+                SftAnalogCmd sftAnalogCmd = new SftAnalogCmd(m_sft, () -> m_controllerTwo.getRightX() / 10);
+                m_sft.setDefaultCommand(sftAnalogCmd);
         }
 
         public void configureAutoChooser() {

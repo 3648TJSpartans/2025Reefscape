@@ -14,7 +14,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
-import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
+import frc.robot.subsystems.sft.SftConstants;
 import frc.robot.util.TunableNumber;
 
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -29,8 +29,8 @@ public class SftIOSparkMax implements SftIO {
 
     // this is the constructor of the class
     public SftIOSparkMax() {
-        motor = new SparkMax(CoralIntakeConstants.coralWrist, MotorType.kBrushless);
-        irSensor = new DigitalInput(CoralIntakeConstants.irSensorPin);
+        motor = new SparkMax(SftConstants.sftMotorPin, MotorType.kBrushless);
+        irSensor = new DigitalInput(SftConstants.irSensorPin);
         absoluteEncoder = motor.getAbsoluteEncoder();
         var config = new SparkMaxConfig();
         config.inverted(false)
@@ -38,23 +38,23 @@ public class SftIOSparkMax implements SftIO {
                 .voltageCompensation(12.0);
         config.closedLoop
                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                .pidf(new TunableNumber("CoralIntake/kWristP", CoralIntakeConstants.kWristP).get(),
-                        new TunableNumber("CoralIntake/kWristI", CoralIntakeConstants.kWristI).get(),
-                        new TunableNumber("CoralIntake/kWristD", CoralIntakeConstants.kWristD).get(),
-                        new TunableNumber("CoralIntake/kWristFF", CoralIntakeConstants.kWristFF).get())
-                .outputRange(CoralIntakeConstants.kWristMinRange, CoralIntakeConstants.kWristMaxRange);
+                .pidf(new TunableNumber("Sft/kWristP", SftConstants.kWristP).get(),
+                        new TunableNumber("Sft/kWristI", SftConstants.kWristI).get(),
+                        new TunableNumber("Sft/kWristD", SftConstants.kWristD).get(),
+                        new TunableNumber("Sft/kWristFF", SftConstants.kWristFF).get())
+                .outputRange(SftConstants.kWristMinRange, SftConstants.kWristMaxRange);
         config.signals
                 .absoluteEncoderPositionAlwaysOn(true)
-                .absoluteEncoderPositionPeriodMs((int) (1000.0 / CoralIntakeConstants.wristOdometryFrequency))
+                .absoluteEncoderPositionPeriodMs((int) (1000.0 / SftConstants.kSftOdometryFrequency))
                 .absoluteEncoderVelocityAlwaysOn(true)
                 .absoluteEncoderVelocityPeriodMs(20)
                 .appliedOutputPeriodMs(20)
                 .busVoltagePeriodMs(20)
                 .outputCurrentPeriodMs(20);
         config.absoluteEncoder
-                .inverted(CoralIntakeConstants.wristEncoderInverted)
-                .positionConversionFactor(CoralIntakeConstants.wristEncoderPositionFactor)
-                .velocityConversionFactor(CoralIntakeConstants.wristEncoderPositionFactor)
+                .inverted(SftConstants.encoderInverted)
+                .positionConversionFactor(SftConstants.encoderPositionFactor)
+                .velocityConversionFactor(SftConstants.encoderPositionFactor)
                 .averageDepth(2);
         motor.configure(
                 config, ResetMode.kResetSafeParameters,
@@ -68,12 +68,15 @@ public class SftIOSparkMax implements SftIO {
 
     @Override
     public void rotateTo(double setpoint) {
+        Logger.recordOutput("Sft/setAngle", setpoint);
         motorController.setReference(setpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0);
     }
 
     @Override
     public void updateValues() {
-        Logger.recordOutput("SFT/IRSensorValue", getIR());
+        Logger.recordOutput("Sft/IRSensorValue", getIR());
+        Logger.recordOutput("Sft/EncoderValue", getAngle());
+
     }
 
     @Override
@@ -87,6 +90,7 @@ public class SftIOSparkMax implements SftIO {
     }
 
     public void setWristSpeed(double speed) {
+        Logger.recordOutput("Sft/setSpeed", speed);
         motor.set(speed);
     }
 }
