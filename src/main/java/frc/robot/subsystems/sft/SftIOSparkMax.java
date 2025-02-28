@@ -72,7 +72,7 @@ public class SftIOSparkMax implements SftIO {
 
     @Override
     public void updateValues() {
-        Logger.recordOutput("SFT/IRSensorValue", getIR());
+        // Logger.recordOutput("SFT/IRSensorValue", getIR());
     }
 
     @Override
