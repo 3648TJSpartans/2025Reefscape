@@ -37,11 +37,11 @@ public class teleopStatesIndicators extends Command {
         // right case
         if (CoralSequentialCmd.getLeftOrRIghtState() == 1) {
             if (m_corCoralIntake.getIR() == false) {
-                m_leds.setGlobalPattern(LedConstants.red, CoralSequentialCmd.getLevel());
+                m_leds.setLedPattern(LedConstants.red, CoralSequentialCmd.getLevel());
             }
             if (m_corCoralIntake.getIR() == true) {
                 LedConstants.ledLength = 4 * CoralSequentialCmd.getLevel();
-                m_leds.setGlobalPattern(LedConstants.blinkingRed, CoralSequentialCmd.getLevel());
+                m_leds.setLedPattern(LedConstants.blinkingRed, CoralSequentialCmd.getLevel());
             }
         }
         // left case
@@ -49,10 +49,10 @@ public class teleopStatesIndicators extends Command {
             if (m_corCoralIntake.getIR() == false) {
                 System.out.println(CoralSequentialCmd.getLevel());
                 LedConstants.ledLength = 4 * CoralSequentialCmd.getLevel();
-                m_leds.setGlobalPattern(LedConstants.blue, CoralSequentialCmd.getLevel());
+                m_leds.setLedPattern(LedConstants.blue, CoralSequentialCmd.getLevel());
             }
             if (m_corCoralIntake.getIR() == true) {
-                m_leds.setGlobalPattern(LedConstants.blinkingBlue, CoralSequentialCmd.getLevel());
+                m_leds.setLedPattern(LedConstants.blinkingBlue, CoralSequentialCmd.getLevel());
             }
         }
 
@@ -61,11 +61,7 @@ public class teleopStatesIndicators extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        m_leds.setGlobalPattern(LedConstants.noColor, 1);
-        m_leds.setGlobalPattern(LedConstants.noColor, 2);
-        m_leds.setGlobalPattern(LedConstants.noColor, 3);
-        m_leds.setGlobalPattern(LedConstants.noColor, 4);
-
+        m_leds.turnLedsOff();
     }
 
     // Returns true when the command should end.

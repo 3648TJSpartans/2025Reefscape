@@ -19,8 +19,8 @@ public class LedSubsystem extends SubsystemBase {
     private final AddressableLED led;
 
     public LedSubsystem() {
-        ledBuffer = new AddressableLEDBuffer(LedConstants.ledLength);
         led = new AddressableLED(LedConstants.ledPWMID);
+        ledBuffer = new AddressableLEDBuffer(LedConstants.ledLength);
 
         // Create sub-buffers
         buffer1 = ledBuffer.createView(LedConstants.buffer1Start, LedConstants.buffer1End);
@@ -36,20 +36,7 @@ public class LedSubsystem extends SubsystemBase {
 
     // Writes a specified LED pattern to the buffer. A bunch of patterns can be
     // found in LEDConstants, or you can make your own.
-    public void setLedPattern(LEDPattern pattern, AddressableLEDBufferView subBuffer) {
-        pattern.applyTo(subBuffer);
-        led.setData(ledBuffer);
-    }
-
-    public void turnLedsOff() {
-
-        LedConstants.noColor.applyTo(ledBuffer);
-        led.setData(ledBuffer);
-
-    }
-
-    // left or right
-    public void setGlobalPattern(LEDPattern pattern, int level) {
+    public void setLedPattern(LEDPattern pattern, int level) {
         if (level == 1) {
             pattern.applyTo(buffer1);
             LedConstants.noColor.applyTo(buffer2);
@@ -78,6 +65,19 @@ public class LedSubsystem extends SubsystemBase {
             pattern.applyTo(buffer4);
 
         }
+        led.setData(ledBuffer);
+    }
+
+    public void turnLedsOff() {
+
+        LedConstants.noColor.applyTo(ledBuffer);
+        led.setData(ledBuffer);
+
+    }
+
+    // left or right
+    public void setGlobalPattern(LEDPattern pattern) {
+        pattern.applyTo(ledBuffer);
         led.setData(ledBuffer);
     }
 }

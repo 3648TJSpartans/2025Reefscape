@@ -8,16 +8,16 @@ import static edu.wpi.first.units.Units.*;
 public final class LedConstants {
 
         // Values //
-        public static int ledLength = 150;
-        public static final int ledPWMID = 0;
+        public static int ledLength = 27;
+        public static final int ledPWMID = 1;
         public static final int buffer1Start = 0;
-        public static final int buffer1End = 37;
-        public static final int buffer2Start = 38;
-        public static final int buffer2End = 75;
-        public static final int buffer3Start = 76;
-        public static final int buffer3End = 111;
-        public static final int buffer4Start = 112;
-        public static final int buffer4End = 149;
+        public static final int buffer1End = 6;
+        public static final int buffer2Start = 7;
+        public static final int buffer2End = 14;
+        public static final int buffer3Start = 15;
+        public static final int buffer3End = 21;
+        public static final int buffer4Start = 22;
+        public static final int buffer4End = 26;
         // Colors & Patterns //
 
         // Solid Colors
@@ -40,9 +40,8 @@ public final class LedConstants {
 
         // Animated Patterns
         public static LEDPattern breathingGreen = green.breathe(Seconds.of(2));
-        public static LEDPattern breathingBlue = blue.breathe(Seconds.of(2));
-        public static LEDPattern blinkingRed = red.blink(Seconds.of(2));
-        public static LEDPattern blinkingBlue = blue.blink(Seconds.of(2));
+        public static LEDPattern blinkingBlue = blue.breathe(Seconds.of(.2));
+        public static LEDPattern blinkingRed = red.blink(Seconds.of(.2));
         // Other Patterns
         public static LEDPattern elevatorMask = LEDPattern
                         .progressMaskLayer(() -> (double) CoralSequentialCmd.getLevel() / 4); // Just a mask, don't use

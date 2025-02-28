@@ -24,17 +24,14 @@ public class autonoumousIndicator extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_leds.setLedPattern(LedConstants.breathingGreen, m_leds.buffer1);
-        m_leds.setLedPattern(LedConstants.breathingGreen, m_leds.buffer2);
-        m_leds.setLedPattern(LedConstants.breathingGreen, m_leds.buffer3);
-        m_leds.setLedPattern(LedConstants.breathingGreen, m_leds.buffer4);
-
+        m_leds.setGlobalPattern(LedConstants.breathingGreen);
+        System.out.println(222);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-
+        m_leds.turnLedsOff();
     }
 
     // Returns true when the command should end.
