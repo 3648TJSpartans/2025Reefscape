@@ -13,6 +13,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.swerve.jni.SwerveJNI.DriveState;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -293,10 +294,13 @@ public class RobotContainer {
         public void configureEndgameTriggers() {
                 configureAlerts();
                 System.out.println(Math.abs(m_drive.getPose().getX() - PoseConstants.fieldLength / 2) < 1.5);
-                m_driveController.y().onTrue(new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
-                                CoralIntakeConstants.endgameAngle)
-                                .alongWith(new WaitCommand(.75)
-                                                .andThen(new SftCmd(m_sft, SftConstants.endgameSetPoint))));
+                m_driveController.y().and(() -> DriverStation.getMatchTime() < endgameAlert1.get())
+                                .onTrue(new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
+                                                CoralIntakeConstants.endgameAngle)
+                                                .alongWith(new WaitCommand(.75)
+                                                                .andThen(new SftCmd(m_sft,
+                                                                                SftConstants.endgameSetPoint))));
+
                 // new Trigger(
                 // () -> DriverStation.isTeleopEnabled()
                 // && DriverStation.getMatchTime() > 0
