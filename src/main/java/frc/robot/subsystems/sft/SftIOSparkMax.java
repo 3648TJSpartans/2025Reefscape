@@ -24,38 +24,38 @@ public class SftIOSparkMax implements SftIO {
     private SparkMax motor;
     private DigitalInput irSensor;
     private RelativeEncoder encoder;
+    private AbsoluteEncoder absoluteEncoder;
     private SparkClosedLoopController motorController;
 
     // this is the constructor of the class
     public SftIOSparkMax() {
-        motor = new SparkMax(SftConstants.SftMotorPin, MotorType.kBrushless);
+        motor = new SparkMax(CoralIntakeConstants.coralWrist, MotorType.kBrushless);
         irSensor = new DigitalInput(CoralIntakeConstants.irSensorPin);
-        motorController = motor.getClosedLoopController();
-        encoder = motor.getEncoder();
+        absoluteEncoder = motor.getAbsoluteEncoder();
         var config = new SparkMaxConfig();
         config.inverted(false)
                 .idleMode(IdleMode.kBrake)
                 .voltageCompensation(12.0);
         config.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .pidf(new TunableNumber("SFT/kP", SftConstants.kP).get(),
-                        new TunableNumber("SFT/kI", SftConstants.kI).get(),
-                        new TunableNumber("SFT/kD", SftConstants.kD).get(),
-                        new TunableNumber("SFT/kFF", SftConstants.kFF).get())
-                .outputRange(SftConstants.kMinRange, SftConstants.kMaxRange);
+                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+                .pidf(new TunableNumber("CoralIntake/kWristP", CoralIntakeConstants.kWristP).get(),
+                        new TunableNumber("CoralIntake/kWristI", CoralIntakeConstants.kWristI).get(),
+                        new TunableNumber("CoralIntake/kWristD", CoralIntakeConstants.kWristD).get(),
+                        new TunableNumber("CoralIntake/kWristFF", CoralIntakeConstants.kWristFF).get())
+                .outputRange(CoralIntakeConstants.kWristMinRange, CoralIntakeConstants.kWristMaxRange);
         config.signals
                 .absoluteEncoderPositionAlwaysOn(true)
-                .absoluteEncoderPositionPeriodMs((int) (1000.0 / SftConstants.kSftOdometryFrequency))
+                .absoluteEncoderPositionPeriodMs((int) (1000.0 / CoralIntakeConstants.wristOdometryFrequency))
                 .absoluteEncoderVelocityAlwaysOn(true)
                 .absoluteEncoderVelocityPeriodMs(20)
                 .appliedOutputPeriodMs(20)
                 .busVoltagePeriodMs(20)
                 .outputCurrentPeriodMs(20);
-        // config.absoluteEncoder
-        // .inverted(SftConstants.encoderInverted)
-        // .positionConversionFactor(SftConstants.encoderPositionFactor)
-        // .velocityConversionFactor(SftConstants.encoderPositionFactor)
-        // .averageDepth(2);
+        config.absoluteEncoder
+                .inverted(CoralIntakeConstants.wristEncoderInverted)
+                .positionConversionFactor(CoralIntakeConstants.wristEncoderPositionFactor)
+                .velocityConversionFactor(CoralIntakeConstants.wristEncoderPositionFactor)
+                .averageDepth(2);
         motor.configure(
                 config, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
@@ -77,8 +77,8 @@ public class SftIOSparkMax implements SftIO {
     }
 
     @Override
-    public double getPosition() {
-        return encoder.getPosition();
+    public double getAngle() {
+        return absoluteEncoder.getPosition();
     }
 
     @Override

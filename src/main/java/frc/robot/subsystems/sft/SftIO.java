@@ -1,7 +1,7 @@
 package frc.robot.subsystems.sft;
 
 public interface SftIO {
-    public default double getPosition() {
+    public default double getAngle() {
         return 0;
     }
 
