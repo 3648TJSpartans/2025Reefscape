@@ -1,7 +1,7 @@
 package frc.robot.subsystems.algae;
 
 public class AlgaeConstants {
-    public static final int liftMotorId = 14;
+    public static final int liftMotorId = 17;
     public static final int intakeMotorLeftId = 15;
     public static final int intakeMotorRightId = 16;
 

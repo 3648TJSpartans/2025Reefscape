@@ -29,7 +29,6 @@ public class SftIOSparkMax implements SftIO {
     // this is the constructor of the class
     public SftIOSparkMax() {
         motor = new SparkMax(SftConstants.SftMotorPin, MotorType.kBrushless);
-        irSensor = new DigitalInput(CoralIntakeConstants.irSensorPin);
         motorController = motor.getClosedLoopController();
         encoder = motor.getEncoder();
         var config = new SparkMaxConfig();
@@ -73,17 +72,12 @@ public class SftIOSparkMax implements SftIO {
 
     @Override
     public void updateValues() {
-        Logger.recordOutput("SFT/IRSensorValue", getIR());
+        // Logger.recordOutput("SFT/IRSensorValue", getIR());
     }
 
     @Override
     public double getPosition() {
         return encoder.getPosition();
-    }
-
-    @Override
-    public boolean getIR() {
-        return irSensor.get();
     }
 
     public void setWristSpeed(double speed) {
