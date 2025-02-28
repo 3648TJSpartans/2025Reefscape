@@ -443,9 +443,11 @@ public class RobotContainer {
         Command homeElevator = new HomeElevatorCmd(m_elevator);
         Command coralDefaultCommand = new CoralDefaultCmd(m_coral, m_elevator);
         Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
+        Command coralSmartDefualt = new ConditionalCommand(coralDefaultCommand, homeElevator,
+                () -> m_elevator.getLimitReset());
         // m_elevator.setDefaultCommand(elevatorAnalog);
-        m_elevator.setDefaultCommand(coralDefaultCommand);
-        m_coral.setDefaultCommand(coralDefaultCommand);
+        m_elevator.setDefaultCommand(coralSmartDefualt);
+        m_coral.setDefaultCommand(coralSmartDefualt);
 
         // new Trigger(() -> DriverStation.isTeleopEnabled() &&
         // !m_elevator.getLimitReset())
