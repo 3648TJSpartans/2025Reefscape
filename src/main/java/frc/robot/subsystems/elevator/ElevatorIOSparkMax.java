@@ -133,7 +133,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     @Override
     public boolean getTopLimitSwitch() {
-        return bottomLimitSwitch.get();
+        return topLimitSwitch.get();
     }
 
     private void setZero() {
