@@ -517,7 +517,8 @@ public class RobotContainer {
 
                                 new DriveToNearestIntake(m_drive),
 
-                                new DownToIntakeCmd(m_coral, m_elevator)),
+                                new DownToIntakeCmd(m_coral, m_elevator)
+                                        .andThen(new UpFromIntakeCmd(m_coral, m_elevator))),
                         new CoralInCmd(m_coral)), () -> override))
                 .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
     }
