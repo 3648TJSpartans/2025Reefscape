@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -290,7 +291,8 @@ public class RobotContainer {
                 configureAlerts();
                 System.out.println(Math.abs(m_drive.getPose().getX() - PoseConstants.fieldLength / 2) < 1.5);
                 m_driveController.y().onTrue(new CoralElevatorEndgameCmd(m_coral, m_elevator)
-                                .alongWith(new SftCmd(m_sft, SftConstants.endgameSetPoint)));
+                                .alongWith(new WaitCommand(.75)
+                                                .andThen(new SftCmd(m_sft, SftConstants.endgameSetPoint))));
                 // new Trigger(
                 // () -> DriverStation.isTeleopEnabled()
                 // && DriverStation.getMatchTime() > 0
