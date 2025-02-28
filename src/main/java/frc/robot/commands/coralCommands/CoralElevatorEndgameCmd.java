@@ -32,6 +32,7 @@ public class CoralElevatorEndgameCmd extends Command {
             m_elevator.elevateTo(0);
             m_coralIntake.rotateTo(CoralIntakeConstants.endgamePose);
         }
+
     }
 
     @Override
