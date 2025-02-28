@@ -277,15 +277,8 @@ public class RobotContainer {
                 configureElevator();
                 configureSetpoints();
                 configureAlerts();
-                configureTest();
                 m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> toggleOverride()));
 
-        }
-
-        private void configureTest() {
-                m_controllerTwo.leftTrigger().whileTrue(new AlgaeRemovalCmd(m_drive, m_coral, m_elevator, () -> true));
-                m_driveController.b().whileTrue(new DownToIntakeCmd(m_coral, m_elevator))
-                                .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
         }
 
         private void configureAlerts() {
@@ -345,6 +338,7 @@ public class RobotContainer {
         }
 
         public void configureAlgae() {
+                m_controllerTwo.leftTrigger().whileTrue(new AlgaeRemovalCmd(m_drive, m_coral, m_elevator, () -> true));
                 // Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
                 // Command algaeShootCmd = new AlgaeShootCmd(m_algae);
                 // Command algaeDefaultCmd = new AlgaeDefaultCmd(m_algae);
@@ -406,6 +400,8 @@ public class RobotContainer {
                 m_copilotController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
                 Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_copilotController.getRightX());
                 Command slamCoral = new SlamCoralCmd(m_coral);
+                m_driveController.b().whileTrue(new DownToIntakeCmd(m_coral, m_elevator))
+                                .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
                 // m_coral.setDefaultCommand(wristAnalog);
                 m_controllerTwo.y().whileTrue(slamCoral);
         }
