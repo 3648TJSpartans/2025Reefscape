@@ -26,6 +26,7 @@ public class AutonConstants {
         public static final double elevatorCutoff = 5;
 
         public static class PoseConstants {
+                public final static double endgameTriggerDistance = 2;
                 public final static Pose2d rightReef = new Pose2d(2.9, 3.73, Rotation2d.fromDegrees(0));
                 public final static Pose2d leftReef = new Pose2d(2.9, 4.17, Rotation2d.fromDegrees(0));
                 public final static Pose2d START = new Pose2d(2.85, 3.85, Rotation2d.fromDegrees(0));
@@ -83,8 +84,7 @@ public class AutonConstants {
                 };
 
                 private final static Pose2d[] l1ExactBlueLeftReefPoints = new Pose2d[] {
-                                new Pose2d(2.97, 4.12, Rotation2d.fromDegrees(0)), // Pose B
-                                new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
+                                new Pose2d(2.97, 4.12, Rotation2d.fromDegrees(0)), // Pose B                                new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
                                 new Pose2d(5.17, 2.61, Rotation2d.fromDegrees(120)), // Pose F
                                 new Pose2d(6.08, 3.78, Rotation2d.fromDegrees(180)), // Pose H
                                 new Pose2d(5.41, 5.35, Rotation2d.fromDegrees(240)), // Pose J
@@ -198,6 +198,5 @@ public class AutonConstants {
                         INTAKE,
                         DEFAULT
                 }
-
         }
 }
