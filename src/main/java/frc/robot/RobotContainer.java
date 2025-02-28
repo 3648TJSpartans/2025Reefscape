@@ -477,7 +477,8 @@ public class RobotContainer {
                 Command coralDefaultCommand = new CoralDefaultCmd(m_coral, m_elevator);
                 Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
                 Command coralSmartDefualt = new ConditionalCommand(coralDefaultCommand, homeElevator,
-                                () -> m_elevator.getLimitReset());
+                                () -> m_elevator.getLimitReset())
+                                .onlyIf(() -> DriverStation.getMatchTime() > endgameAlert1.get());
                 // m_elevator.setDefaultCommand(elevatorAnalog);
                 m_elevator.setDefaultCommand(coralSmartDefualt);
                 m_coral.setDefaultCommand(coralSmartDefualt);
