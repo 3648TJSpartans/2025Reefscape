@@ -10,11 +10,7 @@ public interface ElevatorIO {
     public default void updateValues() {
     }
 
-    public default boolean getBottomLimitSwitch() {
-        return false;
-    }
-
-    public default boolean getTopLimitSwitch() {
+    public default boolean getLimitSwitch() {
         return false;
     }
 

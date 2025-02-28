@@ -48,10 +48,9 @@ import frc.robot.commands.sftCommands.SftCmd;
 import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
 import frc.robot.commands.algaeCommands.AlgaeDownCmd;
 import frc.robot.commands.algaeCommands.AlgaeShootCmd;
-import frc.robot.commands.autonCommands.AlgaeRemovalCmd;
 import frc.robot.commands.autonCommands.AutoBuildingBlocks;
 import frc.robot.commands.autonCommands.CoralSequentialCmd;
-import frc.robot.commands.autonCommands.SourceSequentialCmd;
+import frc.robot.commands.autonCommands.SourceParallelCmd;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.AlignCommands;
@@ -92,6 +91,7 @@ import com.pathplanner.lib.path.PathConstraints;
 
 import frc.robot.commands.coralCommands.CoralCmd;
 import frc.robot.commands.coralCommands.CoralDefaultCmd;
+import frc.robot.commands.coralCommands.CoralElevatorEndgameCmd;
 import frc.robot.commands.climberCommands.*;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntake;
 // import frc.robot.subsystems.coralSubsystems.coralIntake.CoralIntakeIO;
@@ -103,11 +103,9 @@ import frc.robot.commands.climberCommands.*;
 import frc.robot.commands.coralCommands.CoralElevatorIntegratedCmd;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
-import frc.robot.commands.coralCommands.DownToIntakeCmd;
 import frc.robot.commands.coralCommands.ElevatorCmd;
 import frc.robot.commands.coralCommands.HomeElevatorCmd;
 import frc.robot.commands.coralCommands.SlamCoralCmd;
-import frc.robot.commands.coralCommands.UpFromIntakeCmd;
 import frc.robot.commands.coralCommands.ElevatorAnalogCmd;
 import frc.robot.commands.coralCommands.WristCmd;
 import frc.robot.commands.coralCommands.WristAnalogCmd;
@@ -169,8 +167,8 @@ public class RobotContainer {
                         case REAL:
                                 // Real robot, instantiate hardware IO implementations
                                 m_climber = new ClimberSubsystem(new ClimberIOSparkMax());
-                                // m_algae = new AlgaeSubsystem(new AlgaeIOSparkMax());
                                 m_sft = new Sft(new SftIOSparkMax());
+
                                 m_drive = new Drive(
                                                 new GyroIONavX(),
                                                 new ModuleIOSpark(0),
@@ -233,7 +231,7 @@ public class RobotContainer {
                                 break;
                 }
 
-                Command homeElevator = new HomeElevatorCmd(m_elevator, m_coral);
+                Command homeElevator = new HomeElevatorCmd(m_elevator);
                 Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
                                 new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
                                 new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
@@ -248,9 +246,7 @@ public class RobotContainer {
                                 new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
                 Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
                                 ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
-
-                Command coralIn = new CoralInCmd(m_coral, m_elevator);
-
+                Command coralIn = new CoralInCmd(m_coral);
                 Command slamCoral = new SlamCoralCmd(m_coral);
                 NamedCommands.registerCommand("homeElevator", homeElevator);
                 NamedCommands.registerCommand("l4", l4);
@@ -284,10 +280,24 @@ public class RobotContainer {
                 configureDrive();
                 configureElevator();
                 configureSetpoints();
-                configureAlerts();
                 configureSft();
+                configureEndgameTriggers();
                 m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> toggleOverride()));
 
+        }
+
+        public void configureEndgameTriggers() {
+                configureAlerts();
+                System.out.println(Math.abs(m_drive.getPose().getX() - PoseConstants.fieldLength / 2) < 1.5);
+                m_driveController.y().onTrue(new CoralElevatorEndgameCmd(m_coral, m_elevator));
+                // new Trigger(
+                // () -> DriverStation.isTeleopEnabled()
+                // && DriverStation.getMatchTime() > 0
+                // && DriverStation.getMatchTime() <= Math.round(endgameAlert1.get())
+                // && Math.abs(m_drive.getPose().getX()
+                // - PoseConstants.fieldLength / 2) < 1.5)
+                // .whileTrue(
+                // new CoralElevatorEndgameCmd(m_coral, m_elevator)));
         }
 
         private void configureAlerts() {
@@ -301,7 +311,6 @@ public class RobotContainer {
                                                                 .andThen(Commands.waitSeconds(4.75))
                                                                 .repeatedly()
                                                                 .withTimeout(15)
-
                                 // .beforeStarting(() -> leds.endgameAlert = true)
                                 // .finallyDo(() -> leds.endgameAlert = false)
                                 );
@@ -349,7 +358,8 @@ public class RobotContainer {
 
         public void configureAlgae() {
 
-                m_controllerTwo.leftTrigger().whileTrue(new AlgaeRemovalCmd(m_drive, m_coral, m_elevator, () -> true));
+                // m_controllerTwo.leftTrigger().whileTrue(new AlgaeRemovalCmd(m_drive, m_coral,
+                // m_elevator, () -> true));
 
                 // Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
                 // Command algaeShootCmd = new AlgaeShootCmd(m_algae);
@@ -413,7 +423,7 @@ public class RobotContainer {
 
         public void configureCoralIntake() {
 
-                Command coralIn = new CoralInCmd(m_coral, m_elevator);
+                Command coralIn = new CoralInCmd(m_coral);
 
                 Command coralOut = new CoralOutCmd(m_coral);
                 m_copilotController.a().onTrue(new InstantCommand(() -> m_coral.setSpeed(.15)));
@@ -462,7 +472,7 @@ public class RobotContainer {
         }
 
         public void configureElevator() {
-                Command homeElevator = new HomeElevatorCmd(m_elevator, m_coral);
+                Command homeElevator = new HomeElevatorCmd(m_elevator);
                 Command coralDefaultCommand = new CoralDefaultCmd(m_coral, m_elevator);
                 Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
                 Command coralSmartDefualt = new ConditionalCommand(coralDefaultCommand, homeElevator,
@@ -479,7 +489,7 @@ public class RobotContainer {
 
         public void configureSetpoints() {
 
-                Command homeElevator = new HomeElevatorCmd(m_elevator, m_coral);
+                Command homeElevator = new HomeElevatorCmd(m_elevator);
 
                 Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
                                 new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
@@ -535,18 +545,18 @@ public class RobotContainer {
                                                 () -> CoralSequentialCmd.setAutonState(AutonState.RIGHTREEF)));
                 m_driveController.leftTrigger().whileTrue(smartSequentialCommand);
 
-                // m_driveController.y().onTrue(coralSource);
-                m_driveController.rightTrigger().whileTrue(
-                                new ConditionalCommand(intake, Commands.sequence(
-                                                Commands.parallel(
+                // // m_driveController.y().onTrue(coralSource);
+                // m_driveController.rightTrigger().whileTrue(
+                // new ConditionalCommand(intake, Commands.sequence(
+                // Commands.parallel(
 
-                                                                new DriveToNearestIntake(m_drive),
+                // new DriveToNearestIntake(m_drive),
 
-                                                                new DownToIntakeCmd(m_coral, m_elevator)
-                                                                                .andThen(new UpFromIntakeCmd(m_coral,
-                                                                                                m_elevator))),
-                                                new CoralInCmd(m_coral, m_elevator)), () -> override))
-                                .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
+                // new DownToIntakeCmd(m_coral, m_elevator)
+                // .andThen(new UpFromIntakeCmd(m_coral,
+                // m_elevator))),
+                // new CoralInCmd(m_coral, m_elevator)), () -> override))
+                // .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
 
         }
 

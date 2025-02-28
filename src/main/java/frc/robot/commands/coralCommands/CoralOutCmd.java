@@ -21,27 +21,24 @@ public class CoralOutCmd extends Command {
     public void initialize() {
         m_timer.stop();
         m_timer.reset();
-        m_timer.start();
     }
 
     @Override
     public void execute() {
-        // boolean objectDetected = !m_coralIntake.getIR();
-        // if (objectDetected) {
-        // m_coralIntake.setSpeed(CoralIntakeConstants.outtakeSpeed);
-        // m_timer.reset();
-        // } else {
-        // if (!m_timer.hasElapsed(0.1)) {
-        // if (!m_timer.isRunning()) {
-        // m_timer.start();
-        // }
-        // m_coralIntake.setSpeed(-CoralIntakeConstants.intakeSpeed);
-        // } else {
-        // isFinished = true;
-        // }
-        // }
-        m_coralIntake.setSpeed(CoralIntakeConstants.outtakeSpeed);
-        // isFinished = m_timer.hasElapsed(1);
+        boolean objectDetected = !m_coralIntake.getIR();
+        if (objectDetected) {
+            m_coralIntake.setSpeed(-CoralIntakeConstants.intakeSpeed);
+            m_timer.reset();
+        } else {
+            if (!m_timer.hasElapsed(0.1)) {
+                if (!m_timer.isRunning()) {
+                    m_timer.start();
+                }
+                m_coralIntake.setSpeed(-CoralIntakeConstants.intakeSpeed);
+            } else {
+                isFinished = true;
+            }
+        }
     }
 
     @Override

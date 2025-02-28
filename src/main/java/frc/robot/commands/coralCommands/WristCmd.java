@@ -41,7 +41,7 @@ public class WristCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (angle - CoralIntakeConstants.marginOfErrorIntake) < coralIntake.getAngle() &&
-        coralIntake.getAngle() < (angle + CoralIntakeConstants.marginOfErrorIntake);
+    return (angle - CoralIntakeConstants.marginOfError) < coralIntake.getAngle() &&
+        coralIntake.getAngle() < (angle + CoralIntakeConstants.marginOfError);
   }
 }

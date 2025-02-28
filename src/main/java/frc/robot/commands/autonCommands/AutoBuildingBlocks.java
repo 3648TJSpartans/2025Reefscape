@@ -9,8 +9,6 @@ import frc.robot.commands.coralCommands.CoralElevatorIntegratedCmd;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
 import frc.robot.commands.coralCommands.CoralSmartLevelCmd;
-import frc.robot.commands.coralCommands.DownToIntakeCmd;
-import frc.robot.commands.coralCommands.UpFromIntakeCmd;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
@@ -20,8 +18,8 @@ import frc.robot.subsystems.elevator.ElevatorConstants;
 import frc.robot.util.TunableNumber;
 
 public class AutoBuildingBlocks {
-    public static Command intake(CoralIntake m_coralIntake, Elevator m_elevator) {
-        return new CoralInCmd(m_coralIntake, m_elevator);
+    public static Command intake(CoralIntake m_coralIntake) {
+        return new CoralInCmd(m_coralIntake);
 
     }
 
@@ -72,13 +70,5 @@ public class AutoBuildingBlocks {
 
     public static Command coralSmartLevelCommand(Elevator elevator, CoralIntake intake, Supplier<Integer> level) {
         return new CoralSmartLevelCmd(intake, elevator, level);
-    }
-
-    public static Command DwnToIntakeCommand(CoralIntake m_coral, Elevator m_elevator) {
-        return new DownToIntakeCmd(m_coral, m_elevator);
-    }
-
-    public static Command UpFromIntakeCommand(CoralIntake m_coral, Elevator m_elevator) {
-        return new UpFromIntakeCmd(m_coral, m_elevator);
     }
 }

@@ -64,7 +64,7 @@ public class DriveToNearest extends Command {
         }
 
         private final Drive drive;
-        private Supplier<Pose2d> target;
+        private final Supplier<Pose2d> target;
         private final Supplier<Pose2d[]> targetPoints;
         private final ProfiledPIDController driveController = new ProfiledPIDController(
                         0.0, 0.0, 0.0, new TrapezoidProfile.Constraints(0.0, 0.0), 0.02);
