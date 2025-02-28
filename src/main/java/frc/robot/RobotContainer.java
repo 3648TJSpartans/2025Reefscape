@@ -514,7 +514,8 @@ public class RobotContainer {
                 .onTrue(new InstantCommand(
                         () -> CoralSequentialCmd.setAutonState(AutonState.RIGHTREEF)));
         m_driveController.leftTrigger().whileTrue(smartSequentialCommand);
-        m_copilotController.leftTrigger().whileTrue(homeElevator);
+        m_copilotController.leftTrigger().and(() -> m_coral.getAngle() < CoralIntakeConstants.coralHomeCutoff)
+                .whileTrue(homeElevator);
         // m_driveController.y().onTrue(coralSource);
         m_driveController.rightTrigger().whileTrue(
                 new ConditionalCommand(intake, Commands.sequence(
