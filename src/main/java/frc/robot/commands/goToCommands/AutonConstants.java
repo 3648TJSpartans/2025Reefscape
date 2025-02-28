@@ -17,8 +17,8 @@ public class AutonConstants {
         public static final double driveMaxAcceleration = Units.inchesToMeters(95.0 / 4);
         public static final double thetaMaxVelocity = Units.degreesToRadians(360.0 / 2);
         public static final double thetaMaxAcceleration = Units.degreesToRadians(720.0 / 2);
-        public static final double driveTolerance = 0.1; // 0.03
-        public static final double thetaTolerance = Units.degreesToRadians(2.5); // 2.5
+        public static final double driveTolerance = 0.06; // 0.03
+        public static final double thetaTolerance = Units.degreesToRadians(1.5); // 2.5
         public static final double ffMinRadius = 0.2;
         public static final double ffMaxRadius = 0.6;
         public static final int defaultLevel = 4;
@@ -27,9 +27,9 @@ public class AutonConstants {
 
         public static class PoseConstants {
                 public final static double endgameTriggerDistance = 2;
-
                 public final static Pose2d rightReef = new Pose2d(2.9, 3.73, Rotation2d.fromDegrees(0));
                 public final static Pose2d leftReef = new Pose2d(2.9, 4.17, Rotation2d.fromDegrees(0));
+                public final static Pose2d START = new Pose2d(2.85, 3.85, Rotation2d.fromDegrees(0));
                 public final static double fieldLength = 17.548;
                 public final static double fieldWidth = 8.042;
 
@@ -37,24 +37,159 @@ public class AutonConstants {
                                 new Pose2d(1.127, 0.959, Rotation2d.fromDegrees(60)), // Right
                                 new Pose2d(1.127, 7.2, Rotation2d.fromDegrees(-60)) // Left
                 };
-                private final static Pose2d[] blueRightReefPoints = new Pose2d[] {
-                                new Pose2d(2.95, 3.85, Rotation2d.fromDegrees(0)), // Pose A
+
+                private final static Pose2d[] l4ExactBlueRightReefPoints = new Pose2d[] {
+                                new Pose2d(2.97, 3.85, Rotation2d.fromDegrees(0)), // Pose A
                                 new Pose2d(3.57, 2.75, Rotation2d.fromDegrees(60)), // Pose C
                                 new Pose2d(5.44, 2.75, Rotation2d.fromDegrees(120)), // Pose E
                                 new Pose2d(6.08, 4.12, Rotation2d.fromDegrees(180)), // Pose G
                                 new Pose2d(5.13, 5.51, Rotation2d.fromDegrees(240)), // Pose I
                                 new Pose2d(3.54, 5.33, Rotation2d.fromDegrees(300)) // Pose K
                 };
-                private final static Pose2d[] blueLeftReefPoints = new Pose2d[] {
-                                new Pose2d(2.95, 4.12, Rotation2d.fromDegrees(0)), // Pose B
+
+                private final static Pose2d[] l4ExactBlueLeftReefPoints = new Pose2d[] {
+                                new Pose2d(2.97, 4.12, Rotation2d.fromDegrees(0)), // Pose B
                                 new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
                                 new Pose2d(5.17, 2.61, Rotation2d.fromDegrees(120)), // Pose F
                                 new Pose2d(6.08, 3.78, Rotation2d.fromDegrees(180)), // Pose H
                                 new Pose2d(5.41, 5.35, Rotation2d.fromDegrees(240)), // Pose J
                                 new Pose2d(3.95, 5.53, Rotation2d.fromDegrees(300)) // Pose L
                 };
-                public final static Pose2d[] rightReefPoints = AllianceFlipUtil.apply(blueRightReefPoints);
-                public final static Pose2d[] leftReefPoints = AllianceFlipUtil.apply(blueLeftReefPoints);
+
+                private final static Pose2d[] l2ExactBlueRightReefPoints = new Pose2d[] {
+                                new Pose2d(2.9, 3.85, Rotation2d.fromDegrees(0)), // Pose A
+                                new Pose2d(3.57, 2.75, Rotation2d.fromDegrees(60)), // Pose C
+                                new Pose2d(5.44, 2.75, Rotation2d.fromDegrees(120)), // Pose E
+                                new Pose2d(6.08, 4.12, Rotation2d.fromDegrees(180)), // Pose G
+                                new Pose2d(5.13, 5.51, Rotation2d.fromDegrees(240)), // Pose I
+                                new Pose2d(3.54, 5.33, Rotation2d.fromDegrees(300)) // Pose K
+                };
+
+                private final static Pose2d[] l2ExactBlueLeftReefPoints = new Pose2d[] {
+                                new Pose2d(2.9, 4.12, Rotation2d.fromDegrees(0)), // Pose B
+                                new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
+                                new Pose2d(5.17, 2.61, Rotation2d.fromDegrees(120)), // Pose F
+                                new Pose2d(6.08, 3.78, Rotation2d.fromDegrees(180)), // Pose H
+                                new Pose2d(5.41, 5.35, Rotation2d.fromDegrees(240)), // Pose J
+                                new Pose2d(3.95, 5.53, Rotation2d.fromDegrees(300)) // Pose L
+                };
+
+                private final static Pose2d[] l1ExactBlueRightReefPoints = new Pose2d[] {
+                                new Pose2d(2.97, 3.85, Rotation2d.fromDegrees(0)), // Pose A
+                                new Pose2d(3.57, 2.75, Rotation2d.fromDegrees(60)), // Pose C
+                                new Pose2d(5.44, 2.75, Rotation2d.fromDegrees(120)), // Pose E
+                                new Pose2d(6.08, 4.12, Rotation2d.fromDegrees(180)), // Pose G
+                                new Pose2d(5.13, 5.51, Rotation2d.fromDegrees(240)), // Pose I
+                                new Pose2d(3.54, 5.33, Rotation2d.fromDegrees(300)) // Pose K
+                };
+
+                private final static Pose2d[] l1ExactBlueLeftReefPoints = new Pose2d[] {
+                                new Pose2d(2.97, 4.12, Rotation2d.fromDegrees(0)), // Pose B                                new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
+                                new Pose2d(5.17, 2.61, Rotation2d.fromDegrees(120)), // Pose F
+                                new Pose2d(6.08, 3.78, Rotation2d.fromDegrees(180)), // Pose H
+                                new Pose2d(5.41, 5.35, Rotation2d.fromDegrees(240)), // Pose J
+                                new Pose2d(3.95, 5.53, Rotation2d.fromDegrees(300)) // Pose L
+                };
+
+                private final static Pose2d[] l4CloseBlueRightReefPoints = new Pose2d[] {
+                                new Pose2d(2.76, 3.85, Rotation2d.fromDegrees(0)), // Pose A
+                                new Pose2d(3.57, 2.75, Rotation2d.fromDegrees(60)), // Pose C
+                                new Pose2d(5.44, 2.75, Rotation2d.fromDegrees(120)), // Pose E
+                                new Pose2d(6.08, 4.12, Rotation2d.fromDegrees(180)), // Pose G
+                                new Pose2d(5.13, 5.51, Rotation2d.fromDegrees(240)), // Pose I
+                                new Pose2d(3.54, 5.33, Rotation2d.fromDegrees(300)) // Pose K
+                };
+
+                private final static Pose2d[] l4CloseBlueLeftReefPoints = new Pose2d[] {
+                                new Pose2d(2.76, 4.12, Rotation2d.fromDegrees(0)), // Pose B
+                                new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
+                                new Pose2d(5.17, 2.61, Rotation2d.fromDegrees(120)), // Pose F
+                                new Pose2d(6.08, 3.78, Rotation2d.fromDegrees(180)), // Pose H
+                                new Pose2d(5.41, 5.35, Rotation2d.fromDegrees(240)), // Pose J
+                                new Pose2d(3.95, 5.53, Rotation2d.fromDegrees(300)) // Pose L
+                };
+
+                private final static Pose2d[] l2CloseBlueRightReefPoints = new Pose2d[] {
+                                new Pose2d(2.73, 3.85, Rotation2d.fromDegrees(0)), // Pose A
+                                new Pose2d(3.57, 2.75, Rotation2d.fromDegrees(60)), // Pose C
+                                new Pose2d(5.44, 2.75, Rotation2d.fromDegrees(120)), // Pose E
+                                new Pose2d(6.08, 4.12, Rotation2d.fromDegrees(180)), // Pose G
+                                new Pose2d(5.13, 5.51, Rotation2d.fromDegrees(240)), // Pose I
+                                new Pose2d(3.54, 5.33, Rotation2d.fromDegrees(300)) // Pose K
+                };
+
+                private final static Pose2d[] l2CloseBlueLeftReefPoints = new Pose2d[] {
+                                new Pose2d(2.73, 4.12, Rotation2d.fromDegrees(0)), // Pose B
+                                new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
+                                new Pose2d(5.17, 2.61, Rotation2d.fromDegrees(120)), // Pose F
+                                new Pose2d(6.08, 3.78, Rotation2d.fromDegrees(180)), // Pose H
+                                new Pose2d(5.41, 5.35, Rotation2d.fromDegrees(240)), // Pose J
+                                new Pose2d(3.95, 5.53, Rotation2d.fromDegrees(300)) // Pose L
+                };
+
+                private final static Pose2d[] l1CloseBlueRightReefPoints = new Pose2d[] {
+                                new Pose2d(2.97, 3.85, Rotation2d.fromDegrees(0)), // Pose A
+                                new Pose2d(3.57, 2.75, Rotation2d.fromDegrees(60)), // Pose C
+                                new Pose2d(5.44, 2.75, Rotation2d.fromDegrees(120)), // Pose E
+                                new Pose2d(6.08, 4.12, Rotation2d.fromDegrees(180)), // Pose G
+                                new Pose2d(5.13, 5.51, Rotation2d.fromDegrees(240)), // Pose I
+                                new Pose2d(3.54, 5.33, Rotation2d.fromDegrees(300)) // Pose K
+                };
+
+                private final static Pose2d[] l1CloseBlueLeftReefPoints = new Pose2d[] {
+                                new Pose2d(2.97, 4.12, Rotation2d.fromDegrees(0)), // Pose B
+                                new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
+                                new Pose2d(5.17, 2.61, Rotation2d.fromDegrees(120)), // Pose F
+                                new Pose2d(6.08, 3.78, Rotation2d.fromDegrees(180)), // Pose H
+                                new Pose2d(5.41, 5.35, Rotation2d.fromDegrees(240)), // Pose J
+                                new Pose2d(3.95, 5.53, Rotation2d.fromDegrees(300)) // Pose L
+                };
+
+                private final static Pose2d[] blueCloseReefPoints = new Pose2d[] {
+                                new Pose2d(3.14, 4, Rotation2d.fromDegrees(0)), // Pose B
+                                // new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
+                                // new Pose2d(5.17, 2.61, Rotation2d.fromDegrees(120)), // Pose F
+                                // new Pose2d(6.08, 3.78, Rotation2d.fromDegrees(180)), // Pose H
+                                // new Pose2d(5.41, 5.35, Rotation2d.fromDegrees(240)), // Pose J
+                                // new Pose2d(3.95, 5.53, Rotation2d.fromDegrees(300)) // Pose L
+                };
+                private final static Pose2d[] blueFarReefPoints = new Pose2d[] {
+                                new Pose2d(2.65, 4, Rotation2d.fromDegrees(0)), // Pose B
+                                // new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
+                                // new Pose2d(5.17, 2.61, Rotation2d.fromDegrees(120)), // Pose F
+                                // new Pose2d(6.08, 3.78, Rotation2d.fromDegrees(180)), // Pose H
+                                // new Pose2d(5.41, 5.35, Rotation2d.fromDegrees(240)), // Pose J
+                                // new Pose2d(3.95, 5.53, Rotation2d.fromDegrees(300)) // Pose L
+                };
+                private final static Pose2d[] blueFarrerReefPoints = new Pose2d[] {
+                                new Pose2d(2.45, 4, Rotation2d.fromDegrees(0)), // Pose B
+                                // new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
+                                // new Pose2d(5.17, 2.61, Rotation2d.fromDegrees(120)), // Pose F
+                                // new Pose2d(6.08, 3.78, Rotation2d.fromDegrees(180)), // Pose H
+                                // new Pose2d(5.41, 5.35, Rotation2d.fromDegrees(240)), // Pose J
+                                // new Pose2d(3.95, 5.53, Rotation2d.fromDegrees(300)) // Pose L
+                };
+                public final static Pose2d[] l4ExactRightReefPoints = AllianceFlipUtil
+                                .apply(l4ExactBlueRightReefPoints);
+                public final static Pose2d[] l4ExactLeftReefPoints = AllianceFlipUtil.apply(l4ExactBlueLeftReefPoints);
+                public final static Pose2d[] l2ExactRightReefPoints = AllianceFlipUtil
+                                .apply(l2ExactBlueRightReefPoints);
+                public final static Pose2d[] l2ExactLeftReefPoints = AllianceFlipUtil.apply(l2ExactBlueLeftReefPoints);
+                public final static Pose2d[] l1ExactRightReefPoints = AllianceFlipUtil
+                                .apply(l1ExactBlueRightReefPoints);
+                public final static Pose2d[] l1ExactLeftReefPoints = AllianceFlipUtil.apply(l1ExactBlueLeftReefPoints);
+                public final static Pose2d[] l4CloseRightReefPoints = AllianceFlipUtil
+                                .apply(l4CloseBlueRightReefPoints);
+                public final static Pose2d[] l4CloseLeftReefPoints = AllianceFlipUtil.apply(l4CloseBlueLeftReefPoints);
+                public final static Pose2d[] l2CloseRightReefPoints = AllianceFlipUtil
+                                .apply(l2CloseBlueRightReefPoints);
+                public final static Pose2d[] l2CloseLeftReefPoints = AllianceFlipUtil.apply(l2CloseBlueLeftReefPoints);
+                public final static Pose2d[] l1CloseRightReefPoints = AllianceFlipUtil
+                                .apply(l1CloseBlueRightReefPoints);
+                public final static Pose2d[] l1CloseLeftReefPoints = AllianceFlipUtil.apply(l1CloseBlueLeftReefPoints);
+                public final static Pose2d[] closeReefPoints = AllianceFlipUtil.apply(blueCloseReefPoints);
+                public final static Pose2d[] farReefPoints = AllianceFlipUtil.apply(blueFarReefPoints);
+                public final static Pose2d[] farrerReefPoints = AllianceFlipUtil.apply(blueFarrerReefPoints);
                 public final static Pose2d[] coralStations = AllianceFlipUtil.apply(blueCoralStations);
 
                 public static enum AutonState {
@@ -63,6 +198,5 @@ public class AutonConstants {
                         INTAKE,
                         DEFAULT
                 }
-
         }
 }
