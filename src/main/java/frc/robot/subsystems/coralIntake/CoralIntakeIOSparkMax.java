@@ -1,5 +1,6 @@
 package frc.robot.subsystems.coralIntake;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import com.revrobotics.AbsoluteEncoder;
@@ -101,4 +102,20 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     public void setWristSpeed(double speed) {
         wristMotor.set(speed);
     }
+
+    @Override
+    @AutoLogOutput(key = "Coral/goToSafeAngle")
+    public void goToSafeAngle() {
+        double topSafeAngle = new TunableNumber("Coral/TopSafeAngle", CoralIntakeConstants.TopSafeAngle).get();
+        double bottomSafeAngle = new TunableNumber("Coral/BottomSafeAngle", CoralIntakeConstants.BottomSafeAngle).get();
+        double currentAngle = getAngle();
+        double diffToTopAngle = Math.abs(topSafeAngle - currentAngle);
+        double diffToBottomAngle = Math.abs(bottomSafeAngle - currentAngle);
+        double newTargetAngle = diffToTopAngle < diffToBottomAngle ? diffToTopAngle : diffToBottomAngle;
+        Logger.recordOutput("Coral/diffToTopAngle", diffToTopAngle);
+        Logger.recordOutput("Coral/diffToBottomAngle", diffToBottomAngle);
+        Logger.recordOutput("Coral/NewSafeTargetAngle", newTargetAngle);
+        rotateTo(newTargetAngle);
+    };
+
 }

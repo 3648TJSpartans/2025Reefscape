@@ -8,10 +8,12 @@ import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.elevator.Elevator;
 
 public class CoralIntake extends SubsystemBase {
   // declaration of some usefull instance
-  CoralIntakeIO io;
+  private final CoralIntakeIO io;
+  private Elevator m_elevator;
 
   /** Creates a new CoralIntake. */
   public CoralIntake(CoralIntakeIO io) {
@@ -24,6 +26,10 @@ public class CoralIntake extends SubsystemBase {
     io.updateValues();
     Logger.recordOutput("Intake/EncoderAngle", getAngle());
     Logger.recordOutput("Intake/IR", getIR());
+
+    if (m_elevator != null && m_elevator.isInNoGoZone()) {
+      io.goToSafeAngle();
+    }
 
   }
 
@@ -41,10 +47,7 @@ public class CoralIntake extends SubsystemBase {
 
   public void rotateTo(double setAngle) {
     Logger.recordOutput("Intake/setAngle", setAngle);
-    // if (CoralIntakeConstants.minAngle < setAngle && setAngle <
-    // CoralIntakeConstants.maxAngle) {
     io.rotateTo(setAngle);
-    // }
   }
 
   public void setSpeed(double speed) {
@@ -61,5 +64,9 @@ public class CoralIntake extends SubsystemBase {
     // io.setWristSpeed(speed);
     // }
     io.setWristSpeed(speed);
+  }
+
+  public void addElevator(Elevator elevator) {
+    m_elevator = elevator;
   }
 }

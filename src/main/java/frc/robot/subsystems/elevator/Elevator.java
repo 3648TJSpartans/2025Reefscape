@@ -5,10 +5,13 @@
 package frc.robot.subsystems.elevator;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.TunableNumber;
+import frc.robot.subsystems.coralIntake.CoralIntake;
 
 public class Elevator extends SubsystemBase {
   // declaration of a instance
   private final ElevatorIO io;
+  private CoralIntake m_coralIntake;
 
   /** Creates a new elevator. */
   public Elevator(ElevatorIO io) {
@@ -42,6 +45,13 @@ public class Elevator extends SubsystemBase {
   // allows us to know the heigh of the elevator in encoders unit
   public double getHeight() {
     return io.getHeight();
+  }
+
+  public boolean isInNoGoZone() {
+    double noGoBottom = new TunableNumber("Elevator/NoGoZoneBottom", ElevatorConstants.NoGoZoneBottom).get();
+    double noGoTop = new TunableNumber("Elevator/NoGoZoneTop", ElevatorConstants.NoGoZoneTop).get();
+    double currentHeight = io.getHeight();
+    return currentHeight > noGoBottom && currentHeight < noGoTop;
   }
 
   // allows us to reset the encoder value
