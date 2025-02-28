@@ -55,10 +55,10 @@ public class LedSubsystem extends SubsystemBase {
             LedConstants.noColor.applyTo(buffer4Left);
 
             // right side
-            pattern.applyTo(buffer1Right);
+            pattern.applyTo(buffer4Right);
             LedConstants.noColor.applyTo(buffer2Right);
             LedConstants.noColor.applyTo(buffer3Right);
-            LedConstants.noColor.applyTo(buffer4Right);
+            LedConstants.noColor.applyTo(buffer1Right);
 
         }
         if (level == 2) {
@@ -68,10 +68,10 @@ public class LedSubsystem extends SubsystemBase {
             LedConstants.noColor.applyTo(buffer4Left);
 
             // right side
-            pattern.applyTo(buffer1Right);
-            pattern.applyTo(buffer2Right);
-            LedConstants.noColor.applyTo(buffer3Right);
-            LedConstants.noColor.applyTo(buffer4Right);
+            pattern.applyTo(buffer3Right);
+            pattern.applyTo(buffer4Right);
+            LedConstants.noColor.applyTo(buffer1Right);
+            LedConstants.noColor.applyTo(buffer2Right);
 
         }
         if (level == 3) {
@@ -80,10 +80,10 @@ public class LedSubsystem extends SubsystemBase {
             pattern.applyTo(buffer3Left);
             LedConstants.noColor.applyTo(buffer4Left);
             // right side
-            pattern.applyTo(buffer1Right);
+            pattern.applyTo(buffer4Right);
             pattern.applyTo(buffer2Right);
             pattern.applyTo(buffer3Right);
-            LedConstants.noColor.applyTo(buffer4Right);
+            LedConstants.noColor.applyTo(buffer1Right);
 
         }
         if (level == 4) {
