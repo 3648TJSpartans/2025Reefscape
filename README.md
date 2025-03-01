@@ -44,3 +44,8 @@ These can be used to access their respective component's web interfaces, or for 
 **Limelight 3:** `http://limelight-three.local:5801` \
 **Limelight 2+:** `http://limelight-twoplus.local:5801` \
 **Radio:** `10.##.##.1`
+### lime light config images
+[https://github.com/3648TJSpartans/2025Reefscape/blob/limelght-config-stuff/src/main/deploy/Limelight/three_config.png](url)
+[https://github.com/3648TJSpartans/2025Reefscape/blob/limelght-config-stuff/src/main/deploy/Limelight/three_input.png](url)
+[https://github.com/3648TJSpartans/2025Reefscape/blob/limelght-config-stuff/src/main/deploy/Limelight/two_plus_config.png](url)
+[https://github.com/3648TJSpartans/2025Reefscape/blob/limelght-config-stuff/src/main/deploy/Limelight/two_plus_input.png](url)
