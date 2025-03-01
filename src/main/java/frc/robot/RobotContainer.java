@@ -139,7 +139,7 @@ public class RobotContainer {
         private final CoralIntake m_coral;
         private final Elevator m_elevator;
         private ClimberSubsystem m_climber;
-        private AlgaeSubsystem m_algae;
+        // private AlgaeSubsystem m_algae;
         private boolean override;
         private Sft m_sft;
         // Controller
