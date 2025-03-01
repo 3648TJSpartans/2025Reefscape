@@ -178,9 +178,8 @@ public class AutonConstants {
                 public final static Pose2d[] l1ExactRightReefPoints = AllianceFlipUtil
                                 .apply(l1ExactBlueRightReefPoints);
                 public final static Pose2d[] l1ExactLeftReefPoints = AllianceFlipUtil.apply(l1ExactBlueLeftReefPoints);
-                public final static Pose2d[] l4CloseRightReefPoints = AllianceFlipUtil
-                                .apply(l4CloseBlueRightReefPoints);
-                public final static Pose2d[] l4CloseLeftReefPoints = AllianceFlipUtil.apply(l4CloseBlueLeftReefPoints);
+                public final static Pose2d[] l4CloseRightReefPoints = l4ExactRightReefPoints;
+                public final static Pose2d[] l4CloseLeftReefPoints = l4ExactLeftReefPoints;
                 public final static Pose2d[] l2CloseRightReefPoints = AllianceFlipUtil
                                 .apply(l2CloseBlueRightReefPoints);
                 public final static Pose2d[] l2CloseLeftReefPoints = AllianceFlipUtil.apply(l2CloseBlueLeftReefPoints);
