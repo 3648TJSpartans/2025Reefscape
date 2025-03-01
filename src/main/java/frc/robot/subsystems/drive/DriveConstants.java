@@ -113,7 +113,7 @@ public class DriveConstants {
         public static final double robotMOI = 6.883;
         public static final double wheelCOF = 1.2;
         public static final double ppMaxSpeed = 4.2;
-        public static final RobotConfig ppConfig = new RobotConfig(s
+        public static final RobotConfig ppConfig = new RobotConfig(
                         robotMassKg,
                         robotMOI,
                         new ModuleConfig(
