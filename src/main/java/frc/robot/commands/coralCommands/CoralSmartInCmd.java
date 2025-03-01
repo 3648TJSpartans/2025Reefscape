@@ -34,12 +34,12 @@ public class CoralSmartInCmd extends Command {
     @Override
     public void execute() {
         boolean objectDetected = !m_coralIntake.getIR();
-        if (!objectDetected) {
+        // if (!objectDetected) {
 
-            m_timer.reset();
-            m_timer.start();
-        }
-        isFinished = objectDetected && m_timer.get() > 0.4;
+        // m_timer.reset();
+        // m_timer.start();
+        // }
+        isFinished = objectDetected;// && m_timer.get() > 0.4;
 
         Logger.recordOutput("Timer/time", m_timer.get());
         m_coralIntake.rotateTo(angle);
