@@ -26,10 +26,6 @@ public class Sft extends SubsystemBase {
         io.stopMotor();
     }
 
-    public boolean getIR() {
-        return io.getIR();
-    }
-
     public void setSpeed(double speed) {
         io.setSpeed(speed);
     }
