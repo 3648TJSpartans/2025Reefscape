@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.elevator;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
@@ -20,6 +22,11 @@ public class Elevator extends SubsystemBase {
     // This method will be called once per scheduler run
     io.updateValues();
     io.updateLimitSwitch();
+    // if (io.getTopLimitSwitch() && io.getSpeed() > 0) {
+    // io.setSpeed(0);
+    // } else if (io.getBottomLimitSwitch() && io.getSpeed() < 0) {
+    // io.setSpeed(0);
+    // }
   }
 
   public boolean getBottomLimitSwitch() {
@@ -31,7 +38,10 @@ public class Elevator extends SubsystemBase {
   }
 
   public void elevateTo(double setHeight) {
-    io.elevateTo(setHeight);
+    if (!(io.getTopLimitSwitch() && setHeight > ElevatorConstants.coralLimit)
+        && !(io.getBottomLimitSwitch() && setHeight < 0)) {
+      io.elevateTo(setHeight);
+    }
   }
 
   // allows us to stop the motor
@@ -50,7 +60,16 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setSpeed(double speed) {
-    io.setSpeed(speed);
+    if (io.getBottomLimitSwitch() == true && speed < 0) {
+      io.setSpeed(0);
+      Logger.recordOutput("Elevator/state", "AtBottom");
+    } else if (io.getTopLimitSwitch() == true && speed > 0) {
+      io.setSpeed(0);
+      Logger.recordOutput("Elevator/state", "AtTop");
+    } else {
+      io.setSpeed(speed);
+      Logger.recordOutput("Elevator/state", "AtMiddle");
+    }
   }
 
   public boolean atBottom() {

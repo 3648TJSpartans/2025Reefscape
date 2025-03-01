@@ -47,4 +47,9 @@ public interface ElevatorIO {
     public default boolean getLimitReset() {
         return true;
     }
+
+    public default double getSpeed() {
+        return 0;
+    }
+
 }
