@@ -53,6 +53,7 @@ import frc.robot.commands.algaeCommands.AlgaeShootCmd;
 import frc.robot.commands.autonCommands.AlgaeRemovalCmd;
 import frc.robot.commands.autonCommands.AutoBuildingBlocks;
 import frc.robot.commands.autonCommands.CoralSequentialCmd;
+import frc.robot.commands.autonCommands.ObjectiveTrackingCmd;
 import frc.robot.commands.autonCommands.SourceSequentialCmd;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToPose;
@@ -77,6 +78,7 @@ import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import frc.robot.util.AllianceFlipUtil;
 import frc.robot.util.TunableNumber;
+import frc.robot.util.objectiveTracking.ObjectiveTracker;
 import frc.robot.util.TunableNumber;
 import frc.robot.subsystems.algae.AlgaeConstants;
 import frc.robot.subsystems.algae.AlgaeIOSparkMax;
@@ -139,6 +141,7 @@ public class RobotContainer {
         private final CoralIntake m_coral;
         private final Elevator m_elevator;
         private ClimberSubsystem m_climber;
+        private ObjectiveTracker m_objectiveTracker;
         // private AlgaeSubsystem m_algae;
         private boolean override;
         private Sft m_sft;
@@ -168,8 +171,7 @@ public class RobotContainer {
                 override = false;
                 switch (Constants.currentMode) {
                         case REAL:
-                                // Real robot, instantiate hardware IO implementations
-                                m_climber = new ClimberSubsystem(new ClimberIOSparkMax());
+
                                 m_sft = new Sft(new SftIOSparkMax());
                                 // m_algae = new AlgaeSubsystem(new AlgaeIOSparkMax());
                                 m_drive = new Drive(
@@ -184,6 +186,7 @@ public class RobotContainer {
                                                 new VisionIOLimelight("limelight-twoplus", m_drive::getRotation));
                                 m_coral = new CoralIntake(new CoralIntakeIOSparkMax());
                                 m_elevator = new Elevator(new ElevatorIOSparkMax());
+                                m_objectiveTracker = new ObjectiveTracker();
                                 break;
 
                         case SIM:
@@ -518,7 +521,6 @@ public class RobotContainer {
                                 new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
                 Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
                                 ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
-                Command smartSequentialCommand = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true);
                 // Command coralSource = new SourceParallelCmd(m_drive, m_coral, m_elevator);
                 m_controllerTwo.povUp().whileTrue(l1);
                 m_controllerTwo.povRight().whileTrue(l2);
@@ -555,6 +557,8 @@ public class RobotContainer {
                 m_copilotController.rightBumper()
                                 .onTrue(new InstantCommand(
                                                 () -> CoralSequentialCmd.setAutonState(AutonState.RIGHTREEF)));
+                Command driveToObjective = new ObjectiveTrackingCmd(m_drive, m_coral, m_elevator, m_objectiveTracker);
+                Command smartestDriveCommand = new ConditionalCommand();
                 m_driveController.leftTrigger().whileTrue(smartSequentialCommand);
 
                 // m_driveController.y().onTrue(coralSource);
@@ -565,11 +569,11 @@ public class RobotContainer {
                                                                 new DriveToNearestIntake(m_drive),
 
                                                                 new DownToIntakeCmd(m_coral, m_elevator)
-                                                                                .andThen(new UpFromIntakeCmd(m_coral,
-                                                                                                m_elevator))),
+                                                                                .an
+
                                                 new CoralInCmd(m_coral, m_elevator)), () -> override))
                                 .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
-
+                
         }
 
         public Command getAutonomousCommand() {
