@@ -13,6 +13,7 @@ public class UpFromIntakeCmd extends SequentialCommandGroup {
             Elevator elevator) {
         Command firstElevator = new ElevatorCmd(elevator, ElevatorConstants.preIntakePose);
         Command firstWrist = new WristCmd(coralIntake, CoralIntakeConstants.preIntakeAngle);
+        Command spitCoral = new CoralCmd(coralIntake,CoralIntakeConstants.preIntakeAngle, CoralIntakeConstants.intakeSpeed);
         addCommands(
                 firstElevator,
                 firstWrist);
