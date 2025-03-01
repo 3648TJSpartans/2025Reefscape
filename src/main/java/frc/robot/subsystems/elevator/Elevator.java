@@ -38,8 +38,18 @@ public class Elevator extends SubsystemBase {
   }
 
   public void elevateTo(double setHeight) {
-    if (!(io.getTopLimitSwitch() && setHeight > ElevatorConstants.coralLimit)
-        && !(io.getBottomLimitSwitch() && setHeight < 0)) {
+
+    if (io.getTopLimitSwitch() && setHeight > io.getHeight()) {
+      Logger.recordOutput("Elevator/elevateTo", io.getHeight());
+      Logger.recordOutput("Elevator/state", "AtTop");
+      io.elevateTo(io.getHeight());
+    } else if (io.getBottomLimitSwitch() && setHeight < io.getHeight()) {
+      Logger.recordOutput("Elevator/elevateTo", io.getHeight());
+      Logger.recordOutput("Elevator/state", "AtBottom");
+      io.elevateTo(io.getHeight());
+    } else {
+      Logger.recordOutput("Elevator/elevateTo", setHeight);
+      Logger.recordOutput("Elevator/state", "AtMiddle");
       io.elevateTo(setHeight);
     }
   }

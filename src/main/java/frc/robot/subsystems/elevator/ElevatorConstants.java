@@ -25,8 +25,8 @@ public class ElevatorConstants {
     public static final double kElevatorD = 0.4;
     public static final double kElevatorFF = 0.1;
     public static final double odometryFrequency = 100;
-    public static final double kElevatorMinRange = -.45;
-    public static final double kElevatorMaxRange = .45;
+    public static final double kElevatorMinRange = -.25;
+    public static final double kElevatorMaxRange = .25;
     public static final boolean elevatorEncoderInverted = false;
     public static final double elevatorEncoderPositionFactor = 1;
     public static final double elevatorEncoderVelocityFactor = 1;
