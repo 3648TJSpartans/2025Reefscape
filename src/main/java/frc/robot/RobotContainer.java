@@ -555,15 +555,8 @@ public class RobotContainer {
 
                 // m_driveController.y().onTrue(coralSource);
                 m_driveController.rightTrigger().whileTrue(
-                                new ConditionalCommand(intake, Commands.sequence(
-                                                Commands.parallel(
-
-                                                                new DriveToNearestIntake(m_drive),
-
-                                                                new DownToIntakeCmd(m_coral, m_elevator)
-                                                                                .andThen(new UpFromIntakeCmd(m_coral,
-                                                                                                m_elevator))),
-                                                new CoralInCmd(m_coral, m_elevator)), () -> override))
+                                new DownToIntakeCmd(m_coral, m_elevator)
+                                                .andThen(new UpFromIntakeCmd(m_coral, m_elevator)))
                                 .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
 
         }
