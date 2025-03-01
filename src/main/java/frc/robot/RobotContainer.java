@@ -455,8 +455,8 @@ public class RobotContainer {
                 m_drive.setDefaultCommand(
                                 DriveCommands.joystickDrive(
                                                 m_drive,
-                                                () -> m_driveController.getLeftY(),
-                                                () -> m_driveController.getLeftX(),
+                                                () -> -m_driveController.getLeftY(),
+                                                () -> -m_driveController.getLeftX(),
                                                 () -> -m_driveController.getRightX()));
 
                 // Lock to 0° when A button is held
@@ -536,10 +536,11 @@ public class RobotContainer {
                 // cancelCommand(sequentialRight)));
                 // m_driveController.leftBumper().whileTrue(leftDriveCommand);
                 // m_driveController.rightBumper().whileTrue(rightDriveCommand);
-                m_copilotController.povUp().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(1)));
-                m_copilotController.povRight().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(2)));
-                m_copilotController.povDown().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(3)));
-                m_copilotController.povLeft().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(4)));
+                // m_copilotController.povUp().onTrue(new InstantCommand(() ->
+                // CoralSequentialCmd.setLevel(4)));
+                m_copilotController.povRight().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(1)));
+                m_copilotController.povDown().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(2)));
+                m_copilotController.povLeft().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(3)));
                 // m_copilotController.povUp().and(() -> override).whileTrue(l4);
                 m_copilotController.povLeft().and(() -> override).whileTrue(l3);
                 m_copilotController.povDown().and(() -> override).whileTrue(l2);
