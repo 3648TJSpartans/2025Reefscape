@@ -446,7 +446,7 @@ public class RobotContainer {
                 m_copilotController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
                 Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_copilotController.getRightX());
                 Command slamCoral = new SlamCoralCmd(m_coral);
-                // m_coral.setDefaultCommand(wristAnalog);
+                m_coral.setDefaultCommand(wristAnalog);
                 m_controllerTwo.y().whileTrue(slamCoral);
         }
 
@@ -492,9 +492,9 @@ public class RobotContainer {
                 Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
                 Command coralSmartDefualt = new ConditionalCommand(coralDefaultCommand, homeElevator,
                                 () -> m_elevator.getLimitReset());
-                m_elevator.setDefaultCommand(elevatorAnalog);
-                // m_elevator.setDefaultCommand(coralSmartDefualt);
-                // m_coral.setDefaultCommand(coralSmartDefualt);
+                // m_elevator.setDefaultCommand(elevatorAnalog);
+                m_elevator.setDefaultCommand(coralSmartDefualt);
+                m_coral.setDefaultCommand(coralSmartDefualt);
 
                 // new Trigger(() -> DriverStation.isTeleopEnabled() &&
                 // !m_elevator.getLimitReset())
@@ -523,10 +523,10 @@ public class RobotContainer {
                                 ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
                 Command smartSequentialCommand = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true);
                 // Command coralSource = new SourceParallelCmd(m_drive, m_coral, m_elevator);
-                m_controllerTwo.povUp().whileTrue(l1);
-                m_controllerTwo.povRight().whileTrue(l2);
-                m_controllerTwo.povDown().whileTrue(l3);
-                m_controllerTwo.povLeft().whileTrue(l4);
+                // m_controllerTwo.povUp().whileTrue(l4);
+                m_controllerTwo.povRight().whileTrue(l3);
+                m_controllerTwo.povDown().whileTrue(l2);
+                m_controllerTwo.povLeft().whileTrue(l1);
                 m_controllerTwo.leftBumper().whileTrue(intake);
                 // m_driveController.rightBumper().onTrue(sequentialRight);
                 // m_driveController.leftBumper().onTrue(sequentialLeft);
@@ -540,10 +540,10 @@ public class RobotContainer {
                 m_copilotController.povRight().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(2)));
                 m_copilotController.povDown().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(3)));
                 m_copilotController.povLeft().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(4)));
-                m_copilotController.povUp().and(() -> override).whileTrue(l1);
-                m_copilotController.povLeft().and(() -> override).whileTrue(l2);
-                m_copilotController.povDown().and(() -> override).whileTrue(l3);
-                m_copilotController.povRight().and(() -> override).whileTrue(l4);
+                // m_copilotController.povUp().and(() -> override).whileTrue(l4);
+                m_copilotController.povLeft().and(() -> override).whileTrue(l3);
+                m_copilotController.povDown().and(() -> override).whileTrue(l2);
+                m_copilotController.povRight().and(() -> override).whileTrue(l1);
                 m_copilotController.leftBumper()
                                 .onTrue(new InstantCommand(
                                                 () -> CoralSequentialCmd.setAutonState(AutonState.LEFTREEF)));
