@@ -18,6 +18,6 @@ public class UpFromIntakeCmd extends SequentialCommandGroup {
                                 CoralIntakeConstants.intakeSpeed);
                 addCommands(
                                 firstElevator.andThen(firstWrist).withTimeout(1),
-                                spitCoral.withTimeout(0.2));
+                                spitCoral.withTimeout(0.4));
         }
 }

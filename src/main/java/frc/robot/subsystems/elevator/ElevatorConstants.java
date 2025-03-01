@@ -16,7 +16,7 @@ public class ElevatorConstants {
     public static final double coralLimit = 68;
     public static final double intakePose = 8.2;// this is the position for the intake
     public static final double preIntakePose = 25;
-    public static final double defaultPosition = 10;
+    public static final double defaultPosition = 25;
     public static final double algaeRemovalHeightLow = 0;
     public static final double algaeRemovalHeightHigh = 42; // TODO: change this to the correct number
     // these are the constants for the elevator pid
