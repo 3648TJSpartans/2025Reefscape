@@ -13,16 +13,16 @@ public class ElevatorConstants {
     public static final double coralLeveL2 = 0.15; // this is a momentary value that will be changed later
     public static final double coralLeveL3 = 0.8; // this is a momentary value that will be changed later
     public static final double coralLeveL4 = 68;
-    public static final double coralLimit = 70;
+    public static final double coralLimit = 68;
     public static final double intakePose = 8.2;// this is the position for the intake
     public static final double preIntakePose = 25;
-    public static final double defaultPosition = 0.5;
+    public static final double defaultPosition = 10;
     public static final double algaeRemovalHeightLow = 0;
     public static final double algaeRemovalHeightHigh = 42; // TODO: change this to the correct number
     // these are the constants for the elevator pid
     public static final double kElevatorP = .3;
     public static final double kElevatorI = 0;
-    public static final double kElevatorD = 0.3;
+    public static final double kElevatorD = 0.4;
     public static final double kElevatorFF = 0.1;
     public static final double odometryFrequency = 100;
     public static final double kElevatorMinRange = -.45;

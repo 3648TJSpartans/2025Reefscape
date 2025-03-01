@@ -196,13 +196,16 @@ public class RobotContainer {
                                                 new ModuleIOSim(),
                                                 new ModuleIOSim(),
                                                 new ModuleIOSim());
-                                m_vision = new Vision(
-                                                m_drive::addVisionMeasurement,
-                                                // new VisionIOPhotonVisionSim(camera0Name, robotToCamera0,
-                                                // m_drive::getPose),
-                                                new VisionIOPhotonVisionSim(VisionConstants.camera1Name,
-                                                                VisionConstants.robotToCamera1,
-                                                                m_drive::getPose));
+                                m_vision = new Vision(m_drive::addVisionMeasurement, new VisionIO() {
+                                }, new VisionIO() {
+                                });
+                                // m_drive::addVisionMeasurement,
+                                // new VisionIOPhotonVisionSim(VisionConstants.camera0Name,
+                                // VisionConstants.robotToCamera0,
+                                // m_drive::getPose),
+                                // new VisionIOPhotonVisionSim(VisionConstants.camera1Name,
+                                // VisionConstants.robotToCamera1,
+                                // m_drive::getPose));
                                 // To later be replaced with CoralIntakeIOSim
                                 m_coral = new CoralIntake(new CoralIntakeIO() {
                                 });

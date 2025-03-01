@@ -33,7 +33,7 @@ public class AutonConstants {
                 public final static double fieldWidth = 8.042;
 
                 private static Pose2d[] blueCoralStations = new Pose2d[] {
-                                new Pose2d(1.11, 1.03, Rotation2d.fromDegrees(60)), // Right
+                                new Pose2d(1.11, 0.85, Rotation2d.fromDegrees(60)), // Right
                                 new Pose2d(1.127, 7.2, Rotation2d.fromDegrees(-60)) // Left
                 };
 

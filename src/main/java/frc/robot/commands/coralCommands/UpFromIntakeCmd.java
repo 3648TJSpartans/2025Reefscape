@@ -10,14 +10,14 @@ import frc.robot.subsystems.elevator.ElevatorConstants;
 
 public class UpFromIntakeCmd extends SequentialCommandGroup {
 
-    public UpFromIntakeCmd(CoralIntake coralIntake,
-            Elevator elevator) {
-        Command firstElevator = new ElevatorCmd(elevator, ElevatorConstants.preIntakePose);
-        Command firstWrist = new WristCmd(coralIntake, CoralIntakeConstants.preIntakeAngle);
-        Command spitCoral = new CoralCmd(coralIntake, CoralIntakeConstants.preIntakeAngle,
-                CoralIntakeConstants.intakeSpeed);
-        addCommands(
-                firstElevator.andThen(firstWrist).withTimeout(1),
-                spitCoral.alongWith(new WaitCommand(.125)));
-    }
+        public UpFromIntakeCmd(CoralIntake coralIntake,
+                        Elevator elevator) {
+                Command firstElevator = new ElevatorCmd(elevator, ElevatorConstants.preIntakePose);
+                Command firstWrist = new WristCmd(coralIntake, CoralIntakeConstants.preIntakeAngle);
+                Command spitCoral = new CoralCmd(coralIntake, CoralIntakeConstants.preIntakeAngle,
+                                CoralIntakeConstants.intakeSpeed);
+                addCommands(
+                                firstElevator.andThen(firstWrist).withTimeout(1),
+                                spitCoral.withTimeout(0.2));
+        }
 }
