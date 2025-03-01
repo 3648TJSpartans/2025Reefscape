@@ -19,7 +19,7 @@ public class SftCmd extends Command {
 
     @Override
     public void initialize() {
-        Logger.recordOutput("Sft/CommandScheduled", true);
+        Logger.recordOutput("SFT/CommandScheduled", true);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class SftCmd extends Command {
     @Override
     public void end(boolean interrupted) {
         m_sft.stopMotor();
-        Logger.recordOutput("Sft/CommandScheduled", false);
+        Logger.recordOutput("SFT/CommandScheduled", false);
     }
 
     @Override

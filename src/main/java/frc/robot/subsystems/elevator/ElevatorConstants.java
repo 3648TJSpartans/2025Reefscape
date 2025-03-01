@@ -22,7 +22,7 @@ public class ElevatorConstants {
     // these are the constants for the elevator pid
     public static final double kElevatorP = .3;
     public static final double kElevatorI = 0;
-    public static final double kElevatorD = 0.3;
+    public static final double kElevatorD = 0.4;
     public static final double kElevatorFF = 0.1;
     public static final double odometryFrequency = 100;
     public static final double kElevatorMinRange = -.45;
