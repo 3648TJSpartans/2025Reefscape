@@ -18,12 +18,14 @@ public class CoralSmartLevelCmd extends Command {
     private final Elevator m_elevator;
     private double height;
     private double angle;
+    private double speed;
     private Supplier<Integer> level;
 
-    public CoralSmartLevelCmd(CoralIntake coralIntake, Elevator elevator, Supplier<Integer> level) {
+    public CoralSmartLevelCmd(CoralIntake coralIntake, Elevator elevator, Supplier<Integer> level, double speed) {
         m_coralIntake = coralIntake;
         m_elevator = elevator;
         this.level = level;
+        this.speed = speed;
         addRequirements(m_coralIntake);
         addRequirements(m_elevator);
     }
@@ -43,6 +45,7 @@ public class CoralSmartLevelCmd extends Command {
             m_elevator.elevateTo(height);
             m_coralIntake.rotateTo(angle);
         }
+        m_coralIntake.setSpeed(speed);
         Logger.recordOutput("Commands/CoralSmartCommand/setHeight", height);
         Logger.recordOutput("Commands/CoralSmartCommand/setAngle", angle);
     }
