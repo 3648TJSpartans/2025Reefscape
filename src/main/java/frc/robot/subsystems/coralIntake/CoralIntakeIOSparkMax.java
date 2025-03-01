@@ -21,7 +21,10 @@ import com.revrobotics.spark.SparkClosedLoopController;
 public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     // declaration of motors, IR sensor and encoder
     private SparkMax wristMotor;
-    public DigitalInput irSensor;
+
+    private DigitalInput irSensor;
+    private DigitalInput SFTirSensor;
+
     private SparkMax intakeMotor;
     private AbsoluteEncoder absoluteEncoder;
     private SparkClosedLoopController wristController;
