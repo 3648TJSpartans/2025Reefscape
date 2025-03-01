@@ -117,23 +117,23 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     @Override
     public void updateLimitSwitch() {
-        Logger.recordOutput("Elevator/BottomLimitSwitchPushed", !bottomLimitSwitch.get());
-        Logger.recordOutput("Elevator/TopLimitSwitchPushed", !topLimitSwitch.get());
-        if (!bottomLimitSwitch.get()) {
+        if (getBottomLimitSwitch()) {
             setZero();
-        } else if (!topLimitSwitch.get()) {
+        } else if (getTopLimitSwitch()) {
             setTop();
         }
     }
 
+    @Autolog(key = "Elevator/BottomLimitSwitchPushed")
     @Override
     public boolean getBottomLimitSwitch() {
-        return bottomLimitSwitch.get();
+        return !bottomLimitSwitch.get();
     }
 
+    @Autolog(key = "Elevator/TopLimitSwitchPushed")
     @Override
     public boolean getTopLimitSwitch() {
-        return topLimitSwitch.get();
+        return !topLimitSwitch.get();
     }
 
     private void setZero() {
