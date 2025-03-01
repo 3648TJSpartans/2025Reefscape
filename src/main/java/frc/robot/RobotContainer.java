@@ -558,8 +558,7 @@ public class RobotContainer {
                                 .onTrue(new InstantCommand(
                                                 () -> CoralSequentialCmd.setAutonState(AutonState.RIGHTREEF)));
                 Command driveToObjective = new ObjectiveTrackingCmd(m_drive, m_coral, m_elevator, m_objectiveTracker);
-                Command smartestDriveCommand = new ConditionalCommand();
-                m_driveController.leftTrigger().whileTrue(smartSequentialCommand);
+                m_driveController.leftTrigger().whileTrue(driveToObjective);
 
                 // m_driveController.y().onTrue(coralSource);
                 m_driveController.rightTrigger().whileTrue(
@@ -569,11 +568,11 @@ public class RobotContainer {
                                                                 new DriveToNearestIntake(m_drive),
 
                                                                 new DownToIntakeCmd(m_coral, m_elevator)
-                                                                                .an
-
+                                                                                .andThen(new UpFromIntakeCmd(m_coral,
+                                                                                                m_elevator))),
                                                 new CoralInCmd(m_coral, m_elevator)), () -> override))
                                 .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
-                
+
         }
 
         public Command getAutonomousCommand() {
