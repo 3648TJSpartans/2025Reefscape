@@ -1,6 +1,5 @@
 package frc.robot.commands.coralCommands;
 
-
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.Timer;

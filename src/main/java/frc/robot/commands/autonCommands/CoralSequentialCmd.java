@@ -21,7 +21,6 @@ import frc.robot.commands.goToCommands.AutonConstants;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToNearest2;
 import frc.robot.subsystems.coralIntake.CoralIntake;
-import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
 
@@ -41,11 +40,9 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         m_coralIntake = coralIntake;
         m_elevator = elevator;
         m_drive = drive;
-        coralCommand = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel(), 0.0);
+        coralCommand = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel(), 0);
         DriveToNearest driveCommand = new DriveToNearest(m_drive, () -> CoralSequentialCmd.poses(false));
         DriveToNearest2 drive2Command = new DriveToNearest2(m_drive, () -> CoralSequentialCmd.poses(true));
-        Command coralOutCommand = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel(),
-                CoralIntakeConstants.outtakeSpeed);
         // Command driveExactCommand = AutoBuildingBlocks.driveToNearest(m_drive, () ->
         // CoralSequentialCmd.poses());
         addCommands(
@@ -60,7 +57,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
                         // coralCommand,
                         // driveExactCommand,
                         // new WaitCommand(1),
-                        coralOutCommand.onlyIf(() -> slam)));
+                        slam ? new CoralOutCmd(m_coralIntake) : null));
         // AutoBuildingBlocks.driveToPose(drive, PoseConstants.START));
     }
 
