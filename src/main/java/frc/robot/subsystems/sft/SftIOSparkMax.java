@@ -22,7 +22,6 @@ import com.revrobotics.spark.SparkClosedLoopController;
 public class SftIOSparkMax implements SftIO {
     // declaration of motors, IR sensor and encoder
     private SparkMax motor;
-    private DigitalInput irSensor;
     private RelativeEncoder encoder;
     private SparkClosedLoopController motorController;
 
@@ -50,11 +49,11 @@ public class SftIOSparkMax implements SftIO {
                 .appliedOutputPeriodMs(20)
                 .busVoltagePeriodMs(20)
                 .outputCurrentPeriodMs(20);
-        // config.absoluteEncoder
-        // .inverted(SftConstants.encoderInverted)
-        // .positionConversionFactor(SftConstants.encoderPositionFactor)
-        // .velocityConversionFactor(SftConstants.encoderPositionFactor)
-        // .averageDepth(2);
+        config.absoluteEncoder
+                .inverted(SftConstants.encoderInverted)
+                .positionConversionFactor(SftConstants.encoderPositionFactor)
+                .velocityConversionFactor(SftConstants.encoderPositionFactor)
+                .averageDepth(2);
         motor.configure(
                 config, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
@@ -72,7 +71,6 @@ public class SftIOSparkMax implements SftIO {
 
     @Override
     public void updateValues() {
-        // Logger.recordOutput("SFT/IRSensorValue", getIR());
     }
 
     @Override
@@ -80,7 +78,7 @@ public class SftIOSparkMax implements SftIO {
         return encoder.getPosition();
     }
 
-    public void setWristSpeed(double speed) {
+    public void setSpeed(double speed) {
         motor.set(speed);
     }
 }

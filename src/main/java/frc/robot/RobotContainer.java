@@ -297,6 +297,8 @@ public class RobotContainer {
                                 CoralIntakeConstants.endgameAngle)
                                 .alongWith(new WaitCommand(.75)
                                                 .andThen(new SftCmd(m_sft, SftConstants.endgameSetPoint))));
+                m_driveController.y()
+                                .onTrue(new WaitCommand(1).andThen(new SftCmd(m_sft, SftConstants.endgameSetPoint)));
                 // new Trigger(
                 // () -> DriverStation.isTeleopEnabled()
                 // && DriverStation.getMatchTime() > 0

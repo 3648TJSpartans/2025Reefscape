@@ -2,7 +2,6 @@ package frc.robot.subsystems.sft;
 
 public class SftConstants {
     public static final int SftMotorPin = 14;// TODO update placeholder
-    public static final int irSensorPin = 3;// TODO update placeholder
 
     public static final double kP = .5;
     public static final double kI = 0;
