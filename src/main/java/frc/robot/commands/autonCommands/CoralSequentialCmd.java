@@ -47,7 +47,6 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         // CoralSequentialCmd.poses());
         addCommands(
                 new SequentialCommandGroup(
-                        // AutoBuildingBlocks.driveToPose(drive, PoseConstants.START),
 
                         new ParallelCommandGroup(
                                 driveCommand,
@@ -58,7 +57,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
                         // driveExactCommand,
                         // new WaitCommand(1),
                         slam ? new CoralOutCmd(m_coralIntake) : null));
-        // AutoBuildingBlocks.driveToPose(drive, PoseConstants.START));
+        ;
     }
 
     public static void setLevel(int level) {

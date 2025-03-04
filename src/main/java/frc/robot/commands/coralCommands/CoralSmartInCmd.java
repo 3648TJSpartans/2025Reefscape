@@ -1,6 +1,5 @@
 package frc.robot.commands.coralCommands;
 
-
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -21,6 +20,7 @@ public class CoralSmartInCmd extends Command {
         this.angle = angle;
         m_timer = new Timer();
         addRequirements(m_coralIntake);
+        Logger.recordOutput("Intake/smartInRunning", false);
     }
 
     @Override
@@ -34,6 +34,7 @@ public class CoralSmartInCmd extends Command {
 
     @Override
     public void execute() {
+        Logger.recordOutput("Intake/smartInRunning", true);
         boolean objectDetected = !m_coralIntake.getIR();
         if (!objectDetected) {
 
@@ -52,6 +53,8 @@ public class CoralSmartInCmd extends Command {
     public void end(boolean interrupted) {
         m_coralIntake.setSpeed(0);
         m_coralIntake.stopWristMotor();
+        Logger.recordOutput("Intake/smartInRunning", false);
+
     }
 
     @Override
