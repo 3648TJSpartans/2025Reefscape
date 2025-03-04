@@ -92,7 +92,7 @@ public class AutonConstants {
                 };
 
                 private final static Pose2d[] l4CloseBlueRightReefPoints = new Pose2d[] {
-                                new Pose2d(2.76, 3.85, Rotation2d.fromDegrees(0)), // Pose A
+                                new Pose2d(2.97, 3.85, Rotation2d.fromDegrees(0)), // Pose A
                                 new Pose2d(3.57, 2.75, Rotation2d.fromDegrees(60)), // Pose C
                                 new Pose2d(5.44, 2.75, Rotation2d.fromDegrees(120)), // Pose E
                                 new Pose2d(6.08, 4.12, Rotation2d.fromDegrees(180)), // Pose G
@@ -101,7 +101,7 @@ public class AutonConstants {
                 };
 
                 private final static Pose2d[] l4CloseBlueLeftReefPoints = new Pose2d[] {
-                                new Pose2d(2.76, 4.12, Rotation2d.fromDegrees(0)), // Pose B
+                                new Pose2d(2.97, 4.12, Rotation2d.fromDegrees(0)), // Pose B
                                 new Pose2d(3.8, 2.59, Rotation2d.fromDegrees(60)), // Pose D
                                 new Pose2d(5.17, 2.61, Rotation2d.fromDegrees(120)), // Pose F
                                 new Pose2d(6.08, 3.78, Rotation2d.fromDegrees(180)), // Pose H
