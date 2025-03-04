@@ -18,7 +18,9 @@ These can be used to access their respective component's web interfaces, or for 
         - *If you get a key verification error after changing the radio team number, delete your ssh `knownhosts` file.*
 - **Limelights:** `10.##.##.20` & `10.##.##.19`
 - **Radio:** `10.##.##.1`
-
+### Reefscape Pose Generator - Desmos
+Use this tool to generate poses around the center of a reef given an inital working pose.
+[Desmos Reefscape Tool](https://www.desmos.com/calculator/erbqoa5sm4)
 ### Control Schemes:
 
 *Driver Controller* \
