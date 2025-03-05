@@ -16,19 +16,44 @@
     },
     {
       "anchor": {
-        "x": 4.955880681818181,
-        "y": 5.291392045454545
+        "x": 6.389940178009528,
+        "y": 6.298149508277222
       },
       "prevControl": {
-        "x": 4.745674834723477,
-        "y": 5.15606465780815
+        "x": 7.209659897057873,
+        "y": 6.980646257599151
+      },
+      "nextControl": {
+        "x": 5.570220458961184,
+        "y": 5.615652758955292
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.973484848484849,
+        "y": 5.236363636363635
+      },
+      "prevControl": {
+        "x": 4.863058712121212,
+        "y": 4.974517045454544
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Branch J"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 2.0,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 2.0,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],

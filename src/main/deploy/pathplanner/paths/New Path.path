@@ -23,6 +23,38 @@
         "x": 3.5,
         "y": 4.0
       },
+      "nextControl": {
+        "x": 5.5,
+        "y": 4.0
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.083333333333333,
+        "y": 5.866666666666666
+      },
+      "prevControl": {
+        "x": 3.291666666666666,
+        "y": 4.933333333333334
+      },
+      "nextControl": {
+        "x": -1.125,
+        "y": 6.799999999999999
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.2606060606060607,
+        "y": 5.866666666666666
+      },
+      "prevControl": {
+        "x": 0.06780303030303059,
+        "y": 6.333333333333332
+      },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
