@@ -22,6 +22,7 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     // declaration of motors, IR sensor and encoder
     private SparkMax wristMotor;
     private DigitalInput irSensor;
+    private DigitalInput SFTirSensor;
     private SparkMax intakeMotor;
     private AbsoluteEncoder absoluteEncoder;
     private SparkClosedLoopController wristController;
@@ -84,7 +85,7 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
 
     @Override
     public void updateValues() {
-        Logger.recordOutput("Odometry/Sensor/coralIRsensorValue", getIR());
+        Logger.recordOutput("CoralIntake/coralIRsensorValue", getIR());
     }
 
     @Override

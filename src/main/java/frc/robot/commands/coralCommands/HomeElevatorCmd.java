@@ -5,17 +5,20 @@
 package frc.robot.commands.coralCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.elevator.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class HomeElevatorCmd extends Command {
   // declare the motors and the substem
   private final Elevator elevatorSubsystem;
+  private final CoralIntake coralIntake;
 
   /** Creates a new Elevator. */
-  public HomeElevatorCmd(Elevator elevatorSubsystem) {
+  public HomeElevatorCmd(Elevator elevatorSubsystem, CoralIntake coralIntake) {
     this.elevatorSubsystem = elevatorSubsystem;
-    addRequirements(elevatorSubsystem);
+    this.coralIntake = coralIntake;
+    addRequirements(elevatorSubsystem, coralIntake);
   }
 
   // Called when the command is initially scheduled.
