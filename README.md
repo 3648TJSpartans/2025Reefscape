@@ -20,7 +20,7 @@ These can be used to access their respective component's web interfaces, or for 
 - **Radio:** `10.##.##.1`
 ### Reefscape Pose Generator - Desmos
 Use this tool to generate poses around the center of a reef given an inital working pose.
-[Desmos Reefscape Tool](https://www.desmos.com/calculator/erbqoa5sm4)
+[Desmos Reefscape Tool](https://www.desmos.com/calculator/baovlii1bw)
 ### Control Schemes:
 
 *Driver Controller* \
