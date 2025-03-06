@@ -17,7 +17,7 @@ public class AutonConstants {
         public static final double driveMaxAcceleration = Units.inchesToMeters(95.0 / 4);
         public static final double thetaMaxVelocity = Units.degreesToRadians(360.0 / 2);
         public static final double thetaMaxAcceleration = Units.degreesToRadians(720.0 / 2);
-        public static final double driveTolerance = 0.06; // 0.03
+        public static final double driveTolerance = 0.03;
         public static final double thetaTolerance = Units.degreesToRadians(1.5); // 2.5
         public static final double ffMinRadius = 0.2;
         public static final double ffMaxRadius = 0.6;
@@ -38,21 +38,25 @@ public class AutonConstants {
                 };
 
                 private final static Pose2d[] l4ExactBlueRightReefPoints = new Pose2d[] {
-                                new Pose2d(2.97, 3.85, Rotation2d.fromDegrees(0)), // Pose A
-                                new Pose2d(3.57, 2.75, Rotation2d.fromDegrees(60)), // Pose C
-                                new Pose2d(5.39, 2.74, Rotation2d.fromDegrees(120)), // Pose E
-                                new Pose2d(6.03, 4.15, Rotation2d.fromDegrees(180)), // Pose G
-                                new Pose2d(5.14, 5.4, Rotation2d.fromDegrees(240)), // Pose I
-                                new Pose2d(3.61, 5.25, Rotation2d.fromDegrees(300)) // Pose K
+                                new Pose2d(2.97, 3.78, Rotation2d.fromDegrees(0)), //
+
+                                // HEY EVANGELIA UPDATE ALL OF OUR SETPOINTS USING ABOVE X AND Y VALUES!!! USE
+                                // MICAH'S DESMOS GRAPH ON THE README
+
+                                new Pose2d(3.928, 2.61, Rotation2d.fromDegrees(60)), // Pose C
+                                new Pose2d(5.418, 2.81, Rotation2d.fromDegrees(120)), // Pose E
+                                new Pose2d(5.99, 4.2, Rotation2d.fromDegrees(180)), // Pose G
+                                new Pose2d(5.072, 5.39, Rotation2d.fromDegrees(240)), // Pose I
+                                new Pose2d(3.582, 5.19, Rotation2d.fromDegrees(300)) // Pose K
                 };
 
                 private final static Pose2d[] l4ExactBlueLeftReefPoints = new Pose2d[] {
-                                new Pose2d(2.97, 4.15, Rotation2d.fromDegrees(0)), // Pose B
-                                new Pose2d(3.31, 2.9, Rotation2d.fromDegrees(60)), // Pose D
-                                new Pose2d(5.13, 2.59, Rotation2d.fromDegrees(120)), // Pose F
-                                new Pose2d(6.03, 3.85, Rotation2d.fromDegrees(180)), // Pose H
-                                new Pose2d(5.39, 5.25, Rotation2d.fromDegrees(240)), // Pose J
-                                new Pose2d(3.86, 5.4, Rotation2d.fromDegrees(300)) // Pose L
+                                new Pose2d(2.97, 4.2, Rotation2d.fromDegrees(0)), // Pose B
+                                new Pose2d(3.582, 2.81, Rotation2d.fromDegrees(60)), // Pose D
+                                new Pose2d(5.072, 2.61, Rotation2d.fromDegrees(120)), // Pose F
+                                new Pose2d(5.99, 3.8, Rotation2d.fromDegrees(180)), // Pose H
+                                new Pose2d(5.418, 5.19, Rotation2d.fromDegrees(240)), // Pose J
+                                new Pose2d(3.928, 5.39, Rotation2d.fromDegrees(300)) // Pose L
                 };
 
                 private final static Pose2d[] l2ExactBlueRightReefPoints = new Pose2d[] {
