@@ -29,6 +29,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
     private final Elevator m_elevator;
     private final Drive m_drive;
     private final Command coralCommand;
+    private final Command coral2Command;
     private static int level = AutonConstants.defaultLevel; // Defualt Level
     private static boolean exact = false;
     private static AutonState autonState = AutonState.RIGHTREEF;
@@ -41,6 +42,8 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         m_elevator = elevator;
         m_drive = drive;
         coralCommand = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel());
+        coral2Command = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel());
+
         DriveToNearest driveCommand = new DriveToNearest(m_drive, () -> CoralSequentialCmd.poses(false));
         DriveToNearest2 drive2Command = new DriveToNearest2(m_drive, () -> CoralSequentialCmd.poses(true));
         // Command driveExactCommand = AutoBuildingBlocks.driveToNearest(m_drive, () ->
@@ -51,7 +54,10 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
                         new ParallelCommandGroup(
                                 driveCommand,
                                 coralCommand),
-                        drive2Command,
+
+                        new ParallelCommandGroup(
+                                drive2Command,
+                                coral2Command),
                         // driveCloseCommand,
                         // coralCommand,
                         // driveExactCommand,
@@ -110,10 +116,10 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         } else {
             if (level == 3 || level == 4) {
                 if (autonState == AutonState.RIGHTREEF) {
-                    return PoseConstants.l4CloseRightReefPoints;
+                    return PoseConstants.l4ExactRightReefPoints;
                 } else if (autonState == AutonState.LEFTREEF) {
 
-                    return PoseConstants.l4CloseLeftReefPoints;
+                    return PoseConstants.l4ExactLeftReefPoints;
                 } else {
                     System.out.println("return Null");
                     System.out.println("Auton State: " + autonState.toString());
