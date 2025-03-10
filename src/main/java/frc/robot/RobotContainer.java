@@ -36,8 +36,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.commands.AlgaeAnalogCmd;
-import frc.robot.commands.AlgaeCmd;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 import frc.robot.commands.goToCommands.DriveToNearest;
@@ -46,9 +44,6 @@ import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.sftCommands.SftAnalogCmd;
 import frc.robot.commands.sftCommands.SftCmd;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
-import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
-import frc.robot.commands.algaeCommands.AlgaeDownCmd;
-import frc.robot.commands.algaeCommands.AlgaeShootCmd;
 import frc.robot.commands.autonCommands.AlgaeRemovalCmd;
 import frc.robot.commands.autonCommands.AutoBuildingBlocks;
 import frc.robot.commands.autonCommands.CoralSequentialCmd;
@@ -77,9 +72,6 @@ import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import frc.robot.util.AllianceFlipUtil;
 import frc.robot.util.TunableNumber;
 import frc.robot.util.TunableNumber;
-import frc.robot.subsystems.algae.AlgaeConstants;
-import frc.robot.subsystems.algae.AlgaeIOSparkMax;
-import frc.robot.subsystems.algae.AlgaeSubsystem;
 import frc.robot.subsystems.climber.*;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
@@ -138,7 +130,6 @@ public class RobotContainer {
         private final CoralIntake m_coral;
         private final Elevator m_elevator;
         private ClimberSubsystem m_climber;
-        // private AlgaeSubsystem m_algae;
         private boolean override;
         private Sft m_sft;
         // Controller
@@ -170,7 +161,6 @@ public class RobotContainer {
                                 // Real robot, instantiate hardware IO implementations
                                 m_climber = new ClimberSubsystem(new ClimberIOSparkMax());
                                 m_sft = new Sft(new SftIOSparkMax());
-                                // m_algae = new AlgaeSubsystem(new AlgaeIOSparkMax());
                                 m_drive = new Drive(
                                                 new GyroIONavX(),
                                                 new ModuleIOSpark(0),
@@ -279,13 +269,13 @@ public class RobotContainer {
          */
         private void configureButtonBindings() {
                 // configureAutos();
-                configureAlgae();
                 configureClimber();
                 configureCoralIntake();
                 configureDrive();
                 configureElevator();
                 configureSetpoints();
                 configureEndgameTriggers();
+                configureSft();
                 m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> toggleOverride()));
 
         }
@@ -309,7 +299,7 @@ public class RobotContainer {
 
         public void configureSft() {
                 SftAnalogCmd sftAnalogCmd = new SftAnalogCmd(m_sft,
-                                () -> MathUtil.applyDeadband(m_controllerTwo.getRightX(), 0.1) / 10);
+                                () -> m_controllerTwo.getRightX());
                 m_sft.setDefaultCommand(sftAnalogCmd);
                 m_controllerTwo.x().whileTrue(new SftCmd(m_sft, SftConstants.endgameSetPoint))
                                 .onFalse(new SftCmd(m_sft, 0));
@@ -372,29 +362,6 @@ public class RobotContainer {
                                 );
         }
 
-        public void configureAlgae() {
-
-                m_controllerTwo.leftTrigger().whileTrue(new AlgaeRemovalCmd(m_drive, m_coral, m_elevator, () -> true));
-
-                // Command algaeIntakeCmd = new AlgaeDownCmd(m_algae);
-                // Command algaeShootCmd = new AlgaeShootCmd(m_algae);
-                // Command algaeDefaultCmd = new AlgaeDefaultCmd(m_algae);
-                // Command algaeAnalogCommand = new AlgaeAnalogCmd(m_algae, () ->
-                // m_copilotController.getRightX());
-                // m_algae.setDefaultCommand(algaeAnalogCommand);
-                // m_algae.setDefaultCommand(algaeDefaultCmd);
-                // m_driveController.leftBumper().onTrue(new InstantCommand(() ->
-                // m_algae.setIntakeSpeed(.15)));
-                // m_driveController.leftBumper().onFalse(new InstantCommand(() ->
-                // m_algae.setIntakeSpeed(.0)));
-                // m_driveController.rightBumper().onTrue(new InstantCommand(() ->
-                // m_algae.setIntakeSpeed(-.15)));
-                // m_driveController.rightBumper().onFalse(new InstantCommand(() ->
-                // m_algae.setIntakeSpeed(.0)));
-                // m_driveController.b().whileTrue(algaeIntakeCmd);
-                // m_driveController.y().whileTrue(algaeShootCmd);// TODO
-        }
-
         public void configureAutoChooser() {
                 // configureAutos();
                 // System.out.println("!!!!!!!!!!!!!!!!finished of
@@ -440,7 +407,7 @@ public class RobotContainer {
                 Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_copilotController.getRightX());
                 Command slamCoral = new SlamCoralCmd(m_coral);
                 // m_coral.setDefaultCommand(wristAnalog);
-                m_controllerTwo.y().whileTrue(slamCoral);
+                // m_controllerTwo.y().whileTrue(slamCoral);
         }
 
         public void configureDrive() {
@@ -448,8 +415,8 @@ public class RobotContainer {
                 m_drive.setDefaultCommand(
                                 DriveCommands.joystickDrive(
                                                 m_drive,
-                                                () -> m_driveController.getLeftY(),
-                                                () -> m_driveController.getLeftX(),
+                                                () -> -m_driveController.getLeftY(),
+                                                () -> -m_driveController.getLeftX(),
                                                 () -> -m_driveController.getRightX()));
 
                 // Lock to 0° when A button is held
@@ -486,8 +453,11 @@ public class RobotContainer {
                 Command coralSmartDefualt = new ConditionalCommand(coralDefaultCommand, homeElevator,
                                 () -> m_elevator.getLimitReset());
                 // m_elevator.setDefaultCommand(elevatorAnalog);
+
                 m_elevator.setDefaultCommand(coralSmartDefualt);
                 m_coral.setDefaultCommand(coralSmartDefualt);
+
+                m_controllerTwo.leftTrigger().whileTrue(new AlgaeRemovalCmd(m_drive, m_coral, m_elevator, () -> true));
 
                 // new Trigger(() -> DriverStation.isTeleopEnabled() &&
                 // !m_elevator.getLimitReset())
@@ -516,11 +486,11 @@ public class RobotContainer {
                                 ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
                 Command smartSequentialCommand = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true);
                 // Command coralSource = new SourceParallelCmd(m_drive, m_coral, m_elevator);
-                m_controllerTwo.povUp().whileTrue(l1);
-                m_controllerTwo.povRight().whileTrue(l2);
-                m_controllerTwo.povDown().whileTrue(l3);
-                m_controllerTwo.povLeft().whileTrue(l4);
-                m_controllerTwo.leftBumper().whileTrue(intake);
+                // m_controllerTwo.povUp().whileTrue(l4);
+                // m_controllerTwo.povRight().whileTrue(l1);
+                // m_controllerTwo.povDown().whileTrue(l2);
+                // m_controllerTwo.povLeft().whileTrue(l3);
+                // m_controllerTwo.leftBumper().whileTrue(intake);
                 // m_driveController.rightBumper().onTrue(sequentialRight);
                 // m_driveController.leftBumper().onTrue(sequentialLeft);
                 // m_driveController.leftBumper().onFalse(new InstantCommand(() ->
@@ -529,14 +499,14 @@ public class RobotContainer {
                 // cancelCommand(sequentialRight)));
                 // m_driveController.leftBumper().whileTrue(leftDriveCommand);
                 // m_driveController.rightBumper().whileTrue(rightDriveCommand);
-                m_copilotController.povUp().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(1)));
-                m_copilotController.povRight().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(2)));
-                m_copilotController.povDown().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(3)));
-                m_copilotController.povLeft().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(4)));
-                m_copilotController.povUp().and(() -> override).whileTrue(l1);
-                m_copilotController.povLeft().and(() -> override).whileTrue(l2);
-                m_copilotController.povDown().and(() -> override).whileTrue(l3);
-                m_copilotController.povRight().and(() -> override).whileTrue(l4);
+                m_copilotController.povUp().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(4)));
+                m_copilotController.povRight().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(1)));
+                m_copilotController.povDown().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(2)));
+                m_copilotController.povLeft().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(3)));
+                m_copilotController.povUp().and(() -> override).whileTrue(l4);
+                m_copilotController.povLeft().and(() -> override).whileTrue(l3);
+                m_copilotController.povDown().and(() -> override).whileTrue(l2);
+                m_copilotController.povRight().and(() -> override).whileTrue(l1);
                 m_copilotController.leftBumper()
                                 .onTrue(new InstantCommand(
                                                 () -> CoralSequentialCmd.setAutonState(AutonState.LEFTREEF)));
@@ -555,15 +525,8 @@ public class RobotContainer {
 
                 // m_driveController.y().onTrue(coralSource);
                 m_driveController.rightTrigger().whileTrue(
-                                new ConditionalCommand(intake, Commands.sequence(
-                                                Commands.parallel(
-
-                                                                new DriveToNearestIntake(m_drive),
-
-                                                                new DownToIntakeCmd(m_coral, m_elevator)
-                                                                                .andThen(new UpFromIntakeCmd(m_coral,
-                                                                                                m_elevator))),
-                                                new CoralInCmd(m_coral, m_elevator)), () -> override))
+                                new DownToIntakeCmd(m_coral, m_elevator)
+                                                .andThen(new UpFromIntakeCmd(m_coral, m_elevator)))
                                 .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
 
         }

@@ -80,7 +80,7 @@ public class SftIOSparkMax implements SftIO {
         return encoder.getPosition();
     }
 
-    public void setWristSpeed(double speed) {
+    public void setSpeed(double speed) {
         motor.set(speed);
     }
 }

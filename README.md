@@ -18,7 +18,9 @@ These can be used to access their respective component's web interfaces, or for 
         - *If you get a key verification error after changing the radio team number, delete your ssh `knownhosts` file.*
 - **Limelights:** `10.##.##.20` & `10.##.##.19`
 - **Radio:** `10.##.##.1`
-
+### Reefscape Pose Generator - Desmos
+Use this tool to generate poses around the center of a reef given an inital working pose.
+[Desmos Reefscape Tool](https://www.desmos.com/calculator/ipvnamkwov)
 ### Control Schemes:
 
 *Driver Controller* \
@@ -44,3 +46,8 @@ These can be used to access their respective component's web interfaces, or for 
 **Limelight 3:** `http://limelight-three.local:5801` \
 **Limelight 2+:** `http://limelight-twoplus.local:5801` \
 **Radio:** `10.##.##.1`
+### lime light config images
+![Three Config](src/main/deploy/Limelight/three_config.png) \
+![Three Input](src/main/deploy/Limelight/three_input.png) \
+![Two Plus Config](src/main/deploy/Limelight/two_plus_config.png) \
+![Two Plus Input](src/main/deploy/Limelight/two_plus_input.png) \
