@@ -63,10 +63,12 @@ public class CoralSmartLevelWristCmd extends Command {
     public boolean isFinished() {
         double elevatorMargin = new TunableNumber("Elevator/MarginOfError", ElevatorConstants.marginOfError).get();
         double coralIntakeMargin = new TunableNumber("Wrist/MarginOfError", CoralIntakeConstants.marginOfError).get();
-        return ((height - elevatorMargin) < m_elevator.getHeight()) &&
-                (m_elevator.getHeight() < (height + elevatorMargin)) &&
-                ((angle - coralIntakeMargin) < m_coralIntake.getAngle()) &&
-                (m_coralIntake.getAngle() < (angle + coralIntakeMargin));
+        // return ((height - elevatorMargin) < m_elevator.getHeight()) &&
+        // (m_elevator.getHeight() < (height + elevatorMargin)) &&
+        // ((angle - coralIntakeMargin) < m_coralIntake.getAngle()) &&
+        // (m_coralIntake.getAngle() < (angle + coralIntakeMargin)) &&
+        // m_coralIntake.getIR();
+        return false;
     }
 
     public void updateHandA() {
