@@ -17,8 +17,8 @@ public class AutonConstants {
         public static final double driveMaxAcceleration = Units.inchesToMeters(95.0 / 4);
         public static final double thetaMaxVelocity = Units.degreesToRadians(360.0 / 2);
         public static final double thetaMaxAcceleration = Units.degreesToRadians(720.0 / 2);
-        public static final double driveTolerance = 0.03;
-        public static final double thetaTolerance = Units.degreesToRadians(1.5); // 2.5
+        public static final double driveTolerance = 0.06;
+        public static final double thetaTolerance = Units.degreesToRadians(1); // 2.5
         public static final double ffMinRadius = 0.2;
         public static final double ffMaxRadius = 0.6;
         public static final int defaultLevel = 4;
@@ -38,7 +38,7 @@ public class AutonConstants {
                 };
 
                 private final static Pose2d[] l4ExactBlueRightReefPoints = new Pose2d[] {
-                                new Pose2d(2.97, 3.78, Rotation2d.fromDegrees(0)), //
+                                new Pose2d(3.02, 3.78, Rotation2d.fromDegrees(0)), //
 
                                 // HEY EVANGELIA UPDATE ALL OF OUR SETPOINTS USING ABOVE X AND Y VALUES!!! USE
                                 // MICAH'S DESMOS GRAPH ON THE README
@@ -51,7 +51,7 @@ public class AutonConstants {
                 };
 
                 private final static Pose2d[] l4ExactBlueLeftReefPoints = new Pose2d[] {
-                                new Pose2d(2.97, 4.2, Rotation2d.fromDegrees(0)), // Pose B
+                                new Pose2d(3.02, 4.2, Rotation2d.fromDegrees(0)), // Pose B
                                 new Pose2d(3.582, 2.81, Rotation2d.fromDegrees(60)), // Pose D
                                 new Pose2d(5.072, 2.61, Rotation2d.fromDegrees(120)), // Pose F
                                 new Pose2d(5.99, 3.8, Rotation2d.fromDegrees(180)), // Pose H

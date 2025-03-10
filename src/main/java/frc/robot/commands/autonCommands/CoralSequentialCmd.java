@@ -60,11 +60,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
 
                         new ParallelCommandGroup(
                                 drive2Command,
-                                coral2Command),
-                        // driveCloseCommand,
-                        // coralCommand,
-                        // driveExactCommand,
-                        // new WaitCommand(1),
+                                coral2Command).withTimeout(.75),
                         slam ? outtake : null));
         ;
     }
