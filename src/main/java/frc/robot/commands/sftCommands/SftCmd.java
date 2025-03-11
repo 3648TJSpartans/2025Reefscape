@@ -24,6 +24,8 @@ public class SftCmd extends Command {
 
     @Override
     public void execute() {
+        Logger.recordOutput("SFT/setAngle", angle);
+        Logger.recordOutput("SFT/angle", m_sft.getPosition());
         m_sft.rotateTo(angle);
     }
 

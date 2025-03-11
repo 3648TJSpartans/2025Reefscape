@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
@@ -43,8 +44,10 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         m_coralIntake = coralIntake;
         m_elevator = elevator;
         m_drive = drive;
-        coralCommand = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel());
-        coral2Command = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel());
+        coralCommand = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel(), true);
+        coral2Command = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel(), false);
+        Command coral3Command = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel(),
+                false);
         Command outtake = new CoralSmartLevelWristCmd(coralIntake, elevator, () -> getLevel(),
                 CoralIntakeConstants.outtakeSpeed);
         DriveToNearest driveCommand = new DriveToNearest(m_drive, () -> CoralSequentialCmd.poses(false));
@@ -54,13 +57,14 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         addCommands(
                 new SequentialCommandGroup(
 
-                        new ParallelCommandGroup(
+                        new ParallelDeadlineGroup(
                                 driveCommand,
-                                coralCommand),
+                                coralCommand.repeatedly()),
 
-                        new ParallelCommandGroup(
+                        new ParallelDeadlineGroup(
                                 drive2Command,
                                 coral2Command).withTimeout(.75),
+                        coral3Command.withTimeout(0.5),
                         slam ? outtake : null));
         ;
     }

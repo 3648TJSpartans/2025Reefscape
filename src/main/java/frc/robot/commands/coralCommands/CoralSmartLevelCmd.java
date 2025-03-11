@@ -19,11 +19,13 @@ public class CoralSmartLevelCmd extends Command {
     private double height;
     private double angle;
     private Supplier<Integer> level;
+    private final boolean up;
 
-    public CoralSmartLevelCmd(CoralIntake coralIntake, Elevator elevator, Supplier<Integer> level) {
+    public CoralSmartLevelCmd(CoralIntake coralIntake, Elevator elevator, Supplier<Integer> level, boolean up) {
         m_coralIntake = coralIntake;
         m_elevator = elevator;
         this.level = level;
+        this.up = up;
         addRequirements(m_coralIntake);
         addRequirements(m_elevator);
     }
@@ -80,7 +82,7 @@ public class CoralSmartLevelCmd extends Command {
                 height = ElevatorConstants.coralLeveL3;
                 break;
             case 4:
-                angle = CoralIntakeConstants.L4Angle;
+                angle = up ? CoralIntakeConstants.upAngle : CoralIntakeConstants.L4Angle;
                 height = ElevatorConstants.coralLeveL4;
                 break;
             default:
