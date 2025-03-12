@@ -303,14 +303,17 @@ public class RobotContainer {
                 m_driveController.y().and(() -> endgameClosed).onTrue(
                                 new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
                                                 CoralIntakeConstants.endgameAngle)
-                                                .alongWith(new SequentialCommandGroup(new WaitCommand(.5),
-                                                                new SftCmd(m_sft, SftConstants.endgameSetPoint)))
+                                                .alongWith(new SequentialCommandGroup(
+                                                                new WaitCommand(.5),
+                                                                new SftCmd(m_sft,
+                                                                                SftConstants.endgameSetPoint)))
                                                 .alongWith(new InstantCommand(() -> setEndgamePoseState(false))));
                 // When in open position
                 m_driveController.y().and(() -> !endgameClosed).onTrue(
                                 new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
                                                 CoralIntakeConstants.endgameAngle)
-                                                .alongWith(new SequentialCommandGroup(new WaitCommand(.5),
+                                                .alongWith(new SequentialCommandGroup(
+                                                                new WaitCommand(.5),
                                                                 new SftCmd(m_sft, 0)))
                                                 .alongWith(new InstantCommand(() -> setEndgamePoseState(true))));
                 // new Trigger(
