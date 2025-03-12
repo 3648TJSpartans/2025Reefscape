@@ -19,18 +19,20 @@ public class SftCmd extends Command {
 
     @Override
     public void initialize() {
-        Logger.recordOutput("Sft/CommandScheduled", true);
+        Logger.recordOutput("SFT/CommandScheduled", true);
     }
 
     @Override
     public void execute() {
+        Logger.recordOutput("SFT/setAngle", angle);
+        Logger.recordOutput("SFT/angle", m_sft.getPosition());
         m_sft.rotateTo(angle);
     }
 
     @Override
     public void end(boolean interrupted) {
         m_sft.stopMotor();
-        Logger.recordOutput("Sft/CommandScheduled", false);
+        Logger.recordOutput("SFT/CommandScheduled", false);
     }
 
     @Override

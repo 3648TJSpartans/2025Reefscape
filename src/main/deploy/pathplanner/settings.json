@@ -2,8 +2,22 @@
   "robotWidth": 0.6,
   "robotLength": 0.6,
   "holonomicMode": true,
-  "pathFolders": [],
-  "autoFolders": [],
+  "pathFolders": [
+    "Bottom_To_Branch",
+    "Branch_To_Bottom",
+    "Branch_To_Top",
+    "Playground",
+    "Start_To_Branch",
+    "Top_To_Branch"
+  ],
+  "autoFolders": [
+    "DemoTest",
+    "Four_Piece_Auto",
+    "Leave",
+    "One Piece",
+    "Three_Piece",
+    "Two_Piece_Autos"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,

@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Test_to_Almost_Branch_B"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Almost_Branch_B_to_Branch_B"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "DemoTest",
+  "choreoAuto": false
+}

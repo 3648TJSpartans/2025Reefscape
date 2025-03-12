@@ -70,8 +70,9 @@ public class AutoBuildingBlocks {
                 CoralIntakeConstants.IntakeAngle);
     }
 
-    public static Command coralSmartLevelCommand(Elevator elevator, CoralIntake intake, Supplier<Integer> level) {
-        return new CoralSmartLevelCmd(intake, elevator, level);
+    public static Command coralSmartLevelCommand(Elevator elevator, CoralIntake intake, Supplier<Integer> level,
+            boolean up) {
+        return new CoralSmartLevelCmd(intake, elevator, level, up);
     }
 
     public static Command DwnToIntakeCommand(CoralIntake m_coral, Elevator m_elevator) {

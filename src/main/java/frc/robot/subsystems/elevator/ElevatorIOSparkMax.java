@@ -18,6 +18,8 @@ import com.revrobotics.AbsoluteEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 
+import org.littletonrobotics.junction.AutoLog;
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -117,23 +119,23 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 
     @Override
     public void updateLimitSwitch() {
-        Logger.recordOutput("Elevator/BottomLimitSwitchPushed", !bottomLimitSwitch.get());
-        Logger.recordOutput("Elevator/TopLimitSwitchPushed", !topLimitSwitch.get());
-        if (!bottomLimitSwitch.get()) {
+        if (getBottomLimitSwitch()) {
             setZero();
-        } else if (!topLimitSwitch.get()) {
+        } else if (getTopLimitSwitch()) {
             setTop();
         }
     }
 
+    @AutoLogOutput(key = "Elevator/BottomLimitSwitchPushed")
     @Override
     public boolean getBottomLimitSwitch() {
-        return bottomLimitSwitch.get();
+        return !bottomLimitSwitch.get();
     }
 
+    @AutoLogOutput(key = "Elevator/TopLimitSwitchPushed")
     @Override
     public boolean getTopLimitSwitch() {
-        return topLimitSwitch.get();
+        return !topLimitSwitch.get();
     }
 
     private void setZero() {
