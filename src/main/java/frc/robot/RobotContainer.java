@@ -44,6 +44,11 @@ import frc.robot.commands.goToCommands.DriveToPose;
 import frc.robot.commands.sftCommands.SftAnalogCmd;
 import frc.robot.commands.sftCommands.SftCmd;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
+import frc.robot.commands.ledCommands.autonoumousIndicator;
+import frc.robot.commands.ledCommands.teleopStatesIndicators;
+import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
+import frc.robot.commands.algaeCommands.AlgaeDownCmd;
+import frc.robot.commands.algaeCommands.AlgaeShootCmd;
 import frc.robot.commands.autonCommands.AlgaeRemovalCmd;
 import frc.robot.commands.autonCommands.AutoBuildingBlocks;
 import frc.robot.commands.autonCommands.CoralSequentialCmd;
@@ -77,6 +82,7 @@ import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
 import frc.robot.subsystems.coralIntake.CoralIntakeIO;
 import frc.robot.subsystems.coralIntake.CoralIntakeIOSparkMax;
+import frc.robot.subsystems.leds.*;
 
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
@@ -129,14 +135,16 @@ public class RobotContainer {
         private final Vision m_vision;
         private final CoralIntake m_coral;
         private final Elevator m_elevator;
+        private final LedSubsystem m_led;
         private ClimberSubsystem m_climber;
         private boolean override;
         private Sft m_sft;
+
         // Controller
         private final CommandXboxController m_driveController = new CommandXboxController(0);
         private final CommandXboxController m_copilotController = new CommandXboxController(1);
         private final CommandXboxController m_controllerTwo = new CommandXboxController(2);
-
+        private final CommandXboxController m_ledController = new CommandXboxController(3);
         // Dashboard inputs
         private final LoggedDashboardChooser<Command> autoChooser;
 
@@ -153,6 +161,7 @@ public class RobotContainer {
          */
 
         public RobotContainer() {
+                m_led = new LedSubsystem();
                 Logger.recordOutput("Poses/shouldFlip", AllianceFlipUtil.shouldFlip());
                 Logger.recordOutput("Override", override);
                 override = false;
@@ -251,7 +260,7 @@ public class RobotContainer {
                 NamedCommands.registerCommand("l4", l4);
                 NamedCommands.registerCommand("l3", l3);
                 NamedCommands.registerCommand("l2", l2);
-                NamedCommands.registerCommand("l1", l1);
+
                 NamedCommands.registerCommand("intakePos", intakePos);
                 NamedCommands.registerCommand("intake", coralIn);
                 NamedCommands.registerCommand("slamCoral", coralOut);
@@ -283,6 +292,9 @@ public class RobotContainer {
          */
         private void configureButtonBindings() {
                 // configureAutos();
+
+                configureLeds();
+                configureAlgae();
                 configureClimber();
                 configureCoralIntake();
                 configureDrive();
@@ -291,7 +303,11 @@ public class RobotContainer {
                 configureEndgameTriggers();
                 configureSft();
                 m_copilotController.rightTrigger().onTrue(new InstantCommand(() -> toggleOverride()));
-
+                /*
+                 * m_led.setLedPattern(LedConstants.elevatorHeight, m_led.elevatorBuffer);
+                 * m_led.setLedPattern(LedConstants.teal, m_led.leftGuideBuffer);
+                 * m_led.setLedPattern(LedConstants.yellow, m_led.rightGuideBuffer);
+                 */
         }
 
         public void configureEndgameTriggers() {
@@ -407,6 +423,25 @@ public class RobotContainer {
                 m_climber.setDefaultCommand(climberCmd);
                 Command climberUpCmd = new ClimberUpCmd(m_climber);
                 m_copilotController.y().whileTrue(climberUpCmd);
+
+        }
+
+        public void configureLeds() {
+                // define commands
+                Command ledAutnomousIndicator = new autonoumousIndicator(m_led);
+                Command ledTeleopIndicator = new teleopStatesIndicators(m_led, m_coral);
+                // create triggers
+                Trigger autonomous = new Trigger(() -> DriverStation.isAutonomousEnabled());
+                Trigger teleop = new Trigger(() -> DriverStation.isTeleopEnabled());
+                // apply triggers
+                autonomous.onTrue(ledAutnomousIndicator);
+                teleop.onTrue(ledTeleopIndicator);
+                // teleleop >done
+                // autonomous >done
+                // algea intak running
+                // elevator level
+                // coral intake >done
+                // and placing running
 
         }
 
