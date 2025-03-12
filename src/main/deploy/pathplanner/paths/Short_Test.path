@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.1410511363636364,
-        "y": 4.184545454545454
+        "x": 3.07,
+        "y": 4.2
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.256284540965293,
-        "y": 4.4064041087916
+        "x": 3.1852334046016564,
+        "y": 4.421858654246146
       },
       "isLocked": false,
       "linkedName": "Branch A"
@@ -45,10 +45,10 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Playground",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.6986943829834583
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
