@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -132,6 +133,7 @@ public class RobotContainer {
         private ClimberSubsystem m_climber;
         private boolean override;
         private Sft m_sft;
+        private boolean endgameClosed = true;
         // Controller
         private final CommandXboxController m_driveController = new CommandXboxController(0);
         private final CommandXboxController m_copilotController = new CommandXboxController(1);
@@ -297,9 +299,20 @@ public class RobotContainer {
         public void configureEndgameTriggers() {
                 configureAlerts();
                 System.out.println(Math.abs(m_drive.getPose().getX() - PoseConstants.fieldLength / 2) < 1.5);
-                m_driveController.y().onTrue(new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
-                                CoralIntakeConstants.endgameAngle)
-                                .alongWith((new SftCmd(m_sft, SftConstants.endgameSetPoint))));
+                // When in the closed position
+                m_driveController.y().and(() -> endgameClosed).onTrue(
+                                new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
+                                                CoralIntakeConstants.endgameAngle)
+                                                .alongWith(new SequentialCommandGroup(new WaitCommand(.5),
+                                                                new SftCmd(m_sft, SftConstants.endgameSetPoint)))
+                                                .alongWith(new InstantCommand(() -> setEndgamePoseState(false))));
+                // When in open position
+                m_driveController.y().and(() -> endgameClosed).onTrue(
+                                new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
+                                                CoralIntakeConstants.endgameAngle)
+                                                .alongWith(new SequentialCommandGroup(new WaitCommand(.5),
+                                                                new SftCmd(m_sft, 0)))
+                                                .alongWith(new InstantCommand(() -> setEndgamePoseState(true))));
                 // new Trigger(
                 // () -> DriverStation.isTeleopEnabled()
                 // && DriverStation.getMatchTime() > 0
@@ -583,6 +596,10 @@ public class RobotContainer {
         public void toggleOverride() {
                 override = !override;
                 Logger.recordOutput("Override", override);
+        }
+
+        private void setEndgamePoseState(boolean state) {
+                endgameClosed = state;
         }
 
         // Creates controller rumble command
