@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.029379616106217,
-        "y": 7.6631430069210795
+        "x": 6.092642045454545,
+        "y": 7.200951704545455
       },
       "isLocked": false,
       "linkedName": "Far Starting Position"
@@ -20,15 +20,20 @@
         "y": 5.323
       },
       "prevControl": {
-        "x": 4.857794152905296,
-        "y": 5.187672612353605
+        "x": 5.171154529738875,
+        "y": 5.550726026168182
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Branch J"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.3,
+      "rotationDegrees": -119.99999999999999
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
