@@ -45,7 +45,7 @@
     "rotation": -1.3322198538696142
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Playground",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 51.0

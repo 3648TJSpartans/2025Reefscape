@@ -6,10 +6,18 @@
     "Bottom_To_Branch",
     "Branch_To_Bottom",
     "Branch_To_Top",
-    "Top_To_Branch",
-    "Start_To_Branch"
+    "Playground",
+    "Start_To_Branch",
+    "Top_To_Branch"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "DemoTest",
+    "Four_Piece_Auto",
+    "Leave",
+    "One Piece",
+    "Three_Piece",
+    "Two_Piece_Autos"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
