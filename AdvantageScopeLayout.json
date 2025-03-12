@@ -2,25 +2,31 @@
   "hubs": [
     {
       "x": 0,
-      "y": 79,
+      "y": 71,
       "width": 1512,
-      "height": 903,
+      "height": 858,
       "state": {
         "sidebar": {
           "width": 331,
           "expanded": [
-            "/RealOutputs/Poses",
             "/RadioStatus/Status",
             "/NetworkInputs/SmartDashboard",
             "/URCL/Spark-1/Warning",
             "/RealOutputs",
             "/RealOutputs/Coral",
             "/RealOutputs/Odometry/Robot",
-            "/RealOutputs/Vision",
+            "/RealOutputs/SFT",
+            "/RealOutputs/Sft",
+            "/RealOutputs/CoralIntake",
             "/RealOutputs/Elevator",
-            "/Vision/Camera0/PoseObservations",
-            "/Vision/Camera0",
-            "/Vision/Camera1"
+            "/RealOutputs/Intake",
+            "/RealOutputs/Vision",
+            "/SystemStats",
+            "/SystemStats/CANBus",
+            "/RealOutputs/Vision/Camera0",
+            "/RealOutputs/Vision/Camera1",
+            "/RealOutputs/Vision/Summary",
+            "/Vision"
           ]
         },
         "tabs": {
@@ -162,7 +168,7 @@
                     "type": "ghost",
                     "logKey": "/RealOutputs/Vision/Camera1/RobotPosesAccepted",
                     "logType": "Pose3d[]",
-                    "visible": false,
+                    "visible": true,
                     "options": {
                       "model": "2025 KitBot",
                       "color": "#ff8c00"
@@ -186,17 +192,188 @@
                 "cameraIndex": -1,
                 "orbitFov": 50,
                 "cameraPosition": [
-                  14.173631812754616,
-                  6.448142676791302,
-                  -0.24215870827064512
+                  4.4799563698526566,
+                  3.7497291944966533,
+                  -6.438943311217182
                 ],
                 "cameraTarget": [
-                  5.791877911018428,
-                  0.12318739767887218,
-                  -0.5983285313604728
+                  6.373173700280072,
+                  0.42521048062669287,
+                  0.9968889846789334
                 ]
               },
               "controlsHeight": 370
+            },
+            {
+              "type": 1,
+              "title": "Vision",
+              "controller": {
+                "leftSources": [
+                  {
+                    "type": "stepped",
+                    "logKey": "/Vision/Camera0/TagIds/0",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#af2437",
+                      "size": "normal"
+                    }
+                  },
+                  {
+                    "type": "stepped",
+                    "logKey": "/Vision/Camera0/TagIds/1",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#80588e",
+                      "size": "normal"
+                    }
+                  }
+                ],
+                "rightSources": [],
+                "discreteSources": [
+                  {
+                    "type": "stripes",
+                    "logKey": "/Vision/Camera1/TagIds",
+                    "logType": "NumberArray",
+                    "visible": true,
+                    "options": {
+                      "color": "#2b66a2"
+                    }
+                  },
+                  {
+                    "type": "stripes",
+                    "logKey": "/Vision/Camera0/TagIds",
+                    "logType": "NumberArray",
+                    "visible": false,
+                    "options": {
+                      "color": "#e5b31b"
+                    }
+                  }
+                ],
+                "leftLockedRange": null,
+                "rightLockedRange": null,
+                "leftUnitConversion": {
+                  "type": null,
+                  "factor": 1
+                },
+                "rightUnitConversion": {
+                  "type": null,
+                  "factor": 1
+                },
+                "leftFilter": 0,
+                "rightFilter": 0
+              },
+              "controllerUUID": "h8vzpnbw2dxo6g2dgvsgc5e6quyo2b2a",
+              "renderer": null,
+              "controlsHeight": 200
+            },
+            {
+              "type": 1,
+              "title": "Battery",
+              "controller": {
+                "leftSources": [
+                  {
+                    "type": "stepped",
+                    "logKey": "/SystemStats/BatteryCurrent",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#2b66a2",
+                      "size": "normal"
+                    }
+                  },
+                  {
+                    "type": "stepped",
+                    "logKey": "/SystemStats/BatteryVoltage",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#e5b31b",
+                      "size": "normal"
+                    }
+                  },
+                  {
+                    "type": "stepped",
+                    "logKey": "/SystemStats/CPUTempCelsius",
+                    "logType": "Number",
+                    "visible": false,
+                    "options": {
+                      "color": "#d993aa",
+                      "size": "normal"
+                    }
+                  }
+                ],
+                "rightSources": [],
+                "discreteSources": [
+                  {
+                    "type": "stripes",
+                    "logKey": "/SystemStats/CANBus/ReceiveErrorCount",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#af2437"
+                    }
+                  },
+                  {
+                    "type": "stripes",
+                    "logKey": "/SystemStats/CANBus/TransmitErrorCount",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#80588e"
+                    }
+                  },
+                  {
+                    "type": "stripes",
+                    "logKey": "/SystemStats/CANBus/TxFullCount",
+                    "logType": "Number",
+                    "visible": true,
+                    "options": {
+                      "color": "#c0b487"
+                    }
+                  },
+                  {
+                    "type": "stripes",
+                    "logKey": "/SystemStats/Comments",
+                    "logType": "String",
+                    "visible": true,
+                    "options": {
+                      "color": "#858584"
+                    }
+                  }
+                ],
+                "leftLockedRange": null,
+                "rightLockedRange": null,
+                "leftUnitConversion": {
+                  "type": null,
+                  "factor": 1
+                },
+                "rightUnitConversion": {
+                  "type": null,
+                  "factor": 1
+                },
+                "leftFilter": 0,
+                "rightFilter": 0
+              },
+              "controllerUUID": "sbfyv14pqtr1oku89tvx6w7rslsuslqi",
+              "renderer": null,
+              "controlsHeight": 330
+            },
+            {
+              "type": 8,
+              "title": "Joysticks",
+              "controller": [
+                "Xbox Controller (White)",
+                "Xbox Controller (Blue)",
+                "None",
+                "None",
+                "None",
+                "None"
+              ],
+              "controllerUUID": "vzwhtpo5cgi917zxkzszz3uydxr6o65m",
+              "renderer": null,
+              "controlsHeight": 85
             },
             {
               "type": 1,
@@ -414,7 +591,7 @@
               },
               "controllerUUID": "zxuwgbvefh2fpdzi2hrv26ok3mxd5r4p",
               "renderer": null,
-              "controlsHeight": 554
+              "controlsHeight": 370
             },
             {
               "type": 1,
