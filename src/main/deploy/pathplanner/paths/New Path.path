@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 4.5,
-        "y": 4.0
+        "x": 1.11,
+        "y": 0.85
       },
       "prevControl": {
-        "x": 3.5,
-        "y": 4.0
+        "x": 0.11000000000000032,
+        "y": 0.85
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Bottom Source"
     }
   ],
   "rotationTargets": [],
@@ -42,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 51.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Playground",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
