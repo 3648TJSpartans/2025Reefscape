@@ -307,7 +307,7 @@ public class RobotContainer {
                                                                 new SftCmd(m_sft, SftConstants.endgameSetPoint)))
                                                 .alongWith(new InstantCommand(() -> setEndgamePoseState(false))));
                 // When in open position
-                m_driveController.y().and(() -> endgameClosed).onTrue(
+                m_driveController.y().and(() -> !endgameClosed).onTrue(
                                 new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
                                                 CoralIntakeConstants.endgameAngle)
                                                 .alongWith(new SequentialCommandGroup(new WaitCommand(.5),
