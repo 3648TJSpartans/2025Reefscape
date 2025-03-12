@@ -9,8 +9,8 @@ public class ClimberConstants {
     public static final double kLeadI = 0;
     public static final double kLeadD = 0;
     public static final double kLeadFF = 0;
-    public static final double kLeadMinOutput = -1.0;
-    public static final double kLeadMaxOutput = 1.0;
+    public static final double kLeadMinOutput = -0.3;
+    public static final double kLeadMaxOutput = 0.3;
 
     public static final double leadOdometryFrequency = 100;
     public static final double kLeadMinRange = 0;
