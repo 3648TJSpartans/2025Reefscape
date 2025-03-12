@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.345039913904866,
-        "y": 5.215280913236621
+        "x": 3.9886363636363633,
+        "y": 6.014332386363637
       },
       "isLocked": false,
       "linkedName": "Branch J"
@@ -20,15 +20,24 @@
         "y": 7.2
       },
       "prevControl": {
-        "x": 0.9241495336978494,
-        "y": 7.346122169163341
+        "x": 1.7948863636363637,
+        "y": 7.49012784090909
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Top Source"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.32,
+      "rotationDegrees": -70.0
+    },
+    {
+      "waypointRelativePos": 0.49069148936170387,
+      "rotationDegrees": -59.99999999999999
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
