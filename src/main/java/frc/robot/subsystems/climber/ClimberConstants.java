@@ -32,7 +32,7 @@ public class ClimberConstants {
     public static final double followEncoderPositionFactor = 1;
 
     public static final double upPosition1 = 0.025;
-    public static final double upPosition2 = 0.08;
+    public static final double upPosition2 = 0.1;
 
     public static final double downPosition1 = 1;
     public static final double downPosition2 = 0.8; // may need testing

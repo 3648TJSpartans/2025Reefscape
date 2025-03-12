@@ -225,6 +225,7 @@ public class RobotContainer {
                 }
 
                 Command homeElevator = new HomeElevatorCmd(m_elevator, m_coral);
+                Command coralOut = new CoralOutCmd(m_coral);
                 Command l1 = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
                                 new TunableNumber("Elevator/Height/L1", ElevatorConstants.coralLeveL1).get(),
                                 new TunableNumber("Elevator/Angle/L1", CoralIntakeConstants.L1Angle).get());
@@ -239,6 +240,9 @@ public class RobotContainer {
                                 new TunableNumber("Elevator/Angle/L4", CoralIntakeConstants.L4Angle).get());
                 Command intakePos = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
                                 ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
+                Command downToIntake = new DownToIntakeCmd(m_coral, m_elevator);
+                Command upFromIntake = new UpFromIntakeCmd(m_coral, m_elevator);
+                Command coralSequential = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true);
 
                 Command coralIn = new CoralInCmd(m_coral, m_elevator);
 
@@ -250,8 +254,18 @@ public class RobotContainer {
                 NamedCommands.registerCommand("l1", l1);
                 NamedCommands.registerCommand("intakePos", intakePos);
                 NamedCommands.registerCommand("intake", coralIn);
-                NamedCommands.registerCommand("slamCoral", slamCoral);
-
+                NamedCommands.registerCommand("slamCoral", coralOut);
+                NamedCommands.registerCommand("coralSequential", coralSequential);
+                NamedCommands.registerCommand("downToIntake", downToIntake);
+                NamedCommands.registerCommand("upFromIntake", upFromIntake);
+                NamedCommands.registerCommand("setL4", new InstantCommand(() -> CoralSequentialCmd.setLevel(4)));
+                NamedCommands.registerCommand("setL3", new InstantCommand(() -> CoralSequentialCmd.setLevel(3)));
+                NamedCommands.registerCommand("setL2", new InstantCommand(() -> CoralSequentialCmd.setLevel(2)));
+                NamedCommands.registerCommand("setL1", new InstantCommand(() -> CoralSequentialCmd.setLevel(1)));
+                NamedCommands.registerCommand("setLeft", new InstantCommand(
+                                () -> CoralSequentialCmd.setAutonState(AutonState.LEFTREEF)));
+                NamedCommands.registerCommand("setRight", new InstantCommand(
+                                () -> CoralSequentialCmd.setAutonState(AutonState.LEFTREEF)));
                 // Set up auto routines
                 autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
                 configureAutoChooser();
@@ -285,8 +299,7 @@ public class RobotContainer {
                 System.out.println(Math.abs(m_drive.getPose().getX() - PoseConstants.fieldLength / 2) < 1.5);
                 m_driveController.y().onTrue(new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
                                 CoralIntakeConstants.endgameAngle)
-                                .alongWith(new WaitCommand(.75)
-                                                .andThen(new SftCmd(m_sft, SftConstants.endgameSetPoint))));
+                                .alongWith((new SftCmd(m_sft, SftConstants.endgameSetPoint))));
                 // new Trigger(
                 // () -> DriverStation.isTeleopEnabled()
                 // && DriverStation.getMatchTime() > 0
@@ -298,11 +311,12 @@ public class RobotContainer {
         }
 
         public void configureSft() {
-                SftAnalogCmd sftAnalogCmd = new SftAnalogCmd(m_sft,
-                                () -> m_controllerTwo.getRightX());
-                m_sft.setDefaultCommand(sftAnalogCmd);
-                m_controllerTwo.x().whileTrue(new SftCmd(m_sft, SftConstants.endgameSetPoint))
-                                .onFalse(new SftCmd(m_sft, 0));
+                // SftAnalogCmd sftAnalogCmd = new SftAnalogCmd(m_sft,
+                // () -> m_controllerTwo.getRightX());
+                // m_sft.setDefaultCommand(sftAnalogCmd);
+                // m_controllerTwo.x().whileTrue(new SftCmd(m_sft,
+                // SftConstants.endgameSetPoint))
+                // .onFalse(new SftCmd(m_sft, 0));
         }
 
         private void configureAlerts() {
@@ -388,7 +402,8 @@ public class RobotContainer {
         }
 
         public void configureClimber() {
-                Command climberCmd = new ClimberAnalogCmd(m_climber, () -> m_copilotController.getLeftX());
+                Command climberCmd = new ClimberAnalogCmd(m_climber,
+                                () -> MathUtil.applyDeadband(m_copilotController.getLeftX(), 0.5));
                 m_climber.setDefaultCommand(climberCmd);
                 Command climberUpCmd = new ClimberUpCmd(m_climber);
                 m_copilotController.y().whileTrue(climberUpCmd);

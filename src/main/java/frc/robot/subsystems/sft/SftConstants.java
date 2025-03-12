@@ -2,15 +2,14 @@ package frc.robot.subsystems.sft;
 
 public class SftConstants {
     public static final int SftMotorPin = 14;// TODO update placeholder
-    public static final int irSensorPin = 3;// TODO update placeholder
 
-    public static final double kP = .5;
+    public static final double kP = 2;
     public static final double kI = 0;
-    public static final double kD = .1;
+    public static final double kD = .4;
     public static final double kFF = 0;
 
-    public static final double kMinRange = -.3;
-    public static final double kMaxRange = .3;
+    public static final double kMinRange = -.2;
+    public static final double kMaxRange = .2;
 
     public static final double endgameSetPoint = .32;
 
