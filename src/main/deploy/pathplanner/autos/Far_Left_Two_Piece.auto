@@ -15,9 +15,22 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "race",
                 "data": {
-                  "name": "l4"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 2.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "l4"
+                      }
+                    }
+                  ]
                 }
               },
               {
@@ -98,9 +111,22 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "race",
                 "data": {
-                  "name": "l4"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 2.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "l4"
+                      }
+                    }
+                  ]
                 }
               },
               {
