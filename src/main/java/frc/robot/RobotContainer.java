@@ -594,7 +594,8 @@ public class RobotContainer {
                                 new DownToIntakeCmd(m_coral, m_elevator)
                                                 .andThen(new UpFromIntakeCmd(m_coral, m_elevator)))
                                 .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
-
+                m_driveController.leftBumper().whileTrue(new WristCmd(m_coral, CoralIntakeConstants.IntakeAngle)
+                                .withTimeout(1).andThen(new UpFromIntakeCmd(m_coral, m_elevator)));
         }
 
         public Command getAutonomousCommand() {
