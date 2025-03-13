@@ -141,7 +141,6 @@ public class RobotContainer {
         private ClimberSubsystem m_climber;
         private boolean override;
         private Sft m_sft;
-
         private boolean endgameClosed = true;
 
         // Controller
