@@ -317,7 +317,7 @@ public class RobotContainer {
                 Command sftClosedCmd = new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
                                 CoralIntakeConstants.endgameAngle)
                                 .alongWith(new SequentialCommandGroup(
-                                                // new WaitCommand(.5),
+                                                new WaitCommand(.5),
                                                 new SftCmd(m_sft, 0))
                                                 .alongWith(new InstantCommand(
                                                                 () -> System.out.println("sftCLOSEDRan"))));
@@ -325,7 +325,7 @@ public class RobotContainer {
                 Command sftOpen = new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
                                 CoralIntakeConstants.endgameAngle)
                                 .alongWith(new SequentialCommandGroup(
-                                                // new WaitCommand(.5),
+                                                new WaitCommand(.5),
                                                 new SftCmd(m_sft,
                                                                 SftConstants.endgameSetPoint))
                                                 .alongWith(new InstantCommand(() -> System.out.println("sftOPENRan"))));
@@ -517,7 +517,7 @@ public class RobotContainer {
                 Command coralDefaultCommand = new CoralDefaultCmd(m_coral, m_elevator);
                 Command elevatorAnalog = new ElevatorAnalogCmd(m_elevator, () -> m_controllerTwo.getLeftX());
                 Command coralSmartDefualt = new ConditionalCommand(coralDefaultCommand, homeElevator,
-                                () -> m_elevator.getLimitReset());
+                                () -> m_elevator.getLimitReset() && endgameClosed);
                 // m_elevator.setDefaultCommand(elevatorAnalog);
 
                 m_elevator.setDefaultCommand(coralSmartDefualt);
