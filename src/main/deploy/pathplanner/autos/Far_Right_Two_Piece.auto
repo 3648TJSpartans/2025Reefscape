@@ -5,9 +5,27 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "homeElevator"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Far_Bottom_To_E"
+            "pathName": "Far_Bottom_To_Close_E"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Close_E_To_E"
           }
         },
         {

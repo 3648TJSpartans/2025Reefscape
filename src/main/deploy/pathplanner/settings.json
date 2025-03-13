@@ -6,8 +6,10 @@
     "Bottom_To_Branch",
     "Branch_To_Bottom",
     "Branch_To_Top",
+    "From_Close",
     "Playground",
     "Start_To_Branch",
+    "To_Close",
     "Top_To_Branch"
   ],
   "autoFolders": [
@@ -28,7 +30,7 @@
   "robotTrackwidth": 0.546,
   "driveWheelRadius": 0.038,
   "driveGearing": 5.143,
-  "maxDriveSpeed": 3.5,
+  "maxDriveSpeed": 4.46,
   "driveMotorType": "vortex",
   "driveCurrentLimit": 60.0,
   "wheelCOF": 1.2,
