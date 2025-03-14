@@ -78,7 +78,7 @@
           "data": {
             "commands": [
               {
-                "type": "deadline",
+                "type": "sequential",
                 "data": {
                   "commands": [
                     {
@@ -92,14 +92,14 @@
                       "data": {
                         "waitTime": 2.0
                       }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "downToIntake"
-                      }
                     }
                   ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "downToIntake"
                 }
               }
             ]

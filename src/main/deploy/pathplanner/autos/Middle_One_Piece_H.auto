@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "homeElevator"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Middle_To_Close_GH"

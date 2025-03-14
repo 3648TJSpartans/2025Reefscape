@@ -293,7 +293,7 @@ public class RobotContainer {
         private void configureButtonBindings() {
                 // configureAutos();
 
-                configureLeds();
+                // configureLeds();
                 configureClimber();
                 configureCoralIntake();
                 configureDrive();

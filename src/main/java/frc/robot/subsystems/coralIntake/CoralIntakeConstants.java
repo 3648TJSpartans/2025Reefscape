@@ -20,7 +20,7 @@ public class CoralIntakeConstants {
     // these are the constants for the pid of the robot's wrist
     public static final double kWristP = 1.8;
     public static final double kWristI = 0;
-    public static final double kWristD = 0.6;
+    public static final double kWristD = 0.3;
     public static final double kWristFF = 0;
     public static final double wristOdometryFrequency = 100;
     public static final double kWristMinRange = -0.10;
