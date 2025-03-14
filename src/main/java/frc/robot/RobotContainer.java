@@ -330,7 +330,8 @@ public class RobotContainer {
                                                                 SftConstants.endgameSetPoint))
                                                 .alongWith(new InstantCommand(() -> System.out.println("sftOPENRan"))));
                 m_driveController.y()
-                                .whileTrue(new ConditionalCommand(sftOpen, sftClosedCmd, () -> getEndgamePoseState()))
+                                .onTrue(new ConditionalCommand(sftOpen, sftClosedCmd, () -> getEndgamePoseState())
+                                                .withTimeout(2.0))
                                 .onFalse(new InstantCommand(() -> setEndgamePoseState(!endgameClosed)));
                 // new Trigger(
                 // () -> DriverStation.isTeleopEnabled()
