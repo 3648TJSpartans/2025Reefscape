@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 6.729424778761063,
+        "x": 6.78,
         "y": 4.0
       },
       "prevControl": {
-        "x": 7.246569524804745,
+        "x": 7.297144746043682,
         "y": 4.000331815113131
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Close_GH"
     }
   ],
   "rotationTargets": [],

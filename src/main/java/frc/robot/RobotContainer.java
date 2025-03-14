@@ -49,6 +49,7 @@ import frc.robot.commands.ledCommands.autonoumousIndicator;
 import frc.robot.commands.ledCommands.teleopStatesIndicators;
 import frc.robot.commands.autonCommands.AlgaeRemovalCmd;
 import frc.robot.commands.autonCommands.AutoBuildingBlocks;
+import frc.robot.commands.autonCommands.CoralSequentialAutoCmd;
 import frc.robot.commands.autonCommands.CoralSequentialCmd;
 import frc.robot.commands.autonCommands.SourceSequentialCmd;
 import frc.robot.commands.goToCommands.DriveToNearest;
@@ -252,7 +253,7 @@ public class RobotContainer {
                                 ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
                 Command downToIntake = new DownToIntakeCmd(m_coral, m_elevator);
                 Command upFromIntake = new UpFromIntakeCmd(m_coral, m_elevator);
-                Command coralSequential = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true);
+                Command coralSequential = new CoralSequentialAutoCmd(m_drive, m_coral, m_elevator, true);
 
                 Command coralIn = new CoralInCmd(m_coral, m_elevator);
 
@@ -265,7 +266,6 @@ public class RobotContainer {
                 NamedCommands.registerCommand("intakePos", intakePos);
                 NamedCommands.registerCommand("intake", coralIn);
                 NamedCommands.registerCommand("slamCoral", coralOut);
-                NamedCommands.registerCommand("coralSequential", coralSequential);
                 NamedCommands.registerCommand("downToIntake", downToIntake);
                 NamedCommands.registerCommand("upFromIntake", upFromIntake);
                 NamedCommands.registerCommand("setL4", new InstantCommand(() -> CoralSequentialCmd.setLevel(4)));
@@ -276,6 +276,7 @@ public class RobotContainer {
                                 () -> CoralSequentialCmd.setAutonState(AutonState.LEFTREEF)));
                 NamedCommands.registerCommand("setRight", new InstantCommand(
                                 () -> CoralSequentialCmd.setAutonState(AutonState.LEFTREEF)));
+                NamedCommands.registerCommand("driveToNearest", coralSequential);
                 // Set up auto routines
                 autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
                 configureAutoChooser();
