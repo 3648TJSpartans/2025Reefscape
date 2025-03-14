@@ -3,45 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.91,
-        "y": 3.8
+        "x": 6.780309734513276,
+        "y": 4.091150442477876
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.159241009801997,
-        "y": 3.7805341572779136
+        "x": 6.749778761061948,
+        "y": 3.785840707964602
       },
       "isLocked": false,
-      "linkedName": "Branch G"
+      "linkedName": "Close_GH"
     },
     {
       "anchor": {
-        "x": 4.726534090909091,
-        "y": 1.6019034090909077
+        "x": 5.91,
+        "y": 3.8
       },
       "prevControl": {
-        "x": 4.913050782856742,
-        "y": 1.784133610497689
-      },
-      "nextControl": {
-        "x": 4.1809217447346825,
-        "y": 1.0688302203315092
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 1.11,
-        "y": 0.85
-      },
-      "prevControl": {
-        "x": 0.8601243346104073,
-        "y": 0.8578836442149721
+        "x": 6.2307522123893815,
+        "y": 3.7146017699115044
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Bottom Source"
+      "linkedName": "Branch G"
     }
   ],
   "rotationTargets": [],
@@ -58,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 51.0
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Branch_To_Bottom",
+  "folder": "To_Close",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0
