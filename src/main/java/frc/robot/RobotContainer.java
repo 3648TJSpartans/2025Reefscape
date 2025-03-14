@@ -76,6 +76,7 @@ import frc.robot.util.AllianceFlipUtil;
 import frc.robot.util.TunableNumber;
 import frc.robot.util.TunableNumber;
 import frc.robot.subsystems.climber.*;
+import frc.robot.subsystems.climber.ClimberConstants;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
 import frc.robot.subsystems.coralIntake.CoralIntakeIO;
@@ -407,6 +408,12 @@ public class RobotContainer {
                                 // .beforeStarting(() -> leds.endgameAlert = true)
                                 // .finallyDo(() -> leds.endgameAlert = false)
                                 );
+                new Trigger(() -> (Math.abs(m_climber.getPosition() - ClimberConstants.upPosition2) < 0.005))
+                                .onTrue(controllerRumbleCommand()
+                                                .withTimeout(0.8)
+                                                .andThen(Commands.waitSeconds(0.2))
+                                                .repeatedly()
+                                                .withTimeout(2));
         }
 
         public void configureAutoChooser() {
@@ -521,8 +528,10 @@ public class RobotContainer {
                                 () -> m_elevator.getLimitReset() && endgameClosed);
                 // m_elevator.setDefaultCommand(elevatorAnalog);
 
-                m_elevator.setDefaultCommand(coralSmartDefualt);
-                m_coral.setDefaultCommand(coralSmartDefualt);
+                // m_elevator.setDefaultCommand(coralSmartDefualt);
+                // m_coral.setDefaultCommand(coralSmartDefualt);
+
+                m_copilotController.leftTrigger().whileTrue(coralSmartDefualt);
 
                 m_controllerTwo.leftTrigger().whileTrue(new AlgaeRemovalCmd(m_drive, m_coral, m_elevator, () -> true));
 
