@@ -47,9 +47,6 @@ import frc.robot.commands.sftCommands.SftCmd;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
 import frc.robot.commands.ledCommands.autonoumousIndicator;
 import frc.robot.commands.ledCommands.teleopStatesIndicators;
-import frc.robot.commands.algaeCommands.AlgaeDefaultCmd;
-import frc.robot.commands.algaeCommands.AlgaeDownCmd;
-import frc.robot.commands.algaeCommands.AlgaeShootCmd;
 import frc.robot.commands.autonCommands.AlgaeRemovalCmd;
 import frc.robot.commands.autonCommands.AutoBuildingBlocks;
 import frc.robot.commands.autonCommands.CoralSequentialCmd;
@@ -298,7 +295,6 @@ public class RobotContainer {
                 // configureAutos();
 
                 configureLeds();
-                configureAlgae();
                 configureClimber();
                 configureCoralIntake();
                 configureDrive();
@@ -488,7 +484,8 @@ public class RobotContainer {
                                                 m_drive,
                                                 () -> -m_driveController.getLeftY(),
                                                 () -> -m_driveController.getLeftX(),
-                                                () -> -m_driveController.getRightX()));
+                                                () -> -m_driveController.getRightX(),
+                                                () -> m_driveController.leftBumper().getAsBoolean()));
 
                 // Lock to 0° when A button is held
                 // m_driveController
