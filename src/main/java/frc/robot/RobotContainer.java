@@ -315,19 +315,20 @@ public class RobotContainer {
                 configureAlerts();
                 System.out.println(Math.abs(m_drive.getPose().getX() - PoseConstants.fieldLength / 2) < 1.5);
                 // When in the closed position
-                Logger.recordOutput("SFT/endgameClosed", endgameClosed);
                 Command sftClosedCmd = new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
                                 CoralIntakeConstants.endgameAngle)
-                                .alongWith(new SequentialCommandGroup(
-                                                new WaitCommand(.5),
+                                .andThen(new WaitCommand(.75))
+                                .deadlineFor(new SequentialCommandGroup(
+                                                // new WaitCommand(.5),
                                                 new SftCmd(m_sft, 0))
                                                 .alongWith(new InstantCommand(
                                                                 () -> System.out.println("sftCLOSEDRan"))));
 
                 Command sftOpen = new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
                                 CoralIntakeConstants.endgameAngle)
-                                .alongWith(new SequentialCommandGroup(
-                                                new WaitCommand(.5),
+                                .andThen(new WaitCommand(.75))
+                                .deadlineFor(new SequentialCommandGroup(
+                                                // new WaitCommand(.5),
                                                 new SftCmd(m_sft,
                                                                 SftConstants.endgameSetPoint))
                                                 .alongWith(new InstantCommand(() -> System.out.println("sftOPENRan"))));
