@@ -80,9 +80,9 @@ public class DriveCommands {
         () -> {
           if (robotRelativeSupplier.getAsBoolean()) {
             drive.runVelocity(new ChassisSpeeds(
-                MathUtil.applyDeadband(xSupplier.getAsDouble(), DEADBAND),
-                MathUtil.applyDeadband(ySupplier.getAsDouble(), DEADBAND),
-                MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND)));
+                MathUtil.applyDeadband(xSupplier.getAsDouble(), DEADBAND) * .3,
+                MathUtil.applyDeadband(ySupplier.getAsDouble(), DEADBAND) * .3,
+                MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND) * .3));
           } else {
             // Get linear velocity
             Translation2d linearVelocity = getLinearVelocityFromJoysticks(xSupplier.getAsDouble(),
