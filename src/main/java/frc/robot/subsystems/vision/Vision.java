@@ -182,4 +182,8 @@ public class Vision extends SubsystemBase {
         double timestampSeconds,
         Matrix<N3, N1> visionMeasurementStdDevs);
   }
+
+  public double getTx() {
+    return io[0].getTx();
+  }
 }

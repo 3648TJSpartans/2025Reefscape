@@ -23,7 +23,7 @@ import edu.wpi.first.math.util.Units;
 public class DriveConstants {
         public static final double fieldRelativeMaxInputPercent = 1; // value between 0+ and 1, allowing control maximum
                                                                      // input for field relative
-        public static final double robotRelativeMaxInputPercent = .3; // value between 0+ and 1, allowing control
+        public static final double robotRelativeMaxInputPercent = .5; // value between 0+ and 1, allowing control
                                                                       // maximum input for robot relative
 
         public static final double maxSpeedMetersPerSec = 4; // 4.46 is max on rev product page, 2 is what it was before

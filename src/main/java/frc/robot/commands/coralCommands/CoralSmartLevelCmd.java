@@ -78,7 +78,7 @@ public class CoralSmartLevelCmd extends Command {
                 height = ElevatorConstants.coralLeveL2;
                 break;
             case 3:
-                angle = CoralIntakeConstants.L3Angle;
+                angle = up ? CoralIntakeConstants.upAngle : CoralIntakeConstants.L3Angle;
                 height = ElevatorConstants.coralLeveL3;
                 break;
             case 4:

@@ -38,6 +38,7 @@ public class VisionIOLimelight implements VisionIO {
   private final DoubleSubscriber tySubscriber;
   private final DoubleArraySubscriber megatag1Subscriber;
   private final DoubleArraySubscriber megatag2Subscriber;
+  private String name;
 
   /**
    * Creates a new VisionIOLimelight.
@@ -47,6 +48,7 @@ public class VisionIOLimelight implements VisionIO {
    *                         MegaTag 2.
    */
   public VisionIOLimelight(String name, Supplier<Rotation2d> rotationSupplier) {
+    this.name = name;
     var table = NetworkTableInstance.getDefault().getTable(name);
     this.rotationSupplier = rotationSupplier;
     orientationPublisher = table.getDoubleArrayTopic("robot_orientation_set").publish();
@@ -55,6 +57,12 @@ public class VisionIOLimelight implements VisionIO {
     tySubscriber = table.getDoubleTopic("ty").subscribe(0.0);
     megatag1Subscriber = table.getDoubleArrayTopic("botpose_wpiblue").subscribe(new double[] {});
     megatag2Subscriber = table.getDoubleArrayTopic("botpose_orb_wpiblue").subscribe(new double[] {});
+  }
+
+  @Override
+  public double getTx() {
+    var table = NetworkTableInstance.getDefault().getTable(name);
+    return table.getDoubleTopic("tx").subscribe(0.0).getAsDouble();
   }
 
   @Override

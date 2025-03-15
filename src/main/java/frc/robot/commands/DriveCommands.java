@@ -75,13 +75,42 @@ public class DriveCommands {
       DoubleSupplier xSupplier,
       DoubleSupplier ySupplier,
       DoubleSupplier omegaSupplier,
-      BooleanSupplier robotRelativeSupplier) {
+      BooleanSupplier robotRelativeSupplier,
+      DoubleSupplier visionTx,
+      BooleanSupplier leftAlign,
+      BooleanSupplier rightAlign,
+      BooleanSupplier slowDown) {
     return Commands.run(
         () -> {
+
+          // if (leftAlign.getAsBoolean()) {
+          // double tx = visionTx.getAsDouble();
+          // if (tx != 0.0) {
+          // drive.runVelocity(new ChassisSpeeds(
+          // MathUtil.applyDeadband(ySupplier.getAsDouble(), DEADBAND)
+          // * DriveConstants.robotRelativeMaxInputPercent,
+          // tx * -.02,
+          // MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND)
+          // * DriveConstants.robotRelativeMaxInputPercent / 2));
+          // }
+          // } else if (rightAlign.getAsBoolean()) {
+          // double tx = visionTx.getAsDouble();
+          // if (tx != 0.0) {
+          // drive.runVelocity(new ChassisSpeeds(
+          // MathUtil.applyDeadband(ySupplier.getAsDouble(), DEADBAND)
+          // * DriveConstants.robotRelativeMaxInputPercent,
+          // tx * .02,
+          // MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND)
+          // * DriveConstants.robotRelativeMaxInputPercent / 2));
+          // }
+          // } else
           if (robotRelativeSupplier.getAsBoolean()) {
             drive.runVelocity(new ChassisSpeeds(
-                MathUtil.applyDeadband(xSupplier.getAsDouble(), DEADBAND) * DriveConstants.robotRelativeMaxInputPercent,
-                MathUtil.applyDeadband(ySupplier.getAsDouble(), DEADBAND) * DriveConstants.robotRelativeMaxInputPercent,
+
+                MathUtil.applyDeadband(xSupplier.getAsDouble(), DEADBAND)
+                    * DriveConstants.robotRelativeMaxInputPercent,
+                -MathUtil.applyDeadband(ySupplier.getAsDouble(), DEADBAND)
+                    * DriveConstants.robotRelativeMaxInputPercent,
                 MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND)
                     * DriveConstants.robotRelativeMaxInputPercent));
           } else {
@@ -93,7 +122,8 @@ public class DriveCommands {
             double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
 
             // Square rotation value for more precise control
-            omega = Math.copySign(omega * omega, omega) * DriveConstants.fieldRelativeMaxInputPercent;
+            omega = Math.copySign(omega * omega, omega) * DriveConstants.fieldRelativeMaxInputPercent
+                * (slowDown.getAsBoolean()? .5:1);
 
             // Convert to field relative speeds & send command
             ChassisSpeeds speeds = new ChassisSpeeds(

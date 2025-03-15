@@ -332,24 +332,26 @@ public class RobotContainer {
                                                 new SftCmd(m_sft,
                                                                 SftConstants.endgameSetPoint))
                                                 .alongWith(new InstantCommand(() -> System.out.println("sftOPENRan"))));
+                Command sftDump = new CoralElevatorIntegratedCmd(m_coral, m_elevator, 0,
+                                CoralIntakeConstants.endgameAngle)
+                                .andThen(new WaitCommand(.75))
+                                .deadlineFor(new SequentialCommandGroup(
+                                                new SftCmd(m_sft,
+                                                                SftConstants.dumpSetPoint))
+                                                .alongWith(new InstantCommand(() -> System.out.println("sftDUMPRan"))));
                 m_driveController.y()
                                 .onTrue(new ConditionalCommand(sftOpen, sftClosedCmd, () -> getEndgamePoseState())
                                                 .withTimeout(3.0))
                                 .onFalse(new InstantCommand(() -> setEndgamePoseState(!endgameClosed)));
-                // new Trigger(
-                // () -> DriverStation.isTeleopEnabled()
-                // && DriverStation.getMatchTime() > 0
-                // && DriverStation.getMatchTime() <= Math.round(endgameAlert1.get())
-                // && Math.abs(m_drive.getPose().getX()
-                // - PoseConstants.fieldLength / 2) < 1.5)
-                // .whileTrue(
-                // new CoralElevatorEndgameCmd(m_coral, m_elevator)));
+                m_driveController.x().onTrue(sftDump)
+                                .onFalse(new InstantCommand(() -> setEndgamePoseState(false)));
+
         }
 
         public void configureSft() {
-                // SftAnalogCmd sftAnalogCmd = new SftAnalogCmd(m_sft,
-                // () -> m_controllerTwo.getRightX());
-                // m_sft.setDefaultCommand(sftAnalogCmd);
+                SftAnalogCmd sftAnalogCmd = new SftAnalogCmd(m_sft,
+                                () -> MathUtil.applyDeadband(m_copilotController.getRightY(), 0.1) * -.2);
+                m_sft.setDefaultCommand(sftAnalogCmd);
                 // m_controllerTwo.x().whileTrue(new SftCmd(m_sft,
                 // SftConstants.endgameSetPoint))
                 // .onFalse(new SftCmd(m_sft, 0));
@@ -480,7 +482,8 @@ public class RobotContainer {
                 m_copilotController.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
                 m_copilotController.b().onTrue(new InstantCommand(() -> m_coral.setSpeed(-.15)));
                 m_copilotController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
-                Command wristAnalog = new WristAnalogCmd(m_coral, () -> m_copilotController.getRightX());
+                // Command wristAnalog = new WristAnalogCmd(m_coral, () ->
+                // m_copilotController.getRightX());
                 Command slamCoral = new SlamCoralCmd(m_coral);
                 // m_coral.setDefaultCommand(wristAnalog);
                 // m_controllerTwo.y().whileTrue(slamCoral);
@@ -491,10 +494,15 @@ public class RobotContainer {
                 m_drive.setDefaultCommand(
                                 DriveCommands.joystickDrive(
                                                 m_drive,
+
                                                 () -> -m_driveController.getLeftY(),
                                                 () -> -m_driveController.getLeftX(),
                                                 () -> -m_driveController.getRightX(),
-                                                m_driveController.leftBumper()));
+                                                m_driveController.leftBumper(),
+                                                () -> m_vision.getTx(),
+                                                m_driveController.leftBumper(),
+                                                m_driveController.rightBumper(),
+                                                () -> !endgameClosed));
 
                 // Lock to 0° when A button is held
                 // m_driveController
@@ -607,8 +615,9 @@ public class RobotContainer {
                                 new DownToIntakeCmd(m_coral, m_elevator)
                                                 .andThen(new UpFromIntakeCmd(m_coral, m_elevator)))
                                 .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
-                m_driveController.leftBumper().whileTrue(new WristCmd(m_coral, CoralIntakeConstants.IntakeAngle)
-                                .withTimeout(1).andThen(new UpFromIntakeCmd(m_coral, m_elevator)));
+                // m_driveController.leftBumper().whileTrue(new WristCmd(m_coral,
+                // CoralIntakeConstants.IntakeAngle)
+                // .withTimeout(1).andThen(new UpFromIntakeCmd(m_coral, m_elevator)));
         }
 
         public Command getAutonomousCommand() {

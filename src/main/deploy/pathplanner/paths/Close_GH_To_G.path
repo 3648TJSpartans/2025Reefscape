@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.78,
+        "x": 6.955618686868686,
         "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.749469026548672,
-        "y": 3.6946902654867255
+        "x": 6.706436247508273,
+        "y": 3.9797982200191613
       },
       "isLocked": false,
       "linkedName": "Close_GH"
