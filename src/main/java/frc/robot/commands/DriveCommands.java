@@ -54,11 +54,11 @@ public class DriveCommands {
 
   private static Translation2d getLinearVelocityFromJoysticks(double x, double y) {
     // Apply deadband
-    double linearMagnitude = MathUtil.applyDeadband(Math.hypot(x, y), DEADBAND) * .5;
+    double linearMagnitude = MathUtil.applyDeadband(Math.hypot(x, y), DEADBAND);
     Rotation2d linearDirection = new Rotation2d(Math.atan2(y, x));
 
     // Square magnitude for more precise control
-    linearMagnitude = linearMagnitude * linearMagnitude;
+    linearMagnitude = linearMagnitude * linearMagnitude * DriveConstants.fieldRelativeMaxInputPercent;
 
     // Return new linear velocity
     return new Pose2d(new Translation2d(), linearDirection)
@@ -80,9 +80,10 @@ public class DriveCommands {
         () -> {
           if (robotRelativeSupplier.getAsBoolean()) {
             drive.runVelocity(new ChassisSpeeds(
-                MathUtil.applyDeadband(xSupplier.getAsDouble(), DEADBAND) * .3,
-                MathUtil.applyDeadband(ySupplier.getAsDouble(), DEADBAND) * .3,
-                MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND) * .3));
+                MathUtil.applyDeadband(xSupplier.getAsDouble(), DEADBAND) * DriveConstants.robotRelativeMaxInputPercent,
+                MathUtil.applyDeadband(ySupplier.getAsDouble(), DEADBAND) * DriveConstants.robotRelativeMaxInputPercent,
+                MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND)
+                    * DriveConstants.robotRelativeMaxInputPercent));
           } else {
             // Get linear velocity
             Translation2d linearVelocity = getLinearVelocityFromJoysticks(xSupplier.getAsDouble(),
@@ -92,7 +93,7 @@ public class DriveCommands {
             double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
 
             // Square rotation value for more precise control
-            omega = Math.copySign(omega * omega, omega);
+            omega = Math.copySign(omega * omega, omega) * DriveConstants.fieldRelativeMaxInputPercent;
 
             // Convert to field relative speeds & send command
             ChassisSpeeds speeds = new ChassisSpeeds(
