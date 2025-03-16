@@ -4,6 +4,8 @@
 
 package frc.robot.commands.coralCommands;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
@@ -23,6 +25,7 @@ public class WristCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Logger.recordOutput("Elevator/Command/Scheduled", "WristCmd");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,6 +38,7 @@ public class WristCmd extends Command {
   @Override
   public void end(boolean interrupted) {
     // coralIntake.stopIntakeMotor();
+    Logger.recordOutput("Elevator/Command/Scheduled", "Unscheduled");
     coralIntake.stopWristMotor();
   }
 

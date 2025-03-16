@@ -109,7 +109,7 @@ public class DriveCommands {
 
                 MathUtil.applyDeadband(xSupplier.getAsDouble(), DEADBAND)
                     * DriveConstants.robotRelativeMaxInputPercent,
-                -MathUtil.applyDeadband(ySupplier.getAsDouble(), DEADBAND)
+                MathUtil.applyDeadband(ySupplier.getAsDouble(), DEADBAND)
                     * DriveConstants.robotRelativeMaxInputPercent,
                 MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND)
                     * DriveConstants.robotRelativeMaxInputPercent));
@@ -123,7 +123,7 @@ public class DriveCommands {
 
             // Square rotation value for more precise control
             omega = Math.copySign(omega * omega, omega) * DriveConstants.fieldRelativeMaxInputPercent
-                * (slowDown.getAsBoolean()? .5:1);
+                * (slowDown.getAsBoolean() ? .5 : 1);
 
             // Convert to field relative speeds & send command
             ChassisSpeeds speeds = new ChassisSpeeds(

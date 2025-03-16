@@ -10,14 +10,14 @@ import frc.robot.util.AllianceFlipUtil;
 
 public class AutonConstants {
         public static final double drivekP = 1.0;
-        public static final double drivekD = 0.0;
+        public static final double drivekD = 0.5;
         public static final double thetakP = 5.0;
         public static final double thetakD = 0.0;
-        public static final double driveMaxVelocity = Units.inchesToMeters(150.0 / 4);
-        public static final double driveMaxAcceleration = Units.inchesToMeters(95.0 / 4);
+        public static final double driveMaxVelocity = 2;
+        public static final double driveMaxAcceleration = 1.5;
         public static final double thetaMaxVelocity = Units.degreesToRadians(360.0 / 2);
         public static final double thetaMaxAcceleration = Units.degreesToRadians(720.0 / 2);
-        public static final double driveTolerance = 0.06;
+        public static final double driveTolerance = 0.03;
         public static final double thetaTolerance = Units.degreesToRadians(1.5); // 2.5
         public static final double ffMinRadius = 0.2;
         public static final double ffMaxRadius = 0.6;
@@ -78,7 +78,7 @@ public class AutonConstants {
                 };
 
                 private final static Pose2d[] l1ExactBlueRightReefPoints = new Pose2d[] {
-                                new Pose2d(2.97, 3.85, Rotation2d.fromDegrees(0)), // Pose A
+                                new Pose2d(2.97, 3.79, Rotation2d.fromDegrees(0)), // Pose A
                                 new Pose2d(3.57, 2.75, Rotation2d.fromDegrees(60)), // Pose C
                                 new Pose2d(5.44, 2.75, Rotation2d.fromDegrees(120)), // Pose E
                                 new Pose2d(6.08, 4.12, Rotation2d.fromDegrees(180)), // Pose G
