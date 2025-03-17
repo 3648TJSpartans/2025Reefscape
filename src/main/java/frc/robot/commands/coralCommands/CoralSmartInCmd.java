@@ -19,13 +19,14 @@ public class CoralSmartInCmd extends Command {
         m_coralIntake = coralIntake;
         this.angle = angle;
         m_timer = new Timer();
-        addRequirements(m_coralIntake);
+        addRequirements(coralIntake);
+
         Logger.recordOutput("Intake/smartInRunning", false);
     }
 
     @Override
     public void initialize() {
-
+        Logger.recordOutput("Elevator/Command/Scheduled", "CoralSmartIn");
         isFinished = false;
         m_timer = new Timer();
         m_timer.start();
@@ -52,6 +53,7 @@ public class CoralSmartInCmd extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        Logger.recordOutput("Elevator/Command/Scheduled", "Unscheduled");
         m_coralIntake.setSpeed(0);
         m_coralIntake.stopWristMotor();
         Logger.recordOutput("Intake/smartInRunning", false);

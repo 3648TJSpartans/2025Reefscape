@@ -87,7 +87,6 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
 
     @Override
     public void updateValues() {
-        Logger.recordOutput("CoralIntake/coralIRsensorValue", getIR());
     }
 
     @Override
