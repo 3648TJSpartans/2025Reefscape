@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.0313636363636363,
+        "y": 6.647528409090909
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.420255681818182,
+        "y": 5.989403409090909
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.968,
+        "y": 5.321
+      },
+      "prevControl": {
+        "x": 3.5399147727272733,
+        "y": 6.029289772727273
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Branch K"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -59.99999999999999
+  },
+  "reversed": false,
+  "folder": "Playground",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -56.309932474020016
+  },
+  "useDefaultConstraints": true
+}

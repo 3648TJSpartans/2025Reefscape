@@ -1,10 +1,12 @@
 package frc.robot.commands.autonCommands;
 
+import java.lang.Thread.State;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -26,6 +28,8 @@ import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.leds.LedConstants;
+import frc.robot.subsystems.leds.LedSubsystem;
 
 public class CoralSequentialCmd extends SequentialCommandGroup {
     private final CoralIntake m_coralIntake;
@@ -35,7 +39,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
     private final Command coral2Command;
     private static int level = AutonConstants.defaultLevel; // Defualt Level
     private static boolean exact = false;
-    private static AutonState autonState = AutonState.RIGHTREEF;
+    private static AutonState autonState = AutonState.LEFTREEF;
 
     public CoralSequentialCmd(Drive drive, CoralIntake coralIntake,
             Elevator elevator, boolean slam) {
@@ -161,7 +165,16 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         Logger.recordOutput("CoralSequentialCommand/AutonState", state.toString());
     }
 
-    public int getLevel() {
+    public static int getLeftOrRIghtState() {
+        if (CoralSequentialCmd.autonState == autonState.RIGHTREEF) {
+            return 1;
+        } else {
+            return 0;
+        }
+
+    }
+
+    public static int getLevel() {
         return level;
     }
 

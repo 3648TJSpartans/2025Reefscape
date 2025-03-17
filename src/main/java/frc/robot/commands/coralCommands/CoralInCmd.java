@@ -1,5 +1,7 @@
 package frc.robot.commands.coralCommands;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.coralIntake.CoralIntake;
@@ -16,40 +18,41 @@ public class CoralInCmd extends Command {
     public CoralInCmd(CoralIntake coralIntake, Elevator elevator) {
         m_coralIntake = coralIntake;
         m_elevator = elevator;
-        addRequirements(m_coralIntake, m_elevator);
+        addRequirements(coralIntake, elevator);
         m_timer = new Timer();
     }
 
     @Override
     public void initialize() {
+        Logger.recordOutput("Elevator/Command/Scheduled", "CoralIn");
         m_timer.stop();
         m_timer.reset();
     }
 
     @Override
     public void execute() {
-        // boolean coralInSFT = !m_coralIntake.getIR();
-        // boolean coralInArm = !m_coralIntake.getIR();
-        // if (coralInSFT) {
-        m_coralIntake.setSpeed(CoralIntakeConstants.intakeSpeed);
-        // m_elevator.elevateTo(ElevatorConstants.intakePose);
-        // if (coralInArm && !m_timer.isRunning()) {
-        // m_timer.start();
-        // }
-        // } else {
-        // m_coralIntake.setSpeed(0);
-        // m_elevator.elevateTo(ElevatorConstants.defaultPosition);
-        // }
+        boolean coralInSFT = !m_coralIntake.getIR();
+        boolean coralInArm = !m_coralIntake.getIR();
+        if (coralInSFT) {
+            m_coralIntake.setSpeed(CoralIntakeConstants.intakeSpeed);
+            m_elevator.elevateTo(ElevatorConstants.intakePose);
+            if (coralInArm && !m_timer.isRunning()) {
+                m_timer.start();
+            }
+        } else {
+            m_coralIntake.setSpeed(0);
+            m_elevator.elevateTo(ElevatorConstants.defaultPosition);
+        }
 
-        // if (m_timer.hasElapsed(0.1)) {
-        isFinished = !m_coralIntake.getIR();
-        ;
-        // }
+        if (m_timer.hasElapsed(0.1)) {
+            isFinished = true;
+        }
 
     }
 
     @Override
     public void end(boolean interrupted) {
+        Logger.recordOutput("Elevator/Command/Scheduled", "Unscheduled");
         m_coralIntake.setSpeed(0);
     }
 
