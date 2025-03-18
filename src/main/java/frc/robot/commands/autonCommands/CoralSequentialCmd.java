@@ -39,7 +39,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
     private final Command coral2Command;
     private static int level = AutonConstants.defaultLevel; // Defualt Level
     private static boolean exact = false;
-    private static AutonState autonState = AutonState.RIGHTREEF;
+    private static AutonState autonState = AutonState.LEFTREEF;
 
     public CoralSequentialCmd(Drive drive, CoralIntake coralIntake,
             Elevator elevator, boolean slam) {

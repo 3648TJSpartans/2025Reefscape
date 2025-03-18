@@ -27,32 +27,28 @@ public class CoralSmartLevelWristCmd extends Command {
         m_elevator = elevator;
         this.level = level;
         this.intakeSpeed = intakeSpeed;
-        addRequirements(m_coralIntake);
-        addRequirements(m_elevator);
+        addRequirements(coralIntake, elevator);
     }
 
     @Override
     public void initialize() {
+        Logger.recordOutput("Elevator/Command/Scheduled", "CoralSmartLevelWrist");
         updateHandA();
     }
 
     @Override
     public void execute() {
         updateHandA();
-        if (m_elevator.getHeight() < AutonConstants.elevatorCutoff
-                && m_coralIntake.getAngle() > AutonConstants.coralCutoff) {
-            m_elevator.elevateTo(AutonConstants.elevatorCutoff + 1);
-        } else {
-            m_elevator.elevateTo(height);
-            m_coralIntake.rotateTo(angle);
-            m_coralIntake.setSpeed(intakeSpeed);
-        }
+        m_elevator.elevateTo(height);
+        m_coralIntake.rotateTo(angle);
+        m_coralIntake.setSpeed(intakeSpeed);
         Logger.recordOutput("Commands/CoralSmartCommand/setHeight", height);
         Logger.recordOutput("Commands/CoralSmartCommand/setAngle", angle);
     }
 
     @Override
     public void end(boolean interrupted) {
+        Logger.recordOutput("Elevator/Command/Scheduled", "Unscheduled");
         m_elevator.stop();
         m_coralIntake.stopIntakeMotor();
         m_coralIntake.stopWristMotor();

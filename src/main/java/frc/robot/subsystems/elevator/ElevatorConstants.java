@@ -11,22 +11,24 @@ public class ElevatorConstants {
 
     public static final double coralLeveL1 = 0; // this is a momentary value that will be changed later
     public static final double coralLeveL2 = 0.15; // this is a momentary value that will be changed later
-    public static final double coralLeveL3 = 0; // this is a momentary value that will be changed later
-    public static final double coralLeveL4 = 66;
+    public static final double coralLeveL3 = 1; // this is a momentary value that will be changed later
+    public static final double coralLeveL4 = 68;
     public static final double coralLimit = 68;
-    public static final double intakePose = 6;// this is the position for the intake
+    public static final double intakePose = 5.5;// this is the position for the intake
     public static final double preIntakePose = 18.67;
     public static final double defaultPosition = 0.5;
     public static final double algaeRemovalHeightLow = 0;
     public static final double algaeRemovalHeightHigh = 42; // TODO: change this to the correct number
+    public static final double elevatorRange = 0.622;
+    public static final double heightToEncoderRatio = elevatorRange / coralLimit;
     // these are the constants for the elevator pid
     public static final double kElevatorP = .3;
     public static final double kElevatorI = 0;
     public static final double kElevatorD = 0.4;
     public static final double kElevatorFF = 0.1;
     public static final double odometryFrequency = 100;
-    public static final double kElevatorMinRange = -.45;
-    public static final double kElevatorMaxRange = .45;
+    public static final double kElevatorMinRange = -.65;
+    public static final double kElevatorMaxRange = .65;
     public static final boolean elevatorEncoderInverted = false;
     public static final double elevatorEncoderPositionFactor = 1;
     public static final double elevatorEncoderVelocityFactor = 1;

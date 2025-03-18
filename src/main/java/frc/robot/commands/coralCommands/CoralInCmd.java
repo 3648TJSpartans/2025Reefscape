@@ -1,5 +1,7 @@
 package frc.robot.commands.coralCommands;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.coralIntake.CoralIntake;
@@ -16,12 +18,13 @@ public class CoralInCmd extends Command {
     public CoralInCmd(CoralIntake coralIntake, Elevator elevator) {
         m_coralIntake = coralIntake;
         m_elevator = elevator;
-        addRequirements(m_coralIntake, m_elevator);
+        addRequirements(coralIntake, elevator);
         m_timer = new Timer();
     }
 
     @Override
     public void initialize() {
+        Logger.recordOutput("Elevator/Command/Scheduled", "CoralIn");
         m_timer.stop();
         m_timer.reset();
     }
@@ -49,6 +52,7 @@ public class CoralInCmd extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        Logger.recordOutput("Elevator/Command/Scheduled", "Unscheduled");
         m_coralIntake.setSpeed(0);
     }
 

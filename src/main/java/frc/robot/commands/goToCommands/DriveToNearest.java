@@ -63,9 +63,9 @@ public class DriveToNearest extends Command {
   private Supplier<Pose2d> target;
   private final Supplier<Pose2d[]> targetPoints;
   private final ProfiledPIDController driveController = new ProfiledPIDController(
-      0.0, 0.0, 0.0, new TrapezoidProfile.Constraints(0.0, 0.0), 0.02);
+      0.0, 0.0, 0.0, new TrapezoidProfile.Constraints(driveMaxVelocity.get(), driveMaxAcceleration.get()), 0.02);
   private final ProfiledPIDController thetaController = new ProfiledPIDController(
-      0.0, 0.0, 0.0, new TrapezoidProfile.Constraints(0.0, 0.0), 0.02);
+      0.0, 0.0, 0.0, new TrapezoidProfile.Constraints(thetaMaxVelocity.get(), thetaMaxAcceleration.get()), 0.02);
 
   private Translation2d lastSetpointTranslation = new Translation2d();
   private double driveErrorAbs = 0.0;

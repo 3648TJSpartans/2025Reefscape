@@ -12,6 +12,8 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.util.TunableNumber;
 import frc.robot.util.TunableNumber;
@@ -28,6 +30,7 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
     private SparkMax intakeMotor;
     private AbsoluteEncoder absoluteEncoder;
     private SparkClosedLoopController wristController;
+    private final ArmFeedforward armFeedforward;
 
     // this is the constructor of the class
     public CoralIntakeIOSparkMax() {
@@ -63,6 +66,8 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
         wristMotor.configure(
                 wristConfig, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
+        armFeedforward = new ArmFeedforward(CoralIntakeConstants.kWristS, CoralIntakeConstants.kWristG,
+                CoralIntakeConstants.kWristV, CoralIntakeConstants.kWristA);
     }
 
     @Override
@@ -82,12 +87,16 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
 
     @Override
     public void rotateTo(double setpoint) {
-        wristController.setReference(setpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+        wristController.setReference(setpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0,
+                armFeedforward.calculate(setpoint - CoralIntakeConstants.straightUpAngle, 0));
+        if (wristMotor.get() > .2) {
+            wristMotor.set(0);
+            System.out.println("The ArmFF calc in CoralIntakeSparkIO done F-ed");
+        }
     }
 
     @Override
     public void updateValues() {
-        Logger.recordOutput("CoralIntake/coralIRsensorValue", getIR());
     }
 
     @Override
