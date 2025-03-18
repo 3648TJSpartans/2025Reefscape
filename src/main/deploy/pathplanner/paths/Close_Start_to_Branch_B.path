@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.628267045454545,
-        "y": 0.6546022727272737
+        "x": 7.159602272727272,
+        "y": 0.7742613636363649
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.19879018369253,
-        "y": 0.451440673120352
+        "x": 7.730125410965262,
+        "y": 0.5710997640294433
       },
       "isLocked": false,
       "linkedName": "Far Bottom Start"
@@ -64,7 +64,7 @@
   "folder": "Start_To_Branch",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 178.47247455778702
+    "rotation": 135.0
   },
   "useDefaultConstraints": true
 }

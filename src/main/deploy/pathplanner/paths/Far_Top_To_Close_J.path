@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.468721590909091,
-        "y": 7.235852272727272
+        "x": 7.209460227272728,
+        "y": 7.21590909090909
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.16703539823009,
-        "y": 7.215486725663717
+        "x": 6.816766641850321,
+        "y": 7.100483147559498
       },
       "isLocked": false,
       "linkedName": "Far Starting Position"
@@ -20,8 +20,8 @@
         "y": 7.001769911504425
       },
       "prevControl": {
-        "x": 6.739374592867291,
-        "y": 7.199925908780575
+        "x": 6.90533132155281,
+        "y": 7.098236419914111
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": "To_Close",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 179.30130561701648
+    "rotation": -135.0
   },
   "useDefaultConstraints": true
 }
