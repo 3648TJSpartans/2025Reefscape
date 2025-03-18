@@ -181,4 +181,15 @@ public class ElevatorIOSparkMax implements ElevatorIO {
   public boolean getLimitReset() {
     return limitReset;
   }
+
+  @Override
+  public double getHeightMeters() {
+    return getHeight() * ElevatorConstants.heightToEncoderRatio;
+  }
+
+  @Override
+  public void setHeightMeters(double height) {
+    elevateTo(height / ElevatorConstants.heightToEncoderRatio);
+  }
+
 }
