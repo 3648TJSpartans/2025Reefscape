@@ -15,18 +15,17 @@ These can be used to access their respective component's web interfaces, or for 
 *`##.##` should be replaced with the robot's team number (e.g. `10.36.48.2`).*
 - **RoboRIO:** `10.##.##.2` 
     - *SSH:* `$ ssh admin@10.##.##.2` for the root user, or `$ ssh lvuser@10.##.##.2` for the live user (the user the code runs out of).
-        - *If you get a key verification error after changing the radio team number, delete your ssh `knownhosts` file.*
+        - *If you get a key verification error after changing the radio team number, delete your ssh `knownhosts` file (usually at `~/.ssh/knownhosts`).*
 - **Limelights:** `10.##.##.20` & `10.##.##.19`
 - **Radio:** `10.##.##.1`
 ### Reefscape Pose Generator - Desmos
 Use this tool to generate poses around the center of a reef given an inital working pose.
 [Desmos Reefscape Tool](https://www.desmos.com/calculator/ipvnamkwov)
 ### Control Schemes:
-
 *Driver Controller* \
 ![Driver Controller control layout](assets/DriverController.png) \
 *Copilot Controller* 
-![Copilot Controller control layout](assets/CopilotController.png)
+![Copilot Controller control layout](assets/CopilotController.png) 
 
 ### Vendor JSONs:
 - [REVLib](https://software-metadata.revrobotics.com/REVLib-2025.json)
@@ -39,15 +38,4 @@ Use this tool to generate poses around the center of a reef given an inital work
 ## Best Practices:
 - For the proper functioning of swerve, it is best practice to recalibrate the NavX Gyro. To do this, go to the board, hold down the CAL button for 5 seconds, and then hold the RES button for another 5.
 
-## References
-### Local IPs
-*`##.##`* should be replaced with the robot's team number (e.g. `10.36.48`). \
-**RoboRIO:** `10.##.##.2` \
-**Limelight 3:** `http://limelight-three.local:5801` \
-**Limelight 2+:** `http://limelight-twoplus.local:5801` \
-**Radio:** `10.##.##.1`
-### lime light config images
-![Three Config](src/main/deploy/Limelight/three_config.png) \
-![Three Input](src/main/deploy/Limelight/three_input.png) \
-![Two Plus Config](src/main/deploy/Limelight/two_plus_config.png) \
-![Two Plus Input](src/main/deploy/Limelight/two_plus_input.png) \
+
