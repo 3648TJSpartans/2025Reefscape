@@ -31,6 +31,7 @@ public class CoralIntakeConstants {
     public static final double straightUpAngle = .42;
     public static final double wristOdometryFrequency = 100;
     public static final double kWristMinRange = -0.2;
+    public static final double kWristMaxRange = 0.2;
     public static final boolean wristEncoderInverted = false;
     public static final double wristEncoderPositionFactor = 1;
     // this is the angle for the wrist and is subject to change for each level
