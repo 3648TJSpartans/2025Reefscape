@@ -21,6 +21,11 @@ public class CoralIntakeConstants {
     public static final double kWristP = 1.8;
     public static final double kWristI = 0;
     public static final double kWristD = 2.0;
+    // Values estimated from @link public static final double kWristG = 0.41;
+    public static final double kWristS = 0; // Volts- Static Gain
+    public static final double kWristG = 0.41; // Volts - Gravity feedforward constant
+    public static final double kWristV = 5.85; // V*s/rad - Velocity Feedforward Constant
+    public static final double kWristA = 0.41; // V*s^2/rad - Acceleration Feedforward Constant
     public static final double kWristFF = 0;
     public static final double wristOdometryFrequency = 100;
     public static final double kWristMinRange = -0.15;
