@@ -13,10 +13,11 @@ public class AutonConstants {
         public static final double drivekD = 0.0;
         public static final double thetakP = 5.0;
         public static final double thetakD = 0.0;
+
         public static final double driveMaxVelocity = 3;
         public static final double driveMaxAcceleration = 2;
-        public static final double thetaMaxVelocity = Units.degreesToRadians(360.0 / 2);
-        public static final double thetaMaxAcceleration = Units.degreesToRadians(720.0 / 2);
+        public static final double thetaMaxVelocity = Units.degreesToRadians(360.0);
+        public static final double thetaMaxAcceleration = Units.degreesToRadians(720.0);
         public static final double driveTolerance = 0.03;
         public static final double thetaTolerance = Units.degreesToRadians(1.5); // 2.5
         public static final double ffMinRadius = 0.2;

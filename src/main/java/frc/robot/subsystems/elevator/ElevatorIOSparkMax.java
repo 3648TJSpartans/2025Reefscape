@@ -180,4 +180,53 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     public boolean getLimitReset() {
         return limitReset;
     }
+
+  @Override
+  @AutoLogOutput(key = "Elevator/bottomLimitPushed")
+  public boolean getBottomLimitSwitch() {
+    return !bottomLimitSwitch.get();
+  }
+
+  @Override
+  @AutoLogOutput(key = "Elevator/topLimitPushed")
+  public boolean getTopLimitSwitch() {
+    return !topLimitSwitch.get();
+  }
+
+  private void setZero() {
+    encoder.setPosition(0);
+    limitReset = true;
+    Logger.recordOutput("Elevator/EncoderReset", limitReset);
+  }
+
+  private void setTop() {
+    encoder.setPosition(ElevatorConstants.coralLimit);
+    limitReset = true;
+    Logger.recordOutput("Elevator/EncoderReset", limitReset);
+  }
+
+  @Override
+  public boolean atBottom() {
+    return !bottomLimitSwitch.get();
+  }
+
+  @Override
+  public void zeroElevator() {
+    setZero();
+  }
+
+  @Override
+  public boolean getLimitReset() {
+    return limitReset;
+  }
+
+  @Override
+  public double getHeightMeters() {
+    return getHeight() * ElevatorConstants.heightToEncoderRatio;
+  }
+
+  @Override
+  public void setHeightMeters(double height) {
+    elevateTo(height / ElevatorConstants.heightToEncoderRatio);
+  }
 }

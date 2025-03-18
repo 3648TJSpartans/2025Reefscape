@@ -47,4 +47,12 @@ public interface ElevatorIO {
     public default boolean getLimitReset() {
         return true;
     }
+
+    public default double getHeightMeters() {
+        return 0;
+    }
+
+    public default void setHeightMeters(double height) {
+
+    }
 }
