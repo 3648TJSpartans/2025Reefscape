@@ -19,6 +19,8 @@ public class ElevatorConstants {
     public static final double defaultPosition = 0.5;
     public static final double algaeRemovalHeightLow = 0;
     public static final double algaeRemovalHeightHigh = 42; // TODO: change this to the correct number
+    public static final double elevatorRange = 0.622;
+    public static final double heightToEncoderRatio = elevatorRange / coralLimit;
     // these are the constants for the elevator pid
     public static final double kElevatorP = .3;
     public static final double kElevatorI = 0;
