@@ -7,6 +7,7 @@ package frc.robot.util;
 import static frc.robot.Constants.*;
 
 import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -16,11 +17,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * value not in dashboard.
  */
 public class TunableNumber {
-  private static final String TABLE_KEY = "TunableNumbers";
+  private static final String TABLE_KEY = "Tuning";
 
   private String key;
   private double defaultValue;
   private double lastHasChangedValue = defaultValue;
+  private LoggedNetworkNumber dashboardNumber;
 
   /**
    * Create a new TunableNumber
@@ -60,7 +62,7 @@ public class TunableNumber {
     this.defaultValue = defaultValue;
     if (TUNING_MODE) {
       // This makes sure the data is on NetworkTables but will not change it
-      SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, defaultValue));
+      dashboardNumber = new LoggedNetworkNumber(key, defaultValue);
     }
   }
 
@@ -70,8 +72,8 @@ public class TunableNumber {
    * @return The current value
    */
   public double get() {
-    Logger.recordOutput(key, TUNING_MODE ? SmartDashboard.getNumber(key, defaultValue) : defaultValue);
-    return TUNING_MODE ? SmartDashboard.getNumber(key, defaultValue) : defaultValue;
+    Logger.recordOutput(key, TUNING_MODE ? dashboardNumber.get() : defaultValue);
+    return TUNING_MODE ? dashboardNumber.get() : defaultValue;
   }
 
   /**
