@@ -9,9 +9,9 @@ import frc.robot.Robot;
 import frc.robot.util.AllianceFlipUtil;
 
 public class AutonConstants {
-        public static final double drivekP = 1.0;
+        public static final double drivekP = 5.0;
         public static final double drivekD = 0.0;
-        public static final double thetakP = 5.0;
+        public static final double thetakP = 1.0;
         public static final double thetakD = 0.0;
         public static final double driveMaxVelocity = 2;
         public static final double driveMaxAcceleration = 1.5;
