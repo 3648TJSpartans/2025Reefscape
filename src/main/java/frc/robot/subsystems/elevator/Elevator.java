@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems.elevator;
 
+import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
@@ -18,7 +22,7 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    io.updateValues();
+    Logger.recordOutput("Elevator/3dSetpoint", new Pose3d(0, io.getHeightMeters(), 0, new Rotation3d()));
     io.updateLimitSwitch();
   }
 
