@@ -14,11 +14,10 @@
   ],
   "autoFolders": [
     "DemoTest",
-    "Four_Piece_Auto",
     "Leave",
-    "One Piece",
+    "One_Piece",
     "Three_Piece",
-    "Two_Piece_Autos"
+    "Two_Piece"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,

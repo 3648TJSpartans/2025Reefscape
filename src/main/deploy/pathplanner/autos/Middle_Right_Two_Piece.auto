@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Far_Top_To_Close_J"
+            "pathName": "Middle_Right_to_Close_E"
           }
         },
         {
@@ -25,7 +25,7 @@
         {
           "type": "named",
           "data": {
-            "name": "setRight"
+            "name": "setLeft"
           }
         },
         {
@@ -58,7 +58,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Branch_J_to_Top_Source"
+                        "pathName": "Branch_E_to_Bottom_Source"
                       }
                     },
                     {

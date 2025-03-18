@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.5869469026548675,
-        "y": 7.001769911504425
+        "x": 5.82340909090909,
+        "y": 6.388267045454545
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.35912574048293,
-        "y": 6.772998809733014
+        "x": 5.595587928737152,
+        "y": 6.159495943683134
       },
       "isLocked": false,
       "linkedName": "Close_J"
@@ -48,7 +48,7 @@
   "folder": "To_Close",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -126.38435181583594
+    "rotation": -119.99999999999999
   },
   "useDefaultConstraints": false
 }
