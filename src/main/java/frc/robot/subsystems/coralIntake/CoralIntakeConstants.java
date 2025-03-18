@@ -26,11 +26,11 @@ public class CoralIntakeConstants {
     public static final double kWristG = 0.41; // Volts - Gravity feedforward constant
     public static final double kWristV = 5.85; // V*s/rad - Velocity Feedforward Constant
     public static final double kWristA = 0.41; // V*s^2/rad - Acceleration Feedforward Constant
+
     public static final double kWristFF = 0;
     public static final double straightUpAngle = .42;
     public static final double wristOdometryFrequency = 100;
     public static final double kWristMinRange = -0.2;
-    public static final double kWristMaxRange = 0.2;
     public static final boolean wristEncoderInverted = false;
     public static final double wristEncoderPositionFactor = 1;
     // this is the angle for the wrist and is subject to change for each level
