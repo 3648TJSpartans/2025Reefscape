@@ -21,6 +21,11 @@ These can be used to access their respective component's web interfaces, or for 
 ### Reefscape Pose Generator - Desmos
 Use this tool to generate poses around the center of a reef given an inital working pose.
 [Desmos Reefscape Tool](https://www.desmos.com/calculator/ipvnamkwov)
+### Advantage Scope Configuration
+* To simulate the 3648 2025 CompBot on the 3D field, go to _assets/advantageScope/_, copy the userAssets.7z, and exctract it to the local hardrive. Then, open Advantage Scope, press **Help &#8594; Use Custom Assets Folder**, and then select the unzipped userAssets. 
+* To open custom premade layouts, go to **File &#8594; Import Layout...** and select the layout you want from _assets/advantageScope/Layouts_.
+* You can open logs by selecting **File &#8594; Open Log(s)...**, and then selecting on a log file in _assets/advantageScope/UtahLogs_
+
 ### Control Schemes:
 
 *Driver Controller* \
