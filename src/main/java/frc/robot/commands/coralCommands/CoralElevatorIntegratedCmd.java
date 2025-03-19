@@ -56,9 +56,7 @@ public class CoralElevatorIntegratedCmd extends Command {
         return ((height - elevatorMargin) < m_elevator.getHeight()) &&
                 (m_elevator.getHeight() < (height + elevatorMargin)) &&
                 ((angle - coralIntakeMargin) < m_coralIntake.getAngle()) &&
-                (m_coralIntake.getAngle() < (angle + coralIntakeMargin)) ||
-                m_elevator.getTopLimitSwitch() ||
-                m_elevator.getBottomLimitSwitch();
+                (m_coralIntake.getAngle() < (angle + coralIntakeMargin));
     }
 
 }

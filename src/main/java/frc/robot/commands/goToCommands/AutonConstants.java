@@ -9,6 +9,8 @@ import frc.robot.Robot;
 import frc.robot.util.AllianceFlipUtil;
 
 public class AutonConstants {
+        public static final double outtakeTime = .75;
+
         public static final double drivekP = 5.0;
         public static final double drivekD = 0.0;
         public static final double thetakP = 1.0;
@@ -18,7 +20,7 @@ public class AutonConstants {
         public static final double thetaMaxVelocity = Units.degreesToRadians(360.0);
         public static final double thetaMaxAcceleration = Units.degreesToRadians(720.0);
         public static final double driveTolerance = 0.015;
-        public static final double thetaTolerance = Units.degreesToRadians(1.5); // 2.5
+        public static final double thetaTolerance = Units.degreesToRadians(1.5); // could be lower?
         public static final double ffMinRadius = 0.2;
         public static final double ffMaxRadius = 0.6;
         public static final int defaultLevel = 4;
