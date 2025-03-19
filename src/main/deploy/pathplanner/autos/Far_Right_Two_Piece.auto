@@ -74,6 +74,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom_Source_to_Close_C"
+          }
+        },
+        {
           "type": "sequential",
           "data": {
             "commands": [

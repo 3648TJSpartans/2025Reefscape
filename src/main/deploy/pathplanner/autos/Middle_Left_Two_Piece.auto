@@ -74,6 +74,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Top_Source_to_Close_L"
+          }
+        },
+        {
           "type": "sequential",
           "data": {
             "commands": [
