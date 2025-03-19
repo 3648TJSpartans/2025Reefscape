@@ -189,3 +189,6 @@ compile_commands.json
 
 # AdvantageKit things
 src/main/java/frc/robot/BuildConstants.java
+
+# AdvantageScope unzipped assets
+assets/advantageScope/userAssets
