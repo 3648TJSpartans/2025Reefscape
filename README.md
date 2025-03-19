@@ -32,7 +32,8 @@ Use this tool to generate poses around the center of a reef given an inital work
 ![Driver Controller control layout](assets/DriverController.png) \
 *Copilot Controller* 
 ![Copilot Controller control layout](assets/CopilotController.png)
-
+### Auton Paths
+![Paths](assets/AutoPaths.jpeg)
 ### Vendor JSONs:
 - [REVLib](https://software-metadata.revrobotics.com/REVLib-2025.json)
 - [AdvantageKit](https://github.com/Mechanical-Advantage/AdvantageKit/releases/latest/download/AdvantageKit.json)
