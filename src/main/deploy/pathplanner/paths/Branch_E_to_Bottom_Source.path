@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.1545,
-        "y": 1.4873948863636373
+        "x": 6.052755681818183,
+        "y": 0.8390767045454539
       },
       "isLocked": false,
       "linkedName": "Branch E"
     },
     {
       "anchor": {
-        "x": 1.11,
-        "y": 0.85
+        "x": 1.2464488636363638,
+        "y": 1.0883664772727264
       },
       "prevControl": {
-        "x": 0.8538454057939304,
-        "y": 0.7063382004442954
+        "x": 0.9902942694302941,
+        "y": 0.9447046777170218
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,15 +30,29 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.25930851063829957,
-      "rotationDegrees": 90.0
+      "waypointRelativePos": 0.3577127659574488,
+      "rotationDegrees": 100.0
     },
     {
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.5678191489361682,
       "rotationDegrees": 55.0
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.5224940805051308,
+      "maxWaypointRelativePos": 0.9644830307813724,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
