@@ -69,7 +69,7 @@ public class CoralSequentialAutoCmd extends SequentialCommandGroup {
                                 drive2Command,
                                 coral2Command).withTimeout(.75),
                         coral3Command.withTimeout(0.5),
-                        slam ? outtake : null));
+                        slam ? outtake.withTimeout(1) : null));
         ;
     }
 
