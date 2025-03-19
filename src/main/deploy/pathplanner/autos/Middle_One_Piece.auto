@@ -13,7 +13,7 @@
         {
           "type": "named",
           "data": {
-            "name": "setRight"
+            "name": "setLeft"
           }
         },
         {
@@ -39,6 +39,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "One Piece",
+  "folder": "One_Piece",
   "choreoAuto": false
 }
