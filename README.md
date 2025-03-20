@@ -37,9 +37,6 @@ Use this tool to generate poses around the center of a reef given an inital work
 **Copilot Controller** 
 ![Copilot Controller control layout](assets/CopilotController.png)
 
-## Best Practices:
-- For the proper functioning of swerve, it is best practice to recalibrate the NavX Gyro. To do this, go to the board, hold down the CAL button for 5 seconds, and then hold the RES button for another 5.
-
 ### Auton Paths
 ![Paths](assets/AutoPaths.jpeg)
 
@@ -50,3 +47,5 @@ Use this tool to generate poses around the center of a reef given an inital work
 - [Phoenix](https://maven.ctr-electronics.com/release/)
 - [Studica](https://dev.studica.com/releases/2025/Studica-2025.0.0.json)
 - [UCRL](https://raw.githubusercontent.com/Mechanical-Advantage/URCL/maven/URCL.json)
+## Best Practices:
+- For the proper functioning of swerve, it is best practice to recalibrate the NavX Gyro. To do this, go to the board, hold down the CAL button for 5 seconds, and then hold the RES button for another 5.
