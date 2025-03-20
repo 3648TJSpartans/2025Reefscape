@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5732207130983806,
-        "y": 6.57770082011946
+        "x": 1.5511730493607623,
+        "y": 6.9351076527910305
       },
       "isLocked": false,
       "linkedName": "Top Source"
     },
     {
       "anchor": {
-        "x": 3.07,
-        "y": 4.2
+        "x": 3.438614004629629,
+        "y": 5.479928023726853
       },
       "prevControl": {
-        "x": 2.875499196398694,
-        "y": 4.357065073770225
+        "x": 3.0803835169963754,
+        "y": 5.677120740862146
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Branch A"
+      "linkedName": "Close_L"
     }
   ],
   "rotationTargets": [],
@@ -42,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -59.99999999999999
   },
   "reversed": false,
-  "folder": "Top_To_Branch",
+  "folder": "To_Close",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -52.0
