@@ -23,21 +23,20 @@ public class SftIOSparkMax implements SftIO {
     // declaration of motors, IR sensor and encoder
     private SparkMax motor;
     private DigitalInput irSensor;
-    private RelativeEncoder encoder;
+    private AbsoluteEncoder encoder;
     private SparkClosedLoopController motorController;
 
     // this is the constructor of the class
     public SftIOSparkMax() {
         motor = new SparkMax(SftConstants.SftMotorPin, MotorType.kBrushless);
-        irSensor = new DigitalInput(CoralIntakeConstants.irSensorPin);
         motorController = motor.getClosedLoopController();
-        encoder = motor.getEncoder();
+        encoder = motor.getAbsoluteEncoder();
         var config = new SparkMaxConfig();
         config.inverted(false)
                 .idleMode(IdleMode.kBrake)
                 .voltageCompensation(12.0);
         config.closedLoop
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+                .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
                 .pidf(new TunableNumber("SFT/kP", SftConstants.kP).get(),
                         new TunableNumber("SFT/kI", SftConstants.kI).get(),
                         new TunableNumber("SFT/kD", SftConstants.kD).get(),
@@ -68,12 +67,12 @@ public class SftIOSparkMax implements SftIO {
 
     @Override
     public void rotateTo(double setpoint) {
+
         motorController.setReference(setpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0);
     }
 
     @Override
     public void updateValues() {
-        Logger.recordOutput("SFT/IRSensorValue", getIR());
     }
 
     @Override
@@ -81,12 +80,7 @@ public class SftIOSparkMax implements SftIO {
         return encoder.getPosition();
     }
 
-    @Override
-    public boolean getIR() {
-        return irSensor.get();
-    }
-
-    public void setWristSpeed(double speed) {
+    public void setSpeed(double speed) {
         motor.set(speed);
     }
 }

@@ -1,19 +1,23 @@
 package frc.robot.commands.autonCommands;
 
+import java.lang.Thread.State;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.commands.coralCommands.CoralCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
+import frc.robot.commands.coralCommands.CoralSmartLevelWristCmd;
 import frc.robot.commands.coralCommands.SlamCoralCmd;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
@@ -21,17 +25,21 @@ import frc.robot.commands.goToCommands.AutonConstants;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToNearest2;
 import frc.robot.subsystems.coralIntake.CoralIntake;
+import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.leds.LedConstants;
+import frc.robot.subsystems.leds.LedSubsystem;
 
 public class CoralSequentialCmd extends SequentialCommandGroup {
     private final CoralIntake m_coralIntake;
     private final Elevator m_elevator;
     private final Drive m_drive;
     private final Command coralCommand;
+    private final Command coral2Command;
     private static int level = AutonConstants.defaultLevel; // Defualt Level
     private static boolean exact = false;
-    private static AutonState autonState = AutonState.RIGHTREEF;
+    private static AutonState autonState = AutonState.LEFTREEF;
 
     public CoralSequentialCmd(Drive drive, CoralIntake coralIntake,
             Elevator elevator, boolean slam) {
@@ -40,25 +48,29 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         m_coralIntake = coralIntake;
         m_elevator = elevator;
         m_drive = drive;
-        coralCommand = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel());
+        coralCommand = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel(), true);
+        coral2Command = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel(), false);
+        Command coral3Command = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel(),
+                false);
+        Command outtake = new CoralSmartLevelWristCmd(coralIntake, elevator, () -> getLevel(),
+                CoralIntakeConstants.outtakeSpeed);
         DriveToNearest driveCommand = new DriveToNearest(m_drive, () -> CoralSequentialCmd.poses(false));
         DriveToNearest2 drive2Command = new DriveToNearest2(m_drive, () -> CoralSequentialCmd.poses(true));
         // Command driveExactCommand = AutoBuildingBlocks.driveToNearest(m_drive, () ->
         // CoralSequentialCmd.poses());
         addCommands(
                 new SequentialCommandGroup(
-                        // AutoBuildingBlocks.driveToPose(drive, PoseConstants.START),
 
-                        new ParallelCommandGroup(
+                        new ParallelDeadlineGroup(
                                 driveCommand,
-                                coralCommand),
-                        drive2Command,
-                        // driveCloseCommand,
-                        // coralCommand,
-                        // driveExactCommand,
-                        // new WaitCommand(1),
-                        slam ? new CoralOutCmd(m_coralIntake) : null));
-        // AutoBuildingBlocks.driveToPose(drive, PoseConstants.START));
+                                coralCommand.repeatedly()),
+
+                        new ParallelDeadlineGroup(
+                                drive2Command,
+                                coral2Command).withTimeout(.75),
+                        coral3Command.withTimeout(0.5),
+                        slam ? outtake.withTimeout(AutonConstants.outtakeTime) : null));
+        ;
     }
 
     public static void setLevel(int level) {
@@ -111,10 +123,10 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         } else {
             if (level == 3 || level == 4) {
                 if (autonState == AutonState.RIGHTREEF) {
-                    return PoseConstants.l4CloseRightReefPoints;
+                    return PoseConstants.l4ExactRightReefPoints;
                 } else if (autonState == AutonState.LEFTREEF) {
 
-                    return PoseConstants.l4CloseLeftReefPoints;
+                    return PoseConstants.l4ExactLeftReefPoints;
                 } else {
                     System.out.println("return Null");
                     System.out.println("Auton State: " + autonState.toString());
@@ -153,7 +165,16 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         Logger.recordOutput("CoralSequentialCommand/AutonState", state.toString());
     }
 
-    public int getLevel() {
+    public static int getLeftOrRIghtState() {
+        if (CoralSequentialCmd.autonState == autonState.RIGHTREEF) {
+            return 1;
+        } else {
+            return 0;
+        }
+
+    }
+
+    public static int getLevel() {
         return level;
     }
 

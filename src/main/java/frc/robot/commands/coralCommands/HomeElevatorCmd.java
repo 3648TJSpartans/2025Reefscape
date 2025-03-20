@@ -4,6 +4,8 @@
 
 package frc.robot.commands.coralCommands;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.elevator.Elevator;
@@ -24,6 +26,7 @@ public class HomeElevatorCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Logger.recordOutput("Elevator/Command/Scheduled", "HomeElevator");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,6 +38,7 @@ public class HomeElevatorCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Logger.recordOutput("Elevator/Command/Scheduled", "Unscheduled");
     elevatorSubsystem.stop();
   }
 

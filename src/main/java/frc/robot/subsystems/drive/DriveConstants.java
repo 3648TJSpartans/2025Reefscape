@@ -21,6 +21,11 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 
 public class DriveConstants {
+        public static final double fieldRelativeMaxInputPercent = 1; // value between 0+ and 1, allowing control maximum
+                                                                     // input for field relative
+        public static final double robotRelativeMaxInputPercent = .5; // value between 0+ and 1, allowing control
+                                                                      // maximum input for robot relative
+
         public static final double maxSpeedMetersPerSec = 4; // 4.46 is max on rev product page, 2 is what it was before
         public static final double odometryFrequency = 100.0; // Hz
         public static final double trackWidth = .6;
@@ -109,7 +114,7 @@ public class DriveConstants {
         public static final double turnPIDMaxInput = 2 * Math.PI; // Radians
 
         // PathPlanner configuration
-        public static final double robotMassKg = 50.8;
+        public static final double robotMassKg = 45.3;
         public static final double robotMOI = 6.883;
         public static final double wheelCOF = 1.2;
         public static final double ppMaxSpeed = 4.2;

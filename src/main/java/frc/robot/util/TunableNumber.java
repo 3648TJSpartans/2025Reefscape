@@ -6,6 +6,8 @@ package frc.robot.util;
 
 import static frc.robot.Constants.*;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -68,6 +70,7 @@ public class TunableNumber {
    * @return The current value
    */
   public double get() {
+    Logger.recordOutput(key, TUNING_MODE ? SmartDashboard.getNumber(key, defaultValue) : defaultValue);
     return TUNING_MODE ? SmartDashboard.getNumber(key, defaultValue) : defaultValue;
   }
 

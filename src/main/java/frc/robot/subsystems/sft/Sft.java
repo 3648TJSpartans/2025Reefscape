@@ -1,5 +1,7 @@
 package frc.robot.subsystems.sft;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Sft extends SubsystemBase {
@@ -11,7 +13,8 @@ public class Sft extends SubsystemBase {
 
     @Override
     public void periodic() {
-        io.updateValues();
+        // io.updateValues();
+        Logger.recordOutput("SFT/angle", io.getPosition());
     }
 
     public double getPosition() {
@@ -19,15 +22,12 @@ public class Sft extends SubsystemBase {
     }
 
     public void rotateTo(double setangle) {
+        Logger.recordOutput("SFT/setAngle", setangle);
         io.rotateTo(setangle);
     }
 
     public void stopMotor() {
         io.stopMotor();
-    }
-
-    public boolean getIR() {
-        return io.getIR();
     }
 
     public void setSpeed(double speed) {

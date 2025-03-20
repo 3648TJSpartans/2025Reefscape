@@ -19,36 +19,34 @@ public class CoralSmartLevelCmd extends Command {
     private double height;
     private double angle;
     private Supplier<Integer> level;
+    private final boolean up;
 
-    public CoralSmartLevelCmd(CoralIntake coralIntake, Elevator elevator, Supplier<Integer> level) {
+    public CoralSmartLevelCmd(CoralIntake coralIntake, Elevator elevator, Supplier<Integer> level, boolean up) {
         m_coralIntake = coralIntake;
         m_elevator = elevator;
         this.level = level;
-        addRequirements(m_coralIntake);
-        addRequirements(m_elevator);
+        this.up = up;
+        addRequirements(coralIntake, elevator);
     }
 
     @Override
     public void initialize() {
+        Logger.recordOutput("Elevator/Command/Scheduled", "CoralSmartLevelCmd");
         updateHandA();
     }
 
     @Override
     public void execute() {
         updateHandA();
-        if (m_elevator.getHeight() < AutonConstants.elevatorCutoff
-                && m_coralIntake.getAngle() > AutonConstants.coralCutoff) {
-            m_elevator.elevateTo(AutonConstants.elevatorCutoff + 1);
-        } else {
-            m_elevator.elevateTo(height);
-            m_coralIntake.rotateTo(angle);
-        }
+        m_elevator.elevateTo(height);
+        m_coralIntake.rotateTo(angle);
         Logger.recordOutput("Commands/CoralSmartCommand/setHeight", height);
         Logger.recordOutput("Commands/CoralSmartCommand/setAngle", angle);
     }
 
     @Override
     public void end(boolean interrupted) {
+        Logger.recordOutput("Elevator/Command/Scheduled", "Unscheduled");
         m_elevator.stop();
         m_coralIntake.stopIntakeMotor();
         m_coralIntake.stopWristMotor();
@@ -76,11 +74,11 @@ public class CoralSmartLevelCmd extends Command {
                 height = ElevatorConstants.coralLeveL2;
                 break;
             case 3:
-                angle = CoralIntakeConstants.L3Angle;
+                angle = up ? CoralIntakeConstants.upAngle : CoralIntakeConstants.L3Angle;
                 height = ElevatorConstants.coralLeveL3;
                 break;
             case 4:
-                angle = CoralIntakeConstants.L4Angle;
+                angle = up ? CoralIntakeConstants.upAngle : CoralIntakeConstants.L4Angle;
                 height = ElevatorConstants.coralLeveL4;
                 break;
             default:

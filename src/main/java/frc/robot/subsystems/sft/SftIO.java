@@ -16,10 +16,6 @@ public interface SftIO {
 
     }
 
-    public default boolean getIR() {
-        return false;
-    }
-
     public default void setSpeed(double speed) {
 
     }

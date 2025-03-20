@@ -22,6 +22,13 @@ These can be used to access their respective component's web interfaces, or for 
     - Front (LL2): `10.##.##.19`
     - Back (LL3): `10.##.##.20`
 - **Radio:** `10.##.##.1`
+### Reefscape Pose Generator - Desmos
+Use this tool to generate poses around the center of a reef given an inital working pose.
+[Desmos Reefscape Tool](https://www.desmos.com/calculator/ipvnamkwov)
+### Advantage Scope Configuration
+* To simulate the 3648 2025 CompBot on the 3D field, go to _assets/advantageScope/_, copy the userAssets.7z, and exctract it to the local hardrive. Then, open Advantage Scope, press **Help &#8594; Use Custom Assets Folder**, and then select the unzipped userAssets. 
+* To open custom premade layouts, go to **File &#8594; Import Layout...** and select the layout you want from _assets/advantageScope/Layouts_.
+* You can open logs by selecting **File &#8594; Open Log(s)...**, and then selecting on a log file in _assets/advantageScope/UtahLogs_
 
 ### Control Schemes:
 
@@ -33,6 +40,9 @@ These can be used to access their respective component's web interfaces, or for 
 ## Best Practices:
 - For the proper functioning of swerve, it is best practice to recalibrate the NavX Gyro. To do this, go to the board, hold down the CAL button for 5 seconds, and then hold the RES button for another 5.
 
+### Auton Paths
+![Paths](assets/AutoPaths.jpeg)
+
 ### Vendor JSONs:
 - [REVLib](https://software-metadata.revrobotics.com/REVLib-2025.json)
 - [AdvantageKit](https://github.com/Mechanical-Advantage/AdvantageKit/releases/latest/download/AdvantageKit.json)
@@ -40,5 +50,3 @@ These can be used to access their respective component's web interfaces, or for 
 - [Phoenix](https://maven.ctr-electronics.com/release/)
 - [Studica](https://dev.studica.com/releases/2025/Studica-2025.0.0.json)
 - [UCRL](https://raw.githubusercontent.com/Mechanical-Advantage/URCL/maven/URCL.json)
-
-

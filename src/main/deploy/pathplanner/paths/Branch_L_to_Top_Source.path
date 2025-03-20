@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.550631313131313,
-        "y": 5.010921717171717
+        "x": 3.638,
+        "y": 5.153
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.8276712270361792,
-        "y": 4.903202630408338
+        "x": 3.915039913904866,
+        "y": 5.0452809132366205
       },
       "isLocked": false,
       "linkedName": "Branch L"
     },
     {
       "anchor": {
-        "x": 1.3348484848484847,
-        "y": 7.11489898989899
+        "x": 1.3069129774305543,
+        "y": 6.988371310763889
       },
       "prevControl": {
-        "x": 1.131998018546334,
-        "y": 7.261021159062331
+        "x": 1.1040625111284037,
+        "y": 7.13449347992723
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Top Source"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -45.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,13 +47,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -53.285797023953705
+    "rotation": -52.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Branch_To_Top",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -57.58769338164883
+    "rotation": -59.99999999999999
   },
   "useDefaultConstraints": true
 }
