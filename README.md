@@ -9,8 +9,8 @@ In order to build and run the robot code, you'll need the following:
 - [PathPlanner](https://github.com/mjansen4857/pathplanner/releases/tag/v2025.1.1)
 
 ## References
-### Local IPs
 
+### Local IPs
 These can be used to access their respective component's web interfaces, or for SSH. Make sure you are connected to the robot's access point before trying these. \
 *`##.##` should be replaced with the robot's team number (e.g. `10.36.48.2`).*
 - **RoboRIO:** `10.##.##.2` 
@@ -22,9 +22,11 @@ These can be used to access their respective component's web interfaces, or for 
     - Front (LL2): `10.##.##.19`
     - Back (LL3): `10.##.##.20`
 - **Radio:** `10.##.##.1`
+
 ### Reefscape Pose Generator - Desmos
 Use this tool to generate poses around the center of a reef given an inital working pose.
 [Desmos Reefscape Tool](https://www.desmos.com/calculator/ipvnamkwov)
+
 ### Advantage Scope Configuration
 * To simulate the 3648 2025 CompBot on the 3D field, go to _assets/advantageScope/_, copy the userAssets.7z, and exctract it to the local hardrive. Then, open Advantage Scope, press **Help &#8594; Use Custom Assets Folder**, and then select the unzipped userAssets. 
 * To open custom premade layouts, go to **File &#8594; Import Layout...** and select the layout you want from _assets/advantageScope/Layouts_.
