@@ -53,7 +53,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         Command coral3Command = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel(),
                 false);
         Command outtake = new CoralSmartLevelWristCmd(coralIntake, elevator, () -> getLevel(),
-                CoralIntakeConstants.outtakeSpeed);
+                AutonConstants.outtakeSpeed);
         DriveToNearest driveCommand = new DriveToNearest(m_drive, () -> CoralSequentialCmd.poses(false));
         DriveToNearest2 drive2Command = new DriveToNearest2(m_drive, () -> CoralSequentialCmd.poses(true));
         // Command driveExactCommand = AutoBuildingBlocks.driveToNearest(m_drive, () ->
@@ -68,7 +68,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
                         new ParallelDeadlineGroup(
                                 drive2Command,
                                 coral2Command).withTimeout(.75),
-                        coral3Command.withTimeout(0.5),
+                        coral3Command.withTimeout(1.5),
                         slam ? outtake.withTimeout(AutonConstants.outtakeTime) : null));
         ;
     }

@@ -425,24 +425,27 @@ public class RobotContainer {
                 // System.out.println("!!!!!!!!!!!!!!!!finished of
                 // configureAutos!!!!!!!!!!!!!!!!!!!");
                 // Set up SysId routines
-                autoChooser.addOption(
-                                "Drive Wheel Radius Characterization",
-                                DriveCommands.wheelRadiusCharacterization(m_drive));
-                autoChooser.addOption(
-                                "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(m_drive));
-                autoChooser.addOption(
-                                "Drive SysId (Quasistatic Forward)",
-                                m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-                autoChooser.addOption(
-                                "Drive SysId (Quasistatic Reverse)",
-                                m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-                autoChooser.addOption(
-                                "Drive SysId (Dynamic Forward)", m_drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-                autoChooser.addOption(
-                                "Drive SysId (Dynamic Reverse)", m_drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-                autoChooser.addOption(
-                                "Micah's test",
-                                AutoBuilder.buildAuto("src\\main\\deploy\\pathplanner\\autos\\test.auto"));
+                // autoChooser.addOption(
+                // "Drive Wheel Radius Characterization",
+                // DriveCommands.wheelRadiusCharacterization(m_drive));
+                // autoChooser.addOption(
+                // "Drive Simple FF Characterization",
+                // DriveCommands.feedforwardCharacterization(m_drive));
+                // autoChooser.addOption(
+                // "Drive SysId (Quasistatic Forward)",
+                // m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+                // autoChooser.addOption(
+                // "Drive SysId (Quasistatic Reverse)",
+                // m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+                // autoChooser.addOption(
+                // "Drive SysId (Dynamic Forward)",
+                // m_drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+                // autoChooser.addOption(
+                // "Drive SysId (Dynamic Reverse)",
+                // m_drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+                // autoChooser.addOption(
+                // "Micah's test",
+                // AutoBuilder.buildAuto("src\\main\\deploy\\pathplanner\\autos\\test.auto"));
         }
 
         public void configureClimber() {
