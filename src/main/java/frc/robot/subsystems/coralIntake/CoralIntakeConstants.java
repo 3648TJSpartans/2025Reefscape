@@ -18,13 +18,13 @@ public class CoralIntakeConstants {
     public static final int irSensorPin = 1;
 
     // these are the constants for the pid of the robot's wrist
-    public static final double kWristP = 1.75;
-    public static final double kWristI = 0;
-    public static final double kWristD = 0;
+    public static final double kWristP = 1.0;
+    public static final double kWristI = 0.0002;
+    public static final double kWristD = 0.0025;
     // public static final double kG = .2;// Was 2.5
     // Values estimated from @link
     public static final double kWristS = 0; // Volts- Static Gain
-    public static final double kWristG = 0.41; // Volts - Gravity feedforward constant
+    public static final double kWristG = 0.71; // Volts - Gravity feedforward constant
     public static final double kWristV = 5.85; // V*s/rad - Velocity Feedforward Constant
     public static final double kWristA = 0.41; // V*s^2/rad - Acceleration Feedforward Constant
 
@@ -53,7 +53,7 @@ public class CoralIntakeConstants {
     public static final double maxAngle = 0.95;
     public static final double coralHomeCutoff = .78;
     public static final double slamAngle = 0.06;
-    public static final double marginOfError = 0.05; // this is how close the robot has to be to target rotation to
+    public static final double marginOfError = 0.02; // this is how close the robot has to be to target rotation to
     // stop,
     // needs tuning
 

@@ -613,10 +613,13 @@ public class RobotContainer {
                                                 () -> CoralSequentialCmd.setAutonState(AutonState.RIGHTREEF)));
                 m_driveController.leftTrigger().whileTrue(smartSequentialCommand);
 
-                // m_driveController.y().onTrue(coralSource);
+                // m_driveController.y().on
+                True(coralSource);
                 m_driveController.rightTrigger().whileTrue(
-                                new DownToIntakeCmd(m_coral, m_elevator)
+                                (new DownToIntakeCmd(m_coral, m_elevator)
                                                 .andThen(new UpFromIntakeCmd(m_coral, m_elevator)))
+                                                .alongWith(new SftCmd(m_sft, 0)).onlyIf(() -> endgameClosed))
+
                                 .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
                 // m_driveController.leftBumper().whileTrue(new WristCmd(m_coral,
                 // CoralIntakeConstants.IntakeAngle)

@@ -14,7 +14,7 @@ public class ElevatorConstants {
     public static final double coralLeveL3 = 0; // this is a momentary value that will be changed later
     public static final double coralLeveL4 = 67;
     public static final double coralLimit = 68;
-    public static final double intakePose = 6.5;// this is the position for the intake
+    public static final double intakePose = 5;// this is the position for the intake
     public static final double preIntakePose = 18.67;
     public static final double defaultPosition = 0.5;
     public static final double algaeRemovalHeightLow = 0;
