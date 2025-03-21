@@ -23,7 +23,7 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     io.updateValues();
-    Logger.recordOutput("Elevator/3dSetpoint", new Pose3d(0, io.getHeightMeters(), 0, new Rotation3d()));
+    Logger.recordOutput("Elevator/3dSetpoint", new Pose3d(0.09, 0.40, 0.1 + io.getHeightMeters(), new Rotation3d()));
     io.updateLimitSwitch();
   }
 
