@@ -121,12 +121,24 @@ public class CoralSequentialAutoCmd extends SequentialCommandGroup {
                 }
             }
         } else {
-            if (level == 3 || level == 4) {
+            if (level == 4) {
                 if (autonState == AutonState.RIGHTREEF) {
                     return PoseConstants.l4ExactRightReefPoints;
                 } else if (autonState == AutonState.LEFTREEF) {
 
                     return PoseConstants.l4ExactLeftReefPoints;
+                } else {
+                    System.out.println("return Null");
+                    System.out.println("Auton State: " + autonState.toString());
+                    return null;
+
+                }
+            } else if (level == 3) {
+                if (autonState == AutonState.RIGHTREEF) {
+                    return PoseConstants.l3ExactRightReefPoints;
+                } else if (autonState == AutonState.LEFTREEF) {
+
+                    return PoseConstants.l3ExactLeftReefPoints;
                 } else {
                     System.out.println("return Null");
                     System.out.println("Auton State: " + autonState.toString());

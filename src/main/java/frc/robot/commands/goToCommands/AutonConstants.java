@@ -20,7 +20,7 @@ public class AutonConstants {
         public static final double thetaMaxVelocity = Units.degreesToRadians(360.0);
         public static final double thetaMaxAcceleration = Units.degreesToRadians(720.0);
         public static final double driveTolerance = 0.015;
-        public static final double thetaTolerance = Units.degreesToRadians(1.5); // could be lower?
+        public static final double thetaTolerance = Units.degreesToRadians(1.0); // could be lower?
         public static final double ffMinRadius = 0.2;
         public static final double ffMaxRadius = 0.6;
         public static final int defaultLevel = 4;
@@ -60,7 +60,27 @@ public class AutonConstants {
                                 new Pose2d(5.39, 5.21, Rotation2d.fromDegrees(240)), // Pose I
                                 new Pose2d(3.90, 5.38, Rotation2d.fromDegrees(300)) // Pose K
                 };
+                private final static Pose2d[] l3ExactBlueRightReefPoints = new Pose2d[] {
+                                new Pose2d(3.04, 3.83, Rotation2d.fromDegrees(0)), //
 
+                                // HEY EVANGELIa UPDATE ALL OF OUR SETPOINTS USING ABOVE X AND Y VALUES!!! USE
+                                // MICAH'S DESMOS GRAPH ON THE README
+
+                                new Pose2d(3.92, 2.65, Rotation2d.fromDegrees(60)), // Pose D
+                                new Pose2d(5.38, 2.82, Rotation2d.fromDegrees(120)), // Pose F
+                                new Pose2d(5.96, 4.17, Rotation2d.fromDegrees(180)), // Pose H
+                                new Pose2d(5.08, 5.35, Rotation2d.fromDegrees(240)), // Pose J
+                                new Pose2d(3.62, 5.18, Rotation2d.fromDegrees(300)) // Pose L
+                };
+
+                private final static Pose2d[] l3ExactBlueLeftReefPoints = new Pose2d[] {
+                                new Pose2d(3.04, 4.17, Rotation2d.fromDegrees(0)), // Pose B
+                                new Pose2d(3.62, 2.82, Rotation2d.fromDegrees(60)), // Pose C
+                                new Pose2d(5.08, 2.65, Rotation2d.fromDegrees(120)), // Pose E
+                                new Pose2d(5.96, 3.83, Rotation2d.fromDegrees(180)), // Pose G
+                                new Pose2d(5.38, 5.18, Rotation2d.fromDegrees(240)), // Pose I
+                                new Pose2d(3.92, 5.35, Rotation2d.fromDegrees(300)) // Pose K
+                };
                 private final static Pose2d[] l2ExactBlueRightReefPoints = new Pose2d[] {
                                 new Pose2d(2.9, 3.85, Rotation2d.fromDegrees(0)), // Pose A
                                 new Pose2d(3.57, 2.75, Rotation2d.fromDegrees(60)), // Pose C
@@ -179,6 +199,9 @@ public class AutonConstants {
                 public final static Pose2d[] l4ExactRightReefPoints = AllianceFlipUtil
                                 .apply(l4ExactBlueRightReefPoints);
                 public final static Pose2d[] l4ExactLeftReefPoints = AllianceFlipUtil.apply(l4ExactBlueLeftReefPoints);
+                public final static Pose2d[] l3ExactRightReefPoints = AllianceFlipUtil
+                                .apply(l3ExactBlueRightReefPoints);
+                public final static Pose2d[] l3ExactLeftReefPoints = AllianceFlipUtil.apply(l3ExactBlueLeftReefPoints);
                 public final static Pose2d[] l2ExactRightReefPoints = AllianceFlipUtil
                                 .apply(l2ExactBlueRightReefPoints);
                 public final static Pose2d[] l2ExactLeftReefPoints = AllianceFlipUtil.apply(l2ExactBlueLeftReefPoints);
