@@ -263,7 +263,7 @@ public class RobotContainer {
                 NamedCommands.registerCommand("l3", l3);
                 NamedCommands.registerCommand("l2", l2);
 
-                NamedCommands.registerCommand("IRBreak", new WaitCommand(3).onlyWhile(() -> m_coral.getIR()));
+                NamedCommands.registerCommand("IRBreak", new WaitCommand(2).onlyWhile(() -> m_coral.getIR()));
                 NamedCommands.registerCommand("intakePos", intakePos);
                 NamedCommands.registerCommand("intake", coralIn);
                 NamedCommands.registerCommand("slamCoral", coralOut);
