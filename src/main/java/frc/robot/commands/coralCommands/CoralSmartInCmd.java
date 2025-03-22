@@ -62,8 +62,7 @@ public class CoralSmartInCmd extends Command {
 
     @Override
     public boolean isFinished() {
-        return false;
-        // return isFinished;
+        return isFinished;
     }
 
 }
