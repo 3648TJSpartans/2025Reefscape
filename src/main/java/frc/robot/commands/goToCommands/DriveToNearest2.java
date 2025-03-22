@@ -286,7 +286,6 @@ public class DriveToNearest2 extends Command {
                 running = false;
                 // Clear logs
                 Logger.recordOutput("DriveToPose/Setpoint", new Pose2d[] {});
-                Logger.recordOutput("DriveToPose/Goal", new Pose2d[] {});
                 System.out.println("!!!!!!!!!!!!!!!DriveToNearest finished!!!!!!!!!!!!!");
         }
 

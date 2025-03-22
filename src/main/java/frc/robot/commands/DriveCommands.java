@@ -77,8 +77,6 @@ public class DriveCommands {
       DoubleSupplier omegaSupplier,
       BooleanSupplier robotRelativeSupplier,
       DoubleSupplier visionTx,
-      BooleanSupplier leftAlign,
-      BooleanSupplier rightAlign,
       BooleanSupplier slowDown) {
     return Commands.run(
         () -> {
