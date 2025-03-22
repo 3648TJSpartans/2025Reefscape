@@ -268,7 +268,7 @@ public class RobotContainer {
                 NamedCommands.registerCommand("intakePos", intakePos);
                 NamedCommands.registerCommand("intake", coralIn);
                 NamedCommands.registerCommand("slamCoral", coralOut);
-                NamedCommands.registerCommand("downToIntake", downToIntake);
+                NamedCommands.registerCommand("downToIntake", downToIntake.alongWith(new SftCmd(m_sft, 0)));
                 NamedCommands.registerCommand("upFromIntake", upFromIntake);
                 NamedCommands.registerCommand("setL4", new InstantCommand(() -> CoralSequentialCmd.setLevel(4)));
                 NamedCommands.registerCommand("setL3", new InstantCommand(() -> CoralSequentialCmd.setLevel(3)));
