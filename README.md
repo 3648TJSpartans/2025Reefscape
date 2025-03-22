@@ -7,6 +7,12 @@ In order to build and run the robot code, you'll need the following:
 - WPILib [v2025.1.1](https://github.com/wpilibsuite/allwpilib/releases/tag/v2025.1.1) or latest
 - [FRC Game Tools](https://www.ni.com/en/support/downloads/drivers/download.frc-game-tools.html#553883)
 - [PathPlanner](https://github.com/mjansen4857/pathplanner/releases/tag/v2025.1.1)
+- To get Prettier working:
+    - Ensure both `node.js` and `npm` are installed on your system
+    - After cloning the repository, run `npm install` in the project root
+    - This will install Prettier and Prettier-Java
+    - Install the Prettier vscode extension
+    - Prettier should now be set as the formatter for java files and should auto-format on save
 
 ## References
 
