@@ -192,3 +192,7 @@ src/main/java/frc/robot/BuildConstants.java
 
 # AdvantageScope unzipped assets
 assets/advantageScope/userAssets
+
+# npm stuff for prettier
+node_modules
+package-lock.json
