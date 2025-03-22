@@ -87,8 +87,10 @@ public class CoralIntakeIOSparkMax implements CoralIntakeIO {
 
     @Override
     public void rotateTo(double setpoint) {
-        wristController.setReference(setpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0,
-                armFeedforward.calculate(setpoint - CoralIntakeConstants.straightUpAngle, 0));
+        wristController.setReference(setpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0
+        // ,armFeedforward.calculate(2 * Math.PI * (setpoint -
+        // CoralIntakeConstants.straightUpAngle + .25), 0)
+        );
         if (wristMotor.get() > .2) {
             wristMotor.set(0);
             System.out.println("The ArmFF calc in CoralIntakeSparkIO done F-ed");

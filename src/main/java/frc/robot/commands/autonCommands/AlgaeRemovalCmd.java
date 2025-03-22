@@ -54,7 +54,8 @@ public class AlgaeRemovalCmd extends SequentialCommandGroup {
         addCommands(
                 driveFirstCommand.alongWith(coralInitialCommand),
                 driveSecondCommand,
-                coralCommand.alongWith(wristCommand).withTimeout(1.5),
+                coralCommand.alongWith(wristCommand).withTimeout(1.5)
+                        .onlyWhile(() -> coralIntake.getAngle() > CoralIntakeConstants.minAngle),
                 new ParallelCommandGroup(holdCoral, driveThirdCommand));
     }
     // AutoBuildingBlocks.driveToPose(drive, PoseConstants.START));

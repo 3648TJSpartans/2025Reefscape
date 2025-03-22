@@ -53,7 +53,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
         Command coral3Command = AutoBuildingBlocks.coralSmartLevelCommand(elevator, coralIntake, () -> getLevel(),
                 false);
         Command outtake = new CoralSmartLevelWristCmd(coralIntake, elevator, () -> getLevel(),
-                CoralIntakeConstants.outtakeSpeed);
+                AutonConstants.outtakeSpeed);
         DriveToNearest driveCommand = new DriveToNearest(m_drive, () -> CoralSequentialCmd.poses(false));
         DriveToNearest2 drive2Command = new DriveToNearest2(m_drive, () -> CoralSequentialCmd.poses(true));
         // Command driveExactCommand = AutoBuildingBlocks.driveToNearest(m_drive, () ->
@@ -68,7 +68,7 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
                         new ParallelDeadlineGroup(
                                 drive2Command,
                                 coral2Command).withTimeout(.75),
-                        coral3Command.withTimeout(0.5),
+                        coral3Command.withTimeout(1.5),
                         slam ? outtake.withTimeout(AutonConstants.outtakeTime) : null));
         ;
     }
@@ -121,12 +121,24 @@ public class CoralSequentialCmd extends SequentialCommandGroup {
                 }
             }
         } else {
-            if (level == 3 || level == 4) {
+            if (level == 4) {
                 if (autonState == AutonState.RIGHTREEF) {
                     return PoseConstants.l4ExactRightReefPoints;
                 } else if (autonState == AutonState.LEFTREEF) {
 
                     return PoseConstants.l4ExactLeftReefPoints;
+                } else {
+                    System.out.println("return Null");
+                    System.out.println("Auton State: " + autonState.toString());
+                    return null;
+
+                }
+            } else if (level == 3) {
+                if (autonState == AutonState.RIGHTREEF) {
+                    return PoseConstants.l3ExactRightReefPoints;
+                } else if (autonState == AutonState.LEFTREEF) {
+
+                    return PoseConstants.l3ExactLeftReefPoints;
                 } else {
                     System.out.println("return Null");
                     System.out.println("Auton State: " + autonState.toString());

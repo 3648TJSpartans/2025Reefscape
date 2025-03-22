@@ -105,25 +105,22 @@ public class ElevatorIOSparkMax implements ElevatorIO {
       return;
     }
     if (getBottomLimitSwitch() && position - getHeight() < 0) {
-      motorController.setReference(getHeight(), ControlType.kPosition, ClosedLoopSlot.kSlot0);
+      motor.set(0);
       Logger.recordOutput("Elevator/NotWorkingBecause", "BottomHitAndDown");
       return;
     }
 
     // all is good!
-    // if (getHeight() < ElevatorConstants.coralLimit) {
-    // motorController.setReference(position, ControlType.kPosition,
-    // ClosedLoopSlot.kSlot0);
-    // Logger.recordOutput("Elevator/NotWorkingBecause", "ItIsWorking");
-    // return;
-    // }
-    // if (position < getHeight()) {
-    motorController.setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+
+    if (getHeight() > ElevatorConstants.coralLimit && motor.get() > 0) {
+      motor.set(0);
+      Logger.recordOutput("Elevator/NotWorkingBecause", "AboveLimit");
+      return;
+    }
+
+    motorController.setReference(position, ControlType.kPosition,
+        ClosedLoopSlot.kSlot0);
     Logger.recordOutput("Elevator/NotWorkingBecause", "ItIsWorking");
-    // } else {
-    // setSpeed(0);
-    // Logger.recordOutput("Elevator/NotWorkingBecause", "aboveLimit");
-    // }
   }
 
   @Override
