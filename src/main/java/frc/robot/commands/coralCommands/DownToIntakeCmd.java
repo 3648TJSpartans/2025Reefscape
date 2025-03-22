@@ -18,7 +18,7 @@ public class DownToIntakeCmd extends SequentialCommandGroup {
         addCommands(
                 firstElevator.withTimeout(1),
 
-                firstWrist.withTimeout(2),
+                firstWrist.withTimeout(2).onlyWhile(() -> coralIntake.getAngle() < 0.8),
 
                 secondElevator.alongWith(coralIn));
     }
