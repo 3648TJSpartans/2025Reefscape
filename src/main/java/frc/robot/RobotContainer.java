@@ -263,6 +263,8 @@ public class RobotContainer {
                 NamedCommands.registerCommand("l3", l3);
                 NamedCommands.registerCommand("l2", l2);
 
+                NamedCommands.registerCommand("IRBreak",
+                                new WaitCommand(.5).onlyWhile(() -> m_coral.getIR()).andThen(new WaitCommand(.5)));
                 NamedCommands.registerCommand("intakePos", intakePos);
                 NamedCommands.registerCommand("intake", coralIn);
                 NamedCommands.registerCommand("slamCoral", coralOut);
@@ -425,32 +427,35 @@ public class RobotContainer {
                 // System.out.println("!!!!!!!!!!!!!!!!finished of
                 // configureAutos!!!!!!!!!!!!!!!!!!!");
                 // Set up SysId routines
-                autoChooser.addOption(
-                                "Drive Wheel Radius Characterization",
-                                DriveCommands.wheelRadiusCharacterization(m_drive));
-                autoChooser.addOption(
-                                "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(m_drive));
-                autoChooser.addOption(
-                                "Drive SysId (Quasistatic Forward)",
-                                m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-                autoChooser.addOption(
-                                "Drive SysId (Quasistatic Reverse)",
-                                m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-                autoChooser.addOption(
-                                "Drive SysId (Dynamic Forward)", m_drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-                autoChooser.addOption(
-                                "Drive SysId (Dynamic Reverse)", m_drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-                autoChooser.addOption(
-                                "Micah's test",
-                                AutoBuilder.buildAuto("src\\main\\deploy\\pathplanner\\autos\\test.auto"));
+                // autoChooser.addOption(
+                // "Drive Wheel Radius Characterization",
+                // DriveCommands.wheelRadiusCharacterization(m_drive));
+                // autoChooser.addOption(
+                // "Drive Simple FF Characterization",
+                // DriveCommands.feedforwardCharacterization(m_drive));
+                // autoChooser.addOption(
+                // "Drive SysId (Quasistatic Forward)",
+                // m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+                // autoChooser.addOption(
+                // "Drive SysId (Quasistatic Reverse)",
+                // m_drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+                // autoChooser.addOption(
+                // "Drive SysId (Dynamic Forward)",
+                // m_drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+                // autoChooser.addOption(
+                // "Drive SysId (Dynamic Reverse)",
+                // m_drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+                // autoChooser.addOption(
+                // "Micah's test",
+                // AutoBuilder.buildAuto("src\\main\\deploy\\pathplanner\\autos\\test.auto"));
         }
 
         public void configureClimber() {
                 Command climberCmd = new ClimberAnalogCmd(m_climber,
                                 () -> MathUtil.applyDeadband(m_copilotController.getLeftX(), 0.5));
                 m_climber.setDefaultCommand(climberCmd);
-                Command climberUpCmd = new ClimberUpCmd(m_climber);
-                m_copilotController.y().whileTrue(climberUpCmd);
+                // Command climberUpCmd = new ClimberUpCmd(m_climber);
+                // m_copilotController.y().whileTrue(climberUpCmd);
 
         }
 
@@ -482,6 +487,8 @@ public class RobotContainer {
                 m_copilotController.a().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
                 m_copilotController.b().onTrue(new InstantCommand(() -> m_coral.setSpeed(-.15)));
                 m_copilotController.b().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
+                m_copilotController.y().onTrue(new InstantCommand(() -> m_coral.setSpeed(-.75)));
+                m_copilotController.y().onFalse(new InstantCommand(() -> m_coral.setSpeed(0)));
                 // Command wristAnalog = new WristAnalogCmd(m_coral, () ->
                 // m_copilotController.getRightX());
                 Command slamCoral = new SlamCoralCmd(m_coral);
@@ -500,8 +507,6 @@ public class RobotContainer {
                                                 () -> -m_driveController.getRightX(),
                                                 m_driveController.leftBumper(),
                                                 () -> m_vision.getTx(),
-                                                m_driveController.leftBumper(),
-                                                m_driveController.rightBumper(),
                                                 () -> !endgameClosed));
 
                 // Lock to 0° when A button is held
@@ -544,7 +549,8 @@ public class RobotContainer {
 
                 m_copilotController.leftTrigger().whileTrue(coralSmartDefualt);
 
-                m_controllerTwo.leftTrigger().whileTrue(new AlgaeRemovalCmd(m_drive, m_coral, m_elevator, () -> true));
+                m_driveController.rightBumper()
+                                .whileTrue(new AlgaeRemovalCmd(m_drive, m_coral, m_elevator, () -> true));
 
                 // new Trigger(() -> DriverStation.isTeleopEnabled() &&
                 // !m_elevator.getLimitReset())
@@ -612,8 +618,10 @@ public class RobotContainer {
 
                 // m_driveController.y().onTrue(coralSource);
                 m_driveController.rightTrigger().whileTrue(
-                                new DownToIntakeCmd(m_coral, m_elevator)
+                                (new DownToIntakeCmd(m_coral, m_elevator)
                                                 .andThen(new UpFromIntakeCmd(m_coral, m_elevator)))
+                                                .alongWith(new SftCmd(m_sft, 0)).onlyIf(() -> endgameClosed))
+
                                 .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
                 // m_driveController.leftBumper().whileTrue(new WristCmd(m_coral,
                 // CoralIntakeConstants.IntakeAngle)

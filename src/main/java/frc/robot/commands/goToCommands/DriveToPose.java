@@ -235,7 +235,7 @@ public class DriveToPose extends Command {
                 // Clear logs
                 Logger.recordOutput("DriveToPose/running", running);
                 Logger.recordOutput("DriveToPose/Setpoint", new Pose2d[] {});
-                Logger.recordOutput("DriveToPose/Goal", new Pose2d[] {});
+
                 System.out.println("<<<<<<<<<<<<<<<<<DRIVE TO POSE FINISHED>>>>>>>>>>>>>>>>>>>>>>>");
         }
 
