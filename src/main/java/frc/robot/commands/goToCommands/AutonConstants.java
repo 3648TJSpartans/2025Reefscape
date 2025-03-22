@@ -13,7 +13,7 @@ public class AutonConstants {
         public static final double outtakeSpeed = -.75;
         public static final double drivekP = 5.0;
         public static final double drivekD = 0.0;
-        public static final double thetakP = 1.5;
+        public static final double thetakP = 1.0;
         public static final double thetakD = 0.0;
         public static final double driveMaxVelocity = 1.5;
         public static final double driveMaxAcceleration = 1.5;
