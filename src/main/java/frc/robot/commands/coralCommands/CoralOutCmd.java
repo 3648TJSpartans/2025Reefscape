@@ -55,7 +55,8 @@ public class CoralOutCmd extends Command {
 
     @Override
     public boolean isFinished() {
-        return isFinished;
+        // return isFinished;
+        return false;
     }
 
 }
