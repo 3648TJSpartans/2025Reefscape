@@ -192,3 +192,5 @@ src/main/java/frc/robot/BuildConstants.java
 
 # AdvantageScope unzipped assets
 assets/advantageScope/userAssets
+
+*.akitlog
