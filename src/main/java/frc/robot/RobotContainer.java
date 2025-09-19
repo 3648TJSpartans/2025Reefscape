@@ -42,6 +42,7 @@ import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToNearestIntake;
 import frc.robot.commands.goToCommands.DriveToPose;
+import frc.robot.commands.goToCommands.DriveToTag;
 import frc.robot.commands.sftCommands.SftAnalogCmd;
 import frc.robot.commands.sftCommands.SftCmd;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants.AutonState;
@@ -77,7 +78,6 @@ import frc.robot.util.AllianceFlipUtil;
 import frc.robot.util.TunableNumber;
 import frc.robot.util.TunableNumber;
 import frc.robot.subsystems.climber.*;
-import frc.robot.subsystems.climber.ClimberConstants;
 import frc.robot.subsystems.coralIntake.CoralIntake;
 import frc.robot.subsystems.coralIntake.CoralIntakeConstants;
 import frc.robot.subsystems.coralIntake.CoralIntakeIO;
@@ -179,7 +179,7 @@ public class RobotContainer {
                                                 new ModuleIOSpark(2),
                                                 new ModuleIOSpark(3));
                                 m_vision = new Vision(
-                                                m_drive::addVisionMeasurement,
+                                                m_drive::addVisionMeasurement, m_drive::addTargetSpaceVisionMeasurement,
                                                 new VisionIOLimelight("limelight-three", m_drive::getRotation),
                                                 new VisionIOLimelight("limelight-twoplus", m_drive::getRotation));
                                 m_coral = new CoralIntake(new CoralIntakeIOSparkMax());
@@ -197,7 +197,7 @@ public class RobotContainer {
                                                 new ModuleIOSim(),
                                                 new ModuleIOSim());
                                 m_vision = new Vision(
-                                                m_drive::addVisionMeasurement,
+                                                m_drive::addVisionMeasurement, m_drive::addTargetSpaceVisionMeasurement,
                                                 // new VisionIOPhotonVisionSim(camera0Name, robotToCamera0,
                                                 // m_drive::getPose),
                                                 new VisionIOPhotonVisionSim(VisionConstants.camera1Name,
@@ -224,9 +224,10 @@ public class RobotContainer {
                                                 },
                                                 new ModuleIO() {
                                                 });
-                                m_vision = new Vision(m_drive::addVisionMeasurement, new VisionIO() {
-                                }, new VisionIO() {
-                                });
+                                m_vision = new Vision(m_drive::addVisionMeasurement,
+                                                m_drive::addTargetSpaceVisionMeasurement, new VisionIO() {
+                                                }, new VisionIO() {
+                                                });
                                 m_coral = new CoralIntake(new CoralIntakeIO() {
                                 });
                                 m_elevator = new Elevator(new ElevatorIO() {
@@ -499,7 +500,7 @@ public class RobotContainer {
                                                 () -> -m_driveController.getLeftX(),
                                                 () -> -m_driveController.getRightX(),
                                                 m_driveController.leftBumper(),
-                                                () -> m_vision.getTx(),
+                                                () -> 0, // Error fix
                                                 m_driveController.leftBumper(),
                                                 m_driveController.rightBumper(),
                                                 () -> !endgameClosed));
@@ -528,6 +529,14 @@ public class RobotContainer {
                                                                                                 new Rotation2d())),
                                                                 m_drive)
                                                                 .ignoringDisable(true));
+                Pose2d alignOffsetRight = new Pose2d(new Translation2d(-.75, -.17), new Rotation2d(0));
+                Pose2d alignOffsetLeft = new Pose2d(new Translation2d(-.75, .17), new Rotation2d(0));
+                Command alignToTagRight = new DriveToTag(m_drive, m_drive::getTargetSpacePose,
+                                () -> alignOffsetRight);
+                Command alignToTagLeft = new DriveToTag(m_drive, m_drive::getTargetSpacePose,
+                                () -> alignOffsetLeft);
+                m_controllerTwo.rightTrigger().whileTrue(alignToTagRight);
+                m_controllerTwo.leftTrigger().whileTrue(alignToTagLeft);
         }
 
         public void configureElevator() {
@@ -544,7 +553,8 @@ public class RobotContainer {
 
                 m_copilotController.leftTrigger().whileTrue(coralSmartDefualt);
 
-                m_controllerTwo.leftTrigger().whileTrue(new AlgaeRemovalCmd(m_drive, m_coral, m_elevator, () -> true));
+                // m_controllerTwo.leftTrigger().whileTrue(new AlgaeRemovalCmd(m_drive, m_coral,
+                // m_elevator, () -> true));
 
                 // new Trigger(() -> DriverStation.isTeleopEnabled() &&
                 // !m_elevator.getLimitReset())
