@@ -39,6 +39,10 @@ public class AutonConstants {
                                 new Pose2d(1.127, 7.2, Rotation2d.fromDegrees(-60)) // Left
                 };
 
+                public static Pose2d rightTagDisplacement = new Pose2d(-.546, -0.195, new Rotation2d());
+                public static Pose2d leftTagDisplacement = new Pose2d(-.546, 0.195, new Rotation2d());
+                public static Pose2d closeRightTagDisplacement = new Pose2d(-.9, -0.195, new Rotation2d());
+                public static Pose2d closeLeftTagDisplacement = new Pose2d(-.9, 0.195, new Rotation2d());
                 private final static Pose2d[] l4ExactBlueRightReefPoints = new Pose2d[] {
                                 new Pose2d(3.11, 3.83, Rotation2d.fromDegrees(0)), //
 

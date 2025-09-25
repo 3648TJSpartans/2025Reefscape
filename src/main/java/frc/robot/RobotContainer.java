@@ -22,6 +22,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -32,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -39,6 +41,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.goToCommands.AutonConstants.PoseConstants;
+import frc.robot.commands.goToCommands.AutonConstants;
 import frc.robot.commands.goToCommands.DriveToNearest;
 import frc.robot.commands.goToCommands.DriveToNearestIntake;
 import frc.robot.commands.goToCommands.DriveToPose;
@@ -102,6 +105,7 @@ import frc.robot.commands.climberCommands.*;
 import frc.robot.commands.coralCommands.CoralElevatorIntegratedCmd;
 import frc.robot.commands.coralCommands.CoralInCmd;
 import frc.robot.commands.coralCommands.CoralOutCmd;
+import frc.robot.commands.coralCommands.CoralSmartLevelWristCmd;
 import frc.robot.commands.coralCommands.DownToIntakeCmd;
 import frc.robot.commands.coralCommands.ElevatorCmd;
 import frc.robot.commands.coralCommands.HomeElevatorCmd;
@@ -582,20 +586,45 @@ public class RobotContainer {
                 Command intake = new CoralElevatorIntegratedCmd(m_coral, m_elevator,
                                 ElevatorConstants.intakePose, CoralIntakeConstants.IntakeAngle);
                 Command smartSequentialCommand = new CoralSequentialCmd(m_drive, m_coral, m_elevator, true);
-                // Command coralSource = new SourceParallelCmd(m_drive, m_coral, m_elevator);
-                // m_controllerTwo.povUp().whileTrue(l4);
-                // m_controllerTwo.povRight().whileTrue(l1);
-                // m_controllerTwo.povDown().whileTrue(l2);
-                // m_controllerTwo.povLeft().whileTrue(l3);
-                // m_controllerTwo.leftBumper().whileTrue(intake);
-                // m_driveController.rightBumper().onTrue(sequentialRight);
-                // m_driveController.leftBumper().onTrue(sequentialLeft);
-                // m_driveController.leftBumper().onFalse(new InstantCommand(() ->
-                // cancelCommand(sequentialLeft)));
-                // m_driveController.rightBumper().onFalse(new InstantCommand(() ->
-                // cancelCommand(sequentialRight)));
-                // m_driveController.leftBumper().whileTrue(leftDriveCommand);
-                // m_driveController.rightBumper().whileTrue(rightDriveCommand);
+
+                Command coralCommand = AutoBuildingBlocks.coralSmartLevelCommand(m_elevator, m_coral,
+                                () -> CoralSequentialCmd.getLevel(), true);
+                Command coral2Command = AutoBuildingBlocks.coralSmartLevelCommand(m_elevator, m_coral,
+                                () -> CoralSequentialCmd.getLevel(), false);
+                Command coral3Command = AutoBuildingBlocks.coralSmartLevelCommand(m_elevator, m_coral,
+                                () -> CoralSequentialCmd.getLevel(), false);
+
+                Command outtake = new CoralSmartLevelWristCmd(m_coral, m_elevator, () -> CoralSequentialCmd.getLevel(),
+                                CoralIntakeConstants.outtakeSpeed);
+                Command alignToTagSequential = new ConditionalCommand(
+                                new SequentialCommandGroup(
+
+                                                new ParallelDeadlineGroup(
+                                                                new DriveToTag(m_drive, m_drive::getTargetSpacePose,
+                                                                                () -> PoseConstants.closeRightTagDisplacement),
+                                                                coralCommand.repeatedly()),
+
+                                                new ParallelDeadlineGroup(
+                                                                new DriveToTag(m_drive, m_drive::getTargetSpacePose,
+                                                                                () -> PoseConstants.rightTagDisplacement),
+                                                                coral2Command).withTimeout(.75),
+                                                coral3Command.withTimeout(0.5),
+                                                outtake.withTimeout(AutonConstants.outtakeTime)),
+                                new SequentialCommandGroup(
+
+                                                new ParallelDeadlineGroup(
+                                                                new DriveToTag(m_drive, m_drive::getTargetSpacePose,
+                                                                                () -> PoseConstants.closeLeftTagDisplacement),
+                                                                coralCommand.repeatedly()),
+
+                                                new ParallelDeadlineGroup(
+                                                                new DriveToTag(m_drive, m_drive::getTargetSpacePose,
+                                                                                () -> PoseConstants.leftTagDisplacement),
+                                                                coral2Command).withTimeout(.75),
+                                                coral3Command.withTimeout(0.5),
+                                                outtake.withTimeout(AutonConstants.outtakeTime)),
+                                () -> CoralSequentialAutoCmd.getLeftOrRIghtState() == 1);
+
                 m_copilotController.povUp().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(4)));
                 m_copilotController.povRight().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(1)));
                 m_copilotController.povDown().onTrue(new InstantCommand(() -> CoralSequentialCmd.setLevel(2)));
