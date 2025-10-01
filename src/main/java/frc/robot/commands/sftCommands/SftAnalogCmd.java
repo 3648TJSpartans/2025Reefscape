@@ -33,7 +33,7 @@ public class SftAnalogCmd extends Command {
     @Override
     public void end(boolean interrupted) {
         m_sft.stopMotor();
-        Logger.recordOutput("SFT/AnalogCommand/Speed", false);
+        Logger.recordOutput("SFT/AnalogCommand/Scheduled", false);
     }
 
     @Override
