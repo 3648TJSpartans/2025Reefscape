@@ -22,18 +22,18 @@ public class ClimberAnalogCmd extends Command {
     public void execute() {
         Logger.recordOutput("Climber/climberPosition", climberSubsystem.getPosition());
         if (rightStickSupplier.getAsDouble() < 0) {
-            if (climberSubsystem.getPosition() > ClimberConstants.upPosition2) {
-                climberSubsystem.setSpeed(rightStickSupplier.getAsDouble() * 0.5);
-            } else {
-                climberSubsystem.setSpeed(0);
+            // if (climberSubsystem.getPosition() > ClimberConstants.upPosition2) {
+            climberSubsystem.setSpeed(rightStickSupplier.getAsDouble() * 0.5);
+            // } else {
+            // climberSubsystem.setSpeed(0);
 
-            }
+            // }
         } else {
             if (climberSubsystem.getPosition() < ClimberConstants.downPosition2) {
                 climberSubsystem.setSpeed(rightStickSupplier.getAsDouble() * 0.5);
             } else {
-                climberSubsystem.setSpeed(0);
-
+                // climberSubsystem.setSpeed(0);
+                climberSubsystem.setSpeed(rightStickSupplier.getAsDouble() * 0.5);
             }
         }
 
