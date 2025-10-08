@@ -141,10 +141,9 @@ public class ElevatorIOSparkMax implements ElevatorIO {
   public void updateLimitSwitch() {
     if (getBottomLimitSwitch()) {
       setZero();
+    } else if (getTopLimitSwitch()) {
+      setTop();
     }
-    // else if (getTopLimitSwitch()) {
-    // setTop();
-    // }
   }
 
   @Override
