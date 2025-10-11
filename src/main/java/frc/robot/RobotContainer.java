@@ -624,7 +624,7 @@ public class RobotContainer {
                 m_driveController.rightTrigger().whileTrue(
                                 (new DownToIntakeCmd(m_coral, m_elevator)
                                                 .andThen(new UpFromIntakeCmd(m_coral, m_elevator)))
-                                                .alongWith(new SftCmd(m_sft, 0.05)).onlyIf(() -> endgameClosed))
+                                                .alongWith(new SftCmd(m_sft, 0.0)).onlyIf(() -> endgameClosed))
 
                                 .onFalse(new UpFromIntakeCmd(m_coral, m_elevator));
                 // m_driveController.leftBumper().whileTrue(new WristCmd(m_coral,
